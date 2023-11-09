@@ -1,0 +1,169 @@
+head	1.5;
+access;
+symbols
+	v2_1_0_0:1.5
+	v2_0_1_0:1.5
+	v2_0_0_0:1.5
+	v1_1_0_0:1.2
+	RELEASED:1.5
+	v1_0_0_0:1.2;
+locks; strict;
+comment	@ * @;
+
+
+1.5
+date	2008.08.25.08.15.02;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.04.16.14.09.41;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.03.26.08.15.24;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2007.02.01.12.14.59;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.01.23.09.13.10;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@Itilized TimerAPCProc()
+@
+text
+@/*
+ * $Id: precomp.h,v 1.4 2008/04/16 14:09:41 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2008 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: precomp.h,v $
+ * Revision 1.4  2008/04/16 14:09:41  vfrolov
+ * Included <set>
+ *
+ * Revision 1.3  2008/03/26 08:15:24  vfrolov
+ * Added more includes
+ *
+ * Revision 1.2  2007/02/01 12:14:59  vfrolov
+ * Redesigned COM port params
+ *
+ * Revision 1.1  2007/01/23 09:13:10  vfrolov
+ * Initial revision
+ *
+ */
+
+#ifndef _PRECOMP_H_
+#define _PRECOMP_H_
+
+#define _WIN32_WINNT 0x0500
+
+#include <windows.h>
+#include <crtdbg.h>
+
+#include <string>
+#include <vector>
+#include <set>
+#include <map>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+using namespace std;
+
+#pragma warning(disable:4512) // assignment operator could not be generated
+
+#endif /* _PRECOMP_H_ */
+@
+
+
+1.4
+log
+@Included <set>
+@
+text
+@d2 1
+a2 1
+ * $Id: precomp.h,v 1.3 2008/03/26 08:15:24 vfrolov Exp $
+d22 3
+d39 2
+@
+
+
+1.3
+log
+@Added more includes
+@
+text
+@d2 1
+a2 1
+ * $Id: precomp.h,v 1.2 2007/02/01 12:14:59 vfrolov Exp $
+d22 3
+a30 1
+ *
+d41 1
+@
+
+
+1.2
+log
+@Redesigned COM port params
+@
+text
+@d2 1
+a2 1
+ * $Id: precomp.h,v 1.1 2007/01/23 09:13:10 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+d22 3
+d35 1
+d39 1
+d41 1
+a41 1
+#include <map>
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 4
+a24 1
+ * $Log: $
+d37 1
+@
+

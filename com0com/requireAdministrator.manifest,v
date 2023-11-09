@@ -1,0 +1,36 @@
+head	1.1;
+access;
+symbols
+	RELEASED:1.1
+	v3_0_0_0:1.1;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2011.07.12.17.57.38;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<assembly xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>
+  <ms_asmv2:trustInfo xmlns:ms_asmv2="urn:schemas-microsoft-com:asm.v2">
+     <ms_asmv2:security>
+        <ms_asmv2:requestedPrivileges>
+           <ms_asmv2:requestedExecutionLevel level="requireAdministrator">
+           </ms_asmv2:requestedExecutionLevel>
+        </ms_asmv2:requestedPrivileges>
+     </ms_asmv2:security>
+  </ms_asmv2:trustInfo>
+</assembly>
+@

@@ -1,0 +1,440 @@
+head	1.11;
+access;
+symbols
+	v2_1_0_0:1.11
+	v2_0_1_0:1.11
+	v2_0_0_0:1.11
+	v1_1_0_0:1.4
+	RELEASED:1.11
+	v1_0_0_0:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.11
+date	2008.11.26.15.55.24;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.11.24.16.30.56;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2008.11.24.12.36.59;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2008.11.13.08.07.40;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.08.20.08.46.06;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2008.08.15.12.44.59;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2008.03.26.08.48.18;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2007.12.19.13.46.36;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2007.02.05.09.33.20;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2007.02.01.12.14.58;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.01.23.09.13.10;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.11
+log
+@Changed port number to unsigned
+@
+text
+@/*
+ * $Id: comhub.h,v 1.10 2008/11/24 16:30:56 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2008 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: comhub.h,v $
+ * Revision 1.10  2008/11/24 16:30:56  vfrolov
+ * Removed pOnXoffXon
+ *
+ * Revision 1.9  2008/11/24 12:36:59  vfrolov
+ * Changed plugin API
+ *
+ * Revision 1.8  2008/11/13 08:07:40  vfrolov
+ * Changed for staticaly linking
+ *
+ * Revision 1.7  2008/08/20 08:46:06  vfrolov
+ * Implemented ComHub::FilterName()
+ *
+ * Revision 1.6  2008/08/15 12:44:59  vfrolov
+ * Added fake read filter method to ports
+ *
+ * Revision 1.5  2008/03/26 08:48:18  vfrolov
+ * Initial revision
+ *
+ * Revision 1.4  2007/12/19 13:46:36  vfrolov
+ * Added ability to send data received from port to the same port
+ *
+ * Revision 1.3  2007/02/05 09:33:20  vfrolov
+ * Implemented internal flow control
+ *
+ * Revision 1.2  2007/02/01 12:14:58  vfrolov
+ * Redesigned COM port params
+ *
+ * Revision 1.1  2007/01/23 09:13:10  vfrolov
+ * Initial revision
+ *
+ */
+
+#ifndef _COMHUB_H
+#define _COMHUB_H
+
+///////////////////////////////////////////////////////////////
+class Port;
+class Filters;
+class HubMsg;
+///////////////////////////////////////////////////////////////
+typedef vector<Port*> Ports;
+typedef multimap<Port*, Port*> PortMap;
+///////////////////////////////////////////////////////////////
+#define HUB_SIGNATURE 'h4cH'
+///////////////////////////////////////////////////////////////
+class ComHub
+{
+  public:
+    ComHub() : pFilters(NULL) {
+#ifdef _DEBUG
+      signature = HUB_SIGNATURE;
+#endif
+    }
+
+#ifdef _DEBUG
+    ~ComHub() {
+      _ASSERTE(signature == HUB_SIGNATURE);
+      signature = 0;
+    }
+#endif
+
+    void Add();
+    BOOL InitPort(
+        int n,
+        const PORT_ROUTINES_A *pPortRoutines,
+        HCONFIG hConfig,
+        const char *pPath);
+    BOOL StartAll() const;
+    BOOL OnFakeRead(Port *pFromPort, HubMsg *pMsg) const;
+    void OnRead(Port *pFromPort, HubMsg *pMsg) const;
+    void LostReport() const;
+    void SetDataRoute(const PortMap &map) { routeDataMap = map; }
+    void SetFlowControlRoute(const PortMap &map) { routeFlowControlMap = map; }
+    void RouteReport() const;
+    unsigned NumPorts() const { return (unsigned)ports.size(); }
+
+    Filters *SetFilters(Filters *_pFilters) {
+      Filters *pFiltersOld = pFilters;
+      pFilters = _pFilters;
+      return pFiltersOld;
+    }
+
+    Port *ComHub::GetPort(unsigned n) const {
+      _ASSERTE(n < NumPorts());
+      return ports.at(n);
+    }
+
+    const char *FilterName(HFILTER hFilter) const;
+
+  private:
+    Ports ports;
+    PortMap routeDataMap;
+    PortMap routeFlowControlMap;
+
+    Filters *pFilters;
+
+#ifdef _DEBUG
+  private:
+    DWORD signature;
+
+  public:
+    BOOL IsValid() { return signature == HUB_SIGNATURE; }
+#endif
+};
+///////////////////////////////////////////////////////////////
+
+#endif  // _COMHUB_H
+@
+
+
+1.10
+log
+@Removed pOnXoffXon
+@
+text
+@d2 1
+a2 1
+ * $Id: comhub.h,v 1.9 2008/11/24 12:36:59 vfrolov Exp $
+d22 3
+d96 1
+a96 1
+    int NumPorts() const { return (int)ports.size(); }
+d104 2
+a105 2
+    Port *ComHub::GetPort(int n) const {
+      _ASSERTE(n >= 0 && n < NumPorts());
+@
+
+
+1.9
+log
+@Changed plugin API
+@
+text
+@d2 1
+a2 1
+ * $Id: comhub.h,v 1.8 2008/11/13 08:07:40 vfrolov Exp $
+d22 3
+a88 1
+    void AddXoffXon(Port *pFromPort, BOOL xoff) const;
+a108 2
+    void OnRead(const PortMap &routeMap, Port *pFromPort, HubMsg *pMsg) const;
+
+@
+
+
+1.8
+log
+@Changed for staticaly linking
+@
+text
+@d2 1
+a2 1
+ * $Id: comhub.h,v 1.7 2008/08/20 08:46:06 vfrolov Exp $
+d22 3
+a57 1
+typedef multimap<int, int> PortNumMap;
+d77 3
+a79 2
+    void Add() { ports.push_back(NULL); }
+    BOOL CreatePort(
+a80 1
+        int n,
+d86 1
+a86 2
+    void AddXoff(Port *pFromPort) const;
+    void AddXon(Port *pFromPort) const;
+d88 2
+a89 2
+    void SetDataRoute(const PortNumMap &map);
+    void SetFlowControlRoute(const PortNumMap &map);
+d100 1
+a100 3
+      if (n < 0 || n >= NumPorts())
+        return NULL;
+
+d107 2
+d116 1
+@
+
+
+1.7
+log
+@Implemented ComHub::FilterName()
+@
+text
+@d2 1
+a2 1
+ * $Id: comhub.h,v 1.6 2008/08/15 12:44:59 vfrolov Exp $
+d22 3
+a47 2
+#include "plugins/plugins_api.h"
+
+@
+
+
+1.6
+log
+@Added fake read filter method to ports
+@
+text
+@d2 1
+a2 1
+ * $Id: comhub.h,v 1.5 2008/03/26 08:48:18 vfrolov Exp $
+d22 3
+d104 2
+@
+
+
+1.5
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: comhub.h,v 1.4 2007/12/19 13:46:36 vfrolov Exp $
+d22 3
+d78 1
+@
+
+
+1.4
+log
+@Added ability to send data received from port to the same port
+@
+text
+@d2 1
+a2 1
+ * $Id: comhub.h,v 1.3 2007/02/05 09:33:20 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+d22 3
+d39 2
+d42 3
+a44 2
+class ComPort;
+class ComParams;
+d46 5
+a50 2
+typedef vector<ComPort*> ComPorts;
+typedef multimap<ComPort*, ComPort*> ComPortMap;
+d55 5
+a59 1
+    ComHub() {}
+d61 17
+a77 5
+    BOOL Add(const char *pPath);
+    BOOL PlugIn(int n, const char *pPath, const ComParams &comParams);
+    BOOL StartAll();
+    void Write(ComPort *pFromPort, LPCVOID pData, DWORD len);
+    void AddXoff(ComPort *pFromPort, int count);
+d79 4
+d84 4
+a87 2
+    void RouteData(int iFrom, int iTo, BOOL noRoute, BOOL noEcho) {
+      Route(routeDataMap, iFrom, iTo, noRoute, noEcho);
+d90 5
+a94 2
+    void RouteFlowControl(int iFrom, int iTo, BOOL noRoute, BOOL noEcho) {
+      Route(routeFlowControlMap, iFrom, iTo, noRoute, noEcho);
+d97 6
+a102 3
+    void RouteFlowControl(BOOL fromAnyDataReceiver);
+    void RouteReport() const;
+    int NumPorts() const { return (int)ports.size(); }
+d104 2
+a105 2
+  private:
+    void Route(ComPortMap &map, int iFrom, int iTo, BOOL noRoute, BOOL noEcho) const;
+d107 3
+a109 3
+    ComPorts ports;
+    ComPortMap routeDataMap;
+    ComPortMap routeFlowControlMap;
+@
+
+
+1.3
+log
+@Implemented internal flow control
+@
+text
+@d2 1
+a2 1
+ * $Id: comhub.h,v 1.2 2007/02/01 12:14:58 vfrolov Exp $
+d22 3
+a30 1
+ *
+d55 2
+a56 2
+    void RouteData(int iFrom, int iTo, BOOL noRoute) {
+      Route(routeDataMap, iFrom, iTo, noRoute);
+d59 2
+a60 2
+    void RouteFlowControl(int iFrom, int iTo, BOOL noRoute) {
+      Route(routeFlowControlMap, iFrom, iTo, noRoute);
+d68 1
+a68 1
+    void Route(ComPortMap &map, int iFrom, int iTo, BOOL noRoute) const;
+@
+
+
+1.2
+log
+@Redesigned COM port params
+@
+text
+@d2 1
+a2 1
+ * $Id: comhub.h,v 1.1 2007/01/23 09:13:10 vfrolov Exp $
+d22 3
+d50 14
+a63 4
+    void LostReport();
+    void RouteData(int iFrom, int iTo, BOOL noRoute);
+    void RouteDataReport();
+    int NumPorts() { return (int)ports.size(); }
+d66 2
+d70 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id:  $
+d21 4
+a24 1
+ * $Log: $
+d41 1
+a41 1
+    ComHub(int num);
+d43 1
+@
+

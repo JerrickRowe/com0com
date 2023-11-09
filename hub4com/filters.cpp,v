@@ -1,0 +1,992 @@
+head	1.10;
+access;
+symbols
+	v2_1_0_0:1.10
+	v2_0_1_0:1.10
+	RELEASED:1.10
+	v2_0_0_0:1.10;
+locks; strict;
+comment	@// @;
+
+
+1.10
+date	2009.02.20.18.32.35;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2009.02.04.12.26.54;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2009.02.02.15.21.42;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.11.24.12.36.59;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2008.11.13.08.07.40;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2008.10.16.06.19.12;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.09.26.15.34.50;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.08.20.08.32.35;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.04.16.14.13.59;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.03.26.08.35.32;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.10
+log
+@Added info about location of options
+@
+text
+@/*
+ * $Id: filters.cpp,v 1.9 2009/02/04 12:26:54 vfrolov Exp $
+ *
+ * Copyright (c) 2008-2009 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: filters.cpp,v $
+ * Revision 1.9  2009/02/04 12:26:54  vfrolov
+ * Implemented --load option for filters
+ *
+ * Revision 1.8  2009/02/02 15:21:42  vfrolov
+ * Optimized filter's API
+ *
+ * Revision 1.7  2008/11/24 12:36:59  vfrolov
+ * Changed plugin API
+ *
+ * Revision 1.6  2008/11/13 08:07:40  vfrolov
+ * Changed for staticaly linking
+ *
+ * Revision 1.5  2008/10/16 06:19:12  vfrolov
+ * Divided filter ID to filter group ID and filter name
+ *
+ * Revision 1.4  2008/09/26 15:34:50  vfrolov
+ * Fixed adding order for filters with the same FID
+ *
+ * Revision 1.3  2008/08/20 08:32:35  vfrolov
+ * Implemented Filters::FilterName()
+ *
+ * Revision 1.2  2008/04/16 14:13:59  vfrolov
+ * Added ability to specify source posts for OUT method
+ *
+ * Revision 1.1  2008/03/26 08:35:32  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "plugins/plugins_api.h"
+
+#include "port.h"
+#include "comhub.h"
+#include "filters.h"
+#include "filter.h"
+#include "bufutils.h"
+#include "hubmsg.h"
+#include "utils.h"
+
+///////////////////////////////////////////////////////////////
+typedef pair<Port *, FilterInstanceArray*> PortFilters;
+///////////////////////////////////////////////////////////////
+Filters::~Filters()
+{
+  for (PortFiltersMap::const_iterator iPort = portFilters.begin() ; iPort != portFilters.end() ; iPort++) {
+    if (iPort->second) {
+      for (FilterInstanceArray::const_iterator i = iPort->second->begin() ; i != iPort->second->end() ; i++) {
+        if (*i)
+          delete *i;
+      }
+      delete iPort->second;
+    }
+  }
+
+  for (FilterArray::const_iterator i = allFilters.begin() ; i != allFilters.end() ; i++) {
+    if (*i)
+      delete *i;
+  }
+}
+///////////////////////////////////////////////////////////////
+BOOL Filters::CreateFilter(
+    const FILTER_ROUTINES_A *pFltRoutines,
+    const char *pFilterGroup,
+    const char *pFilterName,
+    HCONFIG hConfig,
+    const char *pArgs)
+{
+  Filter *pFilter = new Filter(
+      pFilterGroup,
+      pFilterName,
+      ROUTINE_GET(pFltRoutines, pCreateInstance),
+      ROUTINE_GET(pFltRoutines, pInMethod),
+      ROUTINE_GET(pFltRoutines, pOutMethod));
+
+  if (!pFilter) {
+    cerr << "No enough memory." << endl;
+    return FALSE;
+  }
+
+  if (ROUTINE_IS_VALID(pFltRoutines, pCreate)) {
+    int argc;
+    const char **argv;
+    Args args;
+
+    CreateArgsVector(pFilterName, pArgs, args, &argc, &argv);
+
+    HFILTER hFilter = pFltRoutines->pCreate((HMASTERFILTER)pFilter, hConfig, argc, argv);
+
+    FreeArgsVector(argv);
+
+    if (!hFilter) {
+      delete pFilter;
+      return FALSE;
+    }
+
+    pFilter->hFilter = hFilter;
+  }
+
+  allFilters.push_back(pFilter);
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+BOOL Filters::AddFilter(
+    Port *pPort,
+    const char *pGroup,
+    BOOL addInMethod,
+    BOOL addOutMethod,
+    const set<Port *> *pOutMethodSrcPorts)
+{
+  _ASSERTE(pPort != NULL);
+  _ASSERTE(pGroup != NULL);
+
+  PortFiltersMap::iterator iPair = portFilters.find(pPort);
+
+  if (iPair == portFilters.end()) {
+    portFilters.insert(PortFilters(pPort, NULL));
+
+    iPair = portFilters.find(pPort);
+
+    if (iPair == portFilters.end()) {
+      cerr << "Can't add filters for port " << pPort->Name() << endl;
+      return FALSE;
+    }
+  }
+
+  if (!iPair->second) {
+    iPair->second = new FilterInstanceArray;
+
+    if (!iPair->second) {
+      cerr << "No enough memory." << endl;
+      return FALSE;
+    }
+  }
+
+  BOOL found = FALSE;
+
+  for (FilterArray::const_iterator i = allFilters.begin() ; i != allFilters.end() ; i++) {
+    if (*i && (*i)->group == pGroup) {
+      if ((addInMethod && (*i)->pInMethod) || (addOutMethod && (*i)->pOutMethod)) {
+        const set<Port *> *pSrcPorts;
+
+        if (pOutMethodSrcPorts) {
+          pSrcPorts = new set<Port *>(*pOutMethodSrcPorts);
+
+          if (!pSrcPorts) {
+            cerr << "No enough memory." << endl;
+            return FALSE;
+          }
+        } else {
+          pSrcPorts = NULL;
+        }
+
+        FilterInstance *pFilterInstance = new FilterInstance(*(*i), *pPort, addInMethod, addOutMethod, pSrcPorts);
+
+        if (!pFilterInstance) {
+          cerr << "No enough memory." << endl;
+
+          if (pSrcPorts)
+            delete pSrcPorts;
+
+          return FALSE;
+        }
+
+        if ((*i)->pCreateInstance) {
+          HFILTERINSTANCE hFilterInstance = (*i)->pCreateInstance((HMASTERFILTERINSTANCE)pFilterInstance);
+
+          if (!hFilterInstance) {
+            cerr << "Can't create instance of filter " << (*i)->name << " for port " << pPort->Name() << endl;
+            delete pFilterInstance;
+            return FALSE;
+          }
+
+          pFilterInstance->hFilterInstance = hFilterInstance;
+        }
+
+        iPair->second->push_back(pFilterInstance);
+      }
+
+      found = TRUE;
+    }
+  }
+
+  if (!found) {
+    cerr << "Can't find any filter for group " << pGroup << endl;
+    return FALSE;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+void Filters::Report() const
+{
+  if (!portFilters.size())
+    return;
+
+  cout << "Filters:" << endl;
+
+  for (PortFiltersMap::const_iterator iPort = portFilters.begin() ; iPort != portFilters.end() ; iPort++) {
+    stringstream bufs[3];
+
+    Port *pPort = iPort->first;
+
+    if (pPort)
+      bufs[1] << pPort->Name() << " ";
+    else
+      bufs[1] << iPort->first << " ";
+
+    for (int i = 0 ; i < 3 ; i++) {
+      string::size_type diff = bufs[1].str().length() - bufs[i].str().length();
+
+      for (string::size_type j = 0 ; j < diff ; j++) {
+        bufs[i] << (i == 0 ? " " : "_");
+      }
+    }
+
+    cout << bufs[2].str() << endl;
+
+    bufs[0] << "\\-";
+    bufs[1] << "|  ";
+    bufs[2] << "/<-";
+
+    FilterInstanceArray *pFilters = iPort->second;
+
+    if (pFilters) {
+      for (FilterInstanceArray::const_iterator i = pFilters->begin() ; i != pFilters->end() ; i++) {
+        if ((*i)->pInMethod) {
+          bufs[0] << ">{" << (*i)->filter.name << ".IN" << "}-";
+          string::size_type len = (*i)->filter.name.length();
+
+          for (int i = 1 ; i < 3 ; i++) {
+            string::size_type diff = bufs[0].str().length() - bufs[i].str().length();
+
+            for (string::size_type j = len/2 + 6 ; j < diff ; j++)
+              bufs[i] << (i == 2 ? "-" : " ");
+          }
+
+          bufs[1] << "/";
+          bufs[2] << "-";
+        }
+
+        if ((*i)->pOutMethod) {
+          bufs[2] << "{" << (*i)->filter.name << ".OUT";
+          if ((*i)->pSrcPorts) {
+            bufs[2] << "(";
+            for (set<Port *>::const_iterator iSrc = (*i)->pSrcPorts->begin() ;
+                 iSrc != (*i)->pSrcPorts->end() ; iSrc++)
+            {
+              if (iSrc != (*i)->pSrcPorts->begin())
+                bufs[2] << ",";
+
+              bufs[2] << *iSrc;
+            }
+            bufs[2] << ")";
+          }
+          bufs[2] << "}<-";
+
+          string::size_type len = (*i)->filter.name.length();
+
+          for (int i = 0 ; i < 2 ; i++) {
+            string::size_type diff = bufs[2].str().length() - bufs[i].str().length();
+
+            for (string::size_type j = len/2 + 7 ; j < diff ; j++)
+              bufs[i] << (i == 0 ? "-" : " ");
+          }
+        }
+      }
+    }
+
+    if (bufs[2].str().length() > bufs[0].str().length()) {
+      string::size_type diff = bufs[2].str().length() - (bufs[0].str().length() + 1);
+
+      for (string::size_type j = 0 ; j < diff ; j++)
+        bufs[0] << "-";
+    } else {
+      string::size_type diff = bufs[0].str().length() + 1 - bufs[2].str().length();
+
+      for (string::size_type j = 0 ; j < diff ; j++)
+        bufs[2] << "-";
+    }
+
+    bufs[0] << ">";
+
+    for (int i = 0 ; i < 3 ; i++) {
+      cout << bufs[i].str() << endl;
+    }
+
+    cout << endl;
+  }
+}
+///////////////////////////////////////////////////////////////
+BOOL Filters::InMethod(
+    Port *pFromPort,
+    const FilterInstanceArray::const_iterator &i,
+    const FilterInstanceArray::const_iterator &iEnd,
+    HubMsg *pInMsg,
+    HubMsg **ppEchoMsg)
+{
+  _ASSERTE(*ppEchoMsg == NULL);
+
+  HubMsg *pEchoMsg = NULL;
+  HFILTER hFilter = (*i)->filter.hFilter;
+  HFILTERINSTANCE hFilterInstance = (*i)->hFilterInstance;
+
+  if ((*i)->pInMethod) {
+    FILTER_IN_METHOD *pInMethod = (*i)->pInMethod;
+    HubMsg *pNextMsg = pInMsg;
+
+    for (HubMsg *pCurMsg = pNextMsg ; pCurMsg ; pCurMsg = pNextMsg) {
+      pNextMsg = pNextMsg->Next();
+
+      HUB_MSG *pEchoMsgPart = NULL;
+
+      if (!pInMethod(hFilter, hFilterInstance, pCurMsg, &pEchoMsgPart)) {
+        if (pEchoMsgPart)
+          delete (HubMsg *)pEchoMsgPart;
+
+        if (pEchoMsg)
+          delete pEchoMsg;
+
+        return FALSE;
+      }
+
+      if (pEchoMsgPart) {
+        if (pEchoMsg) {
+          pEchoMsg->Merge((HubMsg *)pEchoMsgPart);
+        } else {
+          pEchoMsg = (HubMsg *)pEchoMsgPart;
+        }
+      }
+    }
+  }
+
+  const FilterInstanceArray::const_iterator iNext = i + 1;
+
+  if (iNext != iEnd) {
+    if (!InMethod(pFromPort, iNext, iEnd, pInMsg, ppEchoMsg))
+      return FALSE;
+  }
+
+  if ((*i)->pOutMethod) {
+    FILTER_OUT_METHOD *pOutMethod = (*i)->pOutMethod;
+    HubMsg *pNextMsg = *ppEchoMsg;
+
+    for (HubMsg *pCurMsg = pNextMsg ; pCurMsg ; pCurMsg = pNextMsg) {
+      pNextMsg = pNextMsg->Next();
+
+      if (!pOutMethod(hFilter, hFilterInstance, (HMASTERPORT)pFromPort, pCurMsg)) {
+        if (pEchoMsg)
+          delete pEchoMsg;
+
+        return FALSE;
+      }
+    }
+  }
+
+  if (pEchoMsg) {
+    if (*ppEchoMsg)
+      pEchoMsg->Merge(*ppEchoMsg);
+
+    *ppEchoMsg = pEchoMsg;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+BOOL Filters::InMethod(
+    Port *pFromPort,
+    HubMsg *pInMsg,
+    HubMsg **ppEchoMsg) const
+{
+  _ASSERTE(*ppEchoMsg == NULL);
+
+  PortFiltersMap::const_iterator iPair = portFilters.find(pFromPort);
+
+  if (iPair == portFilters.end())
+    return TRUE;
+
+  FilterInstanceArray *pFilters = iPair->second;
+
+  if (!pFilters)
+    return TRUE;
+
+  const FilterInstanceArray::const_iterator i = pFilters->begin();
+
+  if (i != pFilters->end()) {
+    if (!InMethod(pFromPort, i, pFilters->end(), pInMsg, ppEchoMsg))
+      return FALSE;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+BOOL Filters::OutMethod(
+    Port *pFromPort,
+    Port *pToPort,
+    HubMsg *pOutMsg) const
+{
+  PortFiltersMap::const_iterator iPair = portFilters.find(pToPort);
+
+  if (iPair == portFilters.end())
+    return TRUE;
+
+  FilterInstanceArray *pFilters = iPair->second;
+
+  if (!pFilters)
+    return TRUE;
+
+  for (FilterInstanceArray::const_reverse_iterator i = pFilters->rbegin() ; i != pFilters->rend() ; i++) {
+    if ((*i)->pOutMethod && (!(*i)->pSrcPorts ||
+        (*i)->pSrcPorts->find(pFromPort) != (*i)->pSrcPorts->end()))
+    {
+      FILTER_OUT_METHOD *pOutMethod = (*i)->pOutMethod;
+      HFILTER hFilter = (*i)->filter.hFilter;
+      HFILTERINSTANCE hFilterInstance = (*i)->hFilterInstance;
+
+      HubMsg *pNextMsg = pOutMsg;
+
+      for (HubMsg *pCurMsg = pNextMsg ; pCurMsg ; pCurMsg = pNextMsg) {
+        pNextMsg = pNextMsg->Next();
+
+        if (!pOutMethod(hFilter, hFilterInstance, (HMASTERPORT)pFromPort, pCurMsg))
+          return FALSE;
+      }
+    }
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+@
+
+
+1.9
+log
+@Implemented --load option for filters
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.cpp,v 1.8 2009/02/02 15:21:42 vfrolov Exp $
+d22 3
+a113 1
+      cerr << "Can't create filter " << pFilterName << endl;
+@
+
+
+1.8
+log
+@Optimized filter's API
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.cpp,v 1.7 2008/11/24 12:36:59 vfrolov Exp $
+d22 3
+d102 1
+a102 1
+    void *pTmpArgs;
+d104 1
+a104 1
+    CreateArgsVector(pFilterName, pArgs, &argc, &argv, &pTmpArgs);
+d108 1
+a108 1
+    FreeArgsVector(argv, pTmpArgs);
+@
+
+
+1.7
+log
+@Changed plugin API
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.cpp,v 1.6 2008/11/13 08:07:40 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008 Vyacheslav Frolov
+d22 3
+d57 1
+a57 18
+class FilterMethod {
+  public:
+    FilterMethod(const Filter &_filter, BOOL _isInMethod, const SetOfPorts *_pSrcPorts)
+      : filter(_filter),
+        isInMethod(_isInMethod),
+        pSrcPorts(_pSrcPorts) {}
+
+    ~FilterMethod() {
+      if (pSrcPorts)
+        delete pSrcPorts;
+    }
+
+    const Filter &filter;
+    const BOOL isInMethod;
+    const SetOfPorts *const pSrcPorts;
+};
+///////////////////////////////////////////////////////////////
+typedef pair<Port *, FilterMethodArray*> PortFilters;
+d63 1
+a63 1
+      for (FilterMethodArray::const_iterator i = iPort->second->begin() ; i != iPort->second->end() ; i++) {
+a83 20
+  if (!ROUTINE_IS_VALID(pFltRoutines, pCreate)) {
+    cerr << "No create routine for filter " << pFilterName << endl;
+    return FALSE;
+  }
+
+  int argc;
+  const char **argv;
+  void *pTmpArgs;
+
+  CreateArgsVector(pFilterName, pArgs, &argc, &argv, &pTmpArgs);
+
+  HFILTER hFilter = pFltRoutines->pCreate(hConfig, argc, argv);
+
+  FreeArgsVector(argv, pTmpArgs);
+
+  if (!hFilter) {
+    cerr << "Can't create filter " << pFilterName << endl;
+    return FALSE;
+  }
+
+d87 1
+a87 1
+      hFilter,
+d96 10
+a105 1
+  allFilters.push_back(pFilter);
+d107 3
+a109 2
+  if (ROUTINE_IS_VALID(pFltRoutines, pInit)) {
+    if (!ROUTINE_GET(pFltRoutines, pInit)(hFilter, HMASTERFILTER(pFilter)))
+d111 3
+d116 2
+d126 1
+a126 1
+    const SetOfPorts *pOutMethodSrcPorts)
+d128 3
+d145 1
+a145 1
+    iPair->second = new FilterMethodArray;
+d157 2
+a158 13
+      if (addInMethod && (*i)->pInMethod) {
+        FilterMethod *pFilterMethod = new FilterMethod(*(*i), TRUE, NULL);
+
+        if (!pFilterMethod) {
+          cerr << "No enough memory." << endl;
+          return FALSE;
+        }
+
+        iPair->second->push_back(pFilterMethod);
+      }
+
+      if (addOutMethod && (*i)->pOutMethod) {
+        const SetOfPorts *pSrcPorts;
+d161 1
+a161 1
+          pSrcPorts = new SetOfPorts(*pOutMethodSrcPorts);
+d171 1
+a171 1
+        FilterMethod *pFilterMethod = new FilterMethod(*(*i), FALSE, pSrcPorts);
+d173 1
+a173 1
+        if (!pFilterMethod) {
+d175 4
+d182 13
+a194 1
+        iPair->second->push_back(pFilterMethod);
+d240 1
+a240 1
+    FilterMethodArray *pFilters = iPort->second;
+d243 2
+a244 2
+      for (FilterMethodArray::const_iterator i = pFilters->begin() ; i != pFilters->end() ; i++) {
+        if ((*i)->isInMethod) {
+d257 3
+a259 1
+        } else {
+d263 1
+a263 1
+            for (SetOfPorts::const_iterator iSrc = (*i)->pSrcPorts->begin() ;
+d309 1
+a309 1
+static BOOL InMethod(
+d311 2
+a312 2
+    const FilterMethodArray::const_iterator &i,
+    const FilterMethodArray::const_iterator &iEnd,
+d319 2
+d322 2
+a323 4
+  if ((*i)->isInMethod) {
+    FILTER_IN_METHOD *pInMethod = (*i)->filter.pInMethod;
+    HFILTER hFilter = (*i)->filter.hFilter;
+
+d331 1
+a331 1
+      if (!pInMethod(hFilter, (HMASTERPORT)pFromPort, pCurMsg, &pEchoMsgPart)) {
+d334 4
+d351 1
+a351 1
+  const FilterMethodArray::const_iterator iNext = i + 1;
+d358 2
+a359 11
+  if (pEchoMsg) {
+    if (*ppEchoMsg)
+      pEchoMsg->Merge(*ppEchoMsg);
+
+    *ppEchoMsg = pEchoMsg;
+  }
+
+  if (!(*i)->isInMethod) {
+    FILTER_OUT_METHOD *pOutMethod = (*i)->filter.pOutMethod;
+    HFILTER hFilter = (*i)->filter.hFilter;
+
+d365 4
+a368 1
+      if (!pOutMethod(hFilter, (HMASTERPORT)pFromPort, (HMASTERPORT)pFromPort, pCurMsg))
+d370 1
+d374 7
+d396 1
+a396 1
+  FilterMethodArray *pFilters = iPair->second;
+d401 1
+a401 1
+  const FilterMethodArray::const_iterator i = pFilters->begin();
+d404 1
+a404 1
+    if (!::InMethod(pFromPort, i, pFilters->end(), pInMsg, ppEchoMsg))
+d421 1
+a421 1
+  FilterMethodArray *pFilters = iPair->second;
+d426 2
+a427 2
+  for (FilterMethodArray::const_reverse_iterator i = pFilters->rbegin() ; i != pFilters->rend() ; i++) {
+    if (!(*i)->isInMethod && (!(*i)->pSrcPorts ||
+d430 1
+a430 1
+      FILTER_OUT_METHOD *pOutMethod = (*i)->filter.pOutMethod;
+d432 1
+d439 1
+a439 1
+        if (!pOutMethod(hFilter, (HMASTERPORT)pFromPort, (HMASTERPORT)pToPort, pCurMsg))
+@
+
+
+1.6
+log
+@Changed for staticaly linking
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.cpp,v 1.5 2008/10/16 06:19:12 vfrolov Exp $
+d22 3
+d48 1
+a53 24
+class Filter {
+  public:
+    Filter(
+        const char *pGroup,
+        const char *pName,
+        HFILTER _hFilter,
+        FILTER_INIT *_pInit,
+        FILTER_IN_METHOD *_pInMethod,
+        FILTER_OUT_METHOD *_pOutMethod)
+      : group(pGroup),
+        name(pName),
+        hFilter(_hFilter),
+        pInit(_pInit),
+        pInMethod(_pInMethod),
+        pOutMethod(_pOutMethod) {}
+
+    const string group;
+    const string name;
+    const HFILTER hFilter;
+    FILTER_INIT *const pInit;
+    FILTER_IN_METHOD *const pInMethod;
+    FILTER_OUT_METHOD *const pOutMethod;
+};
+///////////////////////////////////////////////////////////////
+d56 1
+a56 1
+    FilterMethod(const Filter &_filter, BOOL _isInMethod, const set<int> *_pSrcPorts)
+d68 1
+a68 1
+    const set<int> *const pSrcPorts;
+d71 1
+a71 1
+typedef pair<int, FilterMethodArray*> PortFilters;
+a121 1
+      ROUTINE_GET(pFltRoutines, pInit),
+d132 5
+d141 1
+a141 1
+    int iPort,
+d145 1
+a145 1
+    const set<int> *pOutMethodSrcPorts)
+d147 1
+a147 1
+  PortFiltersMap::iterator iPair = portFilters.find(iPort);
+d150 1
+a150 1
+    portFilters.insert(PortFilters(iPort, NULL));
+d152 1
+a152 1
+    iPair = portFilters.find(iPort);
+d155 1
+a155 1
+      cerr << "Can't add filters for port " << iPort << endl;
+d185 1
+a185 1
+        const set<int> *pSrcPorts;
+d188 1
+a188 1
+          pSrcPorts = new set<int>(*pOutMethodSrcPorts);
+d230 1
+a230 1
+    Port *pPort = hub.GetPort(iPort->first);
+d272 1
+a272 1
+            for (set<int>::const_iterator iSrc = (*i)->pSrcPorts->begin() ;
+a317 24
+BOOL Filters::Init() const
+{
+  BOOL res = TRUE;
+
+  for (FilterArray::const_iterator i = allFilters.begin() ; i != allFilters.end() ; i++) {
+    if (*i && (*i)->pInit) {
+      if (!(*i)->pInit((*i)->hFilter, (HHUB)&hub))
+        res = FALSE;
+    }
+  }
+
+  return res;
+}
+///////////////////////////////////////////////////////////////
+const char *Filters::FilterName(HFILTER hFilter) const
+{
+  for (FilterArray::const_iterator i = allFilters.begin() ; i != allFilters.end() ; i++) {
+    if (*i && (*i)->hFilter == hFilter)
+      return (*i)->name.c_str();
+  }
+
+  return NULL;
+}
+///////////////////////////////////////////////////////////////
+d319 1
+a319 1
+    int nFromPort,
+d340 1
+a340 1
+      if (!pInMethod(hFilter, nFromPort, pCurMsg, &pEchoMsgPart)) {
+d359 1
+a359 1
+    if (!InMethod(nFromPort, iNext, iEnd, pInMsg, ppEchoMsg))
+d379 1
+a379 1
+      if (!pOutMethod(hFilter, nFromPort, nFromPort, pCurMsg))
+d388 1
+a388 1
+    int nFromPort,
+d394 1
+a394 1
+  PortFiltersMap::const_iterator iPair = portFilters.find(nFromPort);
+d407 1
+a407 1
+    if (!::InMethod(nFromPort, i, pFilters->end(), pInMsg, ppEchoMsg))
+d415 2
+a416 2
+    int nFromPort,
+    int nToPort,
+d419 1
+a419 1
+  PortFiltersMap::const_iterator iPair = portFilters.find(nToPort);
+d431 1
+a431 1
+        (*i)->pSrcPorts->find(nFromPort) != (*i)->pSrcPorts->end()))
+d441 1
+a441 1
+        if (!pOutMethod(hFilter, nFromPort, nToPort, pCurMsg))
+@
+
+
+1.5
+log
+@Divided filter ID to filter group ID and filter name
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.cpp,v 1.4 2008/09/26 15:34:50 vfrolov Exp $
+d22 3
+d40 2
+@
+
+
+1.4
+log
+@Fixed adding order for filters with the same FID
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.cpp,v 1.3 2008/08/20 08:32:35 vfrolov Exp $
+d22 3
+d48 1
+d54 2
+a55 1
+      : name(pName),
+d61 1
+d108 1
+d134 1
+d153 1
+a153 1
+    const char *pName,
+d183 1
+a183 1
+    if (*i && (*i)->name == pName) {
+d224 1
+a224 1
+    cerr << "Can't find filter " << pName << endl;
+@
+
+
+1.3
+log
+@Implemented Filters::FilterName()
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.cpp,v 1.2 2008/04/16 14:13:59 vfrolov Exp $
+d22 3
+d146 3
+a148 2
+    BOOL isInMethod,
+    const set<int> *pSrcPorts)
+d176 16
+a191 3
+      if ((isInMethod && (*i)->pInMethod) || (!isInMethod && (*i)->pOutMethod)) {
+        if (pSrcPorts) {
+          pSrcPorts = new set<int>(*pSrcPorts);
+d197 2
+d201 1
+a201 1
+        FilterMethod *pFilterMethod = new FilterMethod(*(*i), isInMethod, pSrcPorts);
+@
+
+
+1.2
+log
+@Added ability to specify source posts for OUT method
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.cpp,v 1.1 2008/03/26 08:35:32 vfrolov Exp $
+d22 3
+d316 10
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 3
+a23 1
+ * $Log: $
+d59 1
+a59 1
+    FilterMethod(const Filter &_filter, BOOL _isInMethod)
+d61 7
+a67 1
+        isInMethod(_isInMethod) {}
+d71 1
+d140 2
+a141 1
+    BOOL isInMethod)
+d170 10
+a179 1
+        FilterMethod *pFilterMethod = new FilterMethod(*(*i), isInMethod);
+d250 15
+a264 1
+          bufs[2] << "{" << (*i)->filter.name << ".OUT" << "}<-";
+d425 3
+a427 1
+    if (!(*i)->isInMethod) {
+@
+

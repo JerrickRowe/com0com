@@ -1,0 +1,1739 @@
+head	1.23;
+access;
+symbols
+	v2_1_0_0:1.23
+	v2_0_1_0:1.22
+	RELEASED:1.23
+	v2_0_0_0:1.15;
+locks; strict;
+comment	@// @;
+
+
+1.23
+date	2012.06.02.19.37.20;	author vfrolov;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2010.09.14.18.34.30;	author vfrolov;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2010.09.14.16.33.34;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2010.06.07.14.54.48;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2009.09.14.09.08.48;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2009.08.11.06.12.45;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2009.08.04.11.36.49;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2009.07.31.11.40.04;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2009.02.17.14.17.37;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2009.01.23.16.55.05;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2008.12.22.09.40.46;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2008.12.01.17.09.34;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.11.27.13.46.29;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.11.24.16.30.56;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2008.11.24.12.37.00;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2008.11.17.16.44.57;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.11.13.07.41.09;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2008.10.22.15.31.38;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2008.10.06.12.15.14;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.10.02.08.07.02;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.09.30.06.44.50;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.03.28.16.00.19;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.03.27.17.18.27;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.23
+log
+@Added ability to divide incoming TCP sessions
+@
+text
+@/*
+ * $Id: comport.cpp,v 1.22 2010/09/14 18:34:30 vfrolov Exp $
+ *
+ * Copyright (c) 2008-2012 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: comport.cpp,v $
+ * Revision 1.22  2010/09/14 18:34:30  vfrolov
+ * Fixed rejected connections handling
+ *
+ * Revision 1.21  2010/09/14 16:33:34  vfrolov
+ * Implemented --write-limit=0 to disable writing to the port
+ *
+ * Revision 1.20  2010/06/07 14:54:48  vfrolov
+ * Added "Connected" and "Disconnected" messages (feature request #3010158)
+ *
+ * Revision 1.19  2009/09/14 09:08:48  vfrolov
+ * Added discarding owned tick (for optimization)
+ *
+ * Revision 1.18  2009/08/11 06:12:45  vfrolov
+ * Added missing initialization of isValid
+ *
+ * Revision 1.17  2009/08/04 11:36:49  vfrolov
+ * Implemented priority and reject modifiers for <listen port>
+ *
+ * Revision 1.16  2009/07/31 11:40:04  vfrolov
+ * Fixed pending acception of incoming connections
+ *
+ * Revision 1.15  2009/02/17 14:17:37  vfrolov
+ * Redesigned timer's API
+ *
+ * Revision 1.14  2009/01/23 16:55:05  vfrolov
+ * Utilized timer routines
+ *
+ * Revision 1.13  2008/12/22 09:40:46  vfrolov
+ * Optimized message switching
+ *
+ * Revision 1.12  2008/12/01 17:09:34  vfrolov
+ * Improved write buffering
+ *
+ * Revision 1.11  2008/11/27 13:46:29  vfrolov
+ * Added --write-limit option
+ *
+ * Revision 1.10  2008/11/24 16:30:56  vfrolov
+ * Removed pOnXoffXon
+ *
+ * Revision 1.9  2008/11/24 12:37:00  vfrolov
+ * Changed plugin API
+ *
+ * Revision 1.8  2008/11/17 16:44:57  vfrolov
+ * Fixed race conditions
+ *
+ * Revision 1.7  2008/11/13 07:41:09  vfrolov
+ * Changed for staticaly linking
+ *
+ * Revision 1.6  2008/10/22 15:31:38  vfrolov
+ * Fixed race condition
+ *
+ * Revision 1.5  2008/10/06 12:15:14  vfrolov
+ * Added --reconnect option
+ *
+ * Revision 1.4  2008/10/02 08:07:02  vfrolov
+ * Fixed sending not paired CONNECT(FALSE)
+ *
+ * Revision 1.3  2008/09/30 06:44:50  vfrolov
+ * Added warning about ignored output options
+ *
+ * Revision 1.2  2008/03/28 16:00:19  vfrolov
+ * Added connectionCounter
+ *
+ * Revision 1.1  2008/03/27 17:18:27  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "../plugins_api.h"
+///////////////////////////////////////////////////////////////
+namespace PortTcp {
+///////////////////////////////////////////////////////////////
+#include "comport.h"
+#include "comio.h"
+#include "comparams.h"
+#include "import.h"
+///////////////////////////////////////////////////////////////
+Listener::Listener(const struct sockaddr_in &_snLocal)
+  : snLocal(_snLocal),
+    hSockListen(INVALID_SOCKET)
+{
+}
+
+void Listener::Push(ComPort *pPort)
+{
+  _ASSERTE(pPort != NULL);
+
+  ports.push(pPort);
+}
+
+BOOL Listener::Start()
+{
+  if (hSockListen != INVALID_SOCKET)
+    return TRUE;
+
+  hSockListen = Socket(snLocal);
+
+  if (hSockListen == INVALID_SOCKET)
+    return FALSE;
+
+  ListenOverlapped *pOverlapped;
+
+  pOverlapped = new ListenOverlapped(*this, hSockListen);
+
+  if (!pOverlapped)
+    return FALSE;
+
+  if (!pOverlapped->StartWaitEvent()) {
+    pOverlapped->Delete();
+    return FALSE;
+  }
+
+  if (!Listen(hSockListen))
+    return FALSE;
+
+  return TRUE;
+}
+
+BOOL Listener::OnEvent(ListenOverlapped * /*pOverlapped*/, long e, int /*err*/)
+{
+  //cout << "Listener::OnEvent " << hex << e << dec << " " << err << endl;
+
+  if (e == FD_ACCEPT) {
+    if (!ports.empty()) {
+      ComPort *pPort = ports.top().Ptr();
+      _ASSERTE(pPort != NULL);
+
+      if (pPort->Accept())
+        ports.pop();
+    } else {
+      PortTcp::Accept("Listener", hSockListen, CF_DEFER);
+    }
+  }
+
+  return TRUE;
+}
+
+void Listener::OnDisconnect(ComPort *pPort)
+{
+  Push(pPort);
+
+  _ASSERTE(!ports.empty());
+
+  for (;;) {
+    ComPort *pPort = ports.top().Ptr();
+    _ASSERTE(pPort != NULL);
+
+    if (!pPort->Accept())
+      break;
+
+    ports.pop();
+
+    if (ports.empty())
+      break;
+  }
+}
+
+SOCKET Listener::Accept(const ComPort &port, int cmd)
+{
+  return PortTcp::Accept(port.Name().c_str(), hSockListen, cmd);
+}
+///////////////////////////////////////////////////////////////
+ComPort::ComPort(
+    vector<Listener *> &listeners,
+    const ComParams &comParams,
+    const char *pPath)
+  : pListener(NULL),
+    rejectZeroConnectionCounter(FALSE),
+    busyTillZeroConnectionCounter(FALSE),
+    priority(0),
+    hSock(INVALID_SOCKET),
+    isValid(TRUE),
+    isConnected(FALSE),
+    isDisconnected(FALSE),
+    pendingListenerOnDisconnect(FALSE),
+    connectionCounter(0),
+    permanent(FALSE),
+    reconnectTime(-1),
+    hReconnectTimer(NULL),
+    name("TCP"),
+    hMasterPort(NULL),
+    countReadOverlapped(0),
+    countXoff(0),
+    writeQueueLimit(comParams.WriteQueueLimit()),
+    writeQueued(0),
+    writeSuspended(FALSE),
+    writeLost(0),
+    writeLostTotal(0),
+    pWriteBuf(NULL),
+    lenWriteBuf(0)
+{
+  writeQueueLimitSendXoff = (writeQueueLimit*2)/3;
+  writeQueueLimitSendXon = writeQueueLimit/3;
+
+  string path(pPath);
+
+  for ( ;; path = path.substr(1)) {
+    switch (path[0]) {
+      case '*':
+        permanent = TRUE;
+        continue;
+      case '!':
+        rejectZeroConnectionCounter = TRUE;
+        continue;
+      case '/':
+        busyTillZeroConnectionCounter = TRUE;
+        continue;
+    }
+    break;
+  }
+
+  string::size_type iDelim = path.find(':');
+
+  if (iDelim != path.npos) {
+    string addrName = path.substr(0, iDelim);
+    string portName = path.substr(iDelim + 1);
+
+    if (!SetAddr(snLocal, comParams.GetIF(), NULL) ||
+        !SetAddr(snRemote, addrName.c_str(), portName.c_str()))
+    {
+      isValid = FALSE;
+      return;
+    }
+
+    if (comParams.GetReconnectTime() == comParams.rtDefault) {
+      if (permanent)
+        reconnectTime = 0;
+    }
+    else
+    if (comParams.GetReconnectTime() != comParams.rtDisable) {
+      reconnectTime = comParams.GetReconnectTime();
+    }
+  } else {
+    iDelim = path.find('/');
+
+    if (iDelim != path.npos) {
+      istringstream buf(path.substr(iDelim + 1));
+      path = path.substr(0, iDelim);
+
+      buf >> priority;
+
+      if (buf.fail())
+        isValid = FALSE;
+
+      string rest;
+      buf >> rest;
+
+      if (!rest.empty())
+        isValid = FALSE;
+
+      if (!isValid) {
+        cerr << "ERROR: Invalid priority in " << pPath << endl;
+        return;
+      }
+    }
+
+    if (!SetAddr(snLocal, comParams.GetIF(), path.c_str())) {
+      isValid = FALSE;
+      return;
+    }
+
+    for (vector<Listener *>::iterator i = listeners.begin() ; i != listeners.end() ; i++) {
+      if ((*i)->IsEqual(snLocal)) {
+        pListener = *i;
+        break;
+      }
+    }
+
+    if (!pListener) {
+      pListener = new Listener(snLocal);
+
+      if (!pListener) {
+        cerr << "No enough memory." << endl;
+        exit(2);
+      }
+
+      listeners.push_back(pListener);
+    }
+
+    pListener->Push(this);
+  }
+
+  for (int i = 0 ; i < 3 ; i++) {
+    WriteOverlapped *pOverlapped = new WriteOverlapped(*this);
+
+    if (!pOverlapped) {
+      cerr << "No enough memory." << endl;
+      exit(2);
+    }
+
+    writeOverlappedBuf.push(pOverlapped);
+  }
+}
+
+BOOL ComPort::Init(HMASTERPORT _hMasterPort)
+{
+  hMasterPort = _hMasterPort;
+
+  return isValid;
+}
+
+BOOL ComPort::Start()
+{
+  _ASSERTE(hMasterPort != NULL);
+
+  if (pListener) {
+    return pListener->Start();
+  } else {
+    if (CanConnect())
+      StartConnect();
+  }
+
+  return TRUE;
+}
+
+BOOL ComPort::StartRead()
+{
+  if (countReadOverlapped)
+    return TRUE;
+
+  if (hSock == INVALID_SOCKET)
+    return FALSE;
+
+  ReadOverlapped *pOverlapped;
+
+  pOverlapped = new ReadOverlapped(*this);
+
+  if (!pOverlapped)
+    return FALSE;
+
+  if (!pOverlapped->StartRead()) {
+    delete pOverlapped;
+    return FALSE;
+  }
+
+  countReadOverlapped++;
+
+  //cout << "Started Read " << name << " " << countReadOverlapped << endl;
+
+  return TRUE;
+}
+
+BOOL ComPort::FakeReadFilter(HUB_MSG *pInMsg)
+{
+  _ASSERTE(pInMsg != NULL);
+
+  switch (HUB_MSG_T2N(pInMsg->type)) {
+    case HUB_MSG_T2N(HUB_MSG_TYPE_TICK): {
+      if (pInMsg->u.hv2.hVal0 != this)
+        break;
+
+      if (pInMsg->u.hv2.hVal1 == hReconnectTimer) {
+        if (CanConnect())
+          StartConnect();
+      }
+
+      // discard owned tick
+      if (!pMsgReplaceNone(pInMsg, HUB_MSG_TYPE_EMPTY))
+        return FALSE;
+
+      break;
+    }
+  }
+
+  return pInMsg != NULL;
+}
+
+void ComPort::StartConnect()
+{
+  _ASSERTE(!pListener);
+
+  if (hSock != INVALID_SOCKET)
+    return;
+
+  hSock = Socket(snLocal);
+
+  if (hSock == INVALID_SOCKET)
+    return;
+
+  if (!StartWaitEvent(hSock) || !Connect(name.c_str(), hSock, snRemote)) {
+    Close(name.c_str(), hSock);
+    hSock = INVALID_SOCKET;
+  }
+}
+
+BOOL ComPort::Accept()
+{
+  _ASSERTE(pListener);
+  _ASSERTE(hSock == INVALID_SOCKET);
+
+  for (;;) {
+    hSock = pListener->Accept(*this,
+        (rejectZeroConnectionCounter && connectionCounter <= 0) ? CF_REJECT : CF_ACCEPT);
+
+    if (hSock == INVALID_SOCKET)
+      break;
+
+    if (StartWaitEvent(hSock)) {
+      OnConnect();
+      return TRUE;
+    }
+
+    Close(name.c_str(), hSock);
+  }
+
+  return FALSE;
+}
+
+void ComPort::FlowControlUpdate()
+{
+  if (writeSuspended) {
+    if (writeQueued <= writeQueueLimitSendXon) {
+      writeSuspended = FALSE;
+
+      HUB_MSG msg;
+
+      msg.type = HUB_MSG_TYPE_ADD_XOFF_XON;
+      msg.u.val = FALSE;
+
+      pOnRead(hMasterPort, &msg);
+    }
+  } else {
+    if (writeQueued > writeQueueLimitSendXoff) {
+      writeSuspended = TRUE;
+
+      HUB_MSG msg;
+
+      msg.type = HUB_MSG_TYPE_ADD_XOFF_XON;
+      msg.u.val = TRUE;
+
+      pOnRead(hMasterPort, &msg);
+    }
+  }
+}
+
+BOOL ComPort::Write(HUB_MSG *pMsg)
+{
+  _ASSERTE(pMsg != NULL);
+
+  switch (HUB_MSG_T2N(pMsg->type)) {
+  case HUB_MSG_T2N(HUB_MSG_TYPE_LINE_DATA): {
+    if (!writeQueueLimit)
+      return TRUE;
+
+    DWORD len = pMsg->u.buf.size;
+
+    if (!len)
+      return TRUE;
+
+    BYTE *pBuf = pMsg->u.buf.pBuf;
+
+    if (!pBuf) {
+      writeLost += len;
+      return FALSE;
+    }
+
+    if (hSock == INVALID_SOCKET || isDisconnected) {
+      writeLost += len;
+      return FALSE;
+    }
+
+    if (writeQueued > writeQueueLimit) {
+      if (lenWriteBuf) {
+        _ASSERTE(pWriteBuf != NULL);
+
+        writeLost += lenWriteBuf;
+        writeQueued -= lenWriteBuf;
+        lenWriteBuf = 0;
+        pBufFree(pWriteBuf);
+        pWriteBuf = NULL;
+      }
+    }
+
+    if (isConnected && writeOverlappedBuf.size()) {
+      _ASSERTE(pWriteBuf == NULL);
+      _ASSERTE(lenWriteBuf == 0);
+
+      WriteOverlapped *pOverlapped = writeOverlappedBuf.front();
+
+      _ASSERTE(pOverlapped != NULL);
+
+      if (!pOverlapped->StartWrite(pBuf, len)) {
+        writeLost += len;
+        FlowControlUpdate();
+        return FALSE;
+      }
+
+      writeOverlappedBuf.pop();
+      pMsg->type = HUB_MSG_TYPE_EMPTY;  // detach pBuf
+    } else {
+      _ASSERTE((pWriteBuf == NULL && lenWriteBuf == 0) || (pWriteBuf != NULL && lenWriteBuf != 0));
+
+      pBufAppend(&pWriteBuf, lenWriteBuf, pBuf, len);
+      lenWriteBuf += len;
+    }
+
+    writeQueued += len;
+    FlowControlUpdate();
+
+    //cout << "Started Write " << name << " " << len << " " << writeQueued << endl;
+    break;
+  }
+  case HUB_MSG_T2N(HUB_MSG_TYPE_CONNECT): {
+    if (pMsg->u.val) {
+      connectionCounter++;
+
+      _ASSERTE(connectionCounter > 0);
+
+      if (!pListener) {
+        if (hReconnectTimer)
+          ::CancelWaitableTimer(hReconnectTimer);
+
+        StartConnect();
+      }
+    } else {
+      _ASSERTE(connectionCounter > 0);
+
+      connectionCounter--;
+
+      if (connectionCounter <= 0) {
+        if (hSock != INVALID_SOCKET && !permanent)
+          PortTcp::Disconnect(name.c_str(), hSock);
+
+        if (pendingListenerOnDisconnect && pListener) {
+          pendingListenerOnDisconnect = FALSE;
+          pListener->OnDisconnect(this);
+        }
+      }
+    }
+    break;
+  }
+  case HUB_MSG_T2N(HUB_MSG_TYPE_SET_OUT_OPTS):
+    if (pMsg->u.val) {
+      cerr << name << " WARNING: Requested output option(s) [0x"
+           << hex << pMsg->u.val << dec
+           << "] will be ignored by driver" << endl;
+    }
+    break;
+  case HUB_MSG_T2N(HUB_MSG_TYPE_ADD_XOFF_XON):
+    if (pMsg->u.val) {
+      countXoff++;
+    } else {
+      if (--countXoff == 0 && isConnected)
+        StartRead();
+    }
+    break;
+  }
+
+  return TRUE;
+}
+
+BOOL ComPort::StartWaitEvent(SOCKET hSockWait)
+{
+  if (hSockWait == INVALID_SOCKET)
+    return FALSE;
+
+  WaitEventOverlapped *pOverlapped;
+
+  pOverlapped = new WaitEventOverlapped(*this, hSockWait);
+
+  if (!pOverlapped)
+    return FALSE;
+
+  if (!pOverlapped->StartWaitEvent()) {
+    pOverlapped->Delete();
+    return FALSE;
+  }
+
+  //cout << "Started WaitEvent " << name << endl;
+
+  return TRUE;
+}
+
+void ComPort::OnWrite(WriteOverlapped *pOverlapped, DWORD len, DWORD done)
+{
+  //cout << name << " OnWrite " << ::GetCurrentThreadId() << " len=" << len << " done=" << done << " queued=" << writeQueued << endl;
+
+  if (len > done)
+    writeLost += len - done;
+
+  writeQueued -= len;
+
+  _ASSERTE(pWriteBuf != NULL || lenWriteBuf == 0);
+  _ASSERTE(pWriteBuf == NULL || lenWriteBuf != 0);
+
+  if (lenWriteBuf &&
+      isConnected &&
+      !isDisconnected &&
+      hSock != INVALID_SOCKET)
+  {
+    if (!pOverlapped->StartWrite(pWriteBuf, lenWriteBuf)) {
+      writeOverlappedBuf.push(pOverlapped);
+
+      writeLost += lenWriteBuf;
+      writeQueued -= lenWriteBuf;
+      pBufFree(pWriteBuf);
+    }
+
+    lenWriteBuf = 0;
+    pWriteBuf = NULL;
+  } else {
+    writeOverlappedBuf.push(pOverlapped);
+  }
+
+  FlowControlUpdate();
+}
+
+void ComPort::OnRead(ReadOverlapped *pOverlapped, BYTE *pBuf, DWORD done)
+{
+  HUB_MSG msg;
+
+  msg.type = HUB_MSG_TYPE_LINE_DATA;
+  msg.u.buf.pBuf = pBuf;
+  msg.u.buf.size = done;
+
+  pOnRead(hMasterPort, &msg);
+
+  if (done == 0 && isDisconnected) {
+    isDisconnected = FALSE;
+    OnDisconnect();
+  }
+
+  if (countXoff > 0 || !isConnected || !pOverlapped->StartRead()) {
+    _ASSERTE(countReadOverlapped > 0);
+
+    delete pOverlapped;
+    countReadOverlapped--;
+  }
+}
+
+void ComPort::OnDisconnect()
+{
+  Close(name.c_str(), hSock);
+  hSock = INVALID_SOCKET;
+
+  if (lenWriteBuf) {
+    _ASSERTE(pWriteBuf != NULL);
+
+    writeLost += lenWriteBuf;
+    writeQueued -= lenWriteBuf;
+    lenWriteBuf = 0;
+    pBufFree(pWriteBuf);
+    pWriteBuf = NULL;
+
+    FlowControlUpdate();
+  }
+
+  if (isConnected) {
+    cout << name << ": Disconnected" << endl;
+
+    isConnected = FALSE;
+
+    HUB_MSG msg;
+
+    msg.type = HUB_MSG_TYPE_CONNECT;
+    msg.u.val = FALSE;
+
+    pOnRead(hMasterPort, &msg);
+  }
+
+  if (pListener) {
+    if (!busyTillZeroConnectionCounter || connectionCounter <= 0)
+      pListener->OnDisconnect(this);
+    else
+      pendingListenerOnDisconnect = TRUE;
+  }
+  else
+  if (CanConnect()) {
+    if (reconnectTime == 0) {
+      StartConnect();
+    }
+    else
+    if (reconnectTime > 0) {
+      if (!hReconnectTimer)
+        hReconnectTimer = pTimerCreate((HTIMEROWNER)this);
+
+      if (hReconnectTimer) {
+        LARGE_INTEGER firstReportTime;
+
+        firstReportTime.QuadPart = -10000LL * reconnectTime;
+
+        pTimerSet(
+            hReconnectTimer,
+            hMasterPort,
+            &firstReportTime, 0,
+            (HTIMERPARAM)hReconnectTimer);
+      }
+    }
+  }
+}
+
+BOOL ComPort::OnEvent(WaitEventOverlapped *pOverlapped, long e)
+{
+  //cout << "ComPort::OnEvent " << name << " " << hex << e << dec << endl;
+
+  _ASSERTE(hSock == pOverlapped->Sock());
+
+  if (e == FD_CLOSE) {
+    if (countReadOverlapped > 0)
+      isDisconnected = TRUE;
+    else
+      OnDisconnect();
+
+    pOverlapped->Delete();
+    return FALSE;
+  }
+  else
+  if (e == FD_CONNECT) {
+    OnConnect();
+  }
+
+  return TRUE;
+}
+
+void ComPort::OnConnect()
+{
+  _ASSERTE(isConnected == FALSE);
+  _ASSERTE(isDisconnected == FALSE);
+  _ASSERTE(hSock != INVALID_SOCKET);
+
+  cout << name << ": Connected" << endl;
+
+  isConnected = TRUE;
+
+  if (countXoff <= 0)
+    StartRead();
+
+  if (lenWriteBuf && writeOverlappedBuf.size()) {
+    WriteOverlapped *pOverlapped = writeOverlappedBuf.front();
+
+    _ASSERTE(pOverlapped != NULL);
+
+    if (pOverlapped->StartWrite(pWriteBuf, lenWriteBuf)) {
+      writeOverlappedBuf.pop();
+    } else {
+      writeLost += lenWriteBuf;
+      writeQueued -= lenWriteBuf;
+      pBufFree(pWriteBuf);
+
+      FlowControlUpdate();
+    }
+
+    lenWriteBuf = 0;
+    pWriteBuf = NULL;
+  }
+
+  HUB_MSG msg;
+
+  msg.type = HUB_MSG_TYPE_CONNECT;
+  msg.u.val = TRUE;
+
+  pOnRead(hMasterPort, &msg);
+}
+
+void ComPort::LostReport()
+{
+  if (writeLost) {
+    writeLostTotal += writeLost;
+    cout << "Write lost " << name << ": " << writeLost << ", total " << writeLostTotal << endl;
+    writeLost = 0;
+  }
+}
+///////////////////////////////////////////////////////////////
+} // end namespace
+///////////////////////////////////////////////////////////////
+@
+
+
+1.22
+log
+@Fixed rejected connections handling
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.21 2010/09/14 16:33:34 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008-2010 Vyacheslav Frolov
+d22 3
+d191 1
+d197 1
+d227 3
+d542 9
+a550 2
+      if (hSock != INVALID_SOCKET && !permanent && connectionCounter <= 0)
+        PortTcp::Disconnect(name.c_str(), hSock);
+d684 4
+a687 1
+    pListener->OnDisconnect(this);
+@
+
+
+1.21
+log
+@Implemented --write-limit=0 to disable writing to the port
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.20 2010/06/07 14:54:48 vfrolov Exp $
+d22 3
+a639 2
+  cout << name << ": Disconnected" << endl;
+
+d643 8
+a650 3
+  if (isConnected) {
+    if (lenWriteBuf) {
+      _ASSERTE(pWriteBuf != NULL);
+d652 2
+a653 5
+      writeLost += lenWriteBuf;
+      writeQueued -= lenWriteBuf;
+      lenWriteBuf = 0;
+      pBufFree(pWriteBuf);
+      pWriteBuf = NULL;
+d655 2
+a656 2
+      FlowControlUpdate();
+    }
+@
+
+
+1.20
+log
+@Added "Connected" and "Disconnected" messages (feature request #3010158)
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.19 2009/09/14 09:08:48 vfrolov Exp $
+d22 3
+d453 3
+a455 1
+    BYTE *pBuf = pMsg->u.buf.pBuf;
+d461 2
+@
+
+
+1.19
+log
+@Added discarding owned tick (for optimization)
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.18 2009/08/11 06:12:45 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008-2009 Vyacheslav Frolov
+d22 3
+d630 2
+d715 2
+@
+
+
+1.18
+log
+@Added missing initialization of isValid
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.17 2009/08/04 11:36:49 vfrolov Exp $
+d22 3
+d362 4
+@
+
+
+1.17
+log
+@Implemented priority and reject modifiers for <listen port>
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.16 2009/07/31 11:40:04 vfrolov Exp $
+d22 3
+d178 1
+d220 6
+a225 3
+    isValid =
+      SetAddr(snLocal, comParams.GetIF(), NULL) &&
+      SetAddr(snRemote, addrName.c_str(), portName.c_str());
+d253 1
+a253 1
+      if (!isValid)
+d255 2
+d259 4
+a262 2
+    if (isValid)
+      isValid = SetAddr(snLocal, comParams.GetIF(), path.c_str());
+d264 4
+a267 6
+    if (isValid) {
+      for (vector<Listener *>::iterator i = listeners.begin() ; i != listeners.end() ; i++) {
+        if ((*i)->IsEqual(snLocal)) {
+          pListener = *i;
+          break;
+        }
+d269 4
+d275 2
+a276 4
+        pListener = new Listener(snLocal);
+
+        if (pListener)
+          listeners.push_back(pListener);
+d279 1
+a279 4
+      if (pListener)
+        pListener->Push(this);
+      else
+        isValid = FALSE;
+d281 2
+d288 6
+a293 4
+    if (pOverlapped)
+      writeOverlappedBuf.push(pOverlapped);
+    else
+      isValid = FALSE;
+@
+
+
+1.16
+log
+@Fixed pending acception of incoming connections
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.15 2009/02/17 14:17:37 vfrolov Exp $
+d22 3
+d88 7
+d128 2
+a129 2
+    if (!empty()) {
+      ComPort *pPort = front();
+a130 1
+      pop();
+d132 2
+a133 1
+      pPort->Accept();
+d135 1
+a135 1
+      cout << "OnEvent(" << hex << hSockListen << dec << ", FD_ACCEPT) - pending" << endl;
+d142 21
+a162 1
+SOCKET Listener::Accept()
+d164 1
+a164 1
+  return PortTcp::Accept(hSockListen);
+d172 2
+d178 1
+d196 1
+a196 1
+  string path;
+d198 10
+a207 6
+  if (*pPath == '*') {
+    path = pPath + 1;
+    permanent = TRUE;
+  } else {
+    path = pPath;
+    permanent = FALSE;
+d229 23
+a251 1
+    isValid = SetAddr(snLocal, comParams.GetIF(), path.c_str());
+d269 1
+a269 1
+        pListener->push(this);
+d366 2
+a367 2
+  if (!StartWaitEvent(hSock) || !Connect(hSock, snRemote)) {
+    Close(hSock);
+d372 1
+a372 1
+void ComPort::Accept()
+d378 2
+a379 1
+    hSock = pListener->Accept();
+d381 1
+a381 2
+    if (hSock == INVALID_SOCKET) {
+      pListener->push(this);
+a382 1
+    }
+d386 1
+a386 1
+      break;
+d389 1
+a389 1
+    Close(hSock);
+d391 2
+d503 1
+a503 1
+        PortTcp::Disconnect(hSock);
+d608 1
+a608 1
+  Close(hSock);
+d635 1
+a635 1
+    Accept();
+@
+
+
+1.15
+log
+@Redesigned timer's API
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.14 2009/01/23 16:55:05 vfrolov Exp $
+d22 3
+d124 2
+d318 2
+a319 2
+  if (hSock != INVALID_SOCKET)
+    return;
+d321 4
+a324 1
+  hSock = pListener->Accept();
+d326 1
+a326 2
+  if (hSock != INVALID_SOCKET) {
+    if (StartWaitEvent(hSock))
+d328 4
+a331 2
+    else
+      hSock = INVALID_SOCKET;
+a332 3
+
+  if (hSock == INVALID_SOCKET)
+    pListener->push(this);
+d575 1
+a575 1
+    pListener->push(this);
+@
+
+
+1.14
+log
+@Utilized timer routines
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.13 2008/12/22 09:40:46 vfrolov Exp $
+d22 3
+d275 1
+a275 3
+      HMASTERTIMER hTimer = (HMASTERTIMER)pInMsg->u.hVal;
+
+      if (!hTimer)
+d278 1
+a278 1
+      if (hTimer == hReconnectTimer) {
+d579 1
+a579 1
+        hReconnectTimer = pTimerCreate();
+d586 5
+a590 1
+        pTimerSet(hReconnectTimer, hMasterPort, &firstReportTime, 0);
+@
+
+
+1.13
+log
+@Optimized message switching
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.12 2008/12/01 17:09:34 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008 Vyacheslav Frolov
+d22 3
+d266 23
+a538 9
+static VOID CALLBACK TimerAPCProc(
+  LPVOID pArg,
+  DWORD /*dwTimerLowValue*/,
+  DWORD /*dwTimerHighValue*/)
+{
+  if (((ComPort *)pArg)->CanConnect())
+    ((ComPort *)pArg)->StartConnect();
+}
+
+d578 1
+a578 1
+        hReconnectTimer = ::CreateWaitableTimer(NULL, FALSE, NULL);
+d585 1
+a585 9
+        if (!::SetWaitableTimer(hReconnectTimer, &firstReportTime, 0, TimerAPCProc, this, FALSE)) {
+          DWORD err = GetLastError();
+
+          cerr << "WARNING: SetWaitableTimer() - error=" << err << endl;
+        }
+      } else {
+        DWORD err = GetLastError();
+
+        cerr << "WARNING: CreateWaitableTimer() - error=" << err << endl;
+@
+
+
+1.12
+log
+@Improved write buffering
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.11 2008/11/27 13:46:29 vfrolov Exp $
+d22 3
+d333 2
+a334 1
+  if (pMsg->type == HUB_MSG_TYPE_LINE_DATA) {
+d390 1
+d392 1
+a392 2
+  else
+  if (pMsg->type == HUB_MSG_TYPE_CONNECT) {
+d412 1
+d414 1
+a414 2
+  else
+  if (pMsg->type == HUB_MSG_TYPE_SET_OUT_OPTS) {
+d420 2
+a421 3
+  }
+  else
+  if (pMsg->type == HUB_MSG_TYPE_ADD_XOFF_XON) {
+d428 1
+@
+
+
+1.11
+log
+@Added --write-limit option
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.10 2008/11/24 16:30:56 vfrolov Exp $
+d22 3
+d142 3
+a144 1
+    writeLostTotal(0)
+d201 9
+d299 27
+d347 11
+a357 2
+    if (isConnected) {
+      WriteOverlapped *pOverlapped;
+d359 3
+a361 1
+      pOverlapped = new WriteOverlapped(*this, pBuf, len);
+d363 1
+a363 6
+      if (!pOverlapped) {
+        writeLost += len;
+        return FALSE;
+      }
+
+      pMsg->type = HUB_MSG_TYPE_EMPTY;
+d365 1
+a365 2
+      //if (writeQueued > writeQueueLimit) {
+      //}
+d367 1
+a367 1
+      if (!pOverlapped->StartWrite()) {
+d369 1
+a369 1
+        delete pOverlapped;
+d372 3
+d376 1
+a376 7
+      if (writeQueued > writeQueueLimit) {
+        for (Bufs::const_iterator i = bufs.begin() ; i != bufs.end() ; i++) {
+          pBufFree(i->pBuf);
+          writeLost += i->len;
+        }
+        bufs.clear();
+      }
+d378 2
+a379 2
+      bufs.push_back(Buf(pBuf, len));
+      pMsg->type = HUB_MSG_TYPE_EMPTY;
+d383 1
+a383 11
+
+    if (writeQueued > writeQueueLimitSendXoff && !writeSuspended) {
+      writeSuspended = TRUE;
+
+      HUB_MSG msg;
+
+      msg.type = HUB_MSG_TYPE_ADD_XOFF_XON;
+      msg.u.val = TRUE;
+
+      pOnRead(hMasterPort, &msg);
+    }
+d454 1
+a454 1
+  delete pOverlapped;
+d461 2
+a462 2
+  if (writeQueued <= writeQueueLimitSendXon && writeSuspended) {
+    writeSuspended = FALSE;
+d464 12
+a475 1
+    HUB_MSG msg;
+d477 5
+a481 2
+    msg.type = HUB_MSG_TYPE_ADD_XOFF_XON;
+    msg.u.val = FALSE;
+d483 1
+a483 2
+    pOnRead(hMasterPort, &msg);
+  }
+d524 12
+d605 1
+d612 2
+a613 2
+  for (Bufs::const_iterator i = bufs.begin() ; i != bufs.end() ; i++) {
+    WriteOverlapped *pWriteOverlapped;
+d615 1
+a615 1
+    pWriteOverlapped = new WriteOverlapped(*this, i->pBuf, i->len);
+d617 8
+a624 4
+    if (!pWriteOverlapped) {
+      pBufFree(i->pBuf);
+      writeLost += i->len;
+      continue;
+d627 2
+a628 5
+    if (!pWriteOverlapped->StartWrite()) {
+      writeLost += i->len;
+      delete pWriteOverlapped;
+      continue;
+    }
+a629 1
+  bufs.clear();
+@
+
+
+1.10
+log
+@Removed pOnXoffXon
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.9 2008/11/24 12:37:00 vfrolov Exp $
+d22 3
+d135 1
+a135 1
+    writeQueueLimit(256),
+@
+
+
+1.9
+log
+@Changed plugin API
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.8 2008/11/17 16:44:57 vfrolov Exp $
+d22 3
+d134 1
+d138 3
+d336 6
+a341 2
+    if (writeQueued <= writeQueueLimit/2 && (writeQueued + len) > writeQueueLimit/2)
+      pOnXoffXon(hMasterPort, TRUE);
+d343 5
+a347 1
+    writeQueued += len;
+d423 1
+a423 2
+  if (writeQueued > writeQueueLimit/2 && (writeQueued - len) <= writeQueueLimit/2)
+    pOnXoffXon(hMasterPort, FALSE);
+d425 10
+a434 1
+  writeQueued -= len;
+@
+
+
+1.8
+log
+@Fixed race conditions
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.7 2008/11/13 07:41:09 vfrolov Exp $
+d22 3
+a126 1
+    hHub(NULL),
+d188 1
+a188 1
+BOOL ComPort::Init(HMASTERPORT _hMasterPort, HHUB _hHub)
+a190 1
+  hHub = _hHub;
+a197 1
+  _ASSERTE(hHub != NULL);
+d330 1
+a330 1
+      pOnXoff(hHub, hMasterPort);
+d366 9
+d409 1
+a409 1
+    pOnXon(hHub, hMasterPort);
+d422 1
+a422 1
+  pOnRead(hHub, hMasterPort, &msg);
+d459 1
+a459 1
+    pOnRead(hHub, hMasterPort, &msg);
+d551 1
+a551 9
+  pOnRead(hHub, hMasterPort, &msg);
+}
+
+void ComPort::AddXoff(int count)
+{
+  countXoff += count;
+
+  if (countXoff <= 0 && isConnected)
+    StartRead();
+@
+
+
+1.7
+log
+@Changed for staticaly linking
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.6 2008/10/22 15:31:38 vfrolov Exp $
+d22 3
+d91 1
+a91 1
+  //cout << "OnEvent " << hex << e << dec << " " << err << endl;
+d118 1
+d248 2
+a249 1
+  if (!StartWaitEvent(hSock) || !Connect(hSock, snRemote))
+d251 1
+d257 1
+d291 1
+a291 1
+    if (hSock == INVALID_SOCKET) {
+d354 2
+a355 13
+      if (hSock != INVALID_SOCKET && !permanent && connectionCounter <= 0) {
+        Disconnect(hSock);
+
+        isConnected = FALSE;
+        hSock = INVALID_SOCKET;
+
+        HUB_MSG msg;
+
+        msg.type = HUB_MSG_TYPE_CONNECT;
+        msg.u.val = FALSE;
+
+        pOnRead(hHub, hMasterPort, &msg);
+      }
+d415 5
+d421 2
+a424 2
+
+    //cout << "Stopped Read " << name << " " << countReadOverlapped << endl;
+d437 1
+a437 1
+BOOL ComPort::OnEvent(WaitEventOverlapped *pOverlapped, long e, int err)
+d439 7
+a445 1
+  //cout << "OnEvent " << name << " " << hex << e << dec << " " << err << endl;
+d447 5
+a451 3
+  if (e == FD_CLOSE || (e == FD_CONNECT && err != ERROR_SUCCESS)) {
+    if (hSock == pOverlapped->Sock()) {
+      hSock = INVALID_SOCKET;
+d453 12
+a464 2
+      if (isConnected) {
+        isConnected = FALSE;
+d466 2
+a467 1
+        HUB_MSG msg;
+d469 1
+a469 2
+        msg.type = HUB_MSG_TYPE_CONNECT;
+        msg.u.val = FALSE;
+d471 2
+a472 2
+        pOnRead(hHub, hMasterPort, &msg);
+      }
+d474 1
+a474 7
+      if (pListener) {
+        Accept();
+      }
+      else
+      if (CanConnect()) {
+        if (reconnectTime == 0) {
+          StartConnect();
+d476 2
+a477 17
+        else
+        if (reconnectTime > 0) {
+          if (!hReconnectTimer)
+            hReconnectTimer = ::CreateWaitableTimer(NULL, FALSE, NULL);
+
+          if (hReconnectTimer) {
+            LARGE_INTEGER firstReportTime;
+
+            firstReportTime.QuadPart = -10000LL * reconnectTime;
+
+            if (!::SetWaitableTimer(hReconnectTimer, &firstReportTime, 0, TimerAPCProc, this, FALSE)) {
+              DWORD err = GetLastError();
+
+              cerr << "WARNING: SetWaitableTimer() - error=" << err << endl;
+            }
+          } else {
+            DWORD err = GetLastError();
+d479 1
+a479 3
+            cerr << "WARNING: CreateWaitableTimer() - error=" << err << endl;
+          }
+        }
+d482 14
+d502 1
+a502 6
+    if (hSock == pOverlapped->Sock()) {
+      OnConnect();
+    } else {
+      pOverlapped->Delete();
+      return FALSE;
+    }
+d511 1
+@
+
+
+1.6
+log
+@Fixed race condition
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.5 2008/10/06 12:15:14 vfrolov Exp $
+d22 3
+d43 4
+a50 1
+
+d105 1
+a105 1
+  return ::Accept(hSockListen);
+d556 2
+@
+
+
+1.5
+log
+@Added --reconnect option
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.4 2008/10/02 08:07:02 vfrolov Exp $
+d22 3
+d70 1
+a70 1
+    delete pOverlapped;
+d381 1
+a381 1
+    delete pOverlapped;
+d481 1
+a481 1
+    delete pOverlapped;
+d489 1
+a489 1
+      delete pOverlapped;
+@
+
+
+1.4
+log
+@Fixed sending not paired CONNECT(FALSE)
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.3 2008/09/30 06:44:50 vfrolov Exp $
+d22 3
+d107 2
+d138 9
+d189 1
+a189 1
+    if (permanent)
+a222 1
+
+d327 4
+a330 1
+      if (!pListener)
+d332 1
+d418 9
+d446 1
+a446 1
+      if (pListener)
+d448 1
+d450 26
+a475 2
+      if (permanent)
+        StartConnect();
+d496 2
+@
+
+
+1.3
+log
+@Added warning about ignored output options
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.2 2008/03/28 16:00:19 vfrolov Exp $
+d22 3
+a406 1
+      isConnected = FALSE;
+d409 4
+a412 1
+      HUB_MSG msg;
+d414 2
+a415 2
+      msg.type = HUB_MSG_TYPE_CONNECT;
+      msg.u.val = FALSE;
+d417 2
+a418 1
+      pOnRead(hHub, hMasterPort, &msg);
+@
+
+
+1.2
+log
+@Added connectionCounter
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.cpp,v 1.1 2008/03/27 17:18:27 vfrolov Exp $
+d22 3
+d333 8
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 3
+a23 1
+ * $Log: $
+d97 1
+d304 4
+d311 5
+a315 1
+      if (hSock != INVALID_SOCKET && !permanent) {
+@
+

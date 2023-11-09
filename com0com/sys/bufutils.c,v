@@ -1,0 +1,1760 @@
+head	1.19;
+access;
+symbols
+	v3_0_0_0:1.19
+	v2_2_2_0:1.17
+	v2_2_1_0:1.17
+	v2_2_0_0:1.17
+	v2_1_0_0:1.10
+	v2_0_0_0:1.10
+	v1_8_0_0:1.8
+	v1_7_0_0:1.7
+	v1_6_0_0:1.7
+	v1_5_0_0:1.4
+	v1_4_0_0:1.2
+	RELEASED:1.19
+	v1_3_0_0:1.1;
+locks; strict;
+comment	@ * @;
+
+
+1.19
+date	2011.12.06.16.03.22;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2010.08.04.10.38.55;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2008.10.30.07.54.37;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2008.10.27.15.13.58;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2008.09.12.10.07.50;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2008.09.02.07.36.22;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2008.09.01.16.54.28;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2008.07.11.10.30.39;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.06.26.13.37.10;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2007.10.05.07.34.21;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2007.07.20.08.00.22;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2007.01.11.14.50.29;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2006.06.21.16.23.57;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2006.05.17.15.28.03;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2006.01.10.10.17.23;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2005.11.29.08.35.14;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.11.28.12.57.16;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.09.06.07.23.44;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.08.25.15.38.17;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.19
+log
+@Added cleaning high data bits for less then 8 bit data
+Added AllDataBits option to force 8 bit data
+@
+text
+@/*
+ * $Id: bufutils.c,v 1.18 2010/08/04 10:38:55 vfrolov Exp $
+ *
+ * Copyright (c) 2004-2011 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: bufutils.c,v $
+ * Revision 1.18  2010/08/04 10:38:55  vfrolov
+ * Minimized PREfast noise
+ *
+ * Revision 1.17  2008/10/30 07:54:37  vfrolov
+ * Improved BREAK emulation
+ *
+ * Revision 1.16  2008/10/27 15:13:58  vfrolov
+ * Fixed buffer overrun bug
+ *
+ * Revision 1.15  2008/09/12 10:07:50  vfrolov
+ * Fixed LSR insertion
+ *
+ * Revision 1.14  2008/09/02 07:36:22  vfrolov
+ * Added missing SERIAL_EV_BREAK
+ *
+ * Revision 1.13  2008/09/01 16:54:28  vfrolov
+ * Replaced SERIAL_LSRMST_LSR_NODATA by SERIAL_LSRMST_LSR_DATA for BREAK
+ *
+ * Revision 1.12  2008/07/11 10:30:39  vfrolov
+ * Added missing data available bit to LSR
+ *
+ * Revision 1.11  2008/06/26 13:37:10  vfrolov
+ * Implemented noise emulation
+ *
+ * Revision 1.10  2007/10/05 07:34:21  vfrolov
+ * Added missing *pOverrun initialization
+ * Changed TX FIFO writing emulation to be interrupt driven
+ *
+ * Revision 1.9  2007/07/20 08:00:22  vfrolov
+ * Implemented TX buffer
+ *
+ * Revision 1.8  2007/01/11 14:50:29  vfrolov
+ * Pool functions replaced by
+ *   C0C_ALLOCATE_POOL()
+ *   C0C_ALLOCATE_POOL_WITH_QUOTA()
+ *   C0C_FREE_POOL()
+ *
+ * Revision 1.7  2006/06/21 16:23:57  vfrolov
+ * Fixed possible BSOD after one port of pair removal
+ *
+ * Revision 1.6  2006/05/17 15:28:03  vfrolov
+ * Implemented SERIAL_DSR_SENSITIVITY
+ *
+ * Revision 1.5  2006/01/10 10:17:23  vfrolov
+ * Implemented flow control and handshaking
+ * Implemented IOCTL_SERIAL_SET_XON and IOCTL_SERIAL_SET_XOFF
+ * Added setting of HoldReasons, WaitForImmediate and AmountInOutQueue
+ *   fields of SERIAL_STATUS for IOCTL_SERIAL_GET_COMMSTATUS
+ *
+ * Revision 1.4  2005/11/29 08:35:14  vfrolov
+ * Implemented SERIAL_EV_RX80FULL
+ *
+ * Revision 1.3  2005/11/28 12:57:16  vfrolov
+ * Moved some C0C_BUFFER code to bufutils.c
+ *
+ * Revision 1.2  2005/09/06 07:23:44  vfrolov
+ * Implemented overrun emulation
+ *
+ * Revision 1.1  2005/08/25 15:38:17  vfrolov
+ * Some code moved from io.c to bufutils.c
+ *
+ */
+
+#include "precomp.h"
+#include "bufutils.h"
+#include "noise.h"
+#include "../include/cncext.h"
+
+/*
+ * FILE_ID used by HALT_UNLESS to put it on BSOD
+ */
+#define FILE_ID 8
+
+/********************************************************************/
+VOID CompactRawData(PC0C_RAW_DATA pRawData, SIZE_T writeDone)
+{
+  if (writeDone) {
+    pRawData->size = (UCHAR)(pRawData->size - writeDone);
+
+    if (pRawData->size) {
+      HALT_UNLESS3((pRawData->size + writeDone) <= sizeof(pRawData->data),
+          pRawData->size, writeDone, sizeof(pRawData->data));
+
+      RtlMoveMemory(pRawData->data, pRawData->data + writeDone, pRawData->size);
+    }
+  }
+}
+
+SIZE_T AddRawData(PC0C_RAW_DATA pDstRawData, PUCHAR pSrc, SIZE_T length)
+{
+  SIZE_T len;
+
+  if (!length)
+    return 0;
+
+  HALT_UNLESS2(pDstRawData->size <= sizeof(pDstRawData->data),
+      pDstRawData->size, sizeof(pDstRawData->data));
+
+  len = sizeof(pDstRawData->data) - pDstRawData->size;
+
+  if (!len)
+    return 0;
+
+  if (len > length)
+    len = length;
+
+  HALT_UNLESS3((pDstRawData->size + len) <= sizeof(pDstRawData->data),
+      pDstRawData->size, len, sizeof(pDstRawData->data));
+
+  RtlCopyMemory(pDstRawData->data + pDstRawData->size, pSrc, len);
+  pDstRawData->size = (UCHAR)(pDstRawData->size + len);
+
+  return len;
+}
+
+NTSTATUS MoveRawData(PC0C_RAW_DATA pDstRawData, PC0C_RAW_DATA pSrcRawData)
+{
+  CompactRawData(pSrcRawData, AddRawData(pDstRawData, pSrcRawData->data, pSrcRawData->size));
+
+  return pSrcRawData->size ? STATUS_PENDING : STATUS_SUCCESS;
+}
+/********************************************************************/
+#define C0C_FLOW_FILTER_FL_AUTO_TRANSMIT   0x01
+#define C0C_FLOW_FILTER_FL_NULL_STRIPPING  0x02
+#define C0C_FLOW_FILTER_FL_IGNORE_RECEIVED 0x04
+
+VOID FlowFilterInit(PC0C_IO_PORT pIoPort, PC0C_FLOW_FILTER pFlowFilter)
+{
+  PSERIAL_HANDFLOW pHandFlow;
+
+  RtlZeroMemory(pFlowFilter, sizeof(*pFlowFilter));
+
+  pFlowFilter->pIoPort = pIoPort;
+
+  pHandFlow = &pIoPort->handFlow;
+
+  if ((pHandFlow->ControlHandShake & SERIAL_DSR_SENSITIVITY) &&
+      (pIoPort->modemStatus & C0C_MSB_DSR) == 0)
+  {
+    pFlowFilter->flags |= C0C_FLOW_FILTER_FL_IGNORE_RECEIVED;
+  }
+
+  if (pHandFlow->FlowReplace & SERIAL_AUTO_TRANSMIT)
+    pFlowFilter->flags |= C0C_FLOW_FILTER_FL_AUTO_TRANSMIT;
+
+  if (pHandFlow->FlowReplace & SERIAL_NULL_STRIPPING)
+    pFlowFilter->flags |= C0C_FLOW_FILTER_FL_NULL_STRIPPING;
+}
+
+VOID CopyCharsWithEscape(
+    PC0C_BUFFER pBuf,
+    PC0C_FLOW_FILTER pFlowFilter,
+    PUCHAR pReadBuf, SIZE_T readLength,
+    PUCHAR pWriteBuf, SIZE_T writeLength,
+    PSIZE_T pReadDone,
+    PSIZE_T pWriteDone)
+{
+  SIZE_T readDone;
+  SIZE_T writeDone;
+
+/********************************************************************
+ * Special cases if pFlowFilter != NULL:
+ *
+ *   pReadBuf == NULL && readLength == 0
+ *                               - skip writing to pReadBuf
+ *
+ *   pWriteBuf == NULL           - emulate writeLength noise impulses
+ *
+ ********************************************************************/
+
+  HALT_UNLESS3(pReadBuf || (pFlowFilter && !readLength), pReadBuf != NULL, pFlowFilter != NULL, readLength);
+  HALT_UNLESS2(pWriteBuf || pFlowFilter, pReadBuf != NULL, pFlowFilter != NULL);
+
+  readDone = 0;
+
+  if (pBuf->insertData.size && (readLength || pReadBuf == NULL)) {
+    SIZE_T length = pBuf->insertData.size;
+
+    HALT_UNLESS2(length <= sizeof(pBuf->insertData.data),
+        length, sizeof(pBuf->insertData.data));
+
+    if (pReadBuf) {
+      if (length > readLength)
+        length = readLength;
+
+      RtlCopyMemory(pReadBuf, pBuf->insertData.data, length);
+      pReadBuf += length;
+      readLength -= length;
+    }
+
+    readDone += length;
+    CompactRawData(&pBuf->insertData, length);
+  }
+
+  if (!pFlowFilter) {
+    writeDone = writeLength < readLength ? writeLength : readLength;
+
+    if (writeDone) {
+      RtlCopyMemory(pReadBuf, pWriteBuf, writeDone);
+      readDone += writeDone;
+    }
+  }
+  else {
+    PC0C_IO_PORT pIoPort = pFlowFilter->pIoPort;
+    PC0C_IO_PORT pIoPortRemote = pIoPort->pIoPortRemote;
+    UCHAR dataMask;
+
+    {
+      static const UCHAR masks[] = {0x00, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F, 0xFF};
+      UCHAR wordLength = 8;
+
+      if (!pIoPort->allDataBits && wordLength > pIoPort->lineControl.WordLength)
+        wordLength = pIoPort->lineControl.WordLength;
+
+      if (!pIoPortRemote->allDataBits && wordLength > pIoPortRemote->lineControl.WordLength)
+        wordLength = pIoPortRemote->lineControl.WordLength;
+
+      dataMask = masks[wordLength];
+    }
+
+    for (writeDone = 0 ; writeDone < writeLength && (readLength || pReadBuf == NULL) ; writeDone++) {
+      UCHAR curChar;
+      UCHAR lsr = 0;
+
+      if (pWriteBuf) {
+        if (pIoPortRemote->sendBreak) {
+          pIoPortRemote->sendBreak = FALSE;
+          pIoPort->rcvdBreak = TRUE;
+          BreakError(pIoPort, &lsr);
+          pFlowFilter->events |= SERIAL_EV_BREAK;
+
+          curChar = 0x00;  /* -----------____________ */
+                           /* iiiiiiiiiiis00000000bbb */
+                           /* dddddddddddt\______/rrr */
+                           /* llllllllllla  0x00  eee */
+                           /* eeeeeeeeeeer        aaa */
+                           /*            t        kkk */
+        } else {
+          if ((pIoPortRemote->writeHolding & SERIAL_TX_WAITING_ON_BREAK) == 0) {
+            if (pIoPortRemote->brokeChars) {
+              pIoPortRemote->brokeChars--;
+              curChar = GarbageChar(pIoPortRemote, pIoPort, &lsr);
+            } else {
+              curChar = *pWriteBuf++;
+
+              if (pIoPortRemote->brokeCharsProbability > 0)
+                BrokeChar(pIoPortRemote, pIoPort, &curChar, &lsr);
+            }
+          } else {
+            if (pIoPortRemote->brokeCharsProbability <= 0 ||
+                GetBrokenChars(pIoPortRemote->brokeCharsProbability, 1) == 0)
+            {
+              continue;
+            }
+
+            BreakError(pIoPort, &lsr);
+            pFlowFilter->events |= SERIAL_EV_BREAK;
+
+            curChar = 0x00;  /* __________-____________ */
+                             /* bbbbbbbbbbss00000000bbb */
+                             /* rrrrrrrrrrtt\______/rrr */
+                             /* eeeeeeeeeeoa  0x00  eee */
+                             /* aaaaaaaaaapr        aaa */
+                             /* kkkkkkkkkk t        kkk */
+          }
+        }
+      } else {
+        if (pIoPort->rcvdBreak) {
+          /* emulate one noise impulse for BREAK state */
+
+          BreakError(pIoPort, &lsr);
+          pFlowFilter->events |= SERIAL_EV_BREAK;
+
+          curChar = 0x00;  /* __________-____________ */
+                           /* bbbbbbbbbbss00000000bbb */
+                           /* rrrrrrrrrrtt\______/rrr */
+                           /* eeeeeeeeeeoa  0x00  eee */
+                           /* aaaaaaaaaapr        aaa */
+                           /* kkkkkkkkkk t        kkk */
+        } else {
+          /* emulate one noise impulse for IDLE state */
+
+          curChar = 0xFF;  /* ----------_------------ */
+                           /* iiiiiiiiiis11111111siii */
+                           /* ddddddddddt\______/tddd */
+                           /* lllllllllla  0xFF  olll */
+                           /* eeeeeeeeeer        peee */
+                           /*           t             */
+        }
+      }
+
+      curChar &= dataMask;
+      pFlowFilter->rxCount++;
+
+      if (lsr) {
+        BOOLEAN noCurChar = FALSE;
+        BOOLEAN isBreak = ((lsr & 0x10) != 0);
+        pFlowFilter->events |= SERIAL_EV_ERR;
+
+        if (pIoPort->escapeChar &&
+            ((pIoPort->insertMask & C0CE_INSERT_ENABLE_LSR) != 0 ||
+             (isBreak && (pIoPort->insertMask & C0CE_INSERT_ENABLE_LSR_BI) != 0)))
+        {
+          UCHAR buf[4];
+          SIZE_T length = sizeof(buf);
+          SIZE_T len;
+
+          lsr |= 0x81;    /* errornous data in FIFO and data available */
+
+          if (C0C_TX_BUFFER_THR_EMPTY(&pIoPort->txBuf)) {
+            lsr |= 0x20;  /* transmit holding register empty */
+
+            if (C0C_TX_BUFFER_EMPTY(&pIoPort->txBuf))
+              lsr |= 0x40;  /* transmit holding register empty and line is idle */
+          }
+
+          if ((pIoPort->insertMask & C0CE_INSERT_ENABLE_LSR_BI) != 0 && pIoPort->rcvdBreak)
+            lsr |= 0x10;  /* break interrupt indicator */
+
+          buf[0] = pIoPort->escapeChar;
+          buf[1] = SERIAL_LSRMST_LSR_DATA;
+          buf[2] = lsr;
+          buf[3] = curChar;
+
+          noCurChar = TRUE;
+
+          if (length > readLength)
+            len = readLength;
+          else
+            len = length;
+
+          if (len) {
+            RtlCopyMemory(pReadBuf, buf, len);
+            pReadBuf += len;
+            readDone += len;
+            readLength -= len;
+            length -= len;
+          }
+
+          if (length) {
+            if (pReadBuf == NULL) {
+              readDone += length;
+            } else {
+#if DBG
+              SIZE_T done =
+#endif /* DBG */
+              AddRawData(&pBuf->insertData, buf + len, length);
+#if DBG
+              HALT_UNLESS2(done == length, done, length);
+#endif /* DBG */
+            }
+          }
+        }
+
+        if (isBreak) {
+          if (pIoPort->handFlow.FlowReplace & SERIAL_BREAK_CHAR) {
+            UCHAR errorChar = pIoPort->specialChars.BreakChar;
+
+            if (!readLength) {
+              if (pReadBuf == NULL) {
+                readDone++;
+              } else {
+#if DBG
+                SIZE_T done =
+#endif /* DBG */
+                AddRawData(&pBuf->insertData, &errorChar, sizeof(errorChar));
+#if DBG
+                HALT_UNLESS1(done == sizeof(errorChar), done);
+#endif /* DBG */
+              }
+            } else {
+              *pReadBuf++ = errorChar;
+              readLength--;
+              readDone++;
+            }
+          }
+        }
+        else
+        if (pIoPort->handFlow.FlowReplace & SERIAL_ERROR_CHAR) {
+          UCHAR errorChar = pIoPort->specialChars.ErrorChar;
+
+          if (!readLength) {
+            if (pReadBuf == NULL) {
+              readDone++;
+            } else {
+#if DBG
+              SIZE_T done =
+#endif /* DBG */
+              AddRawData(&pBuf->insertData, &errorChar, sizeof(errorChar));
+#if DBG
+              HALT_UNLESS1(done == sizeof(errorChar), done);
+#endif /* DBG */
+            }
+          } else {
+            *pReadBuf++ = errorChar;
+            readLength--;
+            readDone++;
+          }
+        }
+
+        if (noCurChar)
+          continue;
+      }
+
+      if (pFlowFilter->flags & C0C_FLOW_FILTER_FL_IGNORE_RECEIVED) {
+      }
+      else
+      if (!curChar && (pFlowFilter->flags & C0C_FLOW_FILTER_FL_NULL_STRIPPING)) {
+      }
+      else
+      if ((pFlowFilter->flags & C0C_FLOW_FILTER_FL_AUTO_TRANSMIT) &&
+          (curChar == pIoPort->specialChars.XoffChar || curChar == pIoPort->specialChars.XonChar))
+      {
+        if (curChar == pIoPort->specialChars.XoffChar)
+          pFlowFilter->lastXonXoff = C0C_XCHAR_OFF;
+        else
+          pFlowFilter->lastXonXoff = C0C_XCHAR_ON;
+      }
+      else {
+          if (!readLength) {
+            if (pReadBuf == NULL) {
+              readDone++;
+            } else {
+#if DBG
+              SIZE_T done =
+#endif /* DBG */
+              AddRawData(&pBuf->insertData, &curChar, sizeof(curChar));
+#if DBG
+              HALT_UNLESS1(done == sizeof(curChar), done);
+#endif /* DBG */
+            }
+          } else {
+            *pReadBuf++ = curChar;
+            readLength--;
+            readDone++;
+          }
+
+          pFlowFilter->events |= SERIAL_EV_RXCHAR;
+
+          if ((pIoPort->waitMask & SERIAL_EV_RXFLAG) &&
+              curChar == pIoPort->specialChars.EventChar)
+          {
+            pFlowFilter->events |= SERIAL_EV_RXFLAG;
+          }
+
+          if (pIoPort->escapeChar && curChar == pIoPort->escapeChar) {
+            curChar = SERIAL_LSRMST_ESCAPE;
+
+            if (!readLength) {
+              if (pReadBuf == NULL) {
+                readDone++;
+              } else {
+#if DBG
+                SIZE_T done =
+#endif /* DBG */
+                AddRawData(&pBuf->insertData, &curChar, sizeof(curChar));
+#if DBG
+                HALT_UNLESS1(done == sizeof(curChar), done);
+#endif /* DBG */
+              }
+            } else {
+              *pReadBuf++ = curChar;
+              readLength--;
+              readDone++;
+            }
+          }
+      }
+    }
+  }
+
+  *pReadDone = readDone;
+  *pWriteDone = writeDone;
+}
+
+SIZE_T ReadFromBuffer(PC0C_BUFFER pBuf, PVOID pRead, SIZE_T readLength)
+{
+  PUCHAR pReadBuf = (PUCHAR)pRead;
+
+  while (readLength) {
+    SIZE_T length, writeLength;
+    PUCHAR pWriteBuf;
+
+    if (!pBuf->busy) {
+      if (pBuf->insertData.size) {
+        length = pBuf->insertData.size;
+
+        HALT_UNLESS2(length <= sizeof(pBuf->insertData.data),
+            length, sizeof(pBuf->insertData.data));
+
+        if (length > readLength)
+          length = readLength;
+
+        RtlCopyMemory(pReadBuf, pBuf->insertData.data, length);
+        pReadBuf += length;
+        readLength -= length;
+        CompactRawData(&pBuf->insertData, length);
+        if (!readLength)
+          break;
+      }
+      break;
+    }
+
+    HALT_UNLESS(pBuf->pBase);
+
+    pWriteBuf = pBuf->pBusy;
+
+    writeLength = pBuf->pFree <= pWriteBuf ?
+        pBuf->pEnd - pWriteBuf : pBuf->busy;
+
+    length = writeLength < readLength ? writeLength : readLength;
+
+    RtlCopyMemory(pReadBuf, pWriteBuf, length);
+
+    pBuf->busy -= length;
+    pBuf->pBusy += length;
+    if (pBuf->pBusy == pBuf->pEnd)
+      pBuf->pBusy = pBuf->pBase;
+
+    pReadBuf += length;
+    readLength -= length;
+  }
+
+  return pReadBuf - (PUCHAR)pRead;
+}
+
+SIZE_T WriteToBuffer(
+    PC0C_BUFFER pBuf,
+    PVOID pWrite,
+    SIZE_T writeLength,
+    PC0C_FLOW_FILTER pFlowFilter,
+    PSIZE_T pOverrun)
+{
+  SIZE_T writeDoneTotal = 0;
+  PUCHAR pWriteBuf = (PUCHAR)pWrite;
+
+  if (pOverrun)
+    *pOverrun = 0;
+
+  while (writeLength) {
+    SIZE_T readDone, writeDone;
+    SIZE_T readLength;
+    PUCHAR pReadBuf;
+
+    if (pBuf->limit <= pBuf->busy) {
+      if (pOverrun) {
+        if (pBuf->busy >= C0C_BUFFER_SIZE(pBuf)) {
+          CopyCharsWithEscape(
+              pBuf, pFlowFilter,
+              NULL, 0,
+              pWriteBuf, writeLength,
+              pOverrun, &writeDone);
+
+          writeDoneTotal += writeDone;
+        }
+      }
+      break;
+    }
+
+    pReadBuf = pBuf->pFree;
+
+    readLength = pBuf->pBusy <= pReadBuf ?
+        pBuf->pEnd - pReadBuf : pBuf->pBusy - pReadBuf;
+
+    if (readLength > (pBuf->limit - pBuf->busy))
+      readLength = pBuf->limit - pBuf->busy;
+
+    CopyCharsWithEscape(
+        pBuf, pFlowFilter,
+        pReadBuf, readLength,
+        pWriteBuf, writeLength,
+        &readDone, &writeDone);
+
+    pBuf->busy += readDone;
+    pBuf->pFree += readDone;
+    if (pBuf->pFree == pBuf->pEnd)
+      pBuf->pFree = pBuf->pBase;
+
+    writeDoneTotal += writeDone;
+    writeLength -= writeDone;
+
+    if (pWriteBuf)
+      pWriteBuf += writeDone;
+  }
+
+  return writeDoneTotal;
+}
+
+VOID WriteMandatoryToBuffer(PC0C_BUFFER pBuf, UCHAR mandatoryChar)
+{
+  if (C0C_BUFFER_SIZE(pBuf) <= pBuf->busy) {
+    if (pBuf->pBase) {
+      if (pBuf->pFree == pBuf->pBase)
+        *(pBuf->pEnd - 1) = mandatoryChar;
+      else
+        *(pBuf->pFree - 1) = mandatoryChar;
+    }
+  } else {
+    pBuf->busy++;
+    *pBuf->pFree = mandatoryChar;
+    if (++pBuf->pFree == pBuf->pEnd)
+      pBuf->pFree = pBuf->pBase;
+  }
+}
+
+NTSTATUS WriteRawDataToBuffer(PC0C_RAW_DATA pRawData, PC0C_BUFFER pBuf)
+{
+  NTSTATUS status;
+
+  if (!pBuf->pBase)
+    return STATUS_PENDING;
+
+  status = STATUS_PENDING;
+
+  for (;;) {
+    SIZE_T readDone, writeDone;
+    SIZE_T writeLength, readLength;
+    PVOID pWriteBuf, pReadBuf;
+
+    writeLength = pRawData->size;
+
+    if (!writeLength) {
+      status = STATUS_SUCCESS;
+      break;
+    }
+
+    HALT_UNLESS2(writeLength <= sizeof(pRawData->data),
+        writeLength, sizeof(pRawData->data));
+
+    pWriteBuf = pRawData->data;
+
+    if (C0C_BUFFER_SIZE(pBuf) <= pBuf->busy)
+      break;
+
+    readLength = pBuf->pBusy <= pBuf->pFree  ?
+        pBuf->pEnd - pBuf->pFree : pBuf->pBusy - pBuf->pFree;
+
+    pReadBuf = pBuf->pFree;
+
+    CopyCharsWithEscape(
+        pBuf, NULL,
+        pReadBuf, readLength,
+        pWriteBuf, writeLength,
+        &readDone, &writeDone);
+
+    pBuf->busy += readDone;
+    pBuf->pFree += readDone;
+    if (pBuf->pFree == pBuf->pEnd)
+      pBuf->pFree = pBuf->pBase;
+
+    CompactRawData(pRawData, writeDone);
+  }
+
+  return status;
+}
+
+SIZE_T WriteRawData(PC0C_RAW_DATA pRawData, PNTSTATUS pStatus, PVOID pReadBuf, SIZE_T readLength)
+{
+  SIZE_T length, writeLength;
+  PVOID pWriteBuf;
+
+  pWriteBuf = pRawData->data;
+  writeLength = pRawData->size;
+
+  HALT_UNLESS2(writeLength <= sizeof(pRawData->data),
+      writeLength, sizeof(pRawData->data));
+
+  length = writeLength < readLength ? writeLength : readLength;
+
+  RtlCopyMemory(pReadBuf, pWriteBuf, length);
+
+  CompactRawData(pRawData, length);
+
+  if (!pRawData->size)
+    *pStatus = STATUS_SUCCESS;
+
+  return length;
+}
+
+VOID InitBufferBase(PC0C_BUFFER pBuf, __drv_aliasesMem PUCHAR pBase, SIZE_T size)
+{
+  pBuf->pBase = pBase;
+  pBuf->pEnd = pBuf->pBase + size;
+  pBuf->limit = size;
+  pBuf->size80 = (size*4 + 4)/5;
+}
+
+BOOLEAN SetNewBufferBase(PC0C_BUFFER pBuf, PUCHAR pBase, SIZE_T size)
+{
+  C0C_BUFFER newBuf;
+
+  if (size <= C0C_BUFFER_SIZE(pBuf)) {
+    C0C_FREE_POOL(pBase);
+    return FALSE;
+  }
+
+  InitBufferBase(&newBuf, pBase, size);
+
+  newBuf.pFree = newBuf.pBusy = newBuf.pBase;
+  newBuf.busy = 0;
+
+  if (pBuf->pBase) {
+    while (pBuf->busy) {
+      SIZE_T length;
+
+      length = pBuf->pFree <= pBuf->pBusy ?
+          pBuf->pEnd - pBuf->pBusy : pBuf->busy;
+
+      RtlCopyMemory(newBuf.pFree, pBuf->pBusy, length);
+
+      pBuf->busy -= length;
+      pBuf->pBusy += length;
+      if (pBuf->pBusy == pBuf->pEnd)
+        pBuf->pBusy = pBuf->pBase;
+
+      newBuf.busy += length;
+      newBuf.pFree += length;
+    }
+
+    C0C_FREE_POOL(pBuf->pBase);
+  }
+
+  newBuf.insertData = pBuf->insertData;
+
+  *pBuf = newBuf;
+
+  return TRUE;
+}
+
+VOID PurgeBuffer(PC0C_BUFFER pBuf)
+{
+  pBuf->pFree = pBuf->pBusy = pBuf->pBase;
+  pBuf->busy = 0;
+  pBuf->insertData.size = 0;
+}
+
+VOID InitBuffer(PC0C_BUFFER pBuf, __drv_aliasesMem PUCHAR pBase, SIZE_T size)
+{
+  RtlZeroMemory(pBuf, sizeof(*pBuf));
+  InitBufferBase(pBuf, pBase, size);
+  PurgeBuffer(pBuf);
+}
+
+VOID FreeBuffer(PC0C_BUFFER pBuf)
+{
+  if (pBuf->pBase)
+    C0C_FREE_POOL(pBuf->pBase);
+
+  RtlZeroMemory(pBuf, sizeof(*pBuf));
+}
+
+VOID SetBufferLimit(PC0C_BUFFER pBuf, SIZE_T limit)
+{
+  if (limit > C0C_BUFFER_SIZE(pBuf))
+    limit = C0C_BUFFER_SIZE(pBuf);
+
+  pBuf->limit = limit;
+}
+/********************************************************************/
+SIZE_T ReadFromTxBuffer(
+    PC0C_BUFFER pBuf,
+    PC0C_FLOW_FILTER pFlowFilter,
+    PVOID pRead, SIZE_T readLength,
+    PC0C_TX_BUFFER pTxBuf, SIZE_T txLimit,
+    PSIZE_T pWriteDone)
+{
+  PUCHAR pReadBuf = (PUCHAR)pRead;
+
+  *pWriteDone = 0;
+
+  while (readLength) {
+    SIZE_T writeLength;
+    SIZE_T readDone, writeDone;
+    PUCHAR pWriteBuf;
+
+    pWriteBuf = pTxBuf->pBusy;
+
+    if (pTxBuf->busy) {
+      writeLength = pTxBuf->pFree <= pWriteBuf ?
+          pTxBuf->pEnd - pWriteBuf : pTxBuf->busy;
+
+      if (writeLength > txLimit)
+        writeLength = txLimit;
+    } else {
+      writeLength = 0;
+    }
+
+    CopyCharsWithEscape(pBuf, pFlowFilter,
+                       pReadBuf, readLength,
+                       pWriteBuf, writeLength,
+                       &readDone, &writeDone);
+
+    pTxBuf->busy -= writeDone;
+    pTxBuf->pBusy += writeDone;
+    if (pTxBuf->pBusy == pTxBuf->pEnd)
+      pTxBuf->pBusy = pTxBuf->pBase;
+
+    *pWriteDone += writeDone;
+
+    if (readDone == 0)
+      break;
+
+    pReadBuf += readDone;
+    readLength -= readDone;
+    txLimit -= writeDone;
+  }
+
+  return pReadBuf - (PUCHAR)pRead;
+}
+
+SIZE_T WriteToTxBuffer(
+    PC0C_TX_BUFFER pTxBuf,
+    PVOID pWrite,
+    SIZE_T writeLength)
+{
+  PUCHAR pWriteBuf;
+  SIZE_T sizeTxBuf;
+
+  /* Writing to TX FIFO is interrupt driven so we can write only if it's empty */
+
+  if (!C0C_TX_BUFFER_THR_EMPTY(pTxBuf))
+    return 0;
+
+  sizeTxBuf = C0C_TX_BUFFER_SIZE(pTxBuf);
+
+  /* Write not more then TxFIFO registry value */
+
+  if (writeLength > sizeTxBuf - 1)
+    writeLength = sizeTxBuf - 1;
+
+  pWriteBuf = (PUCHAR)pWrite;
+
+  while (writeLength && pTxBuf->busy < sizeTxBuf) {
+    SIZE_T readLength;
+    PUCHAR pReadBuf;
+
+    pReadBuf = pTxBuf->pFree;
+
+    readLength = pTxBuf->pBusy <= pReadBuf ?
+        pTxBuf->pEnd - pReadBuf : pTxBuf->pBusy - pReadBuf;
+
+    if (readLength > writeLength)
+      readLength = writeLength;
+
+    RtlCopyMemory(pReadBuf, pWriteBuf, readLength);
+
+    pTxBuf->busy += readLength;
+    pTxBuf->pFree += readLength;
+    if (pTxBuf->pFree == pTxBuf->pEnd)
+      pTxBuf->pFree = pTxBuf->pBase;
+
+    pWriteBuf += readLength;
+    writeLength -= readLength;
+  }
+
+  return pWriteBuf - (PUCHAR)pWrite;
+}
+
+SIZE_T MoveFromTxBuffer(
+    PC0C_BUFFER pBuf,
+    PC0C_TX_BUFFER pTxBuf,
+    SIZE_T txLimit,
+    PC0C_FLOW_FILTER pFlowFilter,
+    PSIZE_T pOverrun)
+{
+  SIZE_T done = 0;
+
+  if (pOverrun)
+    *pOverrun = 0;
+
+  while (pTxBuf->busy) {
+    SIZE_T writeLength;
+    SIZE_T writeDone;
+    PUCHAR pWriteBuf;
+
+    pWriteBuf = pTxBuf->pBusy;
+
+    writeLength = pTxBuf->pFree <= pWriteBuf ?
+        pTxBuf->pEnd - pWriteBuf : pTxBuf->busy;
+
+    if (writeLength > txLimit)
+      writeLength = txLimit;
+
+    if (writeLength == 0)
+      break;
+
+    if (pOverrun) {
+      SIZE_T overrun;
+
+      writeDone = WriteToBuffer(pBuf, pWriteBuf, writeLength, pFlowFilter, &overrun);
+
+      *pOverrun += overrun;
+    } else {
+      writeDone = WriteToBuffer(pBuf, pWriteBuf, writeLength, pFlowFilter, NULL);
+    }
+
+    if (writeDone == 0)
+      break;
+
+    pTxBuf->busy -= writeDone;
+    pTxBuf->pBusy += writeDone;
+    if (pTxBuf->pBusy == pTxBuf->pEnd)
+      pTxBuf->pBusy = pTxBuf->pBase;
+
+    done += writeDone;
+    txLimit -= writeDone;
+  }
+
+  return done;
+}
+
+VOID SetTxBuffer(PC0C_TX_BUFFER pTxBuf, SIZE_T size, BOOLEAN cleanFifo)
+{
+  PUCHAR pBase;
+
+  UNREFERENCED_PARAMETER(cleanFifo);
+
+  size = sizeof(pTxBuf->leastBuf) - 1;
+
+  size += 1;  /* add shift register */
+  pBase = pTxBuf->leastBuf;
+
+  pTxBuf->pFree = pTxBuf->pBusy = pTxBuf->pBase = pBase;
+  pTxBuf->pEnd = pTxBuf->pBase + size;
+  pTxBuf->busy = 0;
+}
+
+VOID FreeTxBuffer(PC0C_TX_BUFFER pTxBuf)
+{
+  if (pTxBuf->pBase && pTxBuf->pBase != pTxBuf->leastBuf)
+    C0C_FREE_POOL(pTxBuf->pBase);
+
+  RtlZeroMemory(pTxBuf, sizeof(*pTxBuf));
+}
+/********************************************************************/
+@
+
+
+1.18
+log
+@Minimized PREfast noise
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.17 2008/10/30 07:54:37 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2010 Vyacheslav Frolov
+d22 3
+d227 14
+d313 1
+@
+
+
+1.17
+log
+@Improved BREAK emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.16 2008/10/27 15:13:58 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2008 Vyacheslav Frolov
+d22 3
+d351 1
+d353 1
+d370 1
+d372 1
+d393 1
+d395 1
+d431 1
+d433 1
+d460 1
+d462 1
+d682 1
+a682 1
+VOID InitBufferBase(PC0C_BUFFER pBuf, PUCHAR pBase, SIZE_T size)
+d739 1
+a739 1
+VOID InitBuffer(PC0C_BUFFER pBuf, PUCHAR pBase, SIZE_T size)
+@
+
+
+1.16
+log
+@Fixed buffer overrun bug
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.15 2008/09/12 10:07:50 vfrolov Exp $
+d22 3
+d176 10
+d191 1
+a191 1
+  if (pBuf->insertData.size && readLength) {
+d197 8
+a204 2
+    if (length > readLength)
+      length = readLength;
+a205 2
+    RtlCopyMemory(pReadBuf, pBuf->insertData.data, length);
+    pReadBuf += length;
+a206 1
+    readLength -= length;
+d222 1
+a222 3
+    writeDone = 0;
+
+    while (writeLength--) {
+a226 2
+        curChar = *pWriteBuf++;
+
+d229 1
+d232 7
+d240 27
+a266 2
+          if (pIoPortRemote->brokeCharsProbability > 0)
+            BrokeChar(pIoPortRemote, pIoPort, &curChar, &lsr);
+d269 3
+a271 1
+        if (pIoPortRemote->writeHolding & SERIAL_TX_WAITING_ON_BREAK && !pIoPortRemote->sendBreak) {
+d275 6
+a280 1
+          curChar = 0x00;
+d282 8
+a289 1
+          curChar = 0xFF;
+d293 2
+d317 1
+a317 4
+          if ((pIoPort->insertMask & C0CE_INSERT_ENABLE_LSR_BI) != 0 &&
+              (pIoPortRemote->writeHolding & SERIAL_TX_WAITING_ON_BREAK) != 0 &&
+              !pIoPortRemote->sendBreak)
+          {
+a318 1
+          }
+a324 1
+          writeDone++;
+d341 3
+d345 1
+a345 1
+            SIZE_T done =
+d347 3
+a349 4
+            AddRawData(&pBuf->insertData, buf + len, length);
+            HALT_UNLESS2(done == length, done, length);
+
+            break;
+d357 4
+a360 1
+            if (!readLength--) {
+d362 1
+a362 1
+              SIZE_T done =
+d364 3
+a366 4
+              AddRawData(&pBuf->insertData, &errorChar, sizeof(errorChar));
+              HALT_UNLESS1(done == sizeof(errorChar), done);
+
+              readLength++;
+d369 1
+d378 4
+a381 1
+          if (!readLength--) {
+d383 1
+a383 1
+            SIZE_T done =
+d385 3
+a387 4
+            AddRawData(&pBuf->insertData, &errorChar, sizeof(errorChar));
+            HALT_UNLESS1(done == sizeof(errorChar), done);
+
+            readLength++;
+d390 1
+d414 15
+a428 5
+        if (pReadBuf) {
+          if (!readLength--)
+            break;
+
+          *pReadBuf++ = curChar;
+d441 4
+a444 1
+            if (!readLength--) {
+d446 1
+a446 1
+              SIZE_T done =
+d448 3
+a450 4
+              AddRawData(&pBuf->insertData, &curChar, sizeof(curChar));
+              HALT_UNLESS1(done == sizeof(curChar), done);
+
+              readLength++;
+d453 1
+a456 2
+        }
+        readDone++;
+a457 1
+      writeDone++;
+a536 2
+          writeDone = readDone = writeLength;
+
+@
+
+
+1.15
+log
+@Fixed LSR insertion
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.14 2008/09/02 07:36:22 vfrolov Exp $
+d22 3
+d469 1
+a469 1
+              &writeDone, pOverrun);
+@
+
+
+1.14
+log
+@Added missing SERIAL_EV_BREAK
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.13 2008/09/01 16:54:28 vfrolov Exp $
+d22 3
+d237 2
+a238 1
+            (pIoPort->insertMask & (C0CE_INSERT_ENABLE_LSR|C0CE_INSERT_ENABLE_LSR_BI)))
+d253 4
+a256 1
+          if (pIoPortRemote->writeHolding & SERIAL_TX_WAITING_ON_BREAK && !pIoPortRemote->sendBreak)
+d258 1
+@
+
+
+1.13
+log
+@Replaced SERIAL_LSRMST_LSR_NODATA by SERIAL_LSRMST_LSR_DATA for BREAK
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.12 2008/07/11 10:30:39 vfrolov Exp $
+d22 3
+d212 1
+@
+
+
+1.12
+log
+@Added missing data available bit to LSR
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.11 2008/06/26 13:37:10 vfrolov Exp $
+d22 3
+d70 1
+a192 4
+  else
+  if (pFlowFilter->flags & C0C_FLOW_FILTER_FL_IGNORE_RECEIVED) {
+    writeDone = writeLength;
+  }
+d206 7
+a212 2
+        if (pIoPortRemote->brokeCharsProbability > 0)
+          BrokeChar(pIoPortRemote, pIoPort, &curChar, &lsr);
+d225 2
+d229 3
+a231 18
+        if (pIoPort->handFlow.FlowReplace & SERIAL_ERROR_CHAR) {
+          UCHAR errorChar = pIoPort->specialChars.ErrorChar;
+
+          if (!readLength--) {
+#if DBG
+            SIZE_T done =
+#endif /* DBG */
+            AddRawData(&pBuf->insertData, &errorChar, sizeof(errorChar));
+            HALT_UNLESS1(done == sizeof(errorChar), done);
+
+            readLength++;
+          } else {
+            *pReadBuf++ = errorChar;
+            readDone++;
+          }
+        }
+
+        if (pIoPort->escapeChar) {
+d254 1
+d278 37
+d316 1
+a317 1
+        }
+d320 3
+@
+
+
+1.11
+log
+@Implemented noise emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.10 2007/10/05 07:34:21 vfrolov Exp $
+d22 3
+d244 1
+a244 1
+          lsr |= 0x80;    /* errornous data in FIFO */
+@
+
+
+1.10
+log
+@Added missing *pOverrun initialization
+Changed TX FIFO writing emulation to be interrupt driven
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.9 2007/07/20 08:00:22 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2007 Vyacheslav Frolov
+d22 4
+d63 1
+d85 1
+a85 1
+NTSTATUS MoveRawData(PC0C_RAW_DATA pDstRawData, PC0C_RAW_DATA pSrcRawData)
+d87 1
+a87 1
+  SIZE_T free;
+d89 2
+a90 2
+  if (!pSrcRawData->size)
+    return STATUS_SUCCESS;
+d95 10
+a104 1
+  free = sizeof(pDstRawData->data) - pDstRawData->size;
+d106 9
+a114 2
+  if (free) {
+    SIZE_T length;
+a115 12
+    if (free > pSrcRawData->size)
+      length = pSrcRawData->size;
+    else
+      length = free;
+
+    HALT_UNLESS3((pDstRawData->size + length) <= sizeof(pDstRawData->data),
+        pDstRawData->size, length, sizeof(pDstRawData->data));
+
+    RtlCopyMemory(pDstRawData->data + pDstRawData->size, pSrcRawData->data, length);
+    pDstRawData->size = (UCHAR)(pDstRawData->size + length);
+    CompactRawData(pSrcRawData, length);
+  }
+d119 3
+d129 2
+d136 1
+a136 2
+    pFlowFilter->flags |= C0C_FLOW_FILTER_IGNORE_RECEIVED;
+    return;
+d139 2
+a140 5
+  if (pHandFlow->FlowReplace & SERIAL_AUTO_TRANSMIT) {
+    pFlowFilter->flags |= C0C_FLOW_FILTER_AUTO_TRANSMIT;
+    pFlowFilter->xonChar = pIoPort->specialChars.XonChar;
+    pFlowFilter->xoffChar = pIoPort->specialChars.XoffChar;
+  }
+d143 1
+a143 11
+    pFlowFilter->flags |= C0C_FLOW_FILTER_NULL_STRIPPING;
+
+  if (pIoPort->waitMask & SERIAL_EV_RXCHAR)
+    pFlowFilter->flags |= C0C_FLOW_FILTER_EV_RXCHAR;
+
+  if (pIoPort->waitMask & SERIAL_EV_RXFLAG) {
+    pFlowFilter->flags |= C0C_FLOW_FILTER_EV_RXFLAG;
+    pFlowFilter->eventChar = pIoPort->specialChars.EventChar;
+  }
+
+  pFlowFilter->escapeChar = pIoPort->escapeChar;
+a144 1
+/********************************************************************/
+d157 2
+a158 1
+  HALT_UNLESS(pReadBuf || (pFlowFilter && !readLength));
+a161 7
+  if (pBuf->escape && readLength) {
+    pBuf->escape = FALSE;
+    *pReadBuf++ = SERIAL_LSRMST_ESCAPE;
+    readDone++;
+    readLength--;
+  }
+
+d187 1
+a187 1
+  if (pFlowFilter->flags & C0C_FLOW_FILTER_IGNORE_RECEIVED) {
+d191 3
+d198 1
+d200 2
+a201 1
+      curChar = *pWriteBuf++;
+d203 85
+a287 1
+      if (!curChar && (pFlowFilter->flags & C0C_FLOW_FILTER_NULL_STRIPPING)) {
+d290 2
+a291 2
+      if ((pFlowFilter->flags & C0C_FLOW_FILTER_AUTO_TRANSMIT) &&
+          (curChar == pFlowFilter->xoffChar || curChar == pFlowFilter->xonChar))
+d293 1
+a293 1
+        if (curChar == pFlowFilter->xoffChar)
+d305 1
+a305 2
+          if (pFlowFilter->flags & C0C_FLOW_FILTER_EV_RXCHAR)
+            pFlowFilter->events |= C0C_FLOW_FILTER_EV_RXCHAR;
+d307 2
+a308 2
+          if ((pFlowFilter->flags & C0C_FLOW_FILTER_EV_RXFLAG) &&
+              curChar == pFlowFilter->eventChar)
+d310 1
+a310 1
+            pFlowFilter->events |= C0C_FLOW_FILTER_EV_RXFLAG;
+d313 3
+a315 1
+          if (pFlowFilter->escapeChar && curChar == pFlowFilter->escapeChar) {
+d317 6
+a322 1
+              pBuf->escape = TRUE;
+d325 1
+a325 1
+              *pReadBuf++ = SERIAL_LSRMST_ESCAPE;
+a348 7
+      if (pBuf->escape) {
+        pBuf->escape = FALSE;
+        *pReadBuf++ = SERIAL_LSRMST_ESCAPE;
+        readLength--;
+        if (!readLength)
+          break;
+      }
+d398 1
+d420 1
+a420 1
+          pWriteBuf += writeDone;
+d445 1
+a445 1
+    pWriteBuf += writeDone;
+d447 3
+d452 1
+a452 1
+  return pWriteBuf - (PUCHAR)pWrite;
+a588 1
+  newBuf.escape = pBuf->escape;
+a599 1
+  pBuf->escape = FALSE;
+@
+
+
+1.9
+log
+@Implemented TX buffer
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.8 2007/01/11 14:50:29 vfrolov Exp $
+d22 3
+d319 3
+a338 2
+        } else {
+          *pOverrun = 0;
+d599 16
+a614 1
+  PUCHAR pWriteBuf = (PUCHAR)pWrite;
+d616 1
+a616 1
+  while (writeLength && pTxBuf->busy < C0C_TX_BUFFER_SIZE(pTxBuf)) {
+d701 1
+a701 1
+  size = 1;
+@
+
+
+1.8
+log
+@Pool functions replaced by
+  C0C_ALLOCATE_POOL()
+  C0C_ALLOCATE_POOL_WITH_QUOTA()
+  C0C_FREE_POOL()
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.7 2006/06/21 16:23:57 vfrolov Exp $
+d22 6
+d255 1
+a255 1
+    PVOID pWriteBuf;
+d286 1
+a286 2
+    writeLength = pBuf->pFree <= pBuf->pBusy ?
+        pBuf->pEnd - pBuf->pBusy : pBuf->busy;
+d288 2
+a289 1
+    pWriteBuf = pBuf->pBusy;
+d311 2
+a312 1
+    PC0C_FLOW_FILTER pFlowFilter)
+d321 16
+a336 1
+    if (pBuf->limit <= pBuf->busy)
+d338 1
+d539 161
+@
+
+
+1.7
+log
+@Fixed possible BSOD after one port of pair removal
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.6 2006/05/17 15:28:03 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2006 Vyacheslav Frolov
+d22 3
+d447 1
+a447 1
+    ExFreePool(pBase);
+d474 1
+a474 1
+    ExFreePool(pBuf->pBase);
+d503 1
+a503 1
+    ExFreePool(pBuf->pBase);
+@
+
+
+1.6
+log
+@Implemented SERIAL_DSR_SENSITIVITY
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.5 2006/01/10 10:17:23 vfrolov Exp $
+d22 3
+d105 1
+a105 1
+  pHandFlow = &pIoPort->pDevExt->handFlow;
+d116 2
+a117 2
+    pFlowFilter->xonChar = pIoPort->pDevExt->specialChars.XonChar;
+    pFlowFilter->xoffChar = pIoPort->pDevExt->specialChars.XoffChar;
+d128 1
+a128 1
+    pFlowFilter->eventChar = pIoPort->pDevExt->specialChars.EventChar;
+@
+
+
+1.5
+log
+@Implemented flow control and handshaking
+Implemented IOCTL_SERIAL_SET_XON and IOCTL_SERIAL_SET_XOFF
+Added setting of HoldReasons, WaitForImmediate and AmountInOutQueue
+  fields of SERIAL_STATUS for IOCTL_SERIAL_GET_COMMSTATUS
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.4 2005/11/29 08:35:14 vfrolov Exp $
+d22 6
+d104 7
+d177 6
+a182 1
+  } else {
+@
+
+
+1.4
+log
+@Implemented SERIAL_EV_RX80FULL
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.3 2005/11/28 12:57:16 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2005 Vyacheslav Frolov
+d22 3
+d44 1
+d88 30
+d120 2
+a121 1
+    PC0C_BUFFER pBuf, UCHAR escapeChar,
+d130 2
+d157 1
+a157 1
+  if (!escapeChar) {
+a169 3
+      if (!readLength--)
+        break;
+
+a170 3
+      writeDone++;
+      *pReadBuf++ = curChar;
+      readDone++;
+d172 36
+a207 4
+      if (curChar == escapeChar) {
+        if (!readLength--) {
+          pBuf->escape = TRUE;
+          break;
+a208 1
+        *pReadBuf++ = SERIAL_LSRMST_ESCAPE;
+d211 1
+d277 5
+a281 1
+SIZE_T WriteToBuffer(PC0C_BUFFER pBuf, PVOID pWrite, SIZE_T writeLength, UCHAR escapeChar)
+d288 1
+a288 1
+    PVOID pReadBuf;
+d290 1
+a290 1
+    if ((SIZE_T)(pBuf->pEnd - pBuf->pBase) <= pBuf->busy)
+d293 4
+a296 2
+    readLength = pBuf->pBusy <= pBuf->pFree  ?
+        pBuf->pEnd - pBuf->pFree : pBuf->pBusy - pBuf->pFree;
+d298 2
+a299 1
+    pReadBuf = pBuf->pFree;
+d302 1
+a302 1
+        pBuf, escapeChar,
+d321 1
+a321 1
+  if ((SIZE_T)(pBuf->pEnd - pBuf->pBase) <= pBuf->busy) {
+d362 1
+a362 1
+    if ((SIZE_T)(pBuf->pEnd - pBuf->pBase) <= pBuf->busy)
+d371 1
+a371 1
+        pBuf, 0,
+d414 1
+d483 9
+@
+
+
+1.3
+log
+@Moved some C0C_BUFFER code to bufutils.c
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.2 2005/09/06 07:23:44 vfrolov Exp $
+d22 3
+d340 7
+d356 3
+a358 2
+  newBuf.pFree = newBuf.pBusy = newBuf.pBase = pBase;
+  newBuf.pEnd = newBuf.pBase + size;
+d401 1
+a401 3
+
+  pBuf->pBase = pBase;
+  pBuf->pEnd = pBuf->pBase + size;
+@
+
+
+1.2
+log
+@Implemented overrun emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: bufutils.c,v 1.1 2005/08/25 15:38:17 vfrolov Exp $
+d22 3
+d336 67
+@
+
+
+1.1
+log
+@Some code moved from io.c to bufutils.c
+@
+text
+@d2 1
+a2 1
+ * $Id:$
+d21 3
+a23 1
+ * $Log:$
+d243 17
+a307 3
+  if (status == STATUS_PENDING)
+    status = MoveRawData(&pBuf->insertData, pRawData);
+
+@
+

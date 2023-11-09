@@ -1,0 +1,443 @@
+head	1.11;
+access;
+symbols
+	v2_1_0_0:1.11
+	v2_0_1_0:1.10
+	RELEASED:1.11
+	v2_0_0_0:1.9;
+locks; strict;
+comment	@ * @;
+
+
+1.11
+date	2012.06.02.19.37.20;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2009.08.04.11.36.49;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2009.01.23.16.55.05;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2008.12.01.17.09.34;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.11.24.16.30.56;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2008.11.24.12.37.00;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2008.11.17.16.44.57;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.11.13.07.41.09;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.10.06.12.15.14;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.03.28.16.00.19;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.03.27.17.18.27;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.11
+log
+@Added ability to divide incoming TCP sessions
+@
+text
+@/*
+ * $Id: comport.h,v 1.10 2009/08/04 11:36:49 vfrolov Exp $
+ *
+ * Copyright (c) 2008-2012 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: comport.h,v $
+ * Revision 1.10  2009/08/04 11:36:49  vfrolov
+ * Implemented priority and reject modifiers for <listen port>
+ *
+ * Revision 1.9  2009/01/23 16:55:05  vfrolov
+ * Utilized timer routines
+ *
+ * Revision 1.8  2008/12/01 17:09:34  vfrolov
+ * Improved write buffering
+ *
+ * Revision 1.7  2008/11/24 16:30:56  vfrolov
+ * Removed pOnXoffXon
+ *
+ * Revision 1.6  2008/11/24 12:37:00  vfrolov
+ * Changed plugin API
+ *
+ * Revision 1.5  2008/11/17 16:44:57  vfrolov
+ * Fixed race conditions
+ *
+ * Revision 1.4  2008/11/13 07:41:09  vfrolov
+ * Changed for staticaly linking
+ *
+ * Revision 1.3  2008/10/06 12:15:14  vfrolov
+ * Added --reconnect option
+ *
+ * Revision 1.2  2008/03/28 16:00:19  vfrolov
+ * Added connectionCounter
+ *
+ * Revision 1.1  2008/03/27 17:18:27  vfrolov
+ * Initial revision
+ *
+ */
+
+#ifndef _COMPORT_H
+#define _COMPORT_H
+
+///////////////////////////////////////////////////////////////
+class ComParams;
+class WriteOverlapped;
+class ReadOverlapped;
+class WaitEventOverlapped;
+class ListenOverlapped;
+class ComPort;
+///////////////////////////////////////////////////////////////
+class ComPortPtr
+{
+  public:
+    ComPortPtr(ComPort *_pPort = NULL) : pPort(_pPort) {}
+    ComPort *Ptr() const { return pPort; }
+    bool ComPortPtr::operator<(const ComPortPtr &p) const;
+
+  private:
+    ComPort *pPort;
+};
+///////////////////////////////////////////////////////////////
+class Listener
+{
+  public:
+    Listener(const struct sockaddr_in &_snLocal);
+
+    BOOL IsEqual(const struct sockaddr_in &_snLocal) const {
+      return memcmp(&snLocal, &_snLocal, sizeof(snLocal)) == 0;
+    }
+
+    void Push(ComPort *pPort);
+    BOOL Start();
+    BOOL OnEvent(ListenOverlapped *pOverlapped, long e, int err);
+    void OnDisconnect(ComPort *pPort);
+    SOCKET Accept(const ComPort &port, int cmd);
+
+  private:
+    struct sockaddr_in snLocal;
+    SOCKET hSockListen;
+    priority_queue<ComPortPtr> ports;
+};
+///////////////////////////////////////////////////////////////
+class ComPort
+{
+  public:
+    ComPort(
+      vector<Listener *> &listeners,
+      const ComParams &comParams,
+      const char *pPath);
+
+    bool operator<(const ComPort &p) const { return priority < p.priority; }
+
+    BOOL Init(HMASTERPORT _hMasterPort);
+    BOOL Start();
+    BOOL FakeReadFilter(HUB_MSG *pInMsg);
+    BOOL Write(HUB_MSG *pMsg);
+    void OnWrite(WriteOverlapped *pOverlapped, DWORD len, DWORD done);
+    void OnRead(ReadOverlapped *pOverlapped, BYTE *pBuf, DWORD done);
+    BOOL OnEvent(WaitEventOverlapped *pOverlapped, long e);
+    void LostReport();
+    BOOL Accept();
+
+    const string &Name() const { return name; }
+    void Name(const char *pName) { name = pName; }
+    HANDLE Handle() const { return (HANDLE)hSock; }
+
+  private:
+    void FlowControlUpdate();
+    BOOL CanConnect() const { return (permanent || connectionCounter > 0); }
+    void StartConnect();
+    BOOL StartRead();
+    BOOL StartWaitEvent(SOCKET hSockWait);
+    void OnConnect();
+    void OnDisconnect();
+
+    struct sockaddr_in snLocal;
+    struct sockaddr_in snRemote;
+    Listener *pListener;
+    BOOL rejectZeroConnectionCounter;
+    BOOL busyTillZeroConnectionCounter;
+    int priority;
+
+    BOOL isValid;
+
+    SOCKET hSock;
+    BOOL isConnected;
+    BOOL isDisconnected;
+    BOOL pendingListenerOnDisconnect;
+    int connectionCounter;
+    BOOL permanent;
+
+    int reconnectTime;
+    HMASTERTIMER hReconnectTimer;
+
+    string name;
+    HMASTERPORT hMasterPort;
+
+    int countReadOverlapped;
+    int countXoff;
+
+    DWORD writeQueueLimit;
+    DWORD writeQueueLimitSendXoff;
+    DWORD writeQueueLimitSendXon;
+    DWORD writeQueued;
+    BOOL writeSuspended;
+    DWORD writeLost;
+    DWORD writeLostTotal;
+
+    queue<WriteOverlapped *> writeOverlappedBuf;
+    BYTE *pWriteBuf;
+    DWORD lenWriteBuf;
+};
+///////////////////////////////////////////////////////////////
+inline bool ComPortPtr::operator<(const ComPortPtr &p) const
+{
+  return *pPort < *p.pPort;
+}
+///////////////////////////////////////////////////////////////
+
+#endif  // _COMPORT_H
+@
+
+
+1.10
+log
+@Implemented priority and reject modifiers for <listen port>
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.h,v 1.9 2009/01/23 16:55:05 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008-2009 Vyacheslav Frolov
+d22 3
+a119 2
+    BOOL CanConnect() const { return (permanent || connectionCounter > 0); }
+    void StartConnect();
+d123 2
+d134 1
+d142 1
+@
+
+
+1.9
+log
+@Utilized timer routines
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.h,v 1.8 2008/12/01 17:09:34 vfrolov Exp $
+d22 3
+d62 12
+a73 1
+class Listener : public queue<ComPort *>
+d78 1
+a78 1
+    BOOL IsEqual(const struct sockaddr_in &_snLocal) {
+d82 1
+d85 2
+a86 1
+    SOCKET Accept();
+d91 1
+d102 2
+d112 1
+a112 1
+    void Accept();
+d130 2
+d163 5
+@
+
+
+1.8
+log
+@Improved write buffering
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.h,v 1.7 2008/11/24 16:30:56 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008 Vyacheslav Frolov
+d22 3
+d87 1
+d121 1
+a121 1
+    HANDLE hReconnectTimer;
+@
+
+
+1.7
+log
+@Removed pOnXoffXon
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.h,v 1.6 2008/11/24 12:37:00 vfrolov Exp $
+d22 3
+a73 9
+struct Buf {
+  Buf(BYTE *_pBuf, DWORD _len) : pBuf(_pBuf), len(_len) {}
+
+  BYTE *pBuf;
+  DWORD len;
+};
+
+typedef vector<Buf> Bufs;
+///////////////////////////////////////////////////////////////
+d98 1
+d133 3
+a135 1
+    Bufs bufs;
+@
+
+
+1.6
+log
+@Changed plugin API
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.h,v 1.5 2008/11/17 16:44:57 vfrolov Exp $
+d22 3
+d131 2
+d134 1
+@
+
+
+1.5
+log
+@Fixed race conditions
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.h,v 1.4 2008/11/13 07:41:09 vfrolov Exp $
+d22 3
+d85 1
+a85 1
+    BOOL Init(HMASTERPORT _hMasterPort, HHUB _hHub);
+a90 1
+    void AddXoff(int count);
+a122 1
+    HHUB hHub;
+@
+
+
+1.4
+log
+@Changed for staticaly linking
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.h,v 1.3 2008/10/06 12:15:14 vfrolov Exp $
+d22 3
+d87 1
+a87 1
+    BOOL OnEvent(WaitEventOverlapped *pOverlapped, long e, int err);
+d102 1
+d112 1
+@
+
+
+1.3
+log
+@Added --reconnect option
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.h,v 1.2 2008/03/28 16:00:19 vfrolov Exp $
+d22 3
+a35 2
+#include "../plugins_api.h"
+
+@
+
+
+1.2
+log
+@Added connectionCounter
+@
+text
+@d2 1
+a2 1
+ * $Id: comport.h,v 1.1 2008/03/27 17:18:27 vfrolov Exp $
+d22 3
+d91 2
+a94 1
+    void StartConnect();
+d110 3
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 3
+a23 1
+ * $Log: $
+d103 1
+@
+

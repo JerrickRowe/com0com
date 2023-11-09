@@ -1,0 +1,1829 @@
+head	1.23;
+access;
+symbols
+	v2_1_0_0:1.23
+	v2_0_1_0:1.23
+	v2_0_0_0:1.23
+	v1_1_0_0:1.7
+	RELEASED:1.23
+	v1_0_0_0:1.4;
+locks; strict;
+comment	@// @;
+
+
+1.23
+date	2009.02.20.18.32.35;	author vfrolov;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2009.02.04.12.26.54;	author vfrolov;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2009.02.02.15.21.42;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2008.12.01.17.14.52;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2008.11.26.15.55.24;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2008.11.24.12.36.59;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2008.11.13.08.07.40;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2008.10.16.06.19.12;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2008.09.26.15.34.50;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2008.09.26.14.29.13;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2008.08.28.15.53.13;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2008.08.25.08.15.02;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.04.16.14.13.59;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.04.14.07.32.03;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2008.03.28.15.53.48;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2008.03.26.08.48.18;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.02.04.10.08.49;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2007.12.19.13.46.36;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2007.05.14.12.06.37;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2007.02.06.11.53.33;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2007.02.05.09.33.20;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2007.02.01.12.14.59;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.01.23.09.13.10;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.23
+log
+@Added info about location of options
+@
+text
+@/*
+ * $Id: hub4com.cpp,v 1.22 2009/02/04 12:26:54 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2009 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: hub4com.cpp,v $
+ * Revision 1.22  2009/02/04 12:26:54  vfrolov
+ * Implemented --load option for filters
+ *
+ * Revision 1.21  2009/02/02 15:21:42  vfrolov
+ * Optimized filter's API
+ *
+ * Revision 1.20  2008/12/01 17:14:52  vfrolov
+ * Implemented --fc-route and --no-default-fc-route options
+ *
+ * Revision 1.19  2008/11/26 15:55:24  vfrolov
+ * Changed port number to unsigned
+ *
+ * Revision 1.18  2008/11/24 12:36:59  vfrolov
+ * Changed plugin API
+ *
+ * Revision 1.17  2008/11/13 08:07:40  vfrolov
+ * Changed for staticaly linking
+ *
+ * Revision 1.16  2008/10/16 06:19:12  vfrolov
+ * Divided filter ID to filter group ID and filter name
+ *
+ * Revision 1.15  2008/09/26 15:34:50  vfrolov
+ * Fixed adding order for filters with the same FID
+ *
+ * Revision 1.14  2008/09/26 14:29:13  vfrolov
+ * Added substitution <PRM0> by <file> for --load=<file>
+ *
+ * Revision 1.13  2008/08/28 15:53:13  vfrolov
+ * Added ability to load arguments from standard input and
+ * to select fragment for loading
+ *
+ * Revision 1.12  2008/08/25 08:15:02  vfrolov
+ * Itilized TimerAPCProc()
+ *
+ * Revision 1.11  2008/04/16 14:13:59  vfrolov
+ * Added ability to specify source posts for OUT method
+ *
+ * Revision 1.10  2008/04/14 07:32:03  vfrolov
+ * Renamed option --use-port-module to --use-driver
+ *
+ * Revision 1.9  2008/03/28 15:53:48  vfrolov
+ * Fixed help
+ *
+ * Revision 1.8  2008/03/26 08:48:18  vfrolov
+ * Initial revision
+ *
+ * Revision 1.7  2008/02/04 10:08:49  vfrolov
+ * Fixed <LstR>:<LstL> parsing bug
+ *
+ * Revision 1.6  2007/12/19 13:46:36  vfrolov
+ * Added ability to send data received from port to the same port
+ *
+ * Revision 1.5  2007/05/14 12:06:37  vfrolov
+ * Added read interval timeout option
+ *
+ * Revision 1.4  2007/02/06 11:53:33  vfrolov
+ * Added options --odsr, --ox, --ix and --idsr
+ * Added communications error reporting
+ *
+ * Revision 1.3  2007/02/05 09:33:20  vfrolov
+ * Implemented internal flow control
+ *
+ * Revision 1.2  2007/02/01 12:14:59  vfrolov
+ * Redesigned COM port params
+ *
+ * Revision 1.1  2007/01/23 09:13:10  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "plugins/plugins_api.h"
+
+#include "comhub.h"
+#include "filters.h"
+#include "utils.h"
+#include "plugins.h"
+#include "route.h"
+
+///////////////////////////////////////////////////////////////
+static void Usage(const char *pProgPath, Plugins &plugins)
+{
+  cerr
+  << "Usage:" << endl
+  << "  " << pProgPath << " [options] <port0> [options] [<port1> ...]" << endl
+  << endl
+  << "Common options:" << endl
+  << "  " << Args::LoadPrefix() << "[<file>][,<begin>[,<end>]][:<prms>]" << endl
+  << "                           - load arguments (one argument per line) between" << endl
+  << "                             <begin> and <end> lines from a file <file> (use" << endl
+  << "                             standard input if empty) and insert them into the" << endl
+  << "                             command line. The syntax of <prms> is" << endl
+  << "                             <PRM1>[,<PRM2>...], where <PRMn> will replace" << endl
+  << "                             %%n%% in the arguments. Do loading since begining" << endl
+  << "                             if <begin> is empty. Do loading till end-of-file" << endl
+  << "                             if <end> is empty. Ignore arguments begining with" << endl
+  << "                             '#'. <file> will replace %%0%% in the arguments." << endl
+  << "                             It is possible up to " << Args::RecursiveMax() << " recursive loads." << endl
+  << "  --help                   - show this help." << endl
+  << "  --help=*                 - show help for all modules." << endl
+  << "  --help=<LstM>            - show help for modules listed in <LstM>." << endl
+  << endl
+  << "  The syntax of <LstM> above is <MID0>[,<MID1>...], where <MIDn> is a module" << endl
+  << "  name." << endl
+  << endl
+  << "Route options:" << endl
+  << "  --route=<LstR>:<LstL>    - send data received from any port listed in <LstR>" << endl
+  << "                             to all ports (except itself) listed in <LstL>." << endl
+  << "  --bi-route=<LstR>:<LstL> - send data received from any port listed in <LstR>" << endl
+  << "                             to all ports (except itself) listed in <LstL> and" << endl
+  << "                             vice versa." << endl
+  << "  --echo-route=<Lst>       - send data received from any port listed in <Lst>" << endl
+  << "                             back to itself via all attached filters." << endl
+  << "  --no-route=<LstR>:<LstL> - do not send data received from any port listed in" << endl
+  << "                             <LstR> to the ports listed in <LstL>." << endl
+  << "  --fc-route=<LstR>:<LstL> - enable flow control route from any port listed in" << endl
+  << "                             <LstR> to all ports listed in <LstL>." << endl
+  << "  --no-default-fc-route=<LstR>:<LstL>" << endl
+  << "                             disable default flow control route from any port" << endl
+  << "                             listed in <LstR> to all ports listed in <LstL>" << endl
+  << "                             (default flow control route enabled from P1 to P2" << endl
+  << "                             if enabled data route from P1 to P2 and from P2 to" << endl
+  << "                             P1)." << endl
+  << endl
+  << "  If no any route option specified, then the options --route=0:All --route=1:0" << endl
+  << "  used by default (route data from first port to all ports and from second" << endl
+  << "  port to first port)." << endl
+  << endl
+  << "Filter options:" << endl
+  << "  --create-filter=<MID>[,<FGID>[,<FN>]][:<Args>]" << endl
+  << "                           - by using filter module with name <MID> create a" << endl
+  << "                             filter with name <FN> (<FN> is <FGID> by default)" << endl
+  << "                             and put arguments <Args> (if any) to the filter." << endl
+  << "                             Add filter to the end of filter group <FGID>" << endl
+  << "                             (<FGID> is <MID> by default). Any filter can" << endl
+  << "                             accept described above option " << Args::LoadPrefix() << "[...]." << endl
+  << "  --add-filters=<Lst>:<LstF>" << endl
+  << "                           - attach the filters listed in <LstF> to the ports" << endl
+  << "                             listed in <Lst>. These filters will handle the" << endl
+  << "                             data by IN method just after receiving from ports" << endl
+  << "                             listed in <Lst> or by OUT method just before" << endl
+  << "                             sending to ports listed in <Lst>." << endl
+  << endl
+  << "  The syntax of <LstF> above is <F1>[,<F2>...], where the syntax of <Fn> is" << endl
+  << "  <FGID>[.<Method>][(<Lst>)], where <FGID> is a filter group, <Method> is IN or" << endl
+  << "  OUT and <Lst> lists the source ports (the data only from them will be handled" << endl
+  << "  by OUT method). The <FGID> w/o <Method> is equivalent to adding IN and OUT" << endl
+  << "  for each filter from the group <FGID>. If the list of the source ports is not" << endl
+  << "  specified then the data routed from any port will be handled by OUT method." << endl
+  << endl
+  << "Port options:" << endl
+  << "  --use-driver=<MID>       - use driver module with name <MID> to create the" << endl
+  << "                             following ports (<MID> is serial by default)." << endl
+  << endl
+  << "The syntax of <LstR>, <LstL> and <Lst> above is <P1>[,<P2>...], where <Pn> is a" << endl
+  << "zero based position number of port or All." << endl
+  ;
+  plugins.List(cerr);
+  cerr
+  << endl
+  << "Examples:" << endl
+  << "  " << pProgPath << " --route=All:All \\\\.\\CNCB0 \\\\.\\CNCB1 \\\\.\\CNCB2" << endl
+  << "    - receive data from CNCB0 and send it to CNCB1 and CNCB2," << endl
+  << "      receive data from CNCB1 and send it to CNCB0 and CNCB2," << endl
+  << "      receive data from CNCB2 and send it to CNCB0 and CNCB1." << endl
+  << "  " << pProgPath << " --echo-route=0 COM2" << endl
+  << "    - receive data from COM2 and send it back to COM2." << endl
+  << "  " << pProgPath << " " << Args::LoadPrefix() << endl
+  << "      --echo-route=0" << endl
+  << "      COM2" << endl
+  << "      ^Z" << endl
+  << "    - the same as above." << endl
+  << "  " << pProgPath << " " << Args::LoadPrefix() << ",_BEGIN_,_END_" << endl
+  << "      blah blah blah" << endl
+  << "      _BEGIN_" << endl
+  << "      --echo-route=0" << endl
+  << "      COM2" << endl
+  << "      _END_" << endl
+  << "    - the same as above." << endl
+  ;
+}
+///////////////////////////////////////////////////////////////
+DECLARE_HANDLE(HPRM0);
+DECLARE_HANDLE(HPRM1);
+DECLARE_HANDLE(HPRM2);
+
+static BOOL EnumPortList(
+    ComHub &hub,
+    const char *pList,
+    BOOL (*pFunc)(ComHub &hub, Port *pPort, HPRM0 p0, HPRM1 p1, HPRM2 p2),
+    HPRM0 p0 = NULL,
+    HPRM1 p1 = NULL,
+    HPRM2 p2 = NULL)
+{
+  char *pTmpList = _strdup(pList);
+
+  if (!pTmpList) {
+    cerr << "No enough memory." << endl;
+    exit(2);
+  }
+
+  BOOL res = TRUE;
+  char *pSave;
+
+  for (char *p = STRTOK_R(pTmpList, ",", &pSave) ; p ; p = STRTOK_R(NULL, ",", &pSave)) {
+    int i;
+
+    if (_stricmp(p, "All") == 0) {
+      for (i = 0 ; (unsigned)i < hub.NumPorts() ; i++) {
+        if (!pFunc(hub, hub.GetPort(i), p0, p1, p2))
+          res = FALSE;
+      }
+    }
+    else
+    if (StrToInt(p, &i) && i >= 0 && (unsigned)i < hub.NumPorts()) {
+      if (!pFunc(hub, hub.GetPort(i), p0, p1, p2))
+        res = FALSE;
+    }
+    else {
+      cerr << "Invalid port " << p << endl;
+      res = FALSE;
+    }
+  }
+
+  free(pTmpList);
+
+  return res;
+}
+///////////////////////////////////////////////////////////////
+static BOOL EchoRoute(ComHub &/*hub*/, Port *pPort, HPRM0 pMap, HPRM1 /*p1*/, HPRM2 /*p2*/)
+{
+  AddRoute(*(PortMap *)pMap, pPort, pPort, FALSE, FALSE);
+  return TRUE;
+}
+
+static void EchoRoute(ComHub &hub, const char *pList, PortMap &map)
+{
+  if (!EnumPortList(hub, pList, EchoRoute, (HPRM0)&map)) {
+    cerr << "Invalid echo route " << pList << endl;
+    exit(1);
+  }
+}
+///////////////////////////////////////////////////////////////
+struct RouteParams {
+  RouteParams(BOOL _noRoute, BOOL _noEcho) : noRoute(_noRoute), noEcho(_noEcho) {}
+
+  BOOL noRoute;
+  BOOL noEcho;
+};
+
+static BOOL Route(ComHub &/*hub*/, Port *pTo, HPRM0 pFrom, HPRM1 pParams, HPRM2 pMap)
+{
+  AddRoute(*(PortMap *)pMap, (Port *)pFrom, pTo, ((RouteParams *)pParams)->noRoute, ((RouteParams *)pParams)->noEcho);
+  return TRUE;
+}
+
+static BOOL RouteList(ComHub &hub, Port *pFrom, HPRM0 pListTo, HPRM1 pParams, HPRM2 pMap)
+{
+  return EnumPortList(hub, (const char *)pListTo, Route, (HPRM0)pFrom, (HPRM1)pParams, (HPRM2)pMap);
+}
+
+static BOOL Route(
+    ComHub &hub,
+    const char *pListFrom,
+    const char *pListTo,
+    const RouteParams *pRouteParams,
+    PortMap &map)
+{
+  return EnumPortList(hub, pListFrom, RouteList, (HPRM0)pListTo, (HPRM1)pRouteParams, (HPRM2)&map);
+}
+///////////////////////////////////////////////////////////////
+static void Route(
+    ComHub &hub,
+    const char *pParam,
+    BOOL biDirection,
+    BOOL noRoute,
+    BOOL noEcho,
+    PortMap &map)
+{
+  char *pTmp = _strdup(pParam);
+
+  if (!pTmp) {
+    cerr << "No enough memory." << endl;
+    exit(2);
+  }
+
+  char *pSave;
+  const char *pListR = STRTOK_R(pTmp, ":", &pSave);
+  const char *pListL = STRTOK_R(NULL, ":", &pSave);
+  const RouteParams routeParams(noRoute, noEcho);
+
+  if (!pListR || !pListL ||
+      !Route(hub, pListR, pListL, &routeParams, map) ||
+      (biDirection && !Route(hub, pListL, pListR, &routeParams, map)))
+  {
+    cerr << "Invalid route " << pParam << endl;
+    exit(1);
+  }
+
+  free(pTmp);
+}
+///////////////////////////////////////////////////////////////
+static BOOL CreateFilter(
+    const Plugins &plugins,
+    Filters &filter,
+    const char *pParam)
+{
+  char *pTmp = _strdup(pParam);
+
+  if (!pTmp) {
+    cerr << "No enough memory." << endl;
+    exit(2);
+  }
+
+  char *pSave;
+
+  char *pPlugin = STRTOK_R(pTmp, ":", &pSave);
+  char *pArgs = STRTOK_R(NULL, "", &pSave);
+
+  if (!pPlugin || !*pPlugin) {
+    cerr << "No module name." << endl;
+    free(pTmp);
+    return FALSE;
+  }
+
+  const char *pPluginName = STRTOK_R(pPlugin, ",", &pSave);
+
+  if (!pPluginName || !*pPluginName) {
+    cerr << "No module name." << endl;
+    free(pTmp);
+    return FALSE;
+  }
+
+  HCONFIG hConfig;
+
+  const FILTER_ROUTINES_A *pFltRoutines =
+      (const FILTER_ROUTINES_A *)plugins.GetRoutines(PLUGIN_TYPE_FILTER, pPluginName, &hConfig);
+
+  if (!pFltRoutines) {
+    cerr << "No filter module " << pPluginName << endl;
+    free(pTmp);
+    return FALSE;
+  }
+
+  const char *pFilterGroup = STRTOK_R(NULL, ",", &pSave);
+
+  if (!pFilterGroup || !*pFilterGroup)
+    pFilterGroup = pPluginName;
+
+  const char *pFilterName = STRTOK_R(NULL, "", &pSave);
+
+  if (!pFilterName || !*pFilterName)
+    pFilterName = pFilterGroup;
+
+  if (!filter.CreateFilter(pFltRoutines, pFilterGroup, pFilterName, hConfig, pArgs)) {
+    free(pTmp);
+    return FALSE;
+  }
+
+  free(pTmp);
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static BOOL AddFilters(ComHub &hub, Port *pPort, HPRM0 pFilters, HPRM1 pListFlt, HPRM2 /*p2*/)
+{
+  char *pTmpList = _strdup((const char *)pListFlt);
+
+  if (!pTmpList) {
+    cerr << "No enough memory." << endl;
+    exit(2);
+  }
+
+  char *pSave;
+
+  for (char *pFilter = STRQTOK_R(pTmpList, ",", &pSave, "()", FALSE) ;
+       pFilter ;
+       pFilter = STRQTOK_R(NULL, ",", &pSave, "()", FALSE))
+  {
+    char *pSave2;
+
+    string filter(STRTOK_R(pFilter, "(", &pSave2));
+    char *pList = STRTOK_R(NULL, ")", &pSave2);
+
+    set<Port *> *pSrcPorts = NULL;
+
+    if (pList) {
+      for (char *p = STRTOK_R(pList, ",", &pSave2) ; p ; p = STRTOK_R(NULL, ",", &pSave2)) {
+        int i;
+
+        if (_stricmp(p, "All") == 0) {
+          if (pSrcPorts) {
+            delete pSrcPorts;
+            pSrcPorts = NULL;
+          }
+          break;
+        }
+        else
+        if (StrToInt(p, &i) && i >= 0 && (unsigned)i < hub.NumPorts()) {
+          if (!pSrcPorts) {
+            pSrcPorts = new set<Port *>;
+
+            if (!pSrcPorts) {
+              cerr << "No enough memory." << endl;
+              exit(2);
+            }
+          }
+
+          pSrcPorts->insert(hub.GetPort(i));
+        }
+        else {
+          cerr << "Invalid port " << p << endl;
+          exit(1);
+        }
+      }
+    }
+
+    string::size_type dot = filter.rfind('.');
+    string method(dot != filter.npos ? filter.substr(dot) : "");
+
+    if (method == ".IN") {
+      if (!((Filters *)pFilters)->AddFilter(pPort, filter.substr(0, dot).c_str(), TRUE, FALSE, NULL))
+        exit(1);
+    }
+    else
+    if (method == ".OUT") {
+      if (!((Filters *)pFilters)->AddFilter(pPort, filter.substr(0, dot).c_str(), FALSE, TRUE, pSrcPorts))
+        exit(1);
+    }
+    else {
+      if (!((Filters *)pFilters)->AddFilter(pPort, filter.c_str(), TRUE, TRUE, pSrcPorts))
+        exit(1);
+    }
+
+    if (pSrcPorts)
+      delete pSrcPorts;
+  }
+
+  free(pTmpList);
+
+  return TRUE;
+}
+
+static void AddFilters(ComHub &hub, Filters &filters, const char *pParam)
+{
+  char *pTmp = _strdup(pParam);
+
+  if (!pTmp) {
+    cerr << "No enough memory." << endl;
+    exit(2);
+  }
+
+  char *pSave;
+  const char *pList = STRTOK_R(pTmp, ":", &pSave);
+  const char *pListFlt = STRTOK_R(NULL, "", &pSave);
+
+  if (!pList || !*pList || !pListFlt || !*pListFlt) {
+    cerr << "Invalid filter parameters " << pParam << endl;
+    exit(1);
+  }
+
+  if (!EnumPortList(hub, pList, AddFilters, (HPRM0)&filters, (HPRM1)pListFlt)) {
+    cerr << "Can't add filters " << pListFlt << " to ports " << pList << endl;
+    exit(1);
+  }
+
+  free(pTmp);
+}
+///////////////////////////////////////////////////////////////
+static void Init(ComHub &hub, int argc, const char *const argv[])
+{
+  Args args(argc - 1, argv + 1);
+
+  for (vector<Arg>::const_iterator i = args.begin() ; i != args.end() ; i++) {
+    if (!GetParam(i->c_str(), "--"))
+      hub.Add();
+  }
+
+  BOOL defaultRouteData = TRUE;
+  int plugged = 0;
+  Plugins *pPlugins = new Plugins();
+
+  if (!pPlugins) {
+    cerr << "No enough memory." << endl;
+    exit(2);
+  }
+
+  pPlugins->ConfigStart();
+
+  Filters *pFilters = NULL;
+
+  PortMap routeDataMap;
+  PortMap routeFlowControlMap;
+  PortMap noDefaultRouteFlowControlMap;
+
+  const char *pUseDriver = "serial";
+
+  for (vector<Arg>::const_iterator i = args.begin() ; i != args.end() ; i++) {
+    BOOL ok = pPlugins->Config(i->c_str());
+    const char *pArg = GetParam(i->c_str(), "--");
+
+    if (!pArg) {
+      HCONFIG hConfig;
+
+      const PORT_ROUTINES_A *pPortRoutines =
+          (const PORT_ROUTINES_A *)pPlugins->GetRoutines(PLUGIN_TYPE_DRIVER, pUseDriver, &hConfig);
+
+      if (!pPortRoutines) {
+        cerr << "No driver " << pUseDriver << endl;
+        exit(1);
+      }
+
+      if (!hub.InitPort(plugged++, pPortRoutines, hConfig, i->c_str()))
+        exit(1);
+
+      continue;
+    }
+
+    const char *pParam;
+
+    if ((pParam = GetParam(pArg, "help")) != NULL && *pParam == 0) {
+      Usage(argv[0], *pPlugins);
+      exit(0);
+    } else
+    if ((pParam = GetParam(pArg, "help=")) != NULL) {
+      char *pTmpList = _strdup(pParam);
+
+      if (!pTmpList) {
+        cerr << "No enough memory." << endl;
+        exit(2);
+      }
+
+      char *pSave;
+
+      for (char *p = STRTOK_R(pTmpList, ",", &pSave) ; p ; p = STRTOK_R(NULL, ",", &pSave))
+        pPlugins->Help(argv[0], p);
+
+      free(pTmpList);
+      exit(0);
+    } else
+    if ((pParam = GetParam(pArg, "route=")) != NULL) {
+      defaultRouteData = FALSE;
+      Route(hub, pParam, FALSE, FALSE, TRUE, routeDataMap);
+    } else
+    if ((pParam = GetParam(pArg, "bi-route=")) != NULL) {
+      defaultRouteData = FALSE;
+      Route(hub, pParam, TRUE, FALSE, TRUE, routeDataMap);
+    } else
+    if ((pParam = GetParam(pArg, "no-route=")) != NULL) {
+      defaultRouteData = FALSE;
+      Route(hub, pParam, FALSE, TRUE, TRUE, routeDataMap);
+    } else
+    if ((pParam = GetParam(pArg, "echo-route=")) != NULL) {
+      defaultRouteData = FALSE;
+      EchoRoute(hub, pParam, routeDataMap);
+    } else
+    if ((pParam = GetParam(pArg, "fc-route=")) != NULL) {
+      defaultRouteData = FALSE;
+      Route(hub, pParam, FALSE, FALSE, FALSE, routeFlowControlMap);
+    } else
+    if ((pParam = GetParam(pArg, "no-default-fc-route=")) != NULL) {
+      defaultRouteData = FALSE;
+      Route(hub, pParam, FALSE, FALSE, FALSE, noDefaultRouteFlowControlMap);
+    } else
+    if ((pParam = GetParam(pArg, "create-filter=")) != NULL) {
+      if (!pFilters)
+        pFilters = new Filters(hub);
+
+      if (!pFilters) {
+        cerr << "No enough memory." << endl;
+        exit(2);
+      }
+
+      if (!CreateFilter(*pPlugins, *pFilters, pParam)) {
+        cerr << "Can't create filter by '" << i->c_str() << "'";
+        i->OutReference(cerr, " (", ")") << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "add-filters=")) != NULL) {
+      if (!pFilters) {
+        cerr << "There is not any --create-filter option before '" << i->c_str() << "'";
+        i->OutReference(cerr, " (", ")") << endl;
+        exit(1);
+      }
+
+      AddFilters(hub, *pFilters, pParam);
+    } else
+    if ((pParam = GetParam(pArg, "use-driver=")) != NULL) {
+      pUseDriver = pParam;
+    } else {
+      if (!ok) {
+        cerr << "Unknown option '" << i->c_str() << "'";
+        i->OutReference(cerr, " (", ")") << endl;
+        exit(1);
+      }
+    }
+  }
+
+  if (plugged < 1) {
+    Usage(argv[0], *pPlugins);
+    exit(1);
+  }
+
+  pPlugins->ConfigStop();
+  delete pPlugins;
+
+  if (plugged > 1 && defaultRouteData) {
+    Route(hub, "0:All", FALSE, FALSE, TRUE, routeDataMap);
+    Route(hub, "1:0", FALSE, FALSE, TRUE, routeDataMap);
+  }
+
+  PortMap defaultRouteFlowControlMap;
+
+  SetFlowControlRoute(defaultRouteFlowControlMap, routeDataMap, FALSE);
+  AddRoute(defaultRouteFlowControlMap, noDefaultRouteFlowControlMap, TRUE);
+  AddRoute(routeFlowControlMap, defaultRouteFlowControlMap, FALSE);
+
+  hub.SetFlowControlRoute(routeFlowControlMap);
+  hub.SetDataRoute(routeDataMap);
+
+  hub.SetFilters(pFilters);
+  hub.RouteReport();
+
+  if (pFilters)
+    pFilters->Report();
+}
+///////////////////////////////////////////////////////////////
+static VOID CALLBACK TimerAPCProc(
+  LPVOID pArg,
+  DWORD /*dwTimerLowValue*/,
+  DWORD /*dwTimerHighValue*/)
+{
+  ((ComHub *)pArg)->LostReport();
+}
+///////////////////////////////////////////////////////////////
+int main(int argc, char* argv[])
+{
+  ComHub hub;
+
+  Init(hub, argc, argv);
+
+  if (hub.StartAll()) {
+    HANDLE hTimer = ::CreateWaitableTimer(NULL, FALSE, NULL);
+
+    if (hTimer) {
+      LARGE_INTEGER firstReportTime;
+
+      firstReportTime.QuadPart = -100000000;
+
+      if (!::SetWaitableTimer(hTimer, &firstReportTime, 10000, TimerAPCProc, &hub, FALSE)) {
+        DWORD err = GetLastError();
+
+        cerr << "WARNING: SetWaitableTimer() - error=" << err << endl;
+
+        ::CloseHandle(hTimer);
+      }
+    } else {
+      DWORD err = GetLastError();
+
+      cerr << "WARNING: CreateWaitableTimer() - error=" << err << endl;
+    }
+
+    for (;;)
+      ::SleepEx(INFINITE, TRUE);
+  }
+
+  return 1;
+}
+///////////////////////////////////////////////////////////////
+@
+
+
+1.22
+log
+@Implemented --load option for filters
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.21 2009/02/02 15:21:42 vfrolov Exp $
+d22 3
+d156 2
+a157 2
+  << "                             (<FGID> is <MID> by default)." << endl
+  << "                             Any filter can accept " << Args::LoadPrefix() << "... option." << endl
+d324 1
+a324 1
+static void CreateFilter(
+d343 2
+a344 1
+    exit(1);
+d351 2
+a352 1
+    exit(1);
+d362 2
+a363 1
+    exit(1);
+d377 2
+a378 2
+    cerr << "Invalid filter " << pParam << endl;
+    exit(1);
+d382 1
+d494 1
+a494 1
+  for (vector<string>::const_iterator i = args.begin() ; i != args.end() ; i++) {
+d518 1
+a518 1
+  for (vector<string>::const_iterator i = args.begin() ; i != args.end() ; i++) {
+d594 5
+a598 1
+      CreateFilter(*pPlugins, *pFilters, pParam);
+d602 2
+a603 1
+        cerr << "No create-filter option before " << i->c_str() << endl;
+d613 2
+a614 1
+        cerr << "Unknown option " << i->c_str() << endl;
+@
+
+
+1.21
+log
+@Optimized filter's API
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.20 2008/12/01 17:14:52 vfrolov Exp $
+d22 3
+d106 1
+a106 1
+  << "  --load=[<file>][,<begin>[,<end>]][:<prms>]" << endl
+d116 1
+d154 1
+d186 1
+a186 1
+  << "  " << pProgPath << " --load=" << endl
+d191 1
+a191 1
+  << "  " << pProgPath << " --load=,_BEGIN_,_END_" << endl
+@
+
+
+1.20
+log
+@Implemented --fc-route and --no-default-fc-route options
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.19 2008/11/26 15:55:24 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2008 Vyacheslav Frolov
+d22 3
+d393 1
+a393 1
+    SetOfPorts *pSrcPorts = NULL;
+d409 1
+a409 1
+            pSrcPorts = new SetOfPorts;
+@
+
+
+1.19
+log
+@Changed port number to unsigned
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.18 2008/11/24 12:36:59 vfrolov Exp $
+d22 3
+d127 8
+d193 4
+d200 4
+a203 4
+    BOOL (*pFunc)(ComHub &hub, Port *pPort, PVOID p0, PVOID p1, PVOID p2),
+    PVOID p0 = NULL,
+    PVOID p1 = NULL,
+    PVOID p2 = NULL)
+d240 1
+a240 1
+static BOOL EchoRoute(ComHub &/*hub*/, Port *pPort, PVOID pMap, PVOID /*p1*/, PVOID /*p2*/)
+d248 1
+a248 1
+  if (!EnumPortList(hub, pList, EchoRoute, &map)) {
+d254 8
+a261 1
+static BOOL Route(ComHub &/*hub*/, Port *pTo, PVOID pFrom, PVOID pNoRoute, PVOID pMap)
+d263 1
+a263 1
+  AddRoute(*(PortMap *)pMap, (Port *)pFrom, pTo, *(BOOL *)pNoRoute, TRUE);
+d267 1
+a267 1
+static BOOL RouteList(ComHub &hub, Port *pFrom, PVOID pListTo, PVOID pNoRoute, PVOID pMap)
+d269 1
+a269 1
+  return EnumPortList(hub, (const char *)pListTo, Route, pFrom, pNoRoute, pMap);
+d276 1
+a276 1
+    BOOL noRoute,
+d279 1
+a279 1
+  return EnumPortList(hub, pListFrom, RouteList, (PVOID)pListTo, &noRoute, &map);
+d287 1
+d300 1
+d303 2
+a304 2
+      !Route(hub, pListR, pListL, noRoute, map) ||
+      (biDirection && !Route(hub, pListL, pListR, noRoute, map)))
+d370 1
+a370 1
+static BOOL AddFilters(ComHub &hub, Port *pPort, PVOID pFilters, PVOID pListFlt, PVOID /*p2*/)
+d467 1
+a467 1
+  if (!EnumPortList(hub, pList, AddFilters, &filters, (PVOID)pListFlt)) {
+a484 1
+  BOOL defaultRouteFlowControl = TRUE;
+d499 1
+d548 1
+a548 1
+      Route(hub, pParam, FALSE, FALSE, routeDataMap);
+d552 1
+a552 1
+      Route(hub, pParam, TRUE, FALSE, routeDataMap);
+d556 1
+a556 1
+      Route(hub, pParam, FALSE, TRUE, routeDataMap);
+d562 8
+d608 2
+a609 2
+    Route(hub, "0:All", FALSE, FALSE, routeDataMap);
+    Route(hub, "1:0", FALSE, FALSE, routeDataMap);
+d612 5
+a616 4
+  if (defaultRouteFlowControl) {
+    SetFlowControlRoute(routeFlowControlMap, routeDataMap, FALSE);
+  } else {
+  }
+@
+
+
+1.18
+log
+@Changed plugin API
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.17 2008/11/13 08:07:40 vfrolov Exp $
+d22 3
+d204 1
+a204 1
+      for (i = 0 ; i < hub.NumPorts() ; i++) {
+d208 3
+a210 1
+    } else if (StrToInt(p, &i) && i >= 0 && i < hub.NumPorts()) {
+d213 2
+a214 1
+    } else {
+d378 3
+a380 1
+        } else if (StrToInt(p, &i) && i >= 0 && i < hub.NumPorts()) {
+d391 2
+a392 1
+        } else {
+@
+
+
+1.17
+log
+@Changed for staticaly linking
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.16 2008/10/16 06:19:12 vfrolov Exp $
+d22 3
+d182 1
+a182 1
+    BOOL (*pFunc)(ComHub &hub, int iPort, PVOID p0, PVOID p1, PVOID p2),
+d202 1
+a202 1
+        if (!pFunc(hub, i, p0, p1, p2))
+d206 1
+a206 1
+      if (!pFunc(hub, i, p0, p1, p2))
+d219 1
+a219 1
+static BOOL EchoRoute(ComHub &/*hub*/, int iPort, PVOID pMap, PVOID /*p1*/, PVOID /*p2*/)
+d221 1
+a221 1
+  AddRoute(*(PortNumMap *)pMap, iPort, iPort, FALSE, FALSE);
+d225 1
+a225 1
+static void EchoRoute(ComHub &hub, const char *pList, PortNumMap &map)
+d233 1
+a233 1
+static BOOL Route(ComHub &/*hub*/, int iTo, PVOID pIFrom, PVOID pNoRoute, PVOID pMap)
+d235 1
+a235 1
+  AddRoute(*(PortNumMap *)pMap, *(int *)pIFrom, iTo, *(BOOL *)pNoRoute, TRUE);
+d239 1
+a239 1
+static BOOL RouteList(ComHub &hub, int iFrom, PVOID pListTo, PVOID pNoRoute, PVOID pMap)
+d241 1
+a241 1
+  return EnumPortList(hub, (const char *)pListTo, Route, &iFrom, pNoRoute, pMap);
+d249 1
+a249 1
+    PortNumMap &map)
+d259 1
+a259 1
+    PortNumMap &map)
+d340 1
+a340 1
+static BOOL AddFilters(ComHub &hub, int iPort, PVOID pFilters, PVOID pListFlt, PVOID /*p2*/)
+d360 1
+a360 1
+    set<int> *pSrcPorts = NULL;
+d374 1
+a374 1
+            pSrcPorts = new set<int>;
+d382 1
+a382 1
+          pSrcPorts->insert(i);
+d394 1
+a394 1
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.substr(0, dot).c_str(), TRUE, FALSE, NULL))
+d399 1
+a399 1
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.substr(0, dot).c_str(), FALSE, TRUE, pSrcPorts))
+d403 1
+a403 1
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.c_str(), TRUE, TRUE, pSrcPorts))
+d461 2
+d465 2
+a466 2
+  PortNumMap routeDataMap;
+  PortNumMap routeFlowControlMap;
+d485 1
+a485 1
+      if (!hub.CreatePort(pPortRoutines, plugged++, hConfig, i->c_str()))
+d563 1
+@
+
+
+1.16
+log
+@Divided filter ID to filter group ID and filter name
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.15 2008/09/26 15:34:50 vfrolov Exp $
+d22 3
+d75 2
+@
+
+
+1.15
+log
+@Fixed adding order for filters with the same FID
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.14 2008/09/26 14:29:13 vfrolov Exp $
+d22 3
+d119 1
+a119 1
+  << "  --create-filter=<MID>[,<FID>][:<Args>]" << endl
+d121 1
+a121 1
+  << "                             filter with name <FID> (<FID> is <MID> by default)" << endl
+d123 2
+d133 1
+a133 1
+  << "  <FID>[.<Method>][(<Lst>)], where <FID> is a filter name, <Method> is IN or" << endl
+d135 3
+a137 3
+  << "  by OUT method). The <FID> w/o <Method> is equivalent to adding IN and OUT for" << endl
+  << "  each filter with name <FID>. If the list of the source ports is not specified" << endl
+  << "  then the data routed from any port will be handled by OUT method." << endl
+d314 5
+d322 1
+a322 1
+    pFilterName = pPluginName;
+d324 1
+a324 1
+  if (!filter.CreateFilter(pFltRoutines, pFilterName, hConfig, pArgs)) {
+@
+
+
+1.14
+log
+@Added substitution <PRM0> by <file> for --load=<file>
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.13 2008/08/28 15:53:13 vfrolov Exp $
+d22 3
+d130 3
+a132 3
+  << "  by OUT method). The <FID> w/o <Method> is equivalent to <FID>.IN,<FID>.OUT." << endl
+  << "  If the list of the source ports is not specified then the data routed from" << endl
+  << "  any port will be handled by OUT method." << endl
+d376 1
+a376 1
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.substr(0, dot).c_str(), TRUE, NULL))
+d381 1
+a381 1
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.substr(0, dot).c_str(), FALSE, pSrcPorts))
+d385 1
+a385 3
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.c_str(), TRUE, NULL))
+        exit(1);
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.c_str(), FALSE, pSrcPorts))
+@
+
+
+1.13
+log
+@Added ability to load arguments from standard input and
+to select fragment for loading
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.12 2008/08/25 08:15:02 vfrolov Exp $
+d22 4
+d89 1
+a89 1
+  << "                             '#'." << endl
+@
+
+
+1.12
+log
+@Itilized TimerAPCProc()
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.11 2008/04/16 14:13:59 vfrolov Exp $
+d22 3
+d76 10
+a85 4
+  << "  --load=<file>[:<prms>]   - load arguments from a file (one argument per line)" << endl
+  << "                             and insert them to the command line. The syntax of" << endl
+  << "                             <prms> is <PRM1>[,<PRM2>...], where <PRMn> will" << endl
+  << "                             replace %%n%%." << endl
+d144 12
+d533 5
+d540 1
+a540 8
+  if (plugged < 2) {
+    if (plugged < 1) {
+      Usage(argv[0], *pPlugins);
+      exit(1);
+    }
+  }
+  else
+  if (defaultRouteData) {
+@
+
+
+1.11
+log
+@Added ability to specify source posts for OUT method
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.10 2008/04/14 07:32:03 vfrolov Exp $
+d22 3
+d541 8
+d556 4
+a559 1
+    DWORD nextReportTime = 0;
+d561 1
+a561 2
+    for (;;) {
+      SleepEx(5000, TRUE);
+d563 2
+a564 1
+      DWORD time = GetTickCount();
+d566 3
+a568 3
+      if ((nextReportTime - time - 1) > 10000) {
+        hub.LostReport();
+        nextReportTime = time + 5000;
+d570 4
+d575 3
+@
+
+
+1.10
+log
+@Renamed option --use-port-module to --use-driver
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.9 2008/03/28 15:53:48 vfrolov Exp $
+d22 3
+d108 6
+a113 3
+  << "  The syntax of <LstF> above is <FID0>[.<Method>][,<FID1>[.<Method>]...], where" << endl
+  << "  <FIDn> is a filter name and <Method> is IN or OUT. The <FID> w/o <Method> is" << endl
+  << "  equivalent to <FID>.IN,<FID>.OUT" << endl
+d165 1
+d291 1
+a291 1
+static BOOL AddFilters(ComHub &/*hub*/, int iPort, PVOID pFilters, PVOID pListFlt, PVOID /*p2*/)
+d302 1
+a302 1
+  for (char *pFilter = STRTOK_R(pTmpList, ",", &pSave) ;
+d304 1
+a304 1
+       pFilter = STRTOK_R(NULL, ",", &pSave))
+d306 35
+a340 1
+    string filter(pFilter);
+d345 1
+a345 1
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.substr(0, dot).c_str(), TRUE))
+d350 1
+a350 1
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.substr(0, dot).c_str(), FALSE))
+d354 1
+a354 1
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.c_str(), TRUE))
+d356 1
+a356 1
+      if (!((Filters *)pFilters)->AddFilter(iPort, filter.c_str(), FALSE))
+d359 3
+@
+
+
+1.9
+log
+@Fixed help
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.8 2008/03/26 08:48:18 vfrolov Exp $
+d22 3
+d95 3
+a97 4
+  << "                           - by using module with type 'filter' and with name" << endl
+  << "                             <MID> create a filter with name <FID> (<FID> is" << endl
+  << "                             <MID> by default) and put arguments <Args> (if" << endl
+  << "                             any) to the filter." << endl
+d110 2
+a111 3
+  << "  --use-port-module=<MID>  - use module with type 'port' and with name <MID> to" << endl
+  << "                             create the following ports (<MID> is serial by" << endl
+  << "                             default)." << endl
+d375 1
+a375 1
+  const char *pUsePortModule = "serial";
+d385 1
+a385 1
+          (const PORT_ROUTINES_A *)pPlugins->GetRoutines(PLUGIN_TYPE_PORT, pUsePortModule, &hConfig);
+d388 1
+a388 1
+        cerr << "No port module " << pUsePortModule << endl;
+d455 2
+a456 2
+    if ((pParam = GetParam(pArg, "use-port-module=")) != NULL) {
+      pUsePortModule = pParam;
+@
+
+
+1.8
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.7 2008/02/04 10:08:49 vfrolov Exp $
+d22 3
+d61 1
+a61 1
+  << "  " << pProgPath << " [options] \\\\.\\<port0> [options] [\\\\.\\<port1> ...]" << endl
+d120 5
+a124 1
+  << "  " << pProgPath << " --echo-route=0 \\\\.\\COM2" << endl
+@
+
+
+1.7
+log
+@Fixed <LstR>:<LstL> parsing bug
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.6 2007/12/19 13:46:36 vfrolov Exp $
+d22 3
+a46 1
+#include "comparams.h"
+d48 1
+d50 2
+d54 1
+a54 1
+static void Usage(const char *pProgName)
+d58 1
+a58 1
+  << "  " << pProgName << " [options] \\\\.\\<port0> [options] [\\\\.\\<port1> ...]" << endl
+d61 4
+d66 2
+d69 2
+a70 32
+  << "COM port options:" << endl
+  << "  --baud=<b>               - set baud rate to <b> (" << ComParams().BaudRateStr() << " by default)," << endl
+  << "                             where <b> is " << ComParams::BaudRateLst() << "." << endl
+  << "  --data=<d>               - set data bits to <d> (" << ComParams().ByteSizeStr() << " by default)," << endl
+  << "                             where <d> is " << ComParams::ByteSizeLst() << "." << endl
+  << "  --parity=<p>             - set parity to <p> (" << ComParams().ParityStr() << " by default)," << endl
+  << "                             where <p> is" << endl
+  << "                             " << ComParams::ParityLst() << "." << endl
+  << "  --stop=<s>               - set stop bits to <s> (" << ComParams().StopBitsStr() << " by default)," << endl
+  << "                             where <s> is " << ComParams::StopBitsLst() << "." << endl
+  << "  --octs=<c>               - set CTS handshaking on output to <c>" << endl
+  << "                             (" << ComParams().OutCtsStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::OutCtsLst() << "." << endl
+  << "  --odsr=<c>               - set DSR handshaking on output to <c>" << endl
+  << "                             (" << ComParams().OutDsrStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::OutDsrLst() << "." << endl
+  << "  --ox=<c>                 - set XON/XOFF handshaking on output to <c>" << endl
+  << "                             (" << ComParams().OutXStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::OutXLst() << "." << endl
+  << "  --ix=<c>                 - set XON/XOFF handshaking on input to <c>" << endl
+  << "                             (" << ComParams().InXStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::InXLst() << "." << endl
+  << "                             If XON/XOFF handshaking on input is enabled for" << endl
+  << "                             the port then XON/XOFF characters will be" << endl
+  << "                             discarded from output to this port." << endl
+  << "  --idsr=<c>               - set DSR sensitivity on input to <c>" << endl
+  << "                             (" << ComParams().InDsrStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::InDsrLst() << "." << endl
+  << "  --ito=<t>                - set read interval timeout to <t> (" << ComParams().IntervalTimeoutStr() << " by default)," << endl
+  << "                             where <t> is " << ComParams::IntervalTimeoutLst() << "." << endl
+  << endl
+  << "  The value c[urrent] above means to use current COM port settings." << endl
+d73 9
+a81 9
+  << "  --route=<LstR>:<LstL>    - send data received from any port from <LstR> to" << endl
+  << "                             all ports (except this port) from <LstL>." << endl
+  << "  --bi-route=<LstR>:<LstL> - send data received from any port from <LstR> to" << endl
+  << "                             all ports (except this port) from <LstL> and vice" << endl
+  << "                             versa." << endl
+  << "  --echo-route=<Lst>       - send data received from any port from <Lst> back" << endl
+  << "                             to this port." << endl
+  << "  --no-route=<LstR>:<LstL> - do not send data received from any port from" << endl
+  << "                             <LstR> to ports from <LstL>." << endl
+a82 2
+  << "  The syntax of <LstR>, <LstL> and <Lst> above: <P1>[,<P2>...]" << endl
+  << "  The <Pn> above is a zero based position number of port or All." << endl
+d87 28
+d116 2
+a117 4
+  << "  " << pProgName << " \\\\.\\COM1 \\\\.\\CNCB1 \\\\.\\CNCB2" << endl
+  << "  " << pProgName << " --route=All:All \\\\.\\CNCB0 \\\\.\\CNCB1 \\\\.\\CNCB2" << endl
+  << "  " << pProgName << " --baud=9600 \\\\.\\COM1 --baud=19200 \\\\.\\CNCB1" << endl
+  << "  " << pProgName << " --echo-route=0 \\\\.\\COM2" << endl
+a118 1
+  exit(1);
+d121 7
+a127 1
+static BOOL EchoRoute(ComHub &hub, const char *pList)
+d143 8
+a150 2
+      i = -1;
+    } else if (!StrToInt(p, &i) || i < 0 || i >= hub.NumPorts()) {
+a151 1
+      break;
+a152 2
+
+    hub.RouteData(i, i, FALSE, FALSE);
+d160 1
+a160 1
+static BOOL Route(ComHub &hub, const char *pListFrom, const char *pListTo, BOOL noRoute)
+d162 3
+a164 1
+  char *pTmpListFrom = _strdup(pListFrom);
+d166 39
+a204 1
+  if (!pTmpListFrom) {
+d209 21
+a229 2
+  BOOL res = TRUE;
+  char *pSave1;
+d231 4
+a234 2
+  for (char *pFrom = STRTOK_R(pTmpListFrom, ",", &pSave1) ; pFrom ; pFrom = STRTOK_R(NULL, ",", &pSave1)) {
+    int iFrom;
+d236 1
+a236 6
+    if (_stricmp(pFrom, "All") == 0) {
+      iFrom = -1;
+    } else if (!StrToInt(pFrom, &iFrom) || iFrom < 0 || iFrom >= hub.NumPorts()) {
+      res = FALSE;
+      break;
+    }
+d238 2
+a239 1
+    char *pTmpListTo = _strdup(pListTo);
+d241 4
+a244 4
+    if (!pTmpListTo) {
+      cerr << "No enough memory." << endl;
+      exit(2);
+    }
+d246 1
+a246 1
+    char *pSave2;
+d248 4
+a251 2
+    for (char *pTo = STRTOK_R(pTmpListTo, ",", &pSave2) ; pTo ; pTo = STRTOK_R(NULL, ",", &pSave2)) {
+      int iTo;
+d253 1
+a253 6
+      if (_stricmp(pTo, "All") == 0) {
+        iTo = -1;
+      } else if (!StrToInt(pTo, &iTo) || iTo < 0 || iTo >= hub.NumPorts()) {
+        res = FALSE;
+        break;
+      }
+d255 2
+a256 2
+      hub.RouteData(iFrom, iTo, noRoute, TRUE);
+    }
+d258 3
+a260 1
+    free(pTmpListTo);
+d263 1
+a263 1
+  free(pTmpListFrom);
+d265 9
+a273 1
+  return res;
+d276 42
+a317 1
+static void Route(ComHub &hub, const char *pParam, BOOL biDirection, BOOL noRoute)
+d327 7
+a333 2
+  const char *pListR = STRTOK_R(pTmp, ":", &pSave);
+  const char *pListL = STRTOK_R(NULL, ":", &pSave);
+d335 2
+a336 5
+  if (!pListR || !pListL ||
+      !Route(hub, pListR, pListL, noRoute) ||
+      (biDirection && !Route(hub, pListL, pListR, noRoute)))
+  {
+    cerr << "Invalid route " << pParam << endl;
+d343 1
+a343 1
+int main(int argc, char* argv[])
+d345 1
+a345 1
+  int i;
+d347 3
+a349 7
+  ComHub hub;
+
+  for (i = 1 ; i < argc ; i++) {
+    if (!GetParam(argv[i], "--")) {
+      if (!hub.Add(argv[i]))
+        return 1;
+    }
+d355 1
+d357 4
+a360 2
+  char **pArgs;
+  ComParams comParams;
+d362 10
+a371 2
+  for (pArgs = &argv[1] ; argc > 1 ; pArgs++, argc--) {
+    const char *pArg = GetParam(*pArgs, "--");
+d374 11
+a384 1
+      if (!hub.PlugIn(plugged++, *pArgs, comParams))
+d393 2
+a394 1
+      Usage(argv[0]);
+d396 6
+a401 58
+    if ((pParam = GetParam(pArg, "baud=")) != NULL) {
+      if (!comParams.SetBaudRate(pParam)) {
+        cerr << "Unknown baud rate value " << pParam << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "data=")) != NULL) {
+      if (!comParams.SetByteSize(pParam)) {
+        cerr << "Unknown data bits value " << pParam << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "parity=")) != NULL) {
+      if (!comParams.SetParity(pParam)) {
+        cerr << "Unknown parity value " << pParam << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "stop=")) != NULL) {
+      if (!comParams.SetStopBits(pParam)) {
+        cerr << "Unknown stop bits value " << pParam << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "octs=")) != NULL) {
+      if (!comParams.SetOutCts(pParam)) {
+        cerr << "Unknown CTS handshaking on output value " << pParam << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "odsr=")) != NULL) {
+      if (!comParams.SetOutDsr(pParam)) {
+        cerr << "Unknown DSR handshaking on output value " << pParam << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "ox=")) != NULL) {
+      if (!comParams.SetOutX(pParam)) {
+        cerr << "Unknown XON/XOFF handshaking on output value " << pParam << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "ix=")) != NULL) {
+      if (!comParams.SetInX(pParam)) {
+        cerr << "Unknown XON/XOFF handshaking on input value " << pParam << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "idsr=")) != NULL) {
+      if (!comParams.SetInDsr(pParam)) {
+        cerr << "Unknown DSR sensitivity value " << pParam << endl;
+        exit(1);
+      }
+    } else
+    if ((pParam = GetParam(pArg, "ito=")) != NULL) {
+      if (!comParams.SetIntervalTimeout(pParam)) {
+        cerr << "Unknown read interval timeout value " << pParam << endl;
+        exit(1);
+d403 8
+d414 1
+a414 1
+      Route(hub, pParam, FALSE, FALSE);
+d418 1
+a418 1
+      Route(hub, pParam, TRUE, FALSE);
+d422 1
+a422 1
+      Route(hub, pParam, FALSE, TRUE);
+d426 23
+a448 1
+      EchoRoute(hub, pParam);
+d450 4
+a453 2
+      cerr << "Unknown option " << pArg << endl;
+      exit(1);
+d457 2
+d460 4
+a463 2
+    if (plugged < 1)
+      Usage(argv[0]);
+d467 2
+a468 2
+    hub.RouteData(0, -1, FALSE, TRUE);
+    hub.RouteData(1, 0, FALSE, TRUE);
+d472 1
+a472 1
+    hub.RouteFlowControl(FALSE);
+d476 4
+d482 10
+@
+
+
+1.6
+log
+@Added ability to send data received from port to the same port
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.5 2007/05/14 12:06:37 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+d22 3
+a149 1
+  char *pTmpListTo = _strdup(pListTo);
+d151 1
+a151 1
+  if (!pTmpListFrom || !pTmpListTo) {
+d169 7
+d190 2
+a193 1
+  free(pTmpListTo);
+@
+
+
+1.5
+log
+@Added read interval timeout option
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.4 2007/02/06 11:53:33 vfrolov Exp $
+d22 3
+a37 1
+ *
+d50 1
+a50 1
+  << "  " << pProgName << " [options] \\\\.\\<port0> [options] \\\\.\\<port1> ..." << endl
+d89 8
+a96 5
+  << "  --route=<LstR>:<LstL>    - send data received from any ports from <LstR> to" << endl
+  << "                             all ports from <LstL>." << endl
+  << "  --bi-route=<LstR>:<LstL> - send data received from any ports from <LstR> to" << endl
+  << "                             all ports from <LstL> and vice versa." << endl
+  << "  --no-route=<LstR>:<LstL> - do not send data received from any ports from" << endl
+d99 1
+a99 1
+  << "  The syntax of <LstR> and <LstL> above: <P1>[,<P2>...]" << endl
+d109 1
+d114 30
+d179 1
+a179 1
+      hub.RouteData(iFrom, iTo, noRoute);
+d319 4
+d329 5
+a333 3
+  if (plugged < 2)
+    Usage(argv[0]);
+
+d335 2
+a336 2
+    hub.RouteData(0, -1, FALSE);
+    hub.RouteData(1, 0, FALSE);
+@
+
+
+1.4
+log
+@Added options --odsr, --ox, --ix and --idsr
+Added communications error reporting
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.3 2007/02/05 09:33:20 vfrolov Exp $
+d22 4
+d81 2
+d266 6
+@
+
+
+1.3
+log
+@Implemented internal flow control
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.2 2007/02/01 12:14:59 vfrolov Exp $
+d22 3
+d62 2
+a63 2
+  << "  --odsr=<c>               - set DSR handshaking on output to <d>" << endl
+  << "                             (" << ComParams().OutDsrStr() << " by default), where <d> is" << endl
+d65 12
+d242 18
+@
+
+
+1.2
+log
+@Redesigned COM port params
+@
+text
+@d2 1
+a2 1
+ * $Id: hub4com.cpp,v 1.1 2007/01/23 09:13:10 vfrolov Exp $
+d22 3
+d170 1
+d252 6
+a257 1
+  hub.RouteDataReport();
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 4
+a24 1
+ * $Log: $
+d38 1
+a38 1
+  << "  " << pProgName << " [options] \\\\.\\<port0> \\\\.\\<port1> ..." << endl
+d44 1
+a44 1
+  << "  --baud=<b>               - set baud rate to <b> (default is " << ComParams().BaudRate() << ")," << endl
+d46 4
+a49 3
+  << "  --data=<d>               - set data bits to <d> (default is " << ComParams().ByteSize() << "), where <d> is" << endl
+  << "                             " << ComParams::ByteSizeLst() << "." << endl
+  << "  --parity=<p>             - set parity to <p> (default is " << ComParams::ParityStr(ComParams().Parity()) << "), where <p> is" << endl
+d51 10
+a60 3
+  << "  --stop=<s>               - set stop bits to <s> (default is " << ComParams::StopBitsStr(ComParams().StopBits()) << "), where <s> is" << endl
+  << "                             " << ComParams::StopBitsLst() << "." << endl
+  << "  The value d[efault] above means to use current COM port settings." << endl
+d69 1
+d79 1
+d157 2
+d160 4
+a163 2
+    if (GetParam(argv[i], "--") == NULL)
+      break;
+a165 1
+  ComHub hub(argc - i);
+d167 1
+d169 1
+a169 1
+  char **pArgs = &argv[1];
+d172 1
+a172 1
+  while (argc > 1) {
+d175 6
+a180 2
+    if (!pArg)
+      break;
+d188 4
+a191 1
+      comParams.SetBaudRate(pParam);
+d194 4
+a197 1
+      comParams.SetByteSize(pParam);
+d211 12
+a237 3
+
+    pArgs++;
+    argc--;
+d240 1
+a240 1
+  if (argc < 2)
+a247 5
+  for (i = 1 ; i < argc ; i++) {
+    if (!hub.PlugIn(i - 1, pArgs[i - 1], comParams))
+      return 1;
+  }
+
+@
+

@@ -1,0 +1,122 @@
+head	1.5;
+access;
+symbols
+	v3_0_0_0:1.5
+	v2_2_2_0:1.5
+	v2_2_1_0:1.5
+	v2_2_0_0:1.5
+	v2_1_0_0:1.4
+	v2_0_0_0:1.4
+	v1_8_0_0:1.4
+	v1_7_0_0:1.4
+	v1_6_0_0:1.4
+	v1_5_0_0:1.4
+	v1_4_0_0:1.4
+	RELEASED:1.5
+	v1_3_0_0:1.3
+	v1_2_0_0:1.2
+	v1_1_1_0:1.1
+	v1_1_0_0:1.1
+	v1_0_0_0:1.1;
+locks; strict;
+comment	@# @;
+
+
+1.5
+date	2008.07.10.11.13.35;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2005.09.13.08.55.41;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.08.30.13.12.04;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.07.14.13.53.45;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.01.26.12.18.54;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@Changed 00000000 to FFFFFFFF
+@
+text
+@Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\com0com\Trace]
+"TraceFile"="\\??\\C:\\com0com.log"
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\com0com\Trace\Enable]
+"Read"=dword:FFFFFFFF
+"Write"=dword:FFFFFFFF
+"GetTimeouts"=dword:FFFFFFFF
+"SetTimeouts"=dword:FFFFFFFF
+"GetCommStatus"=dword:FFFFFFFF
+"GetModemStatus"=dword:FFFFFFFF
+"ModemStatus"=dword:FFFFFFFF
+@
+
+
+1.4
+log
+@Disabled modem status tracing by default
+@
+text
+@d7 7
+a13 7
+"Read"=dword:00000000
+"Write"=dword:00000000
+"GetTimeouts"=dword:00000000
+"SetTimeouts"=dword:00000000
+"GetCommStatus"=dword:00000000
+"GetModemStatus"=dword:00000000
+"ModemStatus"=dword:00000000
+@
+
+
+1.3
+log
+@Disabled IOCTL_SERIAL_GET_MODEMSTATUS tracing by default
+@
+text
+@d13 1
+@
+
+
+1.2
+log
+@Changed drive letter to C
+@
+text
+@d12 1
+a12 1
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d4 1
+a4 1
+"TraceFile"="\\??\\F:\\com0com.log"
+@
+

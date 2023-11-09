@@ -1,0 +1,1365 @@
+head	1.17;
+access;
+symbols
+	v2_1_0_0:1.17
+	v2_0_1_0:1.16
+	RELEASED:1.17
+	v2_0_0_0:1.16;
+locks; strict;
+comment	@// @;
+
+
+1.17
+date	2011.11.07.14.24.16;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2009.02.02.15.21.42;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2008.12.22.09.40.46;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2008.12.18.16.50.52;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2008.11.25.16.40.40;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2008.11.24.12.37.00;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.11.13.07.50.41;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.10.16.09.24.23;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2008.09.30.07.52.09;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2008.08.22.16.57.11;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.08.22.12.45.34;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2008.08.20.14.30.19;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2008.08.11.07.15.33;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.04.14.07.32.04;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.04.11.14.48.42;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.04.07.12.24.17;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.04.02.10.33.23;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.17
+log
+@Added --delay-disconnect option
+@
+text
+@/*
+ * $Id: filter.cpp,v 1.16 2009/02/02 15:21:42 vfrolov Exp $
+ *
+ * Copyright (c) 2008-2011 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: filter.cpp,v $
+ * Revision 1.16  2009/02/02 15:21:42  vfrolov
+ * Optimized filter's API
+ *
+ * Revision 1.15  2008/12/22 09:40:46  vfrolov
+ * Optimized message switching
+ *
+ * Revision 1.14  2008/12/18 16:50:52  vfrolov
+ * Extended the number of possible IN options
+ *
+ * Revision 1.13  2008/11/25 16:40:40  vfrolov
+ * Added assert for port handle
+ *
+ * Revision 1.12  2008/11/24 12:37:00  vfrolov
+ * Changed plugin API
+ *
+ * Revision 1.11  2008/11/13 07:50:41  vfrolov
+ * Changed for staticaly linking
+ *
+ * Revision 1.10  2008/10/16 09:24:23  vfrolov
+ * Changed return type of ROUTINE_MSG_REPLACE_*() to BOOL
+ *
+ * Revision 1.9  2008/09/30 07:52:09  vfrolov
+ * Removed HUB_MSG_TYPE_LINE_STATUS filtering
+ *
+ * Revision 1.8  2008/08/22 16:57:11  vfrolov
+ * Added
+ *   HUB_MSG_TYPE_GET_ESC_OPTS
+ *   HUB_MSG_TYPE_FAIL_ESC_OPTS
+ *   HUB_MSG_TYPE_BREAK_STATUS
+ *
+ * Revision 1.7  2008/08/22 12:45:34  vfrolov
+ * Added masking to HUB_MSG_TYPE_MODEM_STATUS and HUB_MSG_TYPE_LINE_STATUS
+ *
+ * Revision 1.6  2008/08/20 14:30:19  vfrolov
+ * Redesigned serial port options
+ *
+ * Revision 1.5  2008/08/11 07:15:33  vfrolov
+ * Replaced
+ *   HUB_MSG_TYPE_COM_FUNCTION
+ *   HUB_MSG_TYPE_INIT_LSR_MASK
+ *   HUB_MSG_TYPE_INIT_MST_MASK
+ * by
+ *   HUB_MSG_TYPE_SET_PIN_STATE
+ *   HUB_MSG_TYPE_GET_OPTIONS
+ *   HUB_MSG_TYPE_SET_OPTIONS
+ *
+ * Revision 1.4  2008/04/14 07:32:04  vfrolov
+ * Renamed option --use-port-module to --use-driver
+ *
+ * Revision 1.3  2008/04/11 14:48:42  vfrolov
+ * Replaced SET_RT_EVENTS by INIT_LSR_MASK and INIT_MST_MASK
+ * Replaced COM_ERRORS by LINE_STATUS
+ *
+ * Revision 1.2  2008/04/07 12:24:17  vfrolov
+ * Replaced --rt-events option by SET_RT_EVENTS message
+ *
+ * Revision 1.1  2008/04/02 10:33:23  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "../plugins_api.h"
+///////////////////////////////////////////////////////////////
+namespace FilterPin2Con {
+///////////////////////////////////////////////////////////////
+#ifndef _DEBUG
+  #define DEBUG_PARAM(par)
+#else   /* _DEBUG */
+  #define DEBUG_PARAM(par) par
+#endif  /* _DEBUG */
+///////////////////////////////////////////////////////////////
+static ROUTINE_MSG_INSERT_VAL *pMsgInsertVal;
+static ROUTINE_MSG_REPLACE_NONE *pMsgReplaceNone;
+static ROUTINE_PORT_NAME_A *pPortName;
+static ROUTINE_FILTER_NAME_A *pFilterName;
+static ROUTINE_TIMER_CREATE *pTimerCreate;
+static ROUTINE_TIMER_SET *pTimerSet;
+static ROUTINE_TIMER_DELETE *pTimerDelete;
+static ROUTINE_FILTERPORT *pFilterPort;
+///////////////////////////////////////////////////////////////
+const char *GetParam(const char *pArg, const char *pPattern)
+{
+  size_t lenPattern = strlen(pPattern);
+
+  if (_strnicmp(pArg, pPattern, lenPattern) != 0)
+    return NULL;
+
+  return pArg + lenPattern;
+}
+///////////////////////////////////////////////////////////////
+class Valid {
+  public:
+    Valid() : isValid(TRUE) {}
+    void Invalidate() { isValid = FALSE; }
+    BOOL IsValid() const { return isValid; }
+  private:
+    BOOL isValid;
+};
+///////////////////////////////////////////////////////////////
+class State {
+  public:
+    State(HMASTERPORT _hMasterPort)
+      : hMasterPort(_hMasterPort)
+      , pName(pPortName(_hMasterPort))
+      , connect(FALSE)
+      , last_connect(FALSE)
+      , hDelayDisconnectTimer(NULL)
+    {
+    }
+
+    ~State()
+    {
+      if (hDelayDisconnectTimer)
+        pTimerDelete(hDelayDisconnectTimer);
+    }
+
+    const HMASTERPORT hMasterPort;
+    const char *const pName;
+
+    BOOL connect;
+    BOOL last_connect;
+
+    HMASTERTIMER hDelayDisconnectTimer;
+};
+///////////////////////////////////////////////////////////////
+class Filter : public Valid {
+  public:
+    Filter(const char *_pName, int argc, const char *const argv[]);
+
+    const char *FilterName() const { return pName; }
+
+    DWORD pin;
+    BOOL negative;
+    DWORD delayDisconnect;
+
+  private:
+    const char *pName;
+};
+
+static struct {
+  const char *pName;
+  DWORD val;
+} pin_names[] = {
+  {"cts",  GO1_V2O_MODEM_STATUS(MODEM_STATUS_CTS)},
+  {"dsr",  GO1_V2O_MODEM_STATUS(MODEM_STATUS_DSR)},
+  {"dcd",  GO1_V2O_MODEM_STATUS(MODEM_STATUS_DCD)},
+  {"ring", GO1_V2O_MODEM_STATUS(MODEM_STATUS_RI)},
+  {"break", GO1_BREAK_STATUS},
+};
+
+Filter::Filter(const char *_pName, int argc, const char *const argv[])
+  : pName(_pName)
+  , pin(GO1_V2O_MODEM_STATUS(MODEM_STATUS_DSR))
+  , negative(FALSE)
+  , delayDisconnect(0)
+{
+  for (const char *const *pArgs = &argv[1] ; argc > 1 ; pArgs++, argc--) {
+    const char *pArg = GetParam(*pArgs, "--");
+
+    if (!pArg) {
+      cerr << "Unknown option " << *pArgs << endl;
+      Invalidate();
+      continue;
+    }
+
+    const char *pParam;
+
+    if ((pParam = GetParam(pArg, "connect=")) != NULL) {
+      if (*pParam == '!') {
+        negative = TRUE;
+        pParam++;
+      }
+
+      pin = 0;
+
+      for (int i = 0 ; i < sizeof(pin_names)/sizeof(pin_names[0]) ; i++) {
+        if (_stricmp(pParam, pin_names[i].pName) == 0) {
+          pin = pin_names[i].val;
+          break;
+        }
+      }
+
+      if (!pin) {
+        cerr << "Unknown pin " << pParam << " in " << *pArgs << endl;
+        Invalidate();
+      }
+    }
+    else
+    if ((pParam = GetParam(pArg, "delay-disconnect=")) != NULL) {
+      if (isdigit((unsigned char)*pParam)) {
+        delayDisconnect = atol(pParam);
+      }
+      else {
+        cerr << "Invalid value in " << pArg << endl;
+        exit(1);
+      }
+    }
+    else {
+      cerr << "Unknown option " << *pArgs << endl;
+      Invalidate();
+    }
+  }
+}
+///////////////////////////////////////////////////////////////
+static PLUGIN_TYPE CALLBACK GetPluginType()
+{
+  return PLUGIN_TYPE_FILTER;
+}
+///////////////////////////////////////////////////////////////
+static const PLUGIN_ABOUT_A about = {
+  sizeof(PLUGIN_ABOUT_A),
+  "pin2con",
+  "Copyright (c) 2008-2011 Vyacheslav Frolov",
+  "GNU General Public License",
+  "Connect or disconnect on changing of line or modem state filter",
+};
+
+static const PLUGIN_ABOUT_A * CALLBACK GetPluginAbout()
+{
+  return &about;
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK Help(const char *pProgPath)
+{
+  cerr
+  << "Usage:" << endl
+  << "  " << pProgPath << " ... --create-filter=" << GetPluginAbout()->pName << "[,<FID>][:<options>] ... --add-filters=<ports>:[...,]<FID>[,...] ..." << endl
+  << endl
+  << "Options:" << endl
+  << "  --connect=[!]<state>  - <state> is cts, dsr, dcd, ring or break (dsr by" << endl
+  << "                          default). The exclamation sign (!) can be used to" << endl
+  << "                          invert the value." << endl
+  << "  --delay-disconnect=<t>" << endl
+  << "                        - delay the disconnect at least for <t> milliseconds." << endl
+  << "                          Ignore the disconnect if the connect will raised" << endl
+  << "                          again while this delay." << endl
+  << endl
+  << "IN method input data stream description:" << endl
+  << "  CONNECT(TRUE/FALSE)   - will be discarded from stream." << endl
+  << "  BREAK_STATUS(<val>)   - current state of break." << endl
+  << "  MODEM_STATUS(<val>)   - current state of modem." << endl
+  << endl
+  << "IN method output data stream description:" << endl
+  << "  CONNECT(TRUE/FALSE)   - will be added on appropriate state changing." << endl
+  << endl
+  << "Examples:" << endl
+  << "  " << pProgPath << " --load=,,_END_" << endl
+  << "      --create-filter=pin2con" << endl
+  << "      --add-filters=0:pin2con" << endl
+  << "      COM1" << endl
+  << "      --use-driver=tcp" << endl
+  << "      111.11.11.11:1111" << endl
+  << "      _END_" << endl
+  << "    - wait DSR ON from COM1 and then establish connection to 111.11.11.11:1111" << endl
+  << "      and disconnect on DSR OFF." << endl
+  ;
+}
+///////////////////////////////////////////////////////////////
+static HFILTER CALLBACK Create(
+    HMASTERFILTER hMasterFilter,
+    HCONFIG /*hConfig*/,
+    int argc,
+    const char *const argv[])
+{
+  _ASSERTE(hMasterFilter != NULL);
+
+  Filter *pFilter = new Filter(pFilterName(hMasterFilter), argc, argv);
+
+  if (!pFilter) {
+    cerr << "No enough memory." << endl;
+    exit(2);
+  }
+
+  if (!pFilter->IsValid()) {
+    delete pFilter;
+    return NULL;
+  }
+
+  return (HFILTER)pFilter;
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK Delete(
+    HFILTER hFilter)
+{
+  _ASSERTE(hFilter != NULL);
+
+  delete (Filter *)hFilter;
+}
+///////////////////////////////////////////////////////////////
+static HFILTERINSTANCE CALLBACK CreateInstance(
+    HMASTERFILTERINSTANCE hMasterFilterInstance)
+{
+  _ASSERTE(hMasterFilterInstance != NULL);
+
+  HMASTERPORT hMasterPort = pFilterPort(hMasterFilterInstance);
+
+  _ASSERTE(hMasterPort != NULL);
+
+  return (HFILTERINSTANCE)new State(hMasterPort);
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK DeleteInstance(
+    HFILTERINSTANCE hFilterInstance)
+{
+  _ASSERTE(hFilterInstance != NULL);
+
+  delete (State *)hFilterInstance;
+}
+///////////////////////////////////////////////////////////////
+static HUB_MSG *InsertConnectState(
+    Filter &filter,
+    State &state,
+    HUB_MSG *pInMsg,
+    BOOL pinState,
+    BOOL timeout = FALSE)
+{
+  _ASSERTE(filter.delayDisconnect || (!timeout && !state.hDelayDisconnectTimer));
+
+  if (!timeout)
+    state.last_connect = filter.negative ? !pinState : pinState;
+
+  //cout << "beg timeout=" << timeout << " connect=" << state.connect << " last_connect=" << state.last_connect << endl;
+
+  if (state.connect != state.last_connect) {
+    if (!state.last_connect && filter.delayDisconnect) {
+      if (!timeout) {
+        if (!state.hDelayDisconnectTimer) {
+          state.hDelayDisconnectTimer = pTimerCreate((HTIMEROWNER)&state);
+
+          if (state.hDelayDisconnectTimer) {
+            LARGE_INTEGER firstReportTime;
+
+            firstReportTime.QuadPart = -10000LL * filter.delayDisconnect;
+
+            pTimerSet(
+                state.hDelayDisconnectTimer,
+                state.hMasterPort,
+                &firstReportTime, 0,
+                (HTIMERPARAM)state.hDelayDisconnectTimer);
+
+            //cout << "pTimerSet" << endl;
+          }
+        }
+      } else {
+        pInMsg = pMsgInsertVal(pInMsg, HUB_MSG_TYPE_CONNECT, state.connect = state.last_connect);
+
+        //cout << "HUB_MSG_TYPE_CONNECT connect=" << state.connect << endl;
+
+        if (state.hDelayDisconnectTimer) {
+          pTimerDelete(state.hDelayDisconnectTimer);
+          state.hDelayDisconnectTimer = NULL;
+
+          //cout << "pTimerDelete" << endl;
+        }
+      }
+    } else {
+      pInMsg = pMsgInsertVal(pInMsg, HUB_MSG_TYPE_CONNECT, state.connect = state.last_connect);
+
+      //cout << "HUB_MSG_TYPE_CONNECT connect=" << state.connect << endl;
+    }
+  } else {
+    if (state.hDelayDisconnectTimer) {
+      pTimerDelete(state.hDelayDisconnectTimer);
+      state.hDelayDisconnectTimer = NULL;
+
+      cout << "pTimerDelete" << endl;
+    }
+  }
+
+  return pInMsg;
+}
+
+static BOOL CALLBACK InMethod(
+    HFILTER hFilter,
+    HFILTERINSTANCE hFilterInstance,
+    HUB_MSG *pInMsg,
+    HUB_MSG **DEBUG_PARAM(ppEchoMsg))
+{
+  _ASSERTE(hFilter != NULL);
+  _ASSERTE(hFilterInstance != NULL);
+  _ASSERTE(pInMsg != NULL);
+  _ASSERTE(ppEchoMsg != NULL);
+  _ASSERTE(*ppEchoMsg == NULL);
+
+  switch (HUB_MSG_T2N(pInMsg->type)) {
+  case HUB_MSG_T2N(HUB_MSG_TYPE_GET_IN_OPTS):
+    _ASSERTE(pInMsg->u.pv.pVal != NULL);
+
+    if (GO_O2I(pInMsg->u.pv.val) != 1)
+      break;
+
+    // or'e with the required mask to get line status and modem status
+    *pInMsg->u.pv.pVal |= (((Filter *)hFilter)->pin & pInMsg->u.pv.val);
+    break;
+  case HUB_MSG_T2N(HUB_MSG_TYPE_FAIL_IN_OPTS): {
+    if (GO_O2I(pInMsg->u.pv.val) != 1)
+      break;
+
+    DWORD fail_options = (pInMsg->u.val & ((Filter *)hFilter)->pin);
+
+    if (fail_options) {
+      cerr << ((State *)hFilterInstance)->pName
+           << " WARNING: Requested by filter " << ((Filter *)hFilter)->FilterName()
+           << " option(s) GO1_0x" << hex << fail_options << dec
+           << " not accepted" << endl;
+    }
+    break;
+  }
+  case HUB_MSG_T2N(HUB_MSG_TYPE_CONNECT):
+    // discard any CONNECT messages from the input stream
+    if (!pMsgReplaceNone(pInMsg, HUB_MSG_TYPE_EMPTY))
+      return FALSE;
+    break;
+  case HUB_MSG_T2N(HUB_MSG_TYPE_TICK): {
+    if (pInMsg->u.hv2.hVal0 != hFilterInstance)
+      break;
+
+    HUB_MSG inMsg = *pInMsg;
+
+    // discard owned tick
+    if (!pMsgReplaceNone(pInMsg, HUB_MSG_TYPE_EMPTY))
+      return FALSE;
+
+    if (inMsg.u.hv2.hVal1 == ((State *)hFilterInstance)->hDelayDisconnectTimer)
+      pInMsg = InsertConnectState(*((Filter *)hFilter), *(State *)hFilterInstance, pInMsg, 0, TRUE);
+
+    break;
+  }
+  case HUB_MSG_T2N(HUB_MSG_TYPE_MODEM_STATUS): {
+    WORD pin;
+
+    pin = GO1_O2V_MODEM_STATUS(((Filter *)hFilter)->pin);
+
+    if ((pin & MASK2VAL(pInMsg->u.val)) == 0)
+      break;
+
+    pInMsg = InsertConnectState(*((Filter *)hFilter), *(State *)hFilterInstance, pInMsg, ((pInMsg->u.val & pin) != 0));
+
+    break;
+  }
+  case HUB_MSG_T2N(HUB_MSG_TYPE_BREAK_STATUS):
+    if (((Filter *)hFilter)->pin & GO1_BREAK_STATUS)
+      pInMsg = InsertConnectState(*((Filter *)hFilter), *(State *)hFilterInstance, pInMsg, pInMsg->u.val != 0);
+    break;
+  }
+
+  return pInMsg != NULL;
+}
+///////////////////////////////////////////////////////////////
+static const FILTER_ROUTINES_A routines = {
+  sizeof(FILTER_ROUTINES_A),
+  GetPluginType,
+  GetPluginAbout,
+  Help,
+  NULL,           // ConfigStart
+  NULL,           // Config
+  NULL,           // ConfigStop
+  Create,
+  Delete,
+  CreateInstance,
+  DeleteInstance,
+  InMethod,
+  NULL,           // OutMethod
+};
+
+static const PLUGIN_ROUTINES_A *const plugins[] = {
+  (const PLUGIN_ROUTINES_A *)&routines,
+  NULL
+};
+///////////////////////////////////////////////////////////////
+PLUGIN_INIT_A InitA;
+const PLUGIN_ROUTINES_A *const * CALLBACK InitA(
+    const HUB_ROUTINES_A * pHubRoutines)
+{
+  if (!ROUTINE_IS_VALID(pHubRoutines, pMsgInsertVal) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pMsgReplaceNone) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pPortName) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pFilterName) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pTimerCreate) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pTimerSet) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pTimerDelete) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pFilterPort))
+  {
+    return NULL;
+  }
+
+  pMsgInsertVal = pHubRoutines->pMsgInsertVal;
+  pMsgReplaceNone = pHubRoutines->pMsgReplaceNone;
+  pPortName = pHubRoutines->pPortName;
+  pFilterName = pHubRoutines->pFilterName;
+  pTimerCreate = pHubRoutines->pTimerCreate;
+  pTimerSet = pHubRoutines->pTimerSet;
+  pTimerDelete = pHubRoutines->pTimerDelete;
+  pFilterPort = pHubRoutines->pFilterPort;
+
+  return plugins;
+}
+///////////////////////////////////////////////////////////////
+} // end namespace
+///////////////////////////////////////////////////////////////
+@
+
+
+1.16
+log
+@Optimized filter's API
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.15 2008/12/22 09:40:46 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008-2009 Vyacheslav Frolov
+d22 3
+d98 3
+d124 8
+a131 1
+    State(HMASTERPORT hMasterPort) : pName(pPortName(hMasterPort)), connect(FALSE) {}
+d133 7
+d141 1
+d143 3
+d156 1
+d174 4
+a177 3
+  : pName(_pName),
+    pin(GO1_V2O_MODEM_STATUS(MODEM_STATUS_DSR)),
+    negative(FALSE)
+d209 12
+a220 1
+    } else {
+d235 1
+a235 1
+  "Copyright (c) 2008 Vyacheslav Frolov",
+d255 4
+d336 2
+a337 1
+    BOOL pinState)
+d339 29
+a367 2
+  if (filter.negative)
+    pinState = !pinState;
+d369 22
+a390 2
+  if (state.connect != pinState)
+    pInMsg = pMsgInsertVal(pInMsg, HUB_MSG_TYPE_CONNECT, state.connect = pinState);
+d436 15
+d501 3
+d513 3
+@
+
+
+1.15
+log
+@Optimized message switching
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.14 2008/12/18 16:50:52 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008 Vyacheslav Frolov
+d22 3
+d91 5
+a95 4
+static ROUTINE_MSG_INSERT_VAL *pMsgInsertVal = NULL;
+static ROUTINE_MSG_REPLACE_NONE *pMsgReplaceNone = NULL;
+static ROUTINE_PORT_NAME_A *pPortName = NULL;
+static ROUTINE_FILTER_NAME_A *pFilterName = NULL;
+d107 9
+d118 1
+a118 1
+    State() : connect(FALSE) {}
+d120 1
+d124 1
+a124 1
+class Filter {
+d126 1
+a126 2
+    Filter(int argc, const char *const argv[]);
+    State *GetState(HMASTERPORT hPort);
+a127 1
+    void SetFilterName(const char *_pName) { pName = _pName; }
+a134 5
+
+    typedef map<HMASTERPORT, State*> PortsMap;
+    typedef pair<HMASTERPORT, State*> PortPair;
+
+    PortsMap portsMap;
+d148 4
+a151 4
+Filter::Filter(int argc, const char *const argv[])
+  : pin(GO1_V2O_MODEM_STATUS(MODEM_STATUS_DSR)),
+    negative(FALSE),
+    pName(NULL)
+d158 1
+d179 4
+a182 2
+      if (!pin)
+        cerr << "Unknown pin " << pParam << endl;
+d184 2
+a185 1
+      cerr << "Unknown option " << pArg << endl;
+a188 19
+
+State *Filter::GetState(HMASTERPORT hPort)
+{
+  PortsMap::iterator iPair = portsMap.find(hPort);
+
+  if (iPair == portsMap.end()) {
+      portsMap.insert(PortPair(hPort, NULL));
+
+      iPair = portsMap.find(hPort);
+
+      if (iPair == portsMap.end())
+        return NULL;
+  }
+
+  if (!iPair->second)
+    iPair->second = new State();
+
+  return iPair->second;
+}
+d241 1
+d246 15
+a260 1
+  return (HFILTER)new Filter(argc, argv);
+d263 2
+a264 3
+static BOOL CALLBACK Init(
+    HFILTER hFilter,
+    HMASTERFILTER hMasterFilter)
+a266 1
+  _ASSERTE(hMasterFilter != NULL);
+d268 11
+a278 1
+  ((Filter *)hFilter)->SetFilterName(pFilterName(hMasterFilter));
+d280 9
+a288 1
+  return TRUE;
+d293 1
+a293 1
+    HMASTERPORT hFromPort,
+a296 5
+  State *pState = filter.GetState(hFromPort);
+
+  if (!pState)
+    return FALSE;
+
+d300 2
+a301 2
+  if (pState->connect != pinState)
+    pInMsg = pMsgInsertVal(pInMsg, HUB_MSG_TYPE_CONNECT, pState->connect = pinState);
+d308 1
+a308 1
+    HMASTERPORT hFromPort,
+d313 1
+a313 1
+  _ASSERTE(hFromPort != NULL);
+d335 1
+a335 1
+      cerr << pPortName(hFromPort)
+d355 1
+a355 1
+    pInMsg = InsertConnectState(*((Filter *)hFilter), hFromPort, pInMsg, ((pInMsg->u.val & pin) != 0));
+d361 1
+a361 1
+      pInMsg = InsertConnectState(*((Filter *)hFilter), hFromPort, pInMsg, pInMsg->u.val != 0);
+d377 3
+a379 1
+  Init,
+d396 2
+a397 1
+      !ROUTINE_IS_VALID(pHubRoutines, pFilterName))
+d406 1
+@
+
+
+1.14
+log
+@Extended the number of possible IN options
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.13 2008/11/25 16:40:40 vfrolov Exp $
+d22 3
+d300 2
+a301 2
+  switch (pInMsg->type) {
+  case HUB_MSG_TYPE_GET_IN_OPTS:
+d310 1
+a310 1
+  case HUB_MSG_TYPE_FAIL_IN_OPTS: {
+d324 1
+a324 1
+  case HUB_MSG_TYPE_CONNECT:
+d329 1
+a329 1
+  case HUB_MSG_TYPE_MODEM_STATUS: {
+d341 1
+a341 1
+  case HUB_MSG_TYPE_BREAK_STATUS:
+@
+
+
+1.13
+log
+@Added assert for port handle
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.12 2008/11/24 12:37:00 vfrolov Exp $
+d22 3
+d131 5
+a135 5
+  {"cts",  GO_V2O_MODEM_STATUS(MODEM_STATUS_CTS)},
+  {"dsr",  GO_V2O_MODEM_STATUS(MODEM_STATUS_DSR)},
+  {"dcd",  GO_V2O_MODEM_STATUS(MODEM_STATUS_DCD)},
+  {"ring", GO_V2O_MODEM_STATUS(MODEM_STATUS_RI)},
+  {"break", GO_BREAK_STATUS},
+d139 1
+a139 1
+  : pin(GO_V2O_MODEM_STATUS(MODEM_STATUS_DSR)),
+d300 4
+d308 3
+d316 1
+a316 1
+           << " option(s) 0x" << hex << fail_options << dec
+d329 1
+a329 1
+    pin = GO_O2V_MODEM_STATUS(((Filter *)hFilter)->pin);
+d339 1
+a339 1
+    if (((Filter *)hFilter)->pin & GO_BREAK_STATUS)
+@
+
+
+1.12
+log
+@Changed plugin API
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.11 2008/11/13 07:50:41 vfrolov Exp $
+d22 3
+d289 1
+@
+
+
+1.11
+log
+@Changed for staticaly linking
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.10 2008/10/16 09:24:23 vfrolov Exp $
+d22 3
+d73 6
+d104 4
+a107 4
+    void SetHub(HHUB _hHub) { hHub = _hHub; }
+    State *GetState(int nPort);
+    const char *PortName(int nPort) const { return pPortName(hHub, nPort); }
+    const char *FilterName() const { return pFilterName(hHub, (HFILTER)this); }
+d113 1
+a113 1
+    HHUB hHub;
+d115 2
+a116 2
+    typedef map<int, State*> PortsMap;
+    typedef pair<int, State*> PortPair;
+d135 1
+a135 1
+    hHub(NULL)
+d170 1
+a170 1
+State *Filter::GetState(int nPort)
+d172 1
+a172 1
+  PortsMap::iterator iPair = portsMap.find(nPort);
+d175 1
+a175 1
+      portsMap.insert(PortPair(nPort, NULL));
+d177 1
+a177 1
+      iPair = portsMap.find(nPort);
+d215 2
+a216 1
+  << "                          default)." << endl
+d249 1
+a249 1
+    HHUB hHub)
+d252 1
+a252 1
+  _ASSERTE(hHub != NULL);
+d254 1
+a254 1
+  ((Filter *)hFilter)->SetHub(hHub);
+d261 1
+a261 1
+    int nFromPort,
+d265 1
+a265 1
+  State *pState = filter.GetState(nFromPort);
+d281 1
+a281 1
+    int nFromPort,
+d283 1
+a283 1
+    HUB_MSG **ppEchoMsg)
+d300 1
+a300 1
+      cerr << ((Filter *)hFilter)->PortName(nFromPort)
+d320 1
+a320 1
+    pInMsg = InsertConnectState(*((Filter *)hFilter), nFromPort, pInMsg, ((pInMsg->u.val & pin) != 0));
+d326 1
+a326 1
+      pInMsg = InsertConnectState(*((Filter *)hFilter), nFromPort, pInMsg, pInMsg->u.val != 0);
+@
+
+
+1.10
+log
+@Changed return type of ROUTINE_MSG_REPLACE_*() to BOOL
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.9 2008/09/30 07:52:09 vfrolov Exp $
+d22 3
+d67 2
+a68 1
+
+d362 2
+@
+
+
+1.9
+log
+@Removed HUB_MSG_TYPE_LINE_STATUS filtering
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.8 2008/08/22 16:57:11 vfrolov Exp $
+d22 3
+d295 2
+a296 1
+    pMsgReplaceNone(pInMsg, HUB_MSG_TYPE_EMPTY);
+@
+
+
+1.8
+log
+@Added
+  HUB_MSG_TYPE_GET_ESC_OPTS
+  HUB_MSG_TYPE_FAIL_ESC_OPTS
+  HUB_MSG_TYPE_BREAK_STATUS
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.7 2008/08/22 12:45:34 vfrolov Exp $
+d22 6
+a201 3
+  << "  GET_IN_OPTS(<pOpts>)  - the value pointed by <pOpts> will be or'ed with" << endl
+  << "                          the required mask to get line status and modem" << endl
+  << "                          status." << endl
+d203 1
+a203 1
+  << "  LINE_STATUS(<val>)    - current state of line." << endl
+d210 7
+a216 1
+  << "  " << pProgPath << " --create-filter=" << GetPluginAbout()->pName << " --add-filters=0:" << GetPluginAbout()->pName << " COM1 --use-driver=tcp 111.11.11.11:1111" << endl
+a293 1
+  case HUB_MSG_TYPE_LINE_STATUS:
+d297 1
+a297 5
+    if (pInMsg->type == HUB_MSG_TYPE_LINE_STATUS) {
+      pin = GO_O2V_LINE_STATUS(((Filter *)hFilter)->pin);
+    } else {
+      pin = GO_O2V_MODEM_STATUS(((Filter *)hFilter)->pin);
+    }
+@
+
+
+1.7
+log
+@Added masking to HUB_MSG_TYPE_MODEM_STATUS and HUB_MSG_TYPE_LINE_STATUS
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.6 2008/08/20 14:30:19 vfrolov Exp $
+d22 3
+d107 1
+a107 1
+  {"break", GO_V2O_LINE_STATUS(LINE_STATUS_BI)},
+d233 20
+d286 1
+a286 1
+  case HUB_MSG_TYPE_MODEM_STATUS:
+d298 1
+a298 1
+    BOOL connect = ((pInMsg->u.val & pin) != 0);
+d300 5
+a304 17
+    if (((Filter *)hFilter)->negative)
+      connect = !connect;
+
+    State *pState = ((Filter *)hFilter)->GetState(nFromPort);
+
+    if (!pState)
+      return FALSE;
+
+    if (pState->connect != connect) {
+      pState->connect = connect;
+
+      if (connect) {
+        pInMsg = pMsgInsertVal(pInMsg, HUB_MSG_TYPE_CONNECT, TRUE);
+      } else {
+        pInMsg = pMsgInsertVal(pInMsg, HUB_MSG_TYPE_CONNECT, FALSE);
+      }
+    }
+@
+
+
+1.6
+log
+@Redesigned serial port options
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.5 2008/08/11 07:15:33 vfrolov Exp $
+d22 3
+d241 2
+a242 1
+  if (pInMsg->type == HUB_MSG_TYPE_GET_IN_OPTS) {
+d246 2
+a247 3
+  }
+  else
+  if (pInMsg->type == HUB_MSG_TYPE_FAIL_IN_OPTS) {
+d256 1
+d258 1
+a258 2
+  else
+  if (pInMsg->type == HUB_MSG_TYPE_CONNECT) {
+d261 13
+a273 6
+  }
+  else
+  if (pInMsg->type == HUB_MSG_TYPE_LINE_STATUS ||
+      pInMsg->type == HUB_MSG_TYPE_MODEM_STATUS)
+  {
+    BOOL connect;
+d275 1
+a275 4
+    if (pInMsg->type == HUB_MSG_TYPE_LINE_STATUS)
+      connect = ((pInMsg->u.val & GO_O2V_LINE_STATUS(((Filter *)hFilter)->pin)) != 0);
+    else
+      connect = ((pInMsg->u.val & GO_O2V_MODEM_STATUS(((Filter *)hFilter)->pin)) != 0);
+d294 1
+@
+
+
+1.5
+log
+@Replaced
+  HUB_MSG_TYPE_COM_FUNCTION
+  HUB_MSG_TYPE_INIT_LSR_MASK
+  HUB_MSG_TYPE_INIT_MST_MASK
+by
+  HUB_MSG_TYPE_SET_PIN_STATE
+  HUB_MSG_TYPE_GET_OPTIONS
+  HUB_MSG_TYPE_SET_OPTIONS
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.4 2008/04/14 07:32:04 vfrolov Exp $
+d22 10
+d53 2
+a72 3
+typedef map<int, State*> PortsMap;
+typedef pair<int, State*> PortPair;
+
+d76 1
+d78 2
+d85 5
+d106 2
+a107 1
+    negative(FALSE)
+d190 1
+a190 2
+  << "  HUB_MSG_TYPE_GET_OPTIONS(<pOptions>)" << endl
+  << "                        - the value pointed by <pOptions> will be or'ed with" << endl
+d194 2
+a195 2
+  << "  LINE_STATUS(<val>)    - current state of line" << endl
+  << "  MODEM_STATUS(<val>)   - current state of modem" << endl
+d215 12
+d238 1
+a238 1
+  if (pInMsg->type == HUB_MSG_TYPE_GET_OPTIONS) {
+d240 1
+d244 11
+d301 1
+a301 1
+  NULL,           // Init
+d316 3
+a318 1
+      !ROUTINE_IS_VALID(pHubRoutines, pMsgReplaceNone))
+d325 2
+@
+
+
+1.4
+log
+@Renamed option --use-port-module to --use-driver
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.3 2008/04/11 14:48:42 vfrolov Exp $
+d22 3
+d78 1
+a78 1
+  WORD val;
+d80 5
+a84 5
+  {"cts",  MODEM_STATUS_CTS},
+  {"dsr",  MODEM_STATUS_DSR},
+  {"dcd",  MODEM_STATUS_DCD},
+  {"ring", MODEM_STATUS_RI},
+  {"break", LINE_STATUS_BI << 8},
+d88 1
+a88 1
+  : pin(MODEM_STATUS_DSR),
+d172 4
+a175 4
+  << "  INIT_LSR_MASK(<pval>) - the value pointed by <pval> will be or'ed with the" << endl
+  << "                          required line status mask." << endl
+  << "  INIT_MST_MASK(<pval>) - the value pointed by <pval> will be or'ed with the" << endl
+  << "                          required modem status mask." << endl
+d209 3
+a211 8
+  if (pInMsg->type == HUB_MSG_TYPE_INIT_LSR_MASK) {
+    _ASSERTE(pInMsg->u.pVal != NULL);
+    *pInMsg->u.pVal |= (((Filter *)hFilter)->pin >> 8);
+  }
+  else
+  if (pInMsg->type == HUB_MSG_TYPE_INIT_MST_MASK) {
+    _ASSERTE(pInMsg->u.pVal != NULL);
+    *pInMsg->u.pVal |= (((Filter *)hFilter)->pin & 0xFF);
+d225 1
+a225 1
+      connect = ((pInMsg->u.val & (((Filter *)hFilter)->pin >> 8)) != 0);
+d227 1
+a227 1
+      connect = ((pInMsg->u.val & (((Filter *)hFilter)->pin & 0xFF)) != 0);
+@
+
+
+1.3
+log
+@Replaced SET_RT_EVENTS by INIT_LSR_MASK and INIT_MST_MASK
+Replaced COM_ERRORS by LINE_STATUS
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.2 2008/04/07 12:24:17 vfrolov Exp $
+d22 4
+d181 1
+a181 1
+  << "  " << pProgPath << " --create-filter=" << GetPluginAbout()->pName << " --add-filters=0:" << GetPluginAbout()->pName << " COM1 --use-port-module=tcp 111.11.11.11:1111" << endl
+@
+
+
+1.2
+log
+@Replaced --rt-events option by SET_RT_EVENTS message
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.1 2008/04/02 10:33:23 vfrolov Exp $
+d22 3
+a63 2
+    DWORD myEvents;
+    DWORD events;
+a69 1
+  DWORD val;
+d71 1
+a71 1
+  DWORD events;
+d73 5
+a77 4
+  {MS_CTS_ON,   "cts",  EV_CTS},
+  {MS_DSR_ON,   "dsr",  EV_DSR},
+  {MS_RLSD_ON,  "dcd",  EV_RLSD},
+  {MS_RING_ON,  "ring", EV_RING},
+d81 1
+a81 1
+  : pin(MS_DSR_ON),
+d99 2
+a100 1
+      BOOL found = FALSE;
+a104 1
+          found = TRUE;
+d109 1
+a109 1
+      if (!found)
+a114 9
+
+  myEvents = 0;
+
+  for (int i = 0 ; i < sizeof(pin_names)/sizeof(pin_names[0]) ; i++) {
+    if ((pin & pin_names[i].val) != 0)
+      myEvents |= pin_names[i].events;
+  }
+
+  events = myEvents;
+d146 1
+a146 1
+  "Connect on pin state changing filter",
+d161 2
+a162 1
+  << "  --connect=[!]<pin>    - <pin> is cts, dsr, dcd or ring (dsr by default)." << endl
+d165 7
+a171 3
+  << "  CONNECT(TRUE)         - it will be discarded from stream." << endl
+  << "  CONNECT(FALSE)        - it will be discarded from stream." << endl
+  << "  MODEM_STATUS(<value>) - current state of pins" << endl
+d174 1
+a174 12
+  << "  CONNECT(TRUE)         - will be added on appropriate pin state changing." << endl
+  << "  CONNECT(FALSE)        - will be added on appropriate pin state changing." << endl
+  << endl
+  << "IN method echo data stream description:" << endl
+  << "  SET_RT_EVENTS(<mask>) - will be added on CONNECT(TRUE) in input data stream." << endl
+  << endl
+  << "OUT method input data stream description:" << endl
+  << "  SET_RT_EVENTS(<mask>) - <mask> is the events mask." << endl
+  << endl
+  << "OUT method output data stream description:" << endl
+  << "  SET_RT_EVENTS(<mask>) - <mask> is the events mask with event required by this" << endl
+  << "                          filter." << endl
+d202 10
+a212 9
+    if (pInMsg->u.val) {
+      *ppEchoMsg = pMsgInsertVal(NULL,
+                                 HUB_MSG_TYPE_SET_RT_EVENTS,
+                                 ((Filter *)hFilter)->events);
+
+      if (!*ppEchoMsg)
+        return FALSE;
+    }
+
+d217 9
+a225 2
+  if (pInMsg->type == HUB_MSG_TYPE_MODEM_STATUS) {
+    BOOL connect = ((pInMsg->u.val & ((Filter *)hFilter)->pin) != 0);
+a248 18
+static BOOL CALLBACK OutMethod(
+    HFILTER hFilter,
+    int /*nFromPort*/,
+    int /*nToPort*/,
+    HUB_MSG *pOutMsg)
+{
+  _ASSERTE(hFilter != NULL);
+  _ASSERTE(pOutMsg != NULL);
+
+  if (pOutMsg->type == HUB_MSG_TYPE_SET_RT_EVENTS) {
+    // Add event required by this filter
+    pOutMsg->u.val |= ((Filter *)hFilter)->myEvents;
+    ((Filter *)hFilter)->events = pOutMsg->u.val;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+d260 1
+a260 1
+  OutMethod,
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 4
+a24 1
+ * $Log: $
+a30 6
+#ifndef _DEBUG
+  #define DEBUG_PARAM(par)
+#else   /* _DEBUG */
+  #define DEBUG_PARAM(par) par
+#endif  /* _DEBUG */
+///////////////////////////////////////////////////////////////
+d61 2
+d71 1
+d73 4
+a76 4
+  {MS_CTS_ON,   "cts"},
+  {MS_DSR_ON,   "dsr"},
+  {MS_RLSD_ON,  "dcd"},
+  {MS_RING_ON,  "ring"},
+d114 9
+d180 10
+d191 1
+a191 1
+  << "  " << pProgPath << " --create-filter=" << GetPluginAbout()->pName << " --add-filters=0:" << GetPluginAbout()->pName << " --rt-events=dsr COM1 --use-port-module=tcp 111.11.11.11:1111" << endl
+d209 1
+a209 1
+    HUB_MSG **DEBUG_PARAM(ppEchoMsg))
+d217 9
+d255 18
+d284 1
+a284 1
+  NULL,           // OutMethod
+@
+

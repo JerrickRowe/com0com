@@ -1,0 +1,363 @@
+head	1.13;
+access;
+symbols
+	v3_0_0_0:1.13
+	v2_2_2_0:1.10
+	v2_2_1_0:1.10
+	v2_2_0_0:1.10
+	v2_1_0_0:1.8
+	v2_0_0_0:1.6
+	v1_8_0_0:1.3
+	RELEASED:1.13
+	v1_7_0_0:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.13
+date	2011.12.06.16.03.22;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2010.06.01.06.14.10;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2010.05.27.11.16.46;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.09.17.07.58.32;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2008.06.26.13.31.54;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2008.05.04.09.44.05;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.04.08.06.44.35;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2007.10.19.15.58.18;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2007.09.17.14.28.07;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2007.07.03.14.25.12;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2006.11.03.13.06.33;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.11.02.15.56.38;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.10.13.10.06.13;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.13
+log
+@Added cleaning high data bits for less then 8 bit data
+Added AllDataBits option to force 8 bit data
+@
+text
+@/*
+ * $Id: com0com.h,v 1.12 2010/06/01 06:14:10 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2011 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
+#ifndef _INCLUDE_C0C_COM0COM_H_
+#define _INCLUDE_C0C_COM0COM_H_
+
+#define C0C_BUS_DEVICE_ID           TEXT_PREF"root\\com0com"
+#define C0C_PORT_DEVICE_ID          TEXT_PREF"com0com\\port"
+#define C0C_PORT_HW_ID_CNCCLASS     TEXT_PREF"com0com\\cncport"
+#define C0C_PORT_HW_ID_COMCLASS     TEXT_PREF"com0com\\comport"
+#define C0C_SERVICE                 TEXT_PREF"com0com"
+#define C0C_PREF_NT_DEVICE_NAME     TEXT_PREF"\\Device\\"
+
+#define C0C_PORT_NAME_LEN           12
+#define C0C_PREF_BUS_NAME           TEXT_PREF"CNCBUS"
+#define C0C_PREF_PORT_NAME_A        TEXT_PREF"CNCA"
+#define C0C_PREF_PORT_NAME_B        TEXT_PREF"CNCB"
+#define C0C_PREF_DEVICE_NAME_A      C0C_PREF_NT_DEVICE_NAME C0C_SERVICE TEXT_PREF"1"
+#define C0C_PREF_DEVICE_NAME_B      C0C_PREF_NT_DEVICE_NAME C0C_SERVICE TEXT_PREF"2"
+#define C0C_PORT_NAME_COMCLASS      TEXT_PREF"COM#"
+
+#define C0C_REGSTR_VAL_PORT_NUM     TEXT_PREF"PortNum"
+
+#define C0C_PIN_RRTS                0x00000001
+#define C0C_PIN_RDTR                0x00000002
+#define C0C_PIN_ROUT1               0x00000004
+#define C0C_PIN_ROUT2               0x00000008
+#define C0C_PIN_ROPEN               0x00000080
+#define C0C_PIN_LRTS                0x00000100
+#define C0C_PIN_LDTR                0x00000200
+#define C0C_PIN_LOUT1               0x00000400
+#define C0C_PIN_LOUT2               0x00000800
+#define C0C_PIN_LOPEN               0x00008000
+#define C0C_PIN_ON                  0x10000000
+#define C0C_PIN_NEGATIVE            0x80000000
+
+#define C0C_DEFAULT_PIN_CTS         C0C_PIN_RRTS
+#define C0C_DEFAULT_PIN_DSR         C0C_PIN_RDTR
+#define C0C_DEFAULT_PIN_DCD         C0C_PIN_RDTR
+#define C0C_DEFAULT_PIN_RI          (C0C_PIN_ON|C0C_PIN_NEGATIVE)
+
+#define C0C_DEFAULT_EMUBR           0x00000000
+#define C0C_DEFAULT_EMUOVERRUN      0x00000000
+#define C0C_DEFAULT_PLUGINMODE      0x00000000
+#define C0C_DEFAULT_EXCLUSIVEMODE   0x00000000
+#define C0C_DEFAULT_HIDDENMODE      0x00000000
+#define C0C_DEFAULT_ALLDATABITS     0x00000000
+#define C0C_DEFAULT_EMUNOISE        0x00000000
+#define C0C_DEFAULT_ADDRTTO         0x00000000
+#define C0C_DEFAULT_ADDRITO         0x00000000
+
+#define C0C_PROBABILITY_ONE         100000000
+
+#endif /* _INCLUDE_C0C_COM0COM_H_ */
+@
+
+
+1.12
+log
+@Improved driver updating
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.11 2010/05/27 11:16:46 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2010 Vyacheslav Frolov
+d65 1
+@
+
+
+1.11
+log
+@Added ability to put the port to the Ports class
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.10 2008/09/17 07:58:32 vfrolov Exp $
+d27 2
+@
+
+
+1.10
+log
+@Added AddRTTO and AddRITO parameters
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.9 2008/06/26 13:31:54 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2008 Vyacheslav Frolov
+d36 1
+@
+
+
+1.9
+log
+@Implemented noise emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.8 2008/05/04 09:44:05 vfrolov Exp $
+a19 26
+ *
+ * $Log: com0com.h,v $
+ * Revision 1.8  2008/05/04 09:44:05  vfrolov
+ * Added C0C_DEFAULT_HIDDENMODE
+ *
+ * Revision 1.7  2008/04/08 06:44:35  vfrolov
+ * Added pin OUT2
+ *
+ * Revision 1.6  2007/10/19 15:58:18  vfrolov
+ * Added default values
+ *
+ * Revision 1.5  2007/09/17 14:28:07  vfrolov
+ * Implemented pseudo pin OPEN
+ *
+ * Revision 1.4  2007/07/03 14:25:12  vfrolov
+ * Implemented pinout customization
+ *
+ * Revision 1.3  2006/11/03 13:06:33  vfrolov
+ * Moved C0C_PORT_NAME_LEN from sys/com0com.h to include/com0com.h
+ *
+ * Revision 1.2  2006/11/02 15:56:38  vfrolov
+ * Defined C0C_REGSTR_VAL_PORT_NUM
+ *
+ * Revision 1.1  2006/10/13 10:06:13  vfrolov
+ * Initial revision
+ *
+d63 2
+@
+
+
+1.8
+log
+@Added C0C_DEFAULT_HIDDENMODE
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.7 2008/04/08 06:44:35 vfrolov Exp $
+d22 3
+d88 3
+@
+
+
+1.7
+log
+@Added pin OUT2
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.6 2007/10/19 15:58:18 vfrolov Exp $
+d22 3
+d84 1
+@
+
+
+1.6
+log
+@Added default values
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.5 2007/09/17 14:28:07 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+d22 3
+d62 1
+d67 1
+@
+
+
+1.5
+log
+@Implemented pseudo pin OPEN
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.4 2007/07/03 14:25:12 vfrolov Exp $
+d22 3
+d67 10
+@
+
+
+1.4
+log
+@Implemented pinout customization
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.3 2006/11/03 13:06:33 vfrolov Exp $
+d22 3
+d56 1
+d60 1
+@
+
+
+1.3
+log
+@Moved C0C_PORT_NAME_LEN from sys/com0com.h to include/com0com.h
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.2 2006/11/02 15:56:38 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006 Vyacheslav Frolov
+d22 3
+d50 9
+@
+
+
+1.2
+log
+@Defined C0C_REGSTR_VAL_PORT_NUM
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.1 2006/10/13 10:06:13 vfrolov Exp $
+d22 3
+a27 1
+ *
+d38 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 4
+a24 1
+ * $Log: $
+d42 2
+@
+

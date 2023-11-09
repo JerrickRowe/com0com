@@ -1,0 +1,1239 @@
+head	1.35;
+access;
+symbols
+	v3_0_0_0:1.35
+	v2_2_2_0:1.23
+	v2_2_1_0:1.22
+	v2_2_0_0:1.20
+	v2_1_0_0:1.17
+	v2_0_0_0:1.16
+	v1_8_0_0:1.13
+	v1_7_0_0:1.11
+	v1_6_0_0:1.9
+	v1_5_0_0:1.8
+	v1_4_0_0:1.7
+	RELEASED:1.35
+	v1_3_0_0:1.7
+	v1_2_0_0:1.6
+	v1_1_1_0:1.5
+	v1_1_0_0:1.4
+	v1_0_0_0:1.2;
+locks; strict;
+comment	@# @;
+
+
+1.35
+date	2012.05.24.13.41.05;	author vfrolov;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2012.01.31.05.50.16;	author vfrolov;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2011.12.13.15.25.40;	author vfrolov;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2011.12.12.13.22.15;	author vfrolov;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2011.12.06.15.44.40;	author vfrolov;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2011.07.12.18.01.27;	author vfrolov;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2011.07.08.10.20.20;	author vfrolov;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2010.09.03.13.52.28;	author vfrolov;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2010.07.19.11.24.33;	author vfrolov;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2010.06.07.07.06.10;	author vfrolov;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2010.05.31.07.58.14;	author vfrolov;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2010.05.27.11.16.45;	author vfrolov;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2009.07.31.12.35.19;	author vfrolov;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2009.05.20.13.54.10;	author vfrolov;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2009.02.16.12.24.26;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2008.12.08.10.41.10;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2008.12.02.15.51.17;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2008.07.10.11.16.24;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2008.06.05.10.42.48;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2007.11.30.09.52.23;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2007.11.22.12.39.15;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2007.07.20.07.50.30;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2007.06.04.15.28.12;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2007.01.11.15.07.39;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2006.12.13.16.44.40;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2006.10.23.12.20.32;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2006.06.28.13.59.03;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2005.12.05.10.43.19;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2005.09.01.13.17.18;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2005.07.08.14.03.22;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2005.05.31.08.08.33;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2005.05.17.14.23.42;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.05.12.07.41.27;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.02.04.10.58.37;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.02.04.10.47.34;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.35
+log
+@Added ability to build installer with both 32-bit and 64-bit drivers
+@
+text
+@                 =============================
+                 Null-modem emulator (com0com)
+                 =============================
+
+INTRODUCTION
+============
+
+The Null-modem emulator is an open source kernel-mode virtual serial
+port driver for Windows, available freely under GPL license.
+You can create an unlimited number of virtual COM port
+pairs and use any pair to connect one application to another.
+Each COM port pair provides two COM ports with default names starting
+at CNCA0 and CNCB0. The output to one port is the input from other
+port and vice versa.
+
+Usually one port of the pair is used by Windows application that
+requires a COM port to communicate with a device and other port is
+used by device emulation program.
+
+For example, to send/receive faxes over IP you can connect Windows Fax
+application to CNCA0 port and t38modem (http://t38modem.sourceforge.net/)
+to CNCB0 port. In this case the t38modem is a fax modem emulation program.
+
+In conjunction with the hub4com the com0com allows you to
+  - handle data and signals from a single real serial device by a number of
+    different applications. For example, several applications can share data
+    from one GPS device;
+  - use real serial ports of remote computer like if they exist on the local
+    computer (supports RFC 2217).
+
+The homepage for com0com project is http://com0com.sourceforge.net/.
+
+
+INSTALLING
+==========
+
+NOTE (x64-based Windows Vista/Windows Server 2008/Windows 7/8):
+  The com0com.sys is a test-signed kernel-mode driver that will not load by
+  default. To enable test signing, enter command:
+
+    bcdedit.exe -set TESTSIGNING ON
+
+  and reboot the computer.
+
+NOTE:
+  Enabling test signing will impair computer security.
+
+Simply run the installer (setup.exe). An installation wizard will guide
+you through the required steps.
+If the Found New Hardware Wizard will pop up then
+  - select "No, not this time" and click Next;
+  - select "Install the software automatically (Recommended)" and click Next.
+The one COM port pair with names CNCA0 and CNCB0 will be available on your
+system after the installation.
+
+You can add more pairs with the Setup Command Prompt:
+
+  1. Launch the Setup Command Prompt shortcut.
+  2. Enter the install command, for example:
+
+       command> install - -
+
+The system will create 3 new virtual devices. One of the devices has
+name "com0com - bus for serial port pair emulator" and other two of
+them have name "com0com - serial port emulator" and located on CNCAn
+and CNCBn ports.
+
+To get more info enter the help command, for example:
+
+       command> help
+
+Alternatively to setup ports you can invoke GUI-based setup utility by
+launching Setup shortcut (Microsoft .NET Framework 2.0 is required).
+
+TESTING
+=======
+
+  1. Start the HyperTerminal on CNCA0 port.
+  2. Start the HyperTerminal on CNCB0 port.
+  3. The output to CNCA0 port should be the input from CNCB0 port and
+     vice versa.
+
+
+UNINSTALLING
+============
+
+Simply launch the com0com's Uninstall shortcut in the Start Menu or remove
+the "Null-modem emulator (com0com)" entry from the "Add/Remove Programs"
+section in the Control Panel. An uninstallation wizard will guide
+you through the required steps.
+
+HINT: To uninstall the old version of com0com (distributed w/o installer)
+install the new one and then uninstall it.
+
+
+FAQs & HOWTOs
+=============
+
+Q. Is it possible to run com0com on Windows 9x platform?
+A. No, it is not possible. You need Windows 2000 platform or newer.
+
+Q. Is it possible to install or uninstall com0com silently (with no user
+   intervention and no user interface)?
+A. Yes, it's possible with /S option, for example:
+
+     setup.exe /S
+     "%ProgramFiles%\com0com\uninstall.exe" /S
+
+   You can specify the installation directory with /D option, for example:
+
+     setup.exe /S /D=C:\Program Files\com0com
+
+   NOTE: Silent installation of com0com will not install any port pairs by
+         default {it can be overriden by setting CNC_INSTALL_CNCA0_CNCB0_PORTS
+         and/or CNC_INSTALL_COMX_COMX_PORTS environment variables).
+
+Q. What are the other setup.exe command line options?
+A. The command line options of setup.exe and uninstall.exe listed in
+   NSIS Users Manual, section 3.2 Installer Usage:
+
+     http://nsis.sourceforge.net/Docs/Chapter3.html#3.2
+
+   Additionally the following environment variables can be used.
+
+   To change behaviour of setup.exe:
+
+     CNC_INSTALL_START_MENU_SHORTCUTS={YES|NO}   - select/unselect "Start Menu Shortcuts"
+     CNC_INSTALL_CNCA0_CNCB0_PORTS={YES|NO}      - select/unselect "CNCA0 <-> CNCB0"
+     CNC_INSTALL_COMX_COMX_PORTS={YES|NO}        - select/unselect "COM# <-> COM#"
+     CNC_INSTALL_SKIP_SETUP_PREINSTALL={YES|NO}  - skip preinstalling/updating driver
+
+   To change behaviour of uninstall.exe:
+
+     CNC_UNINSTALL_SKIP_SETUP_UNINSTALL={YES|NO} - skip uninstalling devices and driver
+
+Q. Is it possible to change the names CNCA0 and CNCB0 to COM8 and COM9?
+A. Yes, it's possible. To change the names:
+
+   1. Launch the Setup Command Prompt shortcut.
+   2. Enter the change commands, for example:
+
+      command> change CNCA0 PortName=COM8
+      command> change CNCB0 PortName=COM9
+
+   Alternatively you can set names to 'COM#', for example:
+
+      command> change CNCA0 PortName=COM#
+      command> change CNCB0 PortName=COM#
+
+   If parameter 'PortName=COM#' is used then the Ports class installer will be
+   invoked to set the real port name. The Ports class installer selects the COM
+   port number and sets the real port name to COM<n>, where <n> is the selected
+   port number. After installing the Ports class port you can use the list
+   command to get the real port name and the parameter RealPortName=COM<n> to
+   change the real port name, for example:
+
+      command> list
+             CNCA0 PortName=COM#,RealPortName=COM3
+             CNCB0 PortName=COM#,RealPortName=COM4
+      command> change CNCA0 RealPortName=COM8
+      command> change CNCB0 RealPortName=COM9
+      command> list
+             CNCA0 PortName=COM#,RealPortName=COM8
+             CNCB0 PortName=COM#,RealPortName=COM9
+
+Q. The baud rate setting does not seem to make a difference: data is always
+   transferred at the same speed. How to enable the baud rate emulation?
+A. To enable baud rate emulation for transferring data from CNCA0 to CNCB0:
+
+   1. Launch the Setup Command Prompt shortcut.
+   2. Enter the change command, for example:
+
+      command> change CNCA0 EmuBR=yes
+
+Q. The HyperTerminal test succeeds, but I get a failure when trying to open the
+   port with CreateFile("CNCA0", ...). GetLastError() returns ERROR_FILE_NOT_FOUND.
+A. You must prefix the port name with the special characters "\\.\". Try to open
+   the port with CreateFile("\\\\.\\CNCA0", ...).
+
+Q. My application hangs during its startup when it sends anything to one paired
+   COM port. The only way to unhang it is to start HyperTerminal, which is connected
+   to the other paired COM port. I didn't have this problem with physical serial
+   ports.
+A. Your application can hang because receive buffer overrun is disabled by
+   default. You can fix the problem by enabling receive buffer overrun for the
+   receiving port. Also, to prevent some flow control issues you need to enable
+   baud rate emulation for the sending port. So, if your application use port CNCA0
+   and other paired port is CNCB0, then:
+
+   1. Launch the Setup Command Prompt shortcut.
+   2. Enter the change commands, for example:
+
+      command> change CNCB0 EmuOverrun=yes
+      command> change CNCA0 EmuBR=yes
+
+Q. When the corresponding port of a pair is not open, some characters will remain
+   in the ouput buffer of the sending port and be output upon the next connection.
+   Any clue on a possible workaround?
+A. It's a correct behavior if receive buffer overrun is disabled (by default). If
+   you need behavior where those characters should be lost (like real null modem do)
+   then enable receive buffer overrun for the receiving port. Also, to prevent some
+   flow control issues enable baud rate emulation for the sending port. So, if
+   sending port is CNCA0 and receiving port is CNCB0, then:
+
+   1. Launch the Setup Command Prompt shortcut.
+   2. Enter the change commands, for example:
+
+      command> change CNCB0 EmuOverrun=yes
+      command> change CNCA0 EmuBR=yes
+
+Q. I have to write an application connected to one side of the com0com port pair,
+   and I don't want users to 'see' all the virtual ports created by com0com, but
+   only the really available ones.
+A. if your application use port CNCB0 and other (used by users) paired port is CNCA0,
+   then CNCB0 can be 'hidden' and CNCA0 can be 'shown' on opening CNCB0 by your
+   application. To enable it:
+
+   1. Launch the Setup Command Prompt shortcut.
+   2. Enter the change commands:
+
+      command> change CNCB0 ExclusiveMode=yes
+      command> change CNCA0 PlugInMode=yes
+
+Q. When I add a port pair, why does Windows XP always pops up a Found New Hardware
+   Wizard? The drivers are already there and it can install them silently in the
+   background and report when the device is ready.
+A. It's because there is not signed com0com.cat catalog file. It can be created on
+   your test computer by this way:
+
+   1. Create a catalog file, for example:
+
+      cd "C:\Program Files\com0com"
+      inf2cat /driver:. /os:XP_X86
+
+   2. Create a test certificate, for example:
+
+      makecert -r -n "CN=com0com (test)" -sv com0com.pvk com0com.cer
+      pvk2pfx -pvk com0com.pvk -spc com0com.cer -pfx com0com.pfx
+
+   3. Sign the catalog file by test certificate, for example:
+
+      signtool sign /v /f com0com.pfx com0com.cat
+
+   4. Install a test certificate to the Trusted Root Certification Authorities
+      certificate store and the Trusted Publishers certificate store, for example:
+
+      certmgr -add com0com.cer -s -r localMachine root
+      certmgr -add com0com.cer -s -r localMachine trustedpublisher
+
+   The inf2cat, makecert, pvk2pfx, signtool and certmgr tools are included in the
+   Windows Driver Kit (WDK).
+
+   Alternatively you can cancel Found New Hardware Wizard and install driver by
+   update command, for example:
+
+      setupc install - -
+      setupc update
+
+   Additionally you can temporary suppress Plug and Play-related UI messages, for
+   example:
+
+      reg add HKLM\Software\Policies\Microsoft\Windows\DeviceInstall\Settings /v SuppressNewHWUI /t REG_DWORD /d 1 /f
+      setupc install - -
+      setupc update
+      reg add HKLM\Software\Policies\Microsoft\Windows\DeviceInstall\Settings /v SuppressNewHWUI /t REG_DWORD /d 0 /f
+
+   See http://support.microsoft.com/kb/938596 for more info.
+
+Q. How to monitor and get the paired port settings (baud rate, byte size, parity
+   and stop bits)?
+A. It can be done with extended IOCTL_SERIAL_LSRMST_INSERT. See example in
+
+   http://com0com.sourceforge.net/examples/LSRMST_INSERT/tstser.cpp
+
+Q. To transfer state to CTS and DSR they wired to RTS and DTR. How to transfer
+   state to DCD and RING?
+A. The OUT1 can be wired to DCD and OUT2 to RING. Use extended
+   IOCTL_SERIAL_SET_MODEM_CONTROL and IOCTL_SERIAL_GET_MODEM_CONTROL to change
+   state of OUT1 and OUT2.  See example in
+
+   http://com0com.sourceforge.net/examples/MODEM_CONTROL/tstser.cpp
+
+Q. What version am I running?
+A. In the device manager, the driver properties page shows the version and date
+   of the INF files, while the driver details page shows a version of
+   com0com.sys file. The version of com0com.sys file is the version that you
+   are running.
+
+Q. I'm able to use some application to talk to some hardware using com2tcp when
+   both the com2tcp 'server' and 'client' are running on the same computer.
+   When I try to move the client to a remote computer the application gives me
+   a timeout message and has no settings to increase the timeout. How to fix
+   the problem?
+A. Try to ajust AddRTTO and AddRITO params for application's COM port:
+
+   1. Launch the Setup Command Prompt shortcut.
+   2. Enter the change command, for example:
+
+      command> change CNCA0 AddRTTO=100,AddRITO=100
+
+Q. I would like to be able to add, remove and rename virtual comm ports from my
+   own custom application. Is there an API that I can use or some command line
+   utility that will do the job?
+A. The setupc.exe is a command line utility that will do the job. To get more
+   info enter:
+
+      setupc help
+
+   BTW: The setupg.exe is a GUI wrapper for setupc.exe.
+
+Q. I need to use com0com ports with an application that doesn't recognize
+   com0com ports as "real" com ports. It does not see a com0com port even
+   though I have changed it's name to COMx. Is there a com0com settings that
+   will make the port appear to be a "real" com port?
+A. Yes, it is. You should put the port to the Ports class, for example:
+
+   1. Launch the Setup Command Prompt shortcut.
+   2. Install the pair of ports, were one of them has name COM#, for example:
+
+      command> install PortName=COM# -
+
+Q. I have to somehow add a "fake" PNP device in device manager and have it
+   connected under COM3. I use PNPComSimulator (http://www.bds.dogma.net/pnp_part2.htm),
+   which can fake a PNP Serial device's response when polled by DevManager.
+   Is it possible to have the device manager look for PNP equipement via com0com?
+A. Yes, it is. The simplest way is to put the port to the Ports class, for example:
+
+   1. Launch the Setup Command Prompt shortcut.
+   2. Install the pair of ports, were one of them has name COM#, for example:
+
+      command> install 0 PortName=COM# -
+
+   After installing the Ports class port you can use the list command to get
+   the real port name, for example:
+
+      command> list
+             CNCA0 PortName=COM#,RealPortName=COM3
+             CNCB0 PortName=-
+
+Q. Is it possible to configure the com0com to randomly corrupt the data? It
+   would be nice to have this feature so that we can test our application
+   robustness.
+A. Yes, it's possible by setting EmuNoise parameter:
+
+   1. Launch the Setup Command Prompt shortcut.
+   2. Enter the change command, for example:
+
+      command> change CNCA0 EmuNoise=0.00001,EmuBR=yes,EmuOverrun=yes
+      command> change CNCB0 EmuNoise=0.00001,EmuBR=yes,EmuOverrun=yes
+
+   Now each character frame (including idle frames) will be corrupted with
+   probability 0.00001.
+
+Q. What is the maximum number of port pairs that can be defined?
+A. It depends from your system. The com0com itself has internal limit
+   1000000 port pairs.
+
+Q. In my application, users could be installing up to 250 com port pairs.
+   Initially, the installation is fairly quick, but each additional com port
+   generally takes longer to install than the previous one. It quickly
+   becomes unacceptable for a user to be expected to wait for the installation.
+A. It's because the installing of each next port pair requires to update driver
+   for all installed pairs. You can speed up installing of multiple com port
+   pairs by using install commands with --no-update option and then use
+   install command w/o --no-update option, for example:
+
+      command> --no-update install - -
+      command> --no-update install - -
+      ...
+      command> --no-update install - -
+      command> install
+
+   The example of the batch program:
+
+      cd /D "%ProgramFiles%\com0com"
+      FOR /L %%i IN (0,1,249) DO setupc --no-update install - -
+      setupc install
+
+Q. I am using the 64-bit version of com0com and I am having trouble. I'd like
+   to debug this, but I can not find any free serial port monitor software,
+   like portmon that works with a 64-bit OS. Does anyone know of any?
+A. You can try to use internal com0com's tracing for debuging:
+
+      - get trace.reg file from com0com's source;
+      - import trace.reg to the Registry;
+      - reload driver (or reboot system);
+      - do your tests and watch results in C:\com0com.log file.
+
+   To disable tracing reinstall com0com or import trace_disable.reg to the
+   Registry and reload driver.
+@
+
+
+1.34
+log
+@Deprecated invoking of system-supplied advanced settings dialog box
+@
+text
+@d37 1
+a37 1
+NOTE (x64-based Windows Vista/Windows Server 2008/Windows 7):
+a101 5
+Q. I get an error message when I run the installer:
+   "The 32-bit driver cannot run under 64-bit System". What to do?
+A. For 64-bit system download x64 package
+   (for example com0com-2.2.2.0-x64-fre-signed.zip).
+
+@
+
+
+1.33
+log
+@Added about suppressing PNP-related UI messages (thanks Dmitry)
+@
+text
+@d141 1
+a141 1
+Q. Is it possible to change the names CNCA0 and CNCB0 to COM2 and COM3?
+d147 2
+a148 2
+      command> change CNCA0 PortName=COM2
+      command> change CNCB0 PortName=COM3
+d155 15
+a169 8
+   In the last case the Ports class installer will be used to manage port names.
+   The Ports class installer selects the COM port number and sets the port
+   name to COM<n>, where <n> is the selected port number.
+   After installing the Ports class ports you can invoke the system-supplied advanced
+   settings dialog box to change the port number by this way:
+
+      command> change CNCA0 PortName=?
+      command> change CNCB0 PortName=?
+d338 2
+a339 2
+   After installing the Ports class port you can invoke the system-supplied advanced
+   settings dialog box to change the port name to COM3 by this way:
+d341 3
+a343 1
+      command> change CNCA0 PortName=?
+@
+
+
+1.32
+log
+@Added CNC_INSTALL_SKIP_SETUP_PREINSTALL and CNC_UNINSTALL_SKIP_SETUP_UNINSTALL environment variables
+Added cancelling Found New Hardware Wizard by update command
+@
+text
+@d254 12
+a265 1
+      command> update
+@
+
+
+1.31
+log
+@Added questions about 64-bit System and about ouput buffer
+of the port sending to the not opened port
+@
+text
+@d128 1
+a128 2
+   Additionally the following environment variables can be used to change
+   behaviour of setup.exe
+d130 10
+a139 3
+     CNC_INSTALL_START_MENU_SHORTCUTS={YES|NO} - select/unselect "Start Menu Shortcuts"
+     CNC_INSTALL_CNCA0_CNCB0_PORTS={YES|NO}    - select/unselect "CNCA0 <-> CNCB0"
+     CNC_INSTALL_COMX_COMX_PORTS={YES|NO}      - select/unselect "COM# <-> COM#"
+d251 5
+@
+
+
+1.30
+log
+@Fixed UAC problem
+@
+text
+@d102 5
+d188 15
+@
+
+
+1.29
+log
+@Added ability to set selections for setup.exe by setting environment variables
+@
+text
+@a36 4
+NOTE (Windows Vista/Windows Server 2008/Windows 7):
+  Before installing/uninstalling the com0com driver or adding/removing/changing
+  ports the User Account Control (UAC) should be turned off (require reboot).
+
+d46 1
+a46 1
+  Turning off UAC or enabling test signing will impair computer security.
+@
+
+
+1.28
+log
+@Updated getting of inf2cat, makecert, pvk2pfx, signtool and certmgr
+@
+text
+@d117 16
+a132 1
+   NOTE: Silent installation of com0com will not install any port pairs.
+@
+
+
+1.27
+log
+@Added install command w/o prms to update driver
+@
+text
+@d211 2
+a212 3
+   The inf2cat tool can be installed with the Winqual Submission Tool.
+   The makecert, pvk2pfx, signtool and certmgr tools can be installed with the
+   Platform Software Development Kit (SDK).
+@
+
+
+1.26
+log
+@Added serenum filter
+@
+text
+@d308 2
+a309 2
+   pairs by using install commands with --no-update option and finish them by
+   update command, for example:
+d315 1
+a315 1
+      command> update
+d317 1
+a317 1
+   Another example:
+d319 3
+a321 3
+      > cd /D "%ProgramFiles%\com0com"
+      > FOR /L %i IN (0,1,249) DO setupc --no-update install - -
+      > setupc update
+@
+
+
+1.25
+log
+@Added ability to invoke the system-supplied advanced settings dialog box
+@
+text
+@d268 16
+@
+
+
+1.24
+log
+@Added ability to put the port to the Ports class
+@
+text
+@d136 5
+@
+
+
+1.23
+log
+@Added FAQ about Windows 9x
+@
+text
+@d128 9
+d226 1
+a226 1
+   of the com0com.inf file, while the driver details page shows a version of
+d256 1
+a256 1
+A. No, there is not, but you can "deceive" the application this way:
+d258 2
+a259 9
+   1. With the "Add/Remove Hardware" wizard install new standard serial port.
+      You don't need a real serial hardware to do it. Select non conflicted
+      IO/IRQ resources.
+   2. With the "Device Manager" disable the newly created port (let it be
+      COM4).
+   3. Launch the Setup Command Prompt shortcut.
+   4. Install the pair of ports, were one of them has name COM4, for example:
+
+      command> install PortName=COM4 -
+d261 1
+a261 1
+      Ignore a warning about the COM4 is "in use" (press Continue).
+@
+
+
+1.22
+log
+@Added Windows 7
+Added FAQ about silent install or uninstall
+Added FAQ about internal com0com's tracing
+@
+text
+@d103 3
+@
+
+
+1.21
+log
+@Added questions about installing multiple port pairs
+@
+text
+@d37 1
+a37 1
+NOTE (Windows Vista/Windows Server 2008):
+d41 1
+a41 1
+NOTE (x64-based Windows Vista/Windows Server 2008):
+d103 13
+d296 13
+@
+
+
+1.20
+log
+@Added more FAQs & HOWTOs
+@
+text
+@d185 2
+a186 1
+Q. How to monitor and get the paired port settings?
+d258 25
+@
+
+
+1.19
+log
+@Added more FAQs & HOWTOs
+@
+text
+@d24 7
+d37 1
+a37 1
+NOTE (Windows Vista):
+d39 1
+a39 1
+  ports on Windows Vista the User Account Control (UAC) should be turned off.
+d41 1
+a41 1
+NOTE (x64-based Windows Vista):
+d43 5
+a47 2
+  default on x64-based Windows Vista. To enable test signing, use the following
+  BCDedit command: bcdedit.exe -set TESTSIGNING ON
+d225 32
+@
+
+
+1.18
+log
+@Added FAQ: What version am I running?
+@
+text
+@d21 1
+a21 1
+application to CNCA0 port and t38modem (part of the OpenH323 project)
+d193 22
+@
+
+
+1.17
+log
+@Added 2 HOWTOs
+@
+text
+@d187 6
+@
+
+
+1.16
+log
+@Added security note
+@
+text
+@d90 2
+a91 2
+FAQ & HOWTO
+===========
+d174 13
+@
+
+
+1.15
+log
+@Removed BUILDING section
+Added NOTE for x64-based Windows Vista
+Added GUI-based setup utility
+Added FAQ about Found New Hardware Wizard
+@
+text
+@d39 3
+@
+
+
+1.14
+log
+@Added note for Vista
+@
+text
+@a26 13
+BUILDING
+========
+
+If you'd like to build a binary from source yourself then:
+
+  1. Set up the DDK environment on your machine.
+  2. Run the build -wcZ command in the com0com directory to build
+     <CPU>\com0com.sys and <CPU>\setup.dll (where <CPU> is i386, ia64
+     or amd64).
+  3. Create the installer (setup.exe) from NSIS\install.nsi by
+     NSIS (see http://nsis.sourceforge.net/ for details)
+
+
+d30 8
+a37 2
+NOTE: Before installing/uninstalling the com0com driver or adding/removing/changing
+ports on Windows Vista the User Account Control (UAC) should be turned off.
+d63 2
+d93 2
+a94 2
+  1. Launch the Setup Command Prompt shortcut.
+  2. Enter the change commands, for example:
+d96 2
+a97 2
+       command> change CNCA0 PortName=COM2
+       command> change CNCB0 PortName=COM3
+d103 2
+a104 2
+  1. Launch the Setup Command Prompt shortcut.
+  2. Enter the change command, for example:
+d106 1
+a106 1
+       command> change CNCA0 EmuBR=yes
+d123 2
+a124 2
+  1. Launch the Setup Command Prompt shortcut.
+  2. Enter the change commands, for example:
+d126 2
+a127 2
+       command> change CNCB0 EmuOverrun=yes
+       command> change CNCA0 EmuBR=yes
+d136 31
+a166 2
+  1. Launch the Setup Command Prompt shortcut.
+  2. Enter the change commands:
+d168 3
+a170 2
+       command> change CNCB0 ExclusiveMode=yes
+       command> change CNCA0 PlugInMode=yes
+@
+
+
+1.13
+log
+@Added question about hiding ports
+@
+text
+@d43 3
+@
+
+
+1.12
+log
+@Added comment for Found New Hardware Wizard
+@
+text
+@d89 2
+a90 2
+FAQ
+===
+d130 13
+@
+
+
+1.11
+log
+@Added installer description
+Removed "Manually"
+@
+text
+@d8 3
+a10 2
+The null-modem emulator is a kernel-mode virtual serial port driver for
+Windows. You can create an unlimited number of virtual COM port
+d44 8
+a51 3
+you through the required steps. The one COM port pair with names CNCA0 and
+CNCB0 will be available on your system after the installation. You can add
+more pairs with the Setup Command Prompt:
+@
+
+
+1.10
+log
+@Added setup.dll usage
+@
+text
+@d29 2
+d33 4
+a36 3
+     com0com.sys and setup.dll.
+  3. Copy com0com.inf, %CPU%\com0com.sys, %CPU%\setup.dll and setup\setup.bat
+     files to a temporary directory.
+d42 4
+a45 2
+With setup.dll
+--------------
+d47 2
+a48 3
+  1. Run the setup.bat in the directory with com0com.inf, com0com.sys and
+     setup.dll files.
+  2. Enter install command, for example:
+d54 2
+a55 2
+them have name "com0com - serial port emulator" and located on CNCA0
+and CNCB0 ports (or CNCA1 and CNCB1 or ...).
+d57 1
+a57 1
+To get more info enter help command, for example:
+a61 23
+Manually
+--------
+
+  1. Start the "Add/Remove Hardware" wizard in Control Panel.
+  2. Click "Add/Troubleshoot a Device".
+  3. Select "Add a new device" and then click Next.
+  4. Select "No, I Want to Select the Hardware from a list".
+  5. For the first time (if the driver is not installed yet):
+       1. Select "Other Devices" and then click Next.
+       2. Click "Have Disk".
+       3. Enter path to the directory with com0com.inf and com0com.sys
+          files and then click OK.
+     For the next time (adding one more port pair) select
+     "com0com - serial port emulators" and then click Next.
+  6. Select "com0com - bus for serial port pair emulator" and then
+     click Next.
+
+The system will create 3 new virtual devices. One of the devices has
+name "com0com - bus for serial port pair emulator" and other two of
+them have name "com0com - serial port emulator" and located on CNCA0
+and CNCB0 ports (or CNCA1 and CNCB1 or ...).
+
+
+d74 4
+a77 9
+With setup.dll
+--------------
+
+  1. Run the setup.bat in the directory with com0com.inf, com0com.sys and
+     setup.dll files.
+  2. Enter uninstall command:
+
+       command> uninstall
+
+d79 2
+a80 21
+Manually
+--------
+
+Start Device Manager this way:
+
+  set DEVMGR_SHOW_NONPRESENT_DEVICES=1
+  %SystemRoot%\system32\devmgmt.msc
+
+Click View and select "Show hidden devices". Remove all "com0com" devices.
+
+Remove the following subtrees from the registry:
+
+  [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\{DF799E12-3C56-421B-B298-B6D3642BC878}]
+  [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\com0com]
+  [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\System\com0com]
+
+Delete file %SystemRoot%\system32\drivers\com0com.sys
+
+Find in the %SystemRoot%\inf\ directory the oem{N}.inf file(s) that corresponds
+to the com0com.inf file (the system renames com0com.inf to oem{N}.inf, where {N}
+is a number). Delete all found oem{N}.inf and corresponding oem{N}.PNF files.
+d87 4
+a90 1
+A. Yes, it's possible. Add the following to the registry:
+d92 2
+a93 4
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\com0com\Parameters\CNCA0]
+"PortName"="COM2"
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\com0com\Parameters\CNCB0]
+"PortName"="COM3"
+d97 1
+a97 2
+A. To enable baud rate emulation for transferring data from CNCA0 to CNCB0 add
+   the following to the registry:
+d99 4
+a102 2
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\com0com\Parameters\CNCA0]
+"EmuBR"=dword:FFFFFFFF
+d106 2
+a107 2
+A. You must prefix name with the special characters "\\.\". Try to open the port
+   with CreateFile("\\\\.\\CNCA0", ...).
+d117 4
+a120 1
+   and other paired port is CNCB0, then add the following to the registry:
+d122 2
+a123 4
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\com0com\Parameters\CNCB0]
+"EmuOverrun"=dword:FFFFFFFF
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\com0com\Parameters\CNCA0]
+"EmuBR"=dword:FFFFFFFF
+@
+
+
+1.9
+log
+@Added FAQ about receive buffer overrun
+@
+text
+@d31 3
+a33 2
+     com0com.sys.
+  3. Copy com0com.inf and com0com.sys files to a temporary directory.
+d39 22
+d93 13
+d111 1
+a111 1
+Click View and select "Show hidden devices". Remove all "com0com" divices.
+@
+
+
+1.8
+log
+@Added FAQ about port name
+@
+text
+@d11 1
+a11 1
+Each COM port pair provides two COM ports with names starting
+d113 15
+@
+
+
+1.7
+log
+@Added question about baud rate emulation
+@
+text
+@d108 5
+@
+
+
+1.6
+log
+@Added UNINSTALLING section
+@
+text
+@d85 3
+a87 3
+Find in the %SystemRoot%\inf\ directory the oem{N}.inf file that corresponds to
+the com0com.inf file (the system renames com0com.inf to oem{N}.inf, where {N}
+is a number). Delete oem{N}.inf and oem{N}.PNF files.
+d100 8
+@
+
+
+1.5
+log
+@Added link to http://com0com.sourceforge.net/
+@
+text
+@d6 1
+d25 1
+d27 1
+d34 1
+d36 1
+d57 1
+d59 1
+d66 24
+d91 1
+@
+
+
+1.4
+log
+@Changed version
+@
+text
+@d20 3
+a22 1
+to CNCB0 port.
+@
+
+
+1.3
+log
+@Added ability to change the port names
+@
+text
+@d7 1
+a7 1
+The null-modem emulator is a kernel-mode serial driver for
+@
+
+
+1.2
+log
+@Fixed wrong characters
+@
+text
+@d57 9
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d37 1
+a37 1
+       2. Click ‘Have Disk’.
+d42 1
+a42 1
+  6. Select ‘com0com - bus for serial port pair emulator’ and then
+@
+

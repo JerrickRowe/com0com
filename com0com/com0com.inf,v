@@ -1,0 +1,375 @@
+head	1.8;
+access;
+symbols
+	v3_0_0_0:1.8
+	v2_2_2_0:1.4
+	v2_2_1_0:1.4
+	v2_2_0_0:1.4
+	v2_1_0_0:1.4
+	v2_0_0_0:1.4
+	v1_8_0_0:1.3
+	v1_7_0_0:1.3
+	v1_6_0_0:1.3
+	v1_5_0_0:1.3
+	v1_4_0_0:1.3
+	RELEASED:1.8
+	v1_3_0_0:1.3
+	v1_2_0_0:1.3
+	v1_1_1_0:1.1
+	v1_1_0_0:1.1
+	v1_0_0_0:1.1;
+locks; strict;
+comment	@# @;
+
+
+1.8
+date	2012.06.04.06.21.43;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2011.12.06.15.46.26;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2010.06.07.07.06.10;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2010.05.27.11.16.45;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2007.11.15.12.13.55;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.07.14.16.06.23;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.07.08.14.07.21;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.01.26.12.18.54;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.8
+log
+@Pre-tagging version change
+@
+text
+@;******************************************************************************
+;
+; com0com.inf
+;
+; Installation file for the Null-modem emulator driver.
+;
+; Copyright (c) 2004-2012 Vyacheslav Frolov
+;
+;******************************************************************************
+
+[Version]
+Signature = "$Windows NT$"
+Provider = %VF%
+Class = CNCPorts
+ClassGUID = {df799e12-3c56-421b-b298-b6d3642bc878}
+CatalogFile = com0com.cat
+;           MM/DD/YYYY
+DriverVer = 06/04/2012,3.0.0.0
+UninstallInfTag = {df799e12-3c56-421b-b298-b6d3642bc878}
+
+;******************************************************************************
+;
+; Class section
+;
+;******************************************************************************
+
+[ClassInstall32]
+AddReg = com0com_ClassReg
+
+[com0com_ClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-23
+
+;******************************************************************************
+;
+; Source and Destination information
+;
+;******************************************************************************
+
+[SourceDisksNames]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+com0com.sys = 1,,
+
+[DestinationDirs]
+com0com_CopyDrivers = 12
+
+[com0com_CopyDrivers]
+com0com.sys
+
+;******************************************************************************
+;
+; Driver information
+;
+;******************************************************************************
+
+[Manufacturer]
+%VF% = com0com, NTx86, NTia64, NTamd64
+
+[com0com]
+%com0com.BusDesc% = com0com_inst, root\com0com
+
+[com0com.NTx86]
+%com0com.BusDesc% = com0com_inst, root\com0com
+
+[com0com.NTia64]
+%com0com.BusDesc% = com0com_inst, root\com0com
+
+[com0com.NTamd64]
+%com0com.BusDesc% = com0com_inst, root\com0com
+
+;******************************************************************************
+;
+; Bus install section
+;
+;******************************************************************************
+
+[com0com_inst]
+AddReg = com0com_AddReg
+CopyFiles = com0com_CopyDrivers
+CopyINF = cncport.inf
+;CopyINF = comport.inf
+
+[com0com_inst.Services]
+AddService = com0com, %SPSVCINST_ASSOCSERVICE%, com0com_Service_Inst, com0com_EventLog_Inst
+
+[com0com_AddReg]
+
+;******************************************************************************
+;
+; Common section
+;
+;******************************************************************************
+
+[com0com_Service_Inst]
+DisplayName    = %com0com.SrvDesc%
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_DEMAND_START%
+ErrorControl   = %SERVICE_ERROR_NORMAL%
+ServiceBinary  = %12%\com0com.sys
+
+[com0com_EventLog_Inst]
+AddReg = com0com_EventLog_AddReg
+
+[com0com_EventLog_AddReg]
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\drivers\com0com.sys"
+HKR,,TypesSupported,%REG_DWORD%,7
+
+;******************************************************************************
+;
+; Strings
+;
+;******************************************************************************
+
+[Strings]
+
+SPSVCINST_ASSOCSERVICE = 0x00000002
+
+REG_EXPAND_SZ          = 0x00020000
+REG_DWORD              = 0x00010001
+
+SERVICE_KERNEL_DRIVER  = 1
+SERVICE_DEMAND_START   = 3
+SERVICE_ERROR_NORMAL   = 1
+
+DiskId1 = "Installation Disk #1 (com0com - Null-modem emulator)"
+VF = "Vyacheslav Frolov"
+com0com.BusDesc = "com0com - bus for serial port pair emulator"
+com0com.SrvDesc = "com0com - emulates the serial ports interconnected via a null-modem cable"
+ClassName = "com0com - serial port emulators"
+
+;******************************************************************************
+@
+
+
+1.7
+log
+@Commented CopyINF = comport.inf to be more silent
+@
+text
+@d7 1
+a7 1
+; Copyright (c) 2004-2011 Vyacheslav Frolov
+d18 1
+a18 1
+DriverVer = 12/06/2011,3.0.0.0
+@
+
+
+1.6
+log
+@Added serenum filter
+@
+text
+@d7 1
+a7 1
+; Copyright (c) 2004-2010 Vyacheslav Frolov
+d18 1
+a18 1
+DriverVer = 06/07/2010,3.0.0.0
+d82 2
+a83 1
+CopyINF = cncport.inf, comport.inf
+@
+
+
+1.5
+log
+@Added ability to put the port to the Ports class
+@
+text
+@d17 2
+a18 1
+DriverVer = 05/21/2010,3.0.0.0
+a87 1
+HKR,,PortDriver,,com0com.sys
+@
+
+
+1.4
+log
+@Added x64 support
+@
+text
+@d7 1
+a7 1
+; Copyright (c) 2004-2007 Vyacheslav Frolov
+d17 2
+a18 1
+DriverVer = 12/05/2007,2.0.0.0
+a59 3
+[ControlFlags]
+ExcludeFromSelect = com0com\port
+
+a61 1
+%com0com.PortDesc% = com0com_inst_port, com0com\port
+a64 1
+%com0com.PortDesc% = com0com_inst_port, com0com\port
+a67 1
+%com0com.PortDesc% = com0com_inst_port, com0com\port
+a70 1
+%com0com.PortDesc% = com0com_inst_port, com0com\port
+d81 1
+d86 2
+a87 11
+;******************************************************************************
+;
+; Port install section
+;
+;******************************************************************************
+
+[com0com_inst_port]
+AddReg = com0com_AddReg
+
+[com0com_inst_port.Services]
+AddService = com0com, %SPSVCINST_ASSOCSERVICE%, com0com_Service_Inst, com0com_EventLog_Inst
+a94 3
+[com0com_AddReg]
+HKR,,PortDriver,,com0com.sys
+
+a128 1
+com0com.PortDesc = "com0com - serial port emulator"
+@
+
+
+1.3
+log
+@Changed version
+@
+text
+@d7 1
+a7 1
+; Copyright (c) 2004-2005 Vyacheslav Frolov
+d17 1
+a17 1
+DriverVer = 02/18/2004,1.2.0.0
+d26 1
+a26 1
+AddReg = com0com_ClassReg     
+d57 1
+a57 1
+%VF% = VF.Mfg
+d62 13
+a74 1
+[VF.Mfg]
+@
+
+
+1.2
+log
+@Do not copy com0com.sys while port installing
+@
+text
+@d17 1
+a17 1
+DriverVer = 02/18/2004,1.0.0.0
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d14 1
+a14 1
+Class = Ports
+d45 4
+a48 1
+DefaultDestDir = 12
+d64 1
+a64 2
+%com0com.PortDesc% = com0com_inst, com0com\port
+
+d68 1
+a68 1
+; Install section
+d73 5
+a77 2
+AddReg = com0com.AddReg
+CopyFiles = com0com.CopyFiles
+d79 5
+a83 2
+[com0com.CopyFiles]
+com0com.sys
+d85 2
+a86 2
+[com0com.AddReg]
+HKR,,PortDriver,,com0com.sys
+d88 1
+a88 1
+[com0com_inst.Services]
+d91 9
+a106 1
+
+a113 1
+
+d123 1
+@
+

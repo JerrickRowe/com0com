@@ -1,0 +1,252 @@
+head	1.5;
+access;
+symbols
+	v1_1_0_0:1.4
+	RELEASED:1.4
+	v1_0_0_0:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.5
+date	2008.03.26.08.50.35;	author vfrolov;	state dead;
+branches;
+next	1.4;
+
+1.4
+date	2007.05.14.12.06.37;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2007.02.06.11.53.33;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2007.02.01.12.14.59;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.01.23.09.13.10;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@Redesigned for using plugins
+@
+text
+@/*
+ * $Id: comparams.h,v 1.4 2007/05/14 12:06:37 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: comparams.h,v $
+ * Revision 1.4  2007/05/14 12:06:37  vfrolov
+ * Added read interval timeout option
+ *
+ * Revision 1.3  2007/02/06 11:53:33  vfrolov
+ * Added options --odsr, --ox, --ix and --idsr
+ * Added communications error reporting
+ *
+ * Revision 1.2  2007/02/01 12:14:59  vfrolov
+ * Redesigned COM port params
+ *
+ * Revision 1.1  2007/01/23 09:13:10  vfrolov
+ * Initial revision
+ *
+ *
+ */
+
+#ifndef _COMPARAMS_H
+#define _COMPARAMS_H
+
+///////////////////////////////////////////////////////////////
+class ComParams
+{
+  public:
+    ComParams();
+
+    BOOL SetBaudRate(const char *pBaudRate);
+    BOOL SetByteSize(const char *pByteSize);
+    BOOL SetParity(const char *pParity);
+    BOOL SetStopBits(const char *pStopBits);
+    BOOL SetOutCts(const char *pOutCts) { return SetFlag(pOutCts, &outCts); }
+    BOOL SetOutDsr(const char *pOutDsr) { return SetFlag(pOutDsr, &outDsr); }
+    BOOL SetOutX(const char *pOutX) { return SetFlag(pOutX, &outX); }
+    BOOL SetInX(const char *pInX) { return SetFlag(pInX, &inX); }
+    BOOL SetInDsr(const char *pInDsr) { return SetFlag(pInDsr, &inDsr); }
+    BOOL SetIntervalTimeout(const char *pIntervalTimeout);
+ 
+    static string BaudRateStr(long baudRate);
+    static string ByteSizeStr(int byteSize);
+    static string ParityStr(int parity);
+    static string StopBitsStr(int stopBits);
+    static string OutCtsStr(int outCts) { return FlagStr(outCts); }
+    static string OutDsrStr(int outDsr) { return FlagStr(outDsr); }
+    static string OutXStr(int outX) { return FlagStr(outX); }
+    static string InXStr(int inX) { return FlagStr(inX); }
+    static string InDsrStr(int inDsr) { return FlagStr(inDsr); }
+    static string IntervalTimeoutStr(long intervalTimeout);
+
+    string BaudRateStr() const { return BaudRateStr(baudRate); }
+    string ByteSizeStr() const { return ByteSizeStr(byteSize); }
+    string ParityStr() const { return ParityStr(parity); }
+    string StopBitsStr() const { return StopBitsStr(stopBits); }
+    string OutCtsStr() const { return OutCtsStr(outCts); }
+    string OutDsrStr() const { return OutDsrStr(outDsr); }
+    string OutXStr() const { return OutXStr(outX); }
+    string InXStr() const { return InXStr(inX); }
+    string InDsrStr() const { return InDsrStr(inDsr); }
+    string IntervalTimeoutStr() const { return IntervalTimeoutStr(intervalTimeout); }
+
+    static const char *BaudRateLst();
+    static const char *ByteSizeLst();
+    static const char *ParityLst();
+    static const char *StopBitsLst();
+    static const char *OutCtsLst() { return FlagLst(); }
+    static const char *OutDsrLst() { return FlagLst(); }
+    static const char *OutXLst() { return FlagLst(); }
+    static const char *InXLst() { return FlagLst(); }
+    static const char *InDsrLst() { return FlagLst(); }
+    static const char *IntervalTimeoutLst();
+
+    long BaudRate() const { return baudRate; }
+    int ByteSize() const { return byteSize; }
+    int Parity() const { return parity; }
+    int StopBits() const { return stopBits; }
+    int OutCts() const { return outCts; }
+    int OutDsr() const { return outDsr; }
+    int OutX() const { return outX; }
+    int InX() const { return inX; }
+    int InDsr() const { return inDsr; }
+    long IntervalTimeout() const { return intervalTimeout; }
+
+  private:
+    BOOL SetFlag(const char *pFlagStr, int *pFlag);
+    static string FlagStr(int flag);
+    static const char *FlagLst();
+
+    long baudRate;
+    int byteSize;
+    int parity;
+    int stopBits;
+    int outCts;
+    int outDsr;
+    int outX;
+    int inX;
+    int inDsr;
+    long intervalTimeout;
+};
+///////////////////////////////////////////////////////////////
+
+#endif  // _COMPARAMS_H
+@
+
+
+1.4
+log
+@Added read interval timeout option
+@
+text
+@d2 1
+a2 1
+ * $Id: comparams.h,v 1.3 2007/02/06 11:53:33 vfrolov Exp $
+d22 3
+@
+
+
+1.3
+log
+@Added options --odsr, --ox, --ix and --idsr
+Added communications error reporting
+@
+text
+@d2 1
+a2 1
+ * $Id: comparams.h,v 1.2 2007/02/01 12:14:59 vfrolov Exp $
+d22 4
+d53 1
+d64 1
+d75 1
+d86 1
+d97 1
+d113 1
+@
+
+
+1.2
+log
+@Redesigned COM port params
+@
+text
+@d2 1
+a2 1
+ * $Id: comparams.h,v 1.1 2007/01/23 09:13:10 vfrolov Exp $
+d22 3
+d44 5
+a48 2
+    BOOL SetOutCts(const char *pOutCts);
+    BOOL SetOutDsr(const char *pOutDsr);
+d54 5
+a58 2
+    static string OutCtsStr(int outCts);
+    static string OutDsrStr(int outDsr);
+d66 3
+d74 5
+a78 2
+    static const char *OutCtsLst();
+    static const char *OutDsrLst();
+d86 3
+d91 4
+d101 3
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id:  $
+d21 4
+a24 1
+ * $Log: $
+d37 2
+a38 2
+    void SetBaudRate(const char *pBaudRate) { baudRate = atol(pBaudRate); }
+    void SetByteSize(const char *pByteSize) { byteSize = atoi(pByteSize); }
+d41 2
+d44 13
+a56 2
+    static const char *ParityStr(int parity);
+    static const char *StopBitsStr(int stopBits);
+d62 2
+d69 2
+d77 2
+@
+

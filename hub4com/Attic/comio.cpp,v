@@ -1,0 +1,459 @@
+head	1.6;
+access;
+symbols
+	v1_1_0_0:1.5
+	RELEASED:1.5
+	v1_0_0_0:1.4;
+locks; strict;
+comment	@// @;
+
+
+1.6
+date	2008.03.26.08.50.35;	author vfrolov;	state dead;
+branches;
+next	1.5;
+
+1.5
+date	2007.05.14.12.06.37;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2007.02.06.11.53.33;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2007.02.05.09.33.20;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2007.02.01.12.14.59;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.01.23.09.13.10;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.6
+log
+@Redesigned for using plugins
+@
+text
+@/*
+ * $Id: comio.cpp,v 1.5 2007/05/14 12:06:37 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: comio.cpp,v $
+ * Revision 1.5  2007/05/14 12:06:37  vfrolov
+ * Added read interval timeout option
+ *
+ * Revision 1.4  2007/02/06 11:53:33  vfrolov
+ * Added options --odsr, --ox, --ix and --idsr
+ * Added communications error reporting
+ *
+ * Revision 1.3  2007/02/05 09:33:20  vfrolov
+ * Implemented internal flow control
+ *
+ * Revision 1.2  2007/02/01 12:14:59  vfrolov
+ * Redesigned COM port params
+ *
+ * Revision 1.1  2007/01/23 09:13:10  vfrolov
+ * Initial revision
+ *
+ *
+ */
+
+#include "precomp.h"
+#include "comio.h"
+#include "comport.h"
+#include "comparams.h"
+
+///////////////////////////////////////////////////////////////
+static void TraceError(DWORD err, const char *pFmt, ...)
+{
+  va_list va;
+  va_start(va, pFmt);
+  vfprintf(stderr, pFmt, va);
+  va_end(va);
+
+  fprintf(stderr, " ERROR %s (%lu)\n", strerror(err), (unsigned long)err);
+}
+///////////////////////////////////////////////////////////////
+static BOOL myGetCommState(HANDLE handle, DCB *dcb)
+{
+  dcb->DCBlength = sizeof(*dcb);
+
+  if (!GetCommState(handle, dcb)) {
+    TraceError(GetLastError(), "GetCommState()");
+    return FALSE;
+  }
+  return TRUE;
+}
+
+static BOOL mySetCommState(HANDLE handle, DCB *dcb)
+{
+  if (!SetCommState(handle, dcb)) {
+    TraceError(GetLastError(), "SetCommState()");
+    return FALSE;
+  }
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+HANDLE OpenComPort(const char *pPath, const ComParams &comParams)
+{
+  HANDLE handle = CreateFile(pPath,
+                    GENERIC_READ|GENERIC_WRITE,
+                    0,
+                    NULL,
+                    OPEN_EXISTING,
+                    FILE_FLAG_OVERLAPPED,
+                    NULL);
+
+  if (handle == INVALID_HANDLE_VALUE) {
+    TraceError(GetLastError(), "OpenComPort(): CreateFile(\"%s\")", pPath);
+    return INVALID_HANDLE_VALUE;
+  }
+
+  DCB dcb;
+
+  if (!myGetCommState(handle, &dcb)) {
+    CloseHandle(handle);
+    return INVALID_HANDLE_VALUE;
+  }
+
+  if (comParams.BaudRate() >= 0)
+    dcb.BaudRate = (DWORD)comParams.BaudRate();
+
+  if (comParams.ByteSize() >= 0)
+    dcb.ByteSize = (BYTE)comParams.ByteSize();
+
+  if (comParams.Parity() >= 0)
+    dcb.Parity = (BYTE)comParams.Parity();
+
+  if (comParams.StopBits() >= 0)
+    dcb.StopBits = (BYTE)comParams.StopBits();
+
+  if (comParams.OutCts() >= 0)
+    dcb.fOutxCtsFlow = comParams.OutCts();
+
+  if (comParams.OutDsr() >= 0)
+    dcb.fOutxDsrFlow = comParams.OutDsr();
+
+  if (comParams.OutX() >= 0)
+    dcb.fOutX = comParams.OutX();
+
+  if (comParams.InX() >= 0)
+    dcb.fInX = comParams.InX();
+
+  if (comParams.InDsr() >= 0)
+    dcb.fDsrSensitivity = comParams.InDsr();
+
+  dcb.fRtsControl = RTS_CONTROL_HANDSHAKE;
+  dcb.fDtrControl = DTR_CONTROL_ENABLE;
+
+  dcb.fParity = FALSE;
+  dcb.fNull = FALSE;
+  dcb.fAbortOnError = FALSE;
+  dcb.fErrorChar = FALSE;
+
+  if (!mySetCommState(handle, &dcb)) {
+    CloseHandle(handle);
+    return INVALID_HANDLE_VALUE;
+  }
+
+  COMMTIMEOUTS timeouts;
+
+  if (!GetCommTimeouts(handle, &timeouts)) {
+    TraceError(GetLastError(), "OpenComPort(): GetCommTimeouts()");
+    CloseHandle(handle);
+    return INVALID_HANDLE_VALUE;
+  }
+
+  if (comParams.IntervalTimeout() > 0) {
+    timeouts.ReadTotalTimeoutMultiplier = 0;
+    timeouts.ReadTotalTimeoutConstant = 0;
+    timeouts.ReadIntervalTimeout = (DWORD)comParams.IntervalTimeout();
+  } else {
+    timeouts.ReadTotalTimeoutMultiplier = MAXDWORD;
+    timeouts.ReadTotalTimeoutConstant = MAXDWORD - 1;
+    timeouts.ReadIntervalTimeout = MAXDWORD;
+  }
+
+  timeouts.WriteTotalTimeoutMultiplier = 0;
+  timeouts.WriteTotalTimeoutConstant = 0;
+
+  if (!SetCommTimeouts(handle, &timeouts)) {
+    TraceError(GetLastError(), "OpenComPort(): SetCommTimeouts()");
+    CloseHandle(handle);
+    return INVALID_HANDLE_VALUE;
+  }
+
+  cout
+      << "Open("
+      << "\"" << pPath << "\", baud=" << ComParams::BaudRateStr(dcb.BaudRate)
+      << ", data=" << ComParams::ByteSizeStr(dcb.ByteSize)
+      << ", parity=" << ComParams::ParityStr(dcb.Parity)
+      << ", stop=" << ComParams::StopBitsStr(dcb.StopBits)
+      << ", octs=" << ComParams::OutCtsStr(dcb.fOutxCtsFlow)
+      << ", odsr=" << ComParams::OutDsrStr(dcb.fOutxDsrFlow)
+      << ", ox=" << ComParams::OutXStr(dcb.fOutX)
+      << ", ix=" << ComParams::InXStr(dcb.fInX)
+      << ", idsr=" << ComParams::InDsrStr(dcb.fDsrSensitivity)
+      << ", ito=" << comParams.IntervalTimeoutStr()
+      << ") - OK" << endl;
+  return handle;
+}
+///////////////////////////////////////////////////////////////
+WriteOverlapped::WriteOverlapped(ComPort &_port, const void *_pBuf, DWORD _len)
+  : port(_port),
+    len(_len)
+{
+  pBuf = new BYTE[len];
+
+  for (DWORD i = 0 ; i < len ; i++) {
+    pBuf[i] = ((const BYTE *)_pBuf)[i];
+  }
+}
+
+WriteOverlapped::~WriteOverlapped()
+{
+  if (pBuf)
+    delete [] pBuf;
+}
+
+DWORD WriteOverlapped::FilterX()
+{
+  BYTE *pSrc = pBuf;
+  BYTE *pDst = pBuf;
+
+  for (DWORD i = 0 ; i < len ; i++) {
+    if (*pSrc == 0x11 || *pSrc == 0x13)
+      pSrc++;
+    else
+      *pDst++ = *pSrc++;
+  }
+
+  return len = DWORD(pDst - pBuf);
+}
+
+VOID CALLBACK WriteOverlapped::OnWrite(
+    DWORD err,
+    DWORD done,
+    LPOVERLAPPED pOverlapped)
+{
+  WriteOverlapped *pOver = (WriteOverlapped *)pOverlapped;
+
+  if (err != ERROR_SUCCESS && err != ERROR_OPERATION_ABORTED)
+    TraceError(err, "WriteOverlapped::OnWrite: %s", pOver->port.Name().c_str());
+
+  pOver->port.OnWrite(pOver, pOver->len, done);
+}
+
+BOOL WriteOverlapped::StartWrite()
+{
+  ::memset((OVERLAPPED *)this, 0, sizeof(OVERLAPPED));
+
+  if (!pBuf)
+    return FALSE;
+
+  if (!::WriteFileEx(port.Handle(), pBuf, len, this, OnWrite))
+    return FALSE;
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+VOID CALLBACK ReadOverlapped::OnRead(
+    DWORD err,
+    DWORD done,
+    LPOVERLAPPED pOverlapped)
+{
+  ReadOverlapped *pOver = (ReadOverlapped *)pOverlapped;
+
+  if (err != ERROR_SUCCESS) {
+    TraceError(err, "ReadOverlapped::OnRead(): %s", pOver->port.Name().c_str());
+    done = 0;
+  }
+
+  pOver->port.OnRead(pOver, pOver->buf, done);
+}
+
+BOOL ReadOverlapped::StartRead()
+{
+  ::memset((OVERLAPPED *)this, 0, sizeof(OVERLAPPED));
+
+  if (::ReadFileEx(port.Handle(), buf, sizeof(buf), this, OnRead)) {
+    return TRUE;
+  }
+
+  TraceError(GetLastError(), "ReadOverlapped::StartRead(): ReadFileEx() %s", port.Name().c_str());
+  return FALSE;
+}
+///////////////////////////////////////////////////////////////
+@
+
+
+1.5
+log
+@Added read interval timeout option
+@
+text
+@d2 1
+a2 1
+ * $Id: comio.cpp,v 1.4 2007/02/06 11:53:33 vfrolov Exp $
+d22 3
+@
+
+
+1.4
+log
+@Added options --odsr, --ox, --ix and --idsr
+Added communications error reporting
+@
+text
+@d2 1
+a2 1
+ * $Id: comio.cpp,v 1.3 2007/02/05 09:33:20 vfrolov Exp $
+d22 4
+d144 9
+a152 3
+  timeouts.ReadTotalTimeoutMultiplier = MAXDWORD;
+  timeouts.ReadTotalTimeoutConstant = MAXDWORD - 1;
+  timeouts.ReadIntervalTimeout = MAXDWORD;
+d174 1
+@
+
+
+1.3
+log
+@Implemented internal flow control
+@
+text
+@d2 1
+a2 1
+ * $Id: comio.cpp,v 1.2 2007/02/01 12:14:59 vfrolov Exp $
+d22 3
+d110 9
+a118 1
+  dcb.fDsrSensitivity = FALSE;
+d121 1
+a121 2
+  dcb.fOutX = FALSE;
+  dcb.fInX = FALSE;
+d161 3
+d185 15
+@
+
+
+1.2
+log
+@Redesigned COM port params
+@
+text
+@d2 1
+a2 1
+ * $Id: comio.cpp,v 1.1 2007/01/23 09:13:10 vfrolov Exp $
+d22 3
+a154 3
+int ReadOverlapped::iNext = 0;
+int WriteOverlapped::iNext = 0;
+///////////////////////////////////////////////////////////////
+d177 1
+a177 1
+  WriteOverlapped &overlapped = *(WriteOverlapped *)pOverlapped;
+d180 1
+a180 4
+    TraceError(err, "WriteOverlapped::OnWrite: %s", overlapped.port.Name().c_str());
+
+  if (overlapped.len > done)
+    overlapped.port.WriteLost() += overlapped.len - done;
+d182 1
+a182 3
+  overlapped.port.WriteQueued() -= overlapped.len;
+
+  delete &overlapped;
+d189 2
+a190 1
+  i = iNext++;
+d192 1
+a192 1
+  if (!pBuf) {
+a193 1
+  }
+d195 1
+a195 5
+  if (::WriteFileEx(port.Handle(), pBuf, len, this, OnWrite)) {
+    port.WriteQueued() += len;
+    return TRUE;
+  }
+  return FALSE;
+d203 1
+a203 1
+  ReadOverlapped &overlapped = *(ReadOverlapped *)pOverlapped;
+d205 4
+a208 4
+  if (err == ERROR_SUCCESS)
+    overlapped.port.OnRead(overlapped.buf, done);
+  else
+    TraceError(err, "ReadOverlapped::OnRead(): %s", overlapped.port.Name().c_str());
+d210 1
+a210 1
+  overlapped.StartRead();
+a216 2
+  i = iNext++;
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id:  $
+d21 4
+a24 1
+ * $Log: $
+d86 1
+a86 1
+  if (comParams.BaudRate() > 0)
+d89 1
+a89 1
+  if (comParams.ByteSize() > 0)
+d98 6
+a103 2
+  dcb.fOutxCtsFlow = FALSE;
+  dcb.fOutxDsrFlow = FALSE;
+d142 2
+a143 2
+      << "\"" << pPath << "\", baud=" << (unsigned)dcb.BaudRate
+      << ", data=" << (unsigned)dcb.ByteSize
+d146 2
+@
+

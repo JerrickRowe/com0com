@@ -1,0 +1,1234 @@
+head	1.29;
+access;
+symbols
+	v2_1_0_0:1.29
+	v2_0_1_0:1.28
+	RELEASED:1.29
+	v2_0_0_0:1.28;
+locks; strict;
+comment	@ * @;
+
+
+1.29
+date	2011.07.25.07.01.29;	author vfrolov;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2009.02.20.18.32.35;	author vfrolov;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2009.02.17.14.17.37;	author vfrolov;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2009.02.04.15.41.16;	author vfrolov;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2009.02.02.15.21.42;	author vfrolov;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2009.01.23.16.48.49;	author vfrolov;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2008.12.19.18.23.05;	author vfrolov;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2008.12.18.16.50.51;	author vfrolov;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2008.12.11.13.05.09;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2008.11.27.16.19.16;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2008.11.24.16.30.56;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2008.11.24.12.36.59;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2008.11.21.08.16.56;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2008.10.22.08.27.26;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2008.10.16.16.01.40;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2008.10.16.09.24.23;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2008.10.16.06.45.05;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2008.09.30.08.28.32;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.08.29.13.02.37;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.08.22.16.57.11;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2008.08.22.12.45.34;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2008.08.20.14.30.18;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.08.20.09.06.48;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2008.08.15.12.44.59;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2008.08.11.07.15.33;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.04.14.07.32.03;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.04.11.14.48.42;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.04.07.12.20.51;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.03.26.08.38.37;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.29
+log
+@Added more comments
+@
+text
+@/*
+ * plugins_api.h
+ *
+ * Copyright (c) 2008-2011 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
+#ifndef _PLUGINS_API_H
+#define _PLUGINS_API_H
+
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+/*******************************************************************/
+#define HUB_MSG_UNION_TYPES_MASK   ((DWORD)0xFF000000)
+#define HUB_MSG_UNION_TYPE_NONE    ((DWORD)0x00000000)
+#define HUB_MSG_UNION_TYPE_BUF     ((DWORD)0x01000000)
+#define HUB_MSG_UNION_TYPE_VAL     ((DWORD)0x02000000)
+#define HUB_MSG_UNION_TYPE_PVAL    ((DWORD)0x03000000)
+#define HUB_MSG_UNION_TYPE_HVAL    ((DWORD)0x04000000)
+#define HUB_MSG_UNION_TYPE_HVAL2   ((DWORD)0x05000000)
+/*******************************************************************/
+#define HUB_MSG_VAL_TYPES_MASK     ((DWORD)0x00FF0000)
+#define HUB_MSG_VAL_TYPE_MASK_VAL  ((DWORD)0x00010000)
+#define   VAL2MASK(v)              ((DWORD)(WORD)(v) << 16)
+#define   MASK2VAL(m)              ((WORD)((m) >> 16))
+#define HUB_MSG_VAL_TYPE_BOOL      ((DWORD)0x00020000)
+#define HUB_MSG_VAL_TYPE_MSG_TYPE  ((DWORD)0x00030000)
+#define HUB_MSG_VAL_TYPE_UINT      ((DWORD)0x00040000)
+#define HUB_MSG_VAL_TYPE_LC        ((DWORD)0x00050000)
+#define   LC_MASK_BYTESIZE         ((DWORD)1 << 24)
+#define   LC_MASK_PARITY           ((DWORD)1 << 25)
+#define   LC_MASK_STOPBITS         ((DWORD)1 << 26)
+#define   LC2VAL_BYTESIZE(t)       ((BYTE)((t)))
+#define   VAL2LC_BYTESIZE(v)       ((DWORD)(BYTE)(v))
+#define   LC2VAL_PARITY(t)         ((BYTE)((t) >> 8))
+#define   VAL2LC_PARITY(v)         ((DWORD)(BYTE)(v) << 8)
+#define   LC2VAL_STOPBITS(t)       ((BYTE)((t) >> 16))
+#define   VAL2LC_STOPBITS(v)       ((DWORD)(BYTE)(v) << 16)
+/*******************************************************************/
+#define HUB_MSG_ROUTE_FLOW_CONTROL ((DWORD)0x00008000)
+/*******************************************************************/
+#define HUB_MSG_T2N(t)             ((BYTE)((t) & 0xFF))
+/*******************************************************************/
+#define HUB_MSG_TYPE_EMPTY         (0   | HUB_MSG_UNION_TYPE_NONE)
+#define HUB_MSG_TYPE_LINE_DATA     (1   | HUB_MSG_UNION_TYPE_BUF)
+#define HUB_MSG_TYPE_CONNECT       (2   | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_BOOL)
+/*************/
+#define HUB_MSG_TYPE_MODEM_STATUS  (3   | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_MASK_VAL)
+#define   MODEM_STATUS_DCTS        0x01
+#define   MODEM_STATUS_DDSR        0x02
+#define   MODEM_STATUS_TERI        0x04
+#define   MODEM_STATUS_DDCD        0x08
+#define   MODEM_STATUS_CTS         0x10
+#define   MODEM_STATUS_DSR         0x20
+#define   MODEM_STATUS_RI          0x40
+#define   MODEM_STATUS_DCD         0x80
+/*************/
+#define HUB_MSG_TYPE_LINE_STATUS   (4   | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_MASK_VAL)
+#define   LINE_STATUS_DR           0x01
+#define   LINE_STATUS_OE           0x02
+#define   LINE_STATUS_PE           0x04
+#define   LINE_STATUS_FE           0x08
+#define   LINE_STATUS_BI           0x10
+#define   LINE_STATUS_THRE         0x20
+#define   LINE_STATUS_TEMT         0x40
+#define   LINE_STATUS_FIFOERR      0x80
+/*************/
+#define HUB_MSG_TYPE_SET_PIN_STATE (5   | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_MASK_VAL)
+#define   SPS_P2V_MCR(p)           ((BYTE)(p))
+#define   SPS_V2P_MCR(v)           ((WORD)(BYTE)(v))
+#define   PIN_STATE_DTR            0x0001
+#define   PIN_STATE_RTS            0x0002
+#define   PIN_STATE_OUT1           0x0004
+#define   PIN_STATE_OUT2           0x0008
+#define   SPS_P2V_MST(p)           ((BYTE)(((p) & 0xF000) >> 8))
+#define   SPS_V2P_MST(v)           (((WORD)(BYTE)(v) << 8) & 0xF000)
+#define   PIN_STATE_CTS            SPS_V2P_MST(MODEM_STATUS_CTS)
+#define   PIN_STATE_DSR            SPS_V2P_MST(MODEM_STATUS_DSR)
+#define   PIN_STATE_RI             SPS_V2P_MST(MODEM_STATUS_RI)
+#define   PIN_STATE_DCD            SPS_V2P_MST(MODEM_STATUS_DCD)
+#define   PIN_STATE_BREAK          0x0100
+/*************/
+#define HUB_MSG_TYPE_GET_IN_OPTS   (6   | HUB_MSG_UNION_TYPE_PVAL)
+/*
+ *      Input
+ *        HUB_MSG.u.pv.val   - the set and set-ID of input-options that can be requested
+ *      Output
+ *       *HUB_MSG.u.pv.pVal  - the cumulative set of requested input-options
+ *                             (suppose set-ID is from Input, set-ID field reserved for future)
+ */
+#define   GO_O2I(o)                ((DWORD)(o) >> 30)      /* unpack set-ID      */
+#define   GO_I2O(i)                ((DWORD)i << 30)        /* pack set-ID        */
+#define   GO0_ESCAPE_MODE          ((DWORD)1 << 0)
+#define   GO0_LBR_STATUS           ((DWORD)1 << 1)
+#define   GO0_LLC_STATUS           ((DWORD)1 << 2)
+#define   GO1_O2V_MODEM_STATUS(o)  ((BYTE)(o))
+#define   GO1_V2O_MODEM_STATUS(v)  ((DWORD)(BYTE)(v))
+#define   GO1_O2V_LINE_STATUS(o)   ((BYTE)((o) >> 8))
+#define   GO1_V2O_LINE_STATUS(v)   ((DWORD)(BYTE)(v) << 8)
+#define   GO1_RBR_STATUS           ((DWORD)1 << 16)
+#define   GO1_RLC_STATUS           ((DWORD)1 << 17)
+#define   GO1_BREAK_STATUS         ((DWORD)1 << 18)
+#define   GO1_PURGE_TX_IN          ((DWORD)1 << 19)
+/*************/
+#define HUB_MSG_TYPE_FAIL_IN_OPTS  (7   | HUB_MSG_UNION_TYPE_VAL)
+/*
+ *      Input
+ *        HUB_MSG.u.val      - the set and set-ID of rejected input-options
+ */
+/*************/
+#define HUB_MSG_TYPE_SET_OUT_OPTS  (8   | HUB_MSG_UNION_TYPE_VAL)
+/*
+ *      Input
+ *        HUB_MSG.u.val      - the cumulative set of requested output-options
+ */
+#define   SO_O2V_PIN_STATE(o)      ((WORD)(o))
+#define   SO_V2O_PIN_STATE(v)      ((DWORD)(WORD)(v))
+#define   SO_O2V_LINE_STATUS(o)    ((BYTE)((o) >> 16))
+#define   SO_V2O_LINE_STATUS(v)    ((DWORD)(BYTE)(v) << 16)
+#define   SO_SET_BR                ((DWORD)1 << 24)
+#define   SO_SET_LC                ((DWORD)1 << 25)
+#define   SO_PURGE_TX              ((DWORD)1 << 26)
+/*************/
+#define HUB_MSG_TYPE_RBR_STATUS    (9   | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_UINT)
+#define HUB_MSG_TYPE_RLC_STATUS    (10  | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_LC)
+/*************/
+#define HUB_MSG_TYPE_COUNT_REPEATS (11  | HUB_MSG_UNION_TYPE_PVAL | HUB_MSG_VAL_TYPE_MSG_TYPE)
+/*
+ *      Input
+ *        HUB_MSG.u.pv.val   - the message-type that can be repeated multiple times
+ *      Output
+ *       *HUB_MSG.u.pv.pVal  - the cumulative number of requested repeats
+ */
+/*************/
+#define HUB_MSG_TYPE_GET_ESC_OPTS  (12  | HUB_MSG_UNION_TYPE_PVAL)
+/*
+ *      Input
+ *        HUB_MSG.u.pv.val   - the set of escape-mode-input-options that can be requested
+ *      Output
+ *       *HUB_MSG.u.pv.pVal  - the cumulative set of requested escape-mode-input-options
+ */
+#define   ESC_OPTS_MAP_EO_2_GO1(e) ((DWORD)(e) & 0x00FFFFFF)
+#define   ESC_OPTS_MAP_GO1_2_EO(g) ((DWORD)(g) & 0x00FFFFFF)
+#define   ESC_OPTS_O2V_ESCCHAR(o)  ((BYTE)(o >> 24))
+#define   ESC_OPTS_V2O_ESCCHAR(v)  ((DWORD)(BYTE)(v) << 24)
+/*************/
+#define HUB_MSG_TYPE_FAIL_ESC_OPTS (13  | HUB_MSG_UNION_TYPE_PVAL)
+/*
+ *      Input
+ *        HUB_MSG.u.val      - the set of rejected escape-mode-input-options
+ *      Output
+ *       *HUB_MSG.u.pv.pVal  - the cumulative set of requested input-options
+ *                             (suppose set-ID is 1, set-ID field reserved for future)
+ */
+/*************/
+#define HUB_MSG_TYPE_BREAK_STATUS  (14  | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_BOOL)
+#define HUB_MSG_TYPE_SET_BR        (15  | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_UINT)
+#define HUB_MSG_TYPE_SET_LC        (16  | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_LC)
+#define HUB_MSG_TYPE_SET_LSR       (17  | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_MASK_VAL)
+#define HUB_MSG_TYPE_LBR_STATUS    (18  | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_UINT)
+#define HUB_MSG_TYPE_LLC_STATUS    (19  | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_LC)
+#define HUB_MSG_TYPE_LOOP_TEST     (20  | HUB_MSG_UNION_TYPE_HVAL)
+#define HUB_MSG_TYPE_ADD_XOFF_XON  (21  | HUB_MSG_ROUTE_FLOW_CONTROL | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_BOOL)
+#define HUB_MSG_TYPE_PURGE_TX_IN   (22  | HUB_MSG_UNION_TYPE_NONE)
+#define HUB_MSG_TYPE_PURGE_TX      (23  | HUB_MSG_UNION_TYPE_NONE)
+#define HUB_MSG_TYPE_TICK          (24  | HUB_MSG_UNION_TYPE_HVAL2)
+/*******************************************************************/
+typedef struct _HUB_MSG {
+  DWORD type;
+  union {
+    struct {
+      BYTE *pBuf;
+      DWORD size;
+    } buf;
+    struct {
+      DWORD *pVal;
+      DWORD val;
+    } pv;
+    struct {
+      HANDLE hVal0;
+      HANDLE hVal1;
+    } hv2;
+    DWORD val;
+    HANDLE hVal;
+  } u;
+} HUB_MSG;
+/*******************************************************************/
+DECLARE_HANDLE(HMASTERPORT);
+DECLARE_HANDLE(HMASTERFILTER);
+DECLARE_HANDLE(HMASTERFILTERINSTANCE);
+DECLARE_HANDLE(HMASTERTIMER);
+DECLARE_HANDLE(HTIMEROWNER);
+DECLARE_HANDLE(HTIMERPARAM);
+DECLARE_HANDLE(HFILTER);
+/*******************************************************************/
+typedef struct _ARG_INFO_A {
+  size_t size;
+  const char *pFile;
+  int iLine;
+  const char *pReference;
+} ARG_INFO_A;
+/*******************************************************************/
+typedef BYTE *(CALLBACK ROUTINE_BUF_ALLOC)(
+        DWORD size);
+typedef VOID (CALLBACK ROUTINE_BUF_FREE)(
+        BYTE *pBuf);
+typedef VOID (CALLBACK ROUTINE_BUF_APPEND)(
+        BYTE **ppBuf,
+        DWORD offset,
+        const BYTE *pSrc,
+        DWORD sizeSrc);
+typedef BOOL (CALLBACK ROUTINE_MSG_REPLACE_BUF)(
+        HUB_MSG *pMsg,
+        DWORD type,
+        const BYTE *pSrc,
+        DWORD sizeSrc);
+typedef HUB_MSG *(CALLBACK ROUTINE_MSG_INSERT_BUF)(
+        HUB_MSG *pPrevMsg,
+        DWORD type,
+        const BYTE *pSrc,
+        DWORD sizeSrc);
+typedef BOOL (CALLBACK ROUTINE_MSG_REPLACE_VAL)(
+        HUB_MSG *pMsg,
+        DWORD type,
+        DWORD val);
+typedef HUB_MSG *(CALLBACK ROUTINE_MSG_INSERT_VAL)(
+        HUB_MSG *pMsg,
+        DWORD type,
+        DWORD val);
+typedef BOOL (CALLBACK ROUTINE_MSG_REPLACE_NONE)(
+        HUB_MSG *pMsg,
+        DWORD type);
+typedef HUB_MSG *(CALLBACK ROUTINE_MSG_INSERT_NONE)(
+        HUB_MSG *pMsg,
+        DWORD type);
+typedef const char *(CALLBACK ROUTINE_PORT_NAME_A)(
+        HMASTERPORT hMasterPort);
+typedef const char *(CALLBACK ROUTINE_FILTER_NAME_A)(
+        HMASTERFILTER hMasterFilter);
+typedef void (CALLBACK ROUTINE_ON_READ)(
+        HMASTERPORT hMasterPort,
+        HUB_MSG *pMsg);
+typedef HMASTERTIMER (CALLBACK ROUTINE_TIMER_CREATE)(
+        HTIMEROWNER hTimerOwner);
+typedef BOOL (CALLBACK ROUTINE_TIMER_SET)(
+        HMASTERTIMER hMasterTimer,
+        HMASTERPORT hMasterPort,
+        const LARGE_INTEGER *pDueTime,
+        LONG period,
+        HTIMERPARAM hTimerParam);
+typedef void (CALLBACK ROUTINE_TIMER_CANCEL)(
+        HMASTERTIMER hMasterTimer);
+typedef void (CALLBACK ROUTINE_TIMER_DELETE)(
+        HMASTERTIMER hMasterTimer);
+typedef HMASTERPORT (CALLBACK ROUTINE_FILTERPORT)(
+        HMASTERFILTERINSTANCE hMasterFilterInstance);
+typedef HFILTER (CALLBACK ROUTINE_GET_FILTER)(
+        HMASTERFILTERINSTANCE hMasterFilterInstance);
+typedef const ARG_INFO_A *(CALLBACK ROUTINE_GET_ARG_INFO_A)(
+        const char *pArg);
+/*******************************************************************/
+typedef struct _HUB_ROUTINES_A {
+  size_t size;
+  ROUTINE_BUF_ALLOC *pBufAlloc;
+  ROUTINE_BUF_FREE *pBufFree;
+  ROUTINE_BUF_APPEND *pBufAppend;
+  ROUTINE_MSG_REPLACE_BUF *pMsgReplaceBuf;
+  ROUTINE_MSG_INSERT_BUF *pMsgInsertBuf;
+  ROUTINE_MSG_REPLACE_VAL *pMsgReplaceVal;
+  ROUTINE_MSG_INSERT_VAL *pMsgInsertVal;
+  ROUTINE_MSG_REPLACE_NONE *pMsgReplaceNone;
+  ROUTINE_MSG_INSERT_NONE *pMsgInsertNone;
+  ROUTINE_PORT_NAME_A *pPortName;
+  ROUTINE_FILTER_NAME_A *pFilterName;
+  ROUTINE_ON_READ *pOnRead;
+  ROUTINE_TIMER_CREATE *pTimerCreate;
+  ROUTINE_TIMER_SET *pTimerSet;
+  ROUTINE_TIMER_CANCEL *pTimerCancel;
+  ROUTINE_TIMER_DELETE *pTimerDelete;
+  ROUTINE_FILTERPORT *pFilterPort;
+  ROUTINE_GET_FILTER *pGetFilter;
+  ROUTINE_GET_ARG_INFO_A *pGetArgInfo;
+} HUB_ROUTINES_A;
+/*******************************************************************/
+typedef enum _PLUGIN_TYPE {
+  PLUGIN_TYPE_INVALID,
+  PLUGIN_TYPE_FILTER,
+  PLUGIN_TYPE_DRIVER,
+} PLUGIN_TYPE;
+/*******************************************************************/
+DECLARE_HANDLE(HCONFIG);
+/*******************************************************************/
+typedef struct _PLUGIN_ABOUT_A {
+  size_t size;
+  const char *pName;
+  const char *pCopyright;
+  const char *pLicense;
+  const char *pDescription;
+} PLUGIN_ABOUT_A;
+/*******************************************************************/
+typedef PLUGIN_TYPE (CALLBACK PLUGIN_GET_TYPE)();
+typedef const PLUGIN_ABOUT_A *(CALLBACK PLUGIN_GET_ABOUT_A)();
+typedef void (CALLBACK PLUGIN_HELP_A)(
+        const char *pProgPath);
+typedef HCONFIG (CALLBACK PLUGIN_CONFIG_START)();
+typedef BOOL (CALLBACK PLUGIN_CONFIG_A)(
+        HCONFIG hConfig,
+        const char *pArg);
+typedef void (CALLBACK PLUGIN_CONFIG_STOP)(
+        HCONFIG hConfig);
+/*******************************************************************/
+#define COMMON_PLUGIN_ROUTINES_A \
+  size_t size; \
+  PLUGIN_GET_TYPE *pGetPluginType; \
+  PLUGIN_GET_ABOUT_A *pGetPluginAbout; \
+  PLUGIN_HELP_A *pHelp; \
+  PLUGIN_CONFIG_START *pConfigStart; \
+  PLUGIN_CONFIG_A *pConfig; \
+  PLUGIN_CONFIG_STOP *pConfigStop; \
+/*******************************************************************/
+typedef struct _PLUGIN_ROUTINES_A {
+  COMMON_PLUGIN_ROUTINES_A
+} PLUGIN_ROUTINES_A;
+/*******************************************************************/
+#define PLUGIN_INIT_PROC_NAME "Init"
+#define PLUGIN_INIT_PROC_NAME_A PLUGIN_INIT_PROC_NAME "A"
+/*******************************************************************/
+typedef const PLUGIN_ROUTINES_A *const *(CALLBACK PLUGIN_INIT_A)(
+        const HUB_ROUTINES_A *pHubRoutines);
+/*******************************************************************/
+DECLARE_HANDLE(HFILTERINSTANCE);
+/*******************************************************************/
+typedef HFILTER (CALLBACK FILTER_CREATE_A)(
+        HMASTERFILTER hMasterFilter,
+        HCONFIG hConfig,
+        int argc,
+        const char *const argv[]);
+typedef void (CALLBACK FILTER_DELETE)(
+        HFILTER hFilter);
+typedef HFILTERINSTANCE (CALLBACK FILTER_CREATE_INSTANCE)(
+        HMASTERFILTERINSTANCE hMasterFilterInstance);
+typedef void (CALLBACK FILTER_DELETE_INSTANCE)(
+        HFILTERINSTANCE hFilterInstance);
+typedef BOOL (CALLBACK FILTER_IN_METHOD)(
+        HFILTER hFilter,
+        HFILTERINSTANCE hFilterInstance,
+        HUB_MSG *pInMsg,
+        HUB_MSG **ppEchoMsg);
+typedef BOOL (CALLBACK FILTER_OUT_METHOD)(
+        HFILTER hFilter,
+        HFILTERINSTANCE hFilterInstance,
+        HMASTERPORT hFromPort,
+        HUB_MSG *pOutMsg);
+/*******************************************************************/
+typedef struct _FILTER_ROUTINES_A {
+  COMMON_PLUGIN_ROUTINES_A
+  FILTER_CREATE_A *pCreate;
+  FILTER_DELETE *pDelete;
+  FILTER_CREATE_INSTANCE *pCreateInstance;
+  FILTER_DELETE_INSTANCE *pDeleteInstance;
+  FILTER_IN_METHOD *pInMethod;
+  FILTER_OUT_METHOD *pOutMethod;
+} FILTER_ROUTINES_A;
+/*******************************************************************/
+DECLARE_HANDLE(HPORT);
+/*******************************************************************/
+typedef HPORT (CALLBACK PORT_CREATE_A)(
+        HCONFIG hConfig,
+        const char *pPath);
+typedef const char *(CALLBACK PORT_GET_NAME_A)(
+        HPORT hPort);
+typedef void (CALLBACK PORT_SET_NAME_A)(
+        HPORT hPort,
+        const char *pName);
+typedef BOOL (CALLBACK PORT_INIT)(
+        HPORT hPort,
+        HMASTERPORT hMasterPort);
+typedef BOOL (CALLBACK PORT_START)(
+        HPORT hPort);
+typedef BOOL (CALLBACK PORT_FAKE_READ_FILTER)(
+        HPORT hPort,
+        HUB_MSG *pInMsg);
+typedef BOOL (CALLBACK PORT_WRITE)(
+        HPORT hPort,
+        HUB_MSG *pMsg);
+typedef void (CALLBACK PORT_LOST_REPORT)(
+        HPORT hPort);
+/*******************************************************************/
+typedef struct _PORT_ROUTINES_A {
+  COMMON_PLUGIN_ROUTINES_A
+  PORT_CREATE_A *pCreate;
+  PORT_GET_NAME_A *pGetPortName;
+  PORT_SET_NAME_A *pSetPortName;
+  PORT_INIT *pInit;
+  PORT_START *pStart;
+  PORT_FAKE_READ_FILTER *pFakeReadFilter;
+  PORT_WRITE *pWrite;
+  PORT_LOST_REPORT *pLostReport;
+} PORT_ROUTINES_A;
+/*******************************************************************/
+#define ITEM_IS_VALID(pStruct, item) \
+        (((BYTE *)(&(pStruct)->item + 1)) <= ((BYTE *)(pStruct) + (pStruct)->size))
+
+#define ROUTINE_GET(pStruct, pRoutine) \
+        (ITEM_IS_VALID(pStruct, pRoutine) \
+          ? (pStruct)->pRoutine \
+          : NULL)
+
+#define ROUTINE_IS_VALID(pStruct, pRoutine) \
+        (ROUTINE_GET(pStruct, pRoutine) != NULL)
+/*******************************************************************/
+
+#ifdef  __cplusplus
+}
+#endif
+
+#endif  /* _PLUGINS_API_H */
+@
+
+
+1.28
+log
+@Added info about location of options
+@
+text
+@d4 1
+a4 1
+ * Copyright (c) 2008-2009 Vyacheslav Frolov
+d63 1
+d73 1
+d83 1
+d98 1
+d100 9
+a108 2
+#define   GO_O2I(o)                ((DWORD)(o) >> 30)
+#define   GO_I2O(i)                ((DWORD)i << 30)
+d120 1
+d122 5
+d128 4
+d139 1
+d142 1
+d144 7
+d152 6
+d162 1
+d164 8
+@
+
+
+1.27
+log
+@Redesigned timer's API
+@
+text
+@d167 7
+d230 2
+d253 1
+d372 3
+d376 1
+a376 1
+        ((((BYTE *)(&(pStruct)->pRoutine + 1)) <= ((BYTE *)(pStruct) + (pStruct)->size)) \
+@
+
+
+1.26
+log
+@Added pGetFilter()
+@
+text
+@d36 1
+d137 1
+a137 1
+#define HUB_MSG_TYPE_TICK          (24  | HUB_MSG_UNION_TYPE_HVAL)
+d150 4
+d163 2
+d208 1
+a208 1
+        );
+d213 2
+a214 1
+        LONG period);
+@
+
+
+1.25
+log
+@Optimized filter's API
+@
+text
+@d158 1
+d213 2
+d235 1
+a283 1
+DECLARE_HANDLE(HFILTER);
+@
+
+
+1.24
+log
+@Exported timer routines
+@
+text
+@d156 1
+d210 2
+d231 1
+d281 1
+d284 1
+d288 6
+a293 3
+typedef BOOL (CALLBACK FILTER_INIT)(
+        HFILTER hFilter,
+        HMASTERFILTER hMasterFilter);
+d296 1
+a296 1
+        HMASTERPORT hFromPort,
+d301 1
+a302 1
+        HMASTERPORT hToPort,
+d308 3
+a310 1
+  FILTER_INIT *pInit;
+@
+
+
+1.23
+log
+@Changed message type to 32 bit
+@
+text
+@d4 1
+a4 1
+ * Copyright (c) 2008 Vyacheslav Frolov
+d136 1
+d156 1
+d198 11
+d224 4
+@
+
+
+1.22
+log
+@Extended the number of possible IN options
+@
+text
+@d30 6
+a35 6
+#define HUB_MSG_UNION_TYPES_MASK   0xF000
+#define HUB_MSG_UNION_TYPE_NONE    0x0000
+#define HUB_MSG_UNION_TYPE_BUF     0x1000
+#define HUB_MSG_UNION_TYPE_VAL     0x2000
+#define HUB_MSG_UNION_TYPE_PVAL    0x3000
+#define HUB_MSG_UNION_TYPE_HVAL    0x4000
+d37 2
+a38 2
+#define HUB_MSG_VAL_TYPES_MASK     0x0F00
+#define HUB_MSG_VAL_TYPE_MASK_VAL  0x0100
+d41 4
+a44 4
+#define HUB_MSG_VAL_TYPE_BOOL      0x0200
+#define HUB_MSG_VAL_TYPE_MSG_TYPE  0x0300
+#define HUB_MSG_VAL_TYPE_UINT      0x0400
+#define HUB_MSG_VAL_TYPE_LC        0x0500
+d55 3
+a57 1
+#define HUB_MSG_ROUTE_FLOW_CONTROL 0x0080
+d138 1
+a138 1
+  WORD type;
+d167 1
+a167 1
+        WORD type,
+d172 1
+a172 1
+        WORD type,
+d177 1
+a177 1
+        WORD type,
+d181 1
+a181 1
+        WORD type,
+d185 1
+a185 1
+        WORD type);
+d188 1
+a188 1
+        WORD type);
+@
+
+
+1.21
+log
+@Added PURGE_TX
+@
+text
+@d93 15
+a107 12
+#define   GO_O2V_MODEM_STATUS(o)   ((BYTE)(o))
+#define   GO_V2O_MODEM_STATUS(v)   ((DWORD)(BYTE)(v))
+#define   GO_O2V_LINE_STATUS(o)    ((BYTE)((o) >> 8))
+#define   GO_V2O_LINE_STATUS(v)    ((DWORD)(BYTE)(v) << 8)
+#define   GO_RBR_STATUS            ((DWORD)1 << 16)
+#define   GO_RLC_STATUS            ((DWORD)1 << 17)
+#define   GO_BREAK_STATUS          ((DWORD)1 << 18)
+#define   GO_PURGE_TX_IN           ((DWORD)1 << 19)
+#define   GO_ESCAPE_MODE           ((DWORD)1 << 24)
+#define   GO_LBR_STATUS            ((DWORD)1 << 25)
+#define   GO_LLC_STATUS            ((DWORD)1 << 26)
+#define HUB_MSG_TYPE_SET_OUT_OPTS  (7   | HUB_MSG_UNION_TYPE_VAL)
+a114 1
+#define HUB_MSG_TYPE_FAIL_IN_OPTS  (8   | HUB_MSG_UNION_TYPE_VAL)
+d119 2
+a120 2
+#define   ESC_OPTS_MAP_EO2GO(eo)   ((DWORD)(eo) & 0x00FFFFFF)
+#define   ESC_OPTS_MAP_GO2EO(go)   ((DWORD)(go) & 0x00FFFFFF)
+@
+
+
+1.20
+log
+@Added pBufAppend()
+@
+text
+@d100 1
+d111 1
+d130 2
+@
+
+
+1.19
+log
+@Removed pOnXoffXon
+@
+text
+@d152 5
+d193 1
+@
+
+
+1.18
+log
+@Changed plugin API
+@
+text
+@d55 2
+d127 1
+a127 1
+#define HUB_MSG_TYPE_ADD_XOFF_XON  (21  | HUB_MSG_UNION_TYPE_VAL | HUB_MSG_VAL_TYPE_BOOL)
+a179 3
+typedef void (CALLBACK ROUTINE_ON_XOFF_XON)(
+        HMASTERPORT hMasterPort,
+        BOOL xoff);
+a195 1
+  ROUTINE_ON_XOFF_XON *pOnXoffXon;
+@
+
+
+1.17
+log
+@Added HUB_MSG_TYPE_LOOP_TEST
+@
+text
+@d30 1
+a30 1
+#define HUB_MSG_UNION_TYPE_MASK    0xF000
+d125 1
+a142 1
+DECLARE_HANDLE(HHUB);
+d144 1
+a144 1
+DECLARE_HANDLE(HFILTER);
+a173 2
+typedef int (CALLBACK ROUTINE_NUM_PORTS)(
+        HHUB hHub);
+d175 1
+a175 2
+        HHUB hHub,
+        int n);
+d177 4
+a180 8
+        HHUB hHub,
+        HFILTER hFilter);
+typedef void (CALLBACK ROUTINE_ON_XOFF)(
+        HHUB hHub,
+        HMASTERPORT hMasterPort);
+typedef void (CALLBACK ROUTINE_ON_XON)(
+        HHUB hHub,
+        HMASTERPORT hMasterPort);
+a181 1
+        HHUB hHub,
+a194 1
+  ROUTINE_NUM_PORTS *pNumPorts;
+d197 1
+a197 2
+  ROUTINE_ON_XOFF *pOnXoff;
+  ROUTINE_ON_XON *pOnXon;
+d247 2
+d255 1
+a255 1
+        HHUB hHub);
+d258 1
+a258 1
+        int nFromPort,
+d263 2
+a264 2
+        int nFromPort,
+        int nToPort,
+d287 1
+a287 2
+        HMASTERPORT hMasterPort,
+        HHUB hHub);
+a295 4
+typedef void (CALLBACK PORT_ADD_XOFF)(
+        HPORT hPort);
+typedef void (CALLBACK PORT_ADD_XON)(
+        HPORT hPort);
+a307 2
+  PORT_ADD_XOFF *pAddXoff;
+  PORT_ADD_XON *pAddXon;
+@
+
+
+1.16
+log
+@Added ability to set bytesize, parity and stopbits separately
+@
+text
+@d35 1
+d124 1
+d138 1
+@
+
+
+1.15
+log
+@Added LBR_STATUS and LLC_STATUS
+@
+text
+@d44 3
+@
+
+
+1.14
+log
+@Changed return type of ROUTINE_MSG_REPLACE_*() to BOOL
+@
+text
+@d95 2
+d118 2
+@
+
+
+1.13
+log
+@Added PIN_STATE_* for DCE
+Added HUB_MSG_TYPE_SET_LSR
+@
+text
+@d140 1
+a140 1
+typedef HUB_MSG *(CALLBACK ROUTINE_MSG_REPLACE_BUF)(
+d150 1
+a150 1
+typedef HUB_MSG *(CALLBACK ROUTINE_MSG_REPLACE_VAL)(
+d158 1
+a158 1
+typedef HUB_MSG *(CALLBACK ROUTINE_MSG_REPLACE_NONE)(
+@
+
+
+1.12
+log
+@Added ability to control OUT1 and OUT2 pins
+Added ability to get remote baud rate and line control settings
+Added ability to set baud rate and line control
+Added fallback to non escape mode
+@
+text
+@d79 6
+d98 4
+a101 2
+#define   SO_SET_BR                ((DWORD)1 << 16)
+#define   SO_SET_LC                ((DWORD)1 << 17)
+d115 1
+@
+
+
+1.11
+log
+@Added ESC_OPTS_MAP_EO2GO() and ESC_OPTS_MAP_GO2EO()
+@
+text
+@d43 7
+d73 7
+a79 5
+#define   PIN_STATE_RTS            0x01
+#define   PIN_STATE_DTR            0x02
+#define   PIN_STATE_OUT1           0x04
+#define   PIN_STATE_OUT2           0x08
+#define   PIN_STATE_BREAK          0x10
+d90 4
+a93 2
+#define   SO_O2V_PIN_STATE(o)      ((BYTE)(o))
+#define   SO_V2O_PIN_STATE(v)      ((DWORD)(BYTE)(v))
+d96 1
+a96 1
+#define HUB_MSG_TYPE_RLC_STATUS    (10  | HUB_MSG_UNION_TYPE_VAL)
+d103 1
+a103 1
+#define HUB_MSG_TYPE_FAIL_ESC_OPTS (13  | HUB_MSG_UNION_TYPE_VAL)
+d105 2
+@
+
+
+1.10
+log
+@Added
+  HUB_MSG_TYPE_GET_ESC_OPTS
+  HUB_MSG_TYPE_FAIL_ESC_OPTS
+  HUB_MSG_TYPE_BREAK_STATUS
+@
+text
+@d40 3
+d46 1
+a46 1
+#define HUB_MSG_TYPE_CONNECT       (2   | HUB_MSG_UNION_TYPE_VAL)
+d84 1
+a84 1
+#define HUB_MSG_TYPE_RBR_STATUS    (9   | HUB_MSG_UNION_TYPE_VAL)
+d86 1
+a86 1
+#define HUB_MSG_TYPE_COUNT_REPEATS (11  | HUB_MSG_UNION_TYPE_PVAL)
+d88 2
+a89 7
+#define   ESC_OPTS_O2V_MST(o)      GO_O2V_MODEM_STATUS(o)
+#define   ESC_OPTS_V2O_MST(v)      GO_V2O_MODEM_STATUS(v)
+#define   ESC_OPTS_O2V_LSR(o)      GO_O2V_LINE_STATUS(o)
+#define   ESC_OPTS_V2O_LSR(v)      GO_V2O_LINE_STATUS(v)
+#define   ESC_OPTS_RBR_STATUS      GO_RBR_STATUS
+#define   ESC_OPTS_RLC_STATUS      GO_RLC_STATUS
+#define   ESC_OPTS_BREAK_STATUS    GO_BREAK_STATUS
+d93 1
+a93 1
+#define HUB_MSG_TYPE_BREAK_STATUS  (14  | HUB_MSG_UNION_TYPE_VAL)
+@
+
+
+1.9
+log
+@Added masking to HUB_MSG_TYPE_MODEM_STATUS and HUB_MSG_TYPE_LINE_STATUS
+@
+text
+@d73 4
+a76 3
+#define   GO_ESCAPE_MODE           0x00010000
+#define   GO_RBR_STATUS            0x00020000
+#define   GO_RLC_STATUS            0x00040000
+d84 12
+@
+
+
+1.8
+log
+@Redesigned serial port options
+@
+text
+@d36 5
+d44 1
+a44 1
+#define HUB_MSG_TYPE_MODEM_STATUS  (3   | HUB_MSG_UNION_TYPE_VAL)
+d53 1
+a53 1
+#define HUB_MSG_TYPE_LINE_STATUS   (4   | HUB_MSG_UNION_TYPE_VAL)
+d62 1
+a62 3
+#define HUB_MSG_TYPE_SET_PIN_STATE (5   | HUB_MSG_UNION_TYPE_VAL)
+#define   SPS_PIN2MASK(p)          ((DWORD)(BYTE)(p) << 16)
+#define   SPS_MASK2PIN(m)          ((BYTE)((m) >> 16))
+@
+
+
+1.7
+log
+@Added HUB_ROUTINES_A::pFilterName
+@
+text
+@d65 1
+a65 1
+#define HUB_MSG_TYPE_GET_OPTIONS   (6   | HUB_MSG_UNION_TYPE_PVAL)
+d70 4
+a73 1
+#define HUB_MSG_TYPE_SET_OPTIONS   (7   | HUB_MSG_UNION_TYPE_VAL)
+d76 4
+@
+
+
+1.6
+log
+@Added fake read filter method to ports
+@
+text
+@d2 1
+a2 1
+ * $Id: plugins_api.h,v 1.5 2008/08/11 07:15:33 vfrolov Exp $
+a19 25
+ *
+ * $Log: plugins_api.h,v $
+ * Revision 1.5  2008/08/11 07:15:33  vfrolov
+ * Replaced
+ *   HUB_MSG_TYPE_COM_FUNCTION
+ *   HUB_MSG_TYPE_INIT_LSR_MASK
+ *   HUB_MSG_TYPE_INIT_MST_MASK
+ * by
+ *   HUB_MSG_TYPE_SET_PIN_STATE
+ *   HUB_MSG_TYPE_GET_OPTIONS
+ *   HUB_MSG_TYPE_SET_OPTIONS
+ *
+ * Revision 1.4  2008/04/14 07:32:03  vfrolov
+ * Renamed option --use-port-module to --use-driver
+ *
+ * Revision 1.3  2008/04/11 14:48:42  vfrolov
+ * Replaced SET_RT_EVENTS by INIT_LSR_MASK and INIT_MST_MASK
+ * Replaced COM_ERRORS by LINE_STATUS
+ *
+ * Revision 1.2  2008/04/07 12:20:51  vfrolov
+ * Added HUB_MSG_TYPE_SET_RT_EVENTS
+ *
+ * Revision 1.1  2008/03/26 08:38:37  vfrolov
+ * Initial revision
+ *
+d91 1
+d126 3
+d152 1
+a203 2
+DECLARE_HANDLE(HFILTER);
+/*******************************************************************/
+@
+
+
+1.5
+log
+@Replaced
+  HUB_MSG_TYPE_COM_FUNCTION
+  HUB_MSG_TYPE_INIT_LSR_MASK
+  HUB_MSG_TYPE_INIT_MST_MASK
+by
+  HUB_MSG_TYPE_SET_PIN_STATE
+  HUB_MSG_TYPE_GET_OPTIONS
+  HUB_MSG_TYPE_SET_OPTIONS
+@
+text
+@d2 1
+a2 1
+ * $Id: plugins_api.h,v 1.4 2008/04/14 07:32:03 vfrolov Exp $
+d22 10
+d268 3
+d288 1
+@
+
+
+1.4
+log
+@Renamed option --use-port-module to --use-driver
+@
+text
+@d2 1
+a2 1
+ * $Id: plugins_api.h,v 1.3 2008/04/11 14:48:42 vfrolov Exp $
+d22 3
+d55 8
+d64 24
+a87 3
+#define HUB_MSG_TYPE_COM_FUNCTION  (5   | HUB_MSG_UNION_TYPE_VAL)
+#define HUB_MSG_TYPE_INIT_LSR_MASK (6   | HUB_MSG_UNION_TYPE_PVAL)
+#define HUB_MSG_TYPE_INIT_MST_MASK (7   | HUB_MSG_UNION_TYPE_PVAL)
+d96 4
+a99 1
+    DWORD *pVal;
+a288 18
+#define LINE_STATUS_DR             0x01
+#define LINE_STATUS_OE             0x02
+#define LINE_STATUS_PE             0x04
+#define LINE_STATUS_FE             0x08
+#define LINE_STATUS_BI             0x10
+#define LINE_STATUS_THRE           0x20
+#define LINE_STATUS_TEMT           0x40
+#define LINE_STATUS_FIFOERR        0x80
+/*******************************************************************/
+#define MODEM_STATUS_DCTS          0x01
+#define MODEM_STATUS_DDSR          0x02
+#define MODEM_STATUS_TERI          0x04
+#define MODEM_STATUS_DDCD          0x08
+#define MODEM_STATUS_CTS           0x10
+#define MODEM_STATUS_DSR           0x20
+#define MODEM_STATUS_RI            0x40
+#define MODEM_STATUS_DCD           0x80
+/*******************************************************************/
+@
+
+
+1.3
+log
+@Replaced SET_RT_EVENTS by INIT_LSR_MASK and INIT_MST_MASK
+Replaced COM_ERRORS by LINE_STATUS
+@
+text
+@d2 1
+a2 1
+ * $Id: plugins_api.h,v 1.2 2008/04/07 12:20:51 vfrolov Exp $
+d22 4
+d136 1
+a136 1
+  PLUGIN_TYPE_PORT,
+@
+
+
+1.2
+log
+@Added HUB_MSG_TYPE_SET_RT_EVENTS
+@
+text
+@d2 1
+a2 1
+ * $Id: plugins_api.h,v 1.1 2008/03/26 08:38:37 vfrolov Exp $
+d22 3
+d42 1
+d44 8
+a51 7
+#define HUB_MSG_TYPE_EMPTY         (HUB_MSG_UNION_TYPE_NONE  |   0)
+#define HUB_MSG_TYPE_LINE_DATA     (HUB_MSG_UNION_TYPE_BUF   |   1)
+#define HUB_MSG_TYPE_CONNECT       (HUB_MSG_UNION_TYPE_VAL   |   2)
+#define HUB_MSG_TYPE_MODEM_STATUS  (HUB_MSG_UNION_TYPE_VAL   |   3)
+#define HUB_MSG_TYPE_COM_ERRORS    (HUB_MSG_UNION_TYPE_VAL   |   4)
+#define HUB_MSG_TYPE_COM_FUNCTION  (HUB_MSG_UNION_TYPE_VAL   |   5)
+#define HUB_MSG_TYPE_SET_RT_EVENTS (HUB_MSG_UNION_TYPE_VAL   |   6)
+d60 1
+d250 18
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 3
+a23 1
+ * $Log: $
+d46 1
+@
+

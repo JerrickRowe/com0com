@@ -1,0 +1,967 @@
+head	1.16;
+access;
+symbols
+	v2_1_0_0:1.16
+	v2_0_1_0:1.15
+	RELEASED:1.16
+	v2_0_0_0:1.14;
+locks; strict;
+comment	@// @;
+
+
+1.16
+date	2011.07.27.17.08.33;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2010.09.14.16.31.50;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2009.02.20.18.32.35;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2008.11.27.16.25.08;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2008.11.27.13.44.52;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.11.24.16.30.56;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.11.24.12.37.00;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2008.11.13.07.35.10;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2008.08.28.10.24.35;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.08.20.14.30.19;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2008.08.15.12.44.59;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2008.08.13.14.33.18;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.04.14.07.32.04;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.04.07.12.28.03;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.03.28.15.55.09;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.03.26.08.41.18;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.16
+log
+@Implemented serial port share mode
+@
+text
+@/*
+ * $Id: port.cpp,v 1.15 2010/09/14 16:31:50 vfrolov Exp $
+ *
+ * Copyright (c) 2008-2011 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: port.cpp,v $
+ * Revision 1.15  2010/09/14 16:31:50  vfrolov
+ * Implemented --write-limit=0 to disable writing to the port
+ *
+ * Revision 1.14  2009/02/20 18:32:35  vfrolov
+ * Added info about location of options
+ *
+ * Revision 1.13  2008/11/27 16:25:08  vfrolov
+ * Improved write buffering
+ *
+ * Revision 1.12  2008/11/27 13:44:52  vfrolov
+ * Added --write-limit option
+ *
+ * Revision 1.11  2008/11/24 16:30:56  vfrolov
+ * Removed pOnXoffXon
+ *
+ * Revision 1.10  2008/11/24 12:37:00  vfrolov
+ * Changed plugin API
+ *
+ * Revision 1.9  2008/11/13 07:35:10  vfrolov
+ * Changed for staticaly linking
+ *
+ * Revision 1.8  2008/08/28 10:24:35  vfrolov
+ * Removed linking with ....utils.h and ....utils.cpp
+ *
+ * Revision 1.7  2008/08/20 14:30:19  vfrolov
+ * Redesigned serial port options
+ *
+ * Revision 1.6  2008/08/15 12:44:59  vfrolov
+ * Added fake read filter method to ports
+ *
+ * Revision 1.5  2008/08/13 14:33:18  vfrolov
+ * Fixed Help
+ *
+ * Revision 1.4  2008/04/14 07:32:04  vfrolov
+ * Renamed option --use-port-module to --use-driver
+ *
+ * Revision 1.3  2008/04/07 12:28:03  vfrolov
+ * Replaced --rt-events option by SET_RT_EVENTS message
+ *
+ * Revision 1.2  2008/03/28 15:55:09  vfrolov
+ * Fixed help
+ *
+ * Revision 1.1  2008/03/26 08:41:18  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "../plugins_api.h"
+///////////////////////////////////////////////////////////////
+namespace PortSerial {
+///////////////////////////////////////////////////////////////
+#include "comparams.h"
+#include "comport.h"
+#include "import.h"
+///////////////////////////////////////////////////////////////
+static ROUTINE_GET_ARG_INFO_A *pGetArgInfo;
+///////////////////////////////////////////////////////////////
+static const char *GetParam(const char *pArg, const char *pPattern)
+{
+  size_t lenPattern = strlen(pPattern);
+
+  if (_strnicmp(pArg, pPattern, lenPattern) != 0)
+    return NULL;
+
+  return pArg + lenPattern;
+}
+///////////////////////////////////////////////////////////////
+static void Diag(const char *pPref, const char *pArg)
+{
+  cerr << pPref << "'" << pArg << "'";
+
+  string pref(" (");
+  string suff;
+
+  const ARG_INFO_A *pInfo = pGetArgInfo(pArg);
+
+  if (ITEM_IS_VALID(pInfo, pFile) && pInfo->pFile != NULL) {
+    cerr << pref << "file " << pInfo->pFile;
+    pref = ", ";
+    suff = ")";
+  }
+
+  if (ITEM_IS_VALID(pInfo, iLine) && pInfo->iLine >= 0) {
+    cerr << pref << "line " << (pInfo->iLine + 1);
+    pref = ", ";
+    suff = ")";
+  }
+
+  cerr << suff;
+
+  if (ITEM_IS_VALID(pInfo, pReference) && pInfo->pReference != NULL)
+    cerr << "," << endl << pInfo->pReference;
+
+  cerr << endl;
+}
+///////////////////////////////////////////////////////////////
+static PLUGIN_TYPE CALLBACK GetPluginType()
+{
+  return PLUGIN_TYPE_DRIVER;
+}
+///////////////////////////////////////////////////////////////
+static const PLUGIN_ABOUT_A about = {
+  sizeof(PLUGIN_ABOUT_A),
+  "serial",
+  "Copyright (c) 2008-2011 Vyacheslav Frolov",
+  "GNU General Public License",
+  "Serial port driver",
+};
+
+static const PLUGIN_ABOUT_A * CALLBACK GetPluginAbout()
+{
+  return &about;
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK Help(const char *pProgPath)
+{
+  cerr
+  << "Usage:" << endl
+  << "  " << pProgPath << " ... [--use-driver=" << GetPluginAbout()->pName << "] <com port> ..." << endl
+  << endl
+  << "Options:" << endl
+  << "  --baud=<b>               - set baud rate to <b> (" << ComParams().BaudRateStr() << " by default)," << endl
+  << "                             where <b> is " << ComParams::BaudRateLst() << "." << endl
+  << "  --data=<d>               - set data bits to <d> (" << ComParams().ByteSizeStr() << " by default)," << endl
+  << "                             where <d> is " << ComParams::ByteSizeLst() << "." << endl
+  << "  --parity=<p>             - set parity to <p> (" << ComParams().ParityStr() << " by default)," << endl
+  << "                             where <p> is" << endl
+  << "                             " << ComParams::ParityLst() << "." << endl
+  << "  --stop=<s>               - set stop bits to <s> (" << ComParams().StopBitsStr() << " by default)," << endl
+  << "                             where <s> is " << ComParams::StopBitsLst() << "." << endl
+  << "  --octs=<c>               - set CTS handshaking on output to <c>" << endl
+  << "                             (" << ComParams().OutCtsStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::OutCtsLst() << "." << endl
+  << "  --odsr=<c>               - set DSR handshaking on output to <c>" << endl
+  << "                             (" << ComParams().OutDsrStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::OutDsrLst() << "." << endl
+  << "  --ox=<c>                 - set XON/XOFF handshaking on output to <c>" << endl
+  << "                             (" << ComParams().OutXStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::OutXLst() << "." << endl
+  << "  --ix=<c>                 - set XON/XOFF handshaking on input to <c>" << endl
+  << "                             (" << ComParams().InXStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::InXLst() << "." << endl
+  << "                             If XON/XOFF handshaking on input is enabled for" << endl
+  << "                             the port then XON/XOFF characters will be" << endl
+  << "                             discarded from output to this port." << endl
+  << "  --idsr=<c>               - set DSR sensitivity on input to <c>" << endl
+  << "                             (" << ComParams().InDsrStr() << " by default), where <c> is" << endl
+  << "                             " << ComParams::InDsrLst() << "." << endl
+  << "  --ito=<t>                - set read interval timeout to <t> (" << ComParams().IntervalTimeoutStr() << " by default)," << endl
+  << "                             where <t> is " << ComParams::IntervalTimeoutLst() << "." << endl
+  << "  --write-limit=<s>        - set write queue limit to <s> (" << ComParams().WriteQueueLimitStr() << " by default)," << endl
+  << "                             where <s> is " << ComParams::WriteQueueLimitLst() << ". The queue" << endl
+  << "                             will be purged with data lost on overruning." << endl
+  << "                             The value 0 will disable writing to the port." << endl
+  << "  --share-mode=<c>         - set share mode to <c> (" << ComParams().ShareModeStr() << " by default), where <c>" << endl
+  << "                             is " << ComParams::ShareModeLst() << "." << endl
+  << endl
+  << "  The value c[urrent] above means to use current COM port settings." << endl
+  << endl
+  << "Output data stream description:" << endl
+  << "  SET_OUT_OPTS(<opts>)     - or'e <opts> with the output data stream options." << endl
+  << "  LINE_DATA(<data>)        - write <data> to serial port." << endl
+  << "  SET_PIN_STATE(<state>)   - set serial port pins to required state." << endl
+  << "  CONNECT(TRUE)            - increment connection counter." << endl
+  << "  CONNECT(FALSE)           - decrement connection counter." << endl
+  << endl
+  << "Input data stream description:" << endl
+  << "  LINE_DATA(<data>)        - readed <data> from serial port." << endl
+  << "  CONNECT(TRUE)            - serial port was started." << endl
+  << "  CONNECT(FALSE)           - serial port is stopping." << endl
+  << "  LINE_STATUS(<val>)       - current state of line." << endl
+  << "  MODEM_STATUS(<val>)      - current state of modem." << endl
+  << endl
+  << "In share mode the incrementing of the connection counter will force serial port" << endl
+  << "starting and the decrementing of the connection counter to 0 will force serial" << endl
+  << "port stopping. The stopped serial port is closed so it allowed to be used by" << endl
+  << "other applications." << endl
+  << endl
+  << "Examples:" << endl
+  << "  " << pProgPath << " COM1 \\\\.\\CNCB1 \\\\.\\CNCB2" << endl
+  << "    - receive data from COM1 and send it to CNCB1 and CNCB2," << endl
+  << "      receive data from CNCB1 and send it to COM1." << endl
+  << "  " << pProgPath << " --baud=9600 COM1 --baud=19200 COM2" << endl
+  << "    - receive data at speed 9600 from COM1 and send it to COM2 at speed 19200," << endl
+  << "      receive data at speed 19200 from COM2 and send it to COM1 at speed 9600." << endl
+  ;
+}
+///////////////////////////////////////////////////////////////
+static HCONFIG CALLBACK ConfigStart()
+{
+  ComParams *pComParams = new ComParams;
+
+  if (!pComParams) {
+    cerr << "No enough memory." << endl;
+    exit(2);
+  }
+
+  return (HCONFIG)pComParams;
+}
+///////////////////////////////////////////////////////////////
+static BOOL CALLBACK Config(
+    HCONFIG hConfig,
+    const char *pArg)
+{
+  _ASSERTE(hConfig != NULL);
+
+  ComParams &comParams = *(ComParams *)hConfig;
+
+  const char *pParam;
+
+  if ((pParam = GetParam(pArg, "--baud=")) != NULL) {
+    if (!comParams.SetBaudRate(pParam)) {
+      Diag("Invalid baud rate value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--data=")) != NULL) {
+    if (!comParams.SetByteSize(pParam)) {
+      Diag("Invalid data bits value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--parity=")) != NULL) {
+    if (!comParams.SetParity(pParam)) {
+      Diag("Invalid parity value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--stop=")) != NULL) {
+    if (!comParams.SetStopBits(pParam)) {
+      Diag("Invalid stop bits value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--octs=")) != NULL) {
+    if (!comParams.SetOutCts(pParam)) {
+      Diag("Invalid CTS handshaking on output value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--odsr=")) != NULL) {
+    if (!comParams.SetOutDsr(pParam)) {
+      Diag("Invalid DSR handshaking on output value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--ox=")) != NULL) {
+    if (!comParams.SetOutX(pParam)) {
+      Diag("Invalid XON/XOFF handshaking on output value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--ix=")) != NULL) {
+    if (!comParams.SetInX(pParam)) {
+      Diag("Invalid XON/XOFF handshaking on input value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--idsr=")) != NULL) {
+    if (!comParams.SetInDsr(pParam)) {
+      Diag("Invalid DSR sensitivity value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--ito=")) != NULL) {
+    if (!comParams.SetIntervalTimeout(pParam)) {
+      Diag("Invalid read interval timeout value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--write-limit=")) != NULL) {
+    if (!comParams.SetWriteQueueLimit(pParam)) {
+      Diag("Invalid write limit value in ", pArg);
+      exit(1);
+    }
+  } else
+  if ((pParam = GetParam(pArg, "--share-mode=")) != NULL) {
+    if (!comParams.SetShareMode(pParam)) {
+      Diag("Invalid share mode value in ", pArg);
+      exit(1);
+    }
+  } else {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK ConfigStop(
+    HCONFIG hConfig)
+{
+  _ASSERTE(hConfig != NULL);
+
+  delete (ComParams *)hConfig;
+}
+///////////////////////////////////////////////////////////////
+static HPORT CALLBACK Create(
+    HCONFIG hConfig,
+    const char *pPath)
+{
+  _ASSERTE(hConfig != NULL);
+
+  ComPort *pPort = new ComPort(*(const ComParams *)hConfig, pPath);
+
+  if (!pPort)
+    return NULL;
+
+  return (HPORT)pPort;
+}
+///////////////////////////////////////////////////////////////
+static const char *CALLBACK GetPortName(
+    HPORT hPort)
+{
+  _ASSERTE(hPort != NULL);
+
+  return ((ComPort *)hPort)->Name().c_str();
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK SetPortName(
+    HPORT hPort,
+    const char *pName)
+{
+  _ASSERTE(hPort != NULL);
+  _ASSERTE(pName != NULL);
+
+  ((ComPort *)hPort)->Name(pName);
+}
+///////////////////////////////////////////////////////////////
+static BOOL CALLBACK Init(
+    HPORT hPort,
+    HMASTERPORT hMasterPort)
+{
+  _ASSERTE(hPort != NULL);
+  _ASSERTE(hMasterPort != NULL);
+
+  return ((ComPort *)hPort)->Init(hMasterPort);
+}
+///////////////////////////////////////////////////////////////
+static BOOL CALLBACK Start(HPORT hPort)
+{
+  _ASSERTE(hPort != NULL);
+
+  return ((ComPort *)hPort)->Start();
+}
+///////////////////////////////////////////////////////////////
+static BOOL CALLBACK FakeReadFilter(
+    HPORT hPort,
+    HUB_MSG *pMsg)
+{
+  _ASSERTE(hPort != NULL);
+  _ASSERTE(pMsg != NULL);
+
+  return ((ComPort *)hPort)->FakeReadFilter(pMsg);
+}
+///////////////////////////////////////////////////////////////
+static BOOL CALLBACK Write(
+    HPORT hPort,
+    HUB_MSG *pMsg)
+{
+  _ASSERTE(hPort != NULL);
+  _ASSERTE(pMsg != NULL);
+
+  return ((ComPort *)hPort)->Write(pMsg);
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK LostReport(
+    HPORT hPort)
+{
+  _ASSERTE(hPort != NULL);
+
+  ((ComPort *)hPort)->LostReport();
+}
+///////////////////////////////////////////////////////////////
+static const PORT_ROUTINES_A routines = {
+  sizeof(PORT_ROUTINES_A),
+  GetPluginType,
+  GetPluginAbout,
+  Help,
+  ConfigStart,
+  Config,
+  ConfigStop,
+  Create,
+  GetPortName,
+  SetPortName,
+  Init,
+  Start,
+  FakeReadFilter,
+  Write,
+  LostReport,
+};
+
+static const PLUGIN_ROUTINES_A *const plugins[] = {
+  (const PLUGIN_ROUTINES_A *)&routines,
+  NULL
+};
+///////////////////////////////////////////////////////////////
+ROUTINE_BUF_ALLOC *pBufAlloc;
+ROUTINE_BUF_FREE *pBufFree;
+ROUTINE_BUF_APPEND *pBufAppend;
+ROUTINE_MSG_INSERT_NONE *pMsgInsertNone;
+ROUTINE_ON_READ *pOnRead;
+///////////////////////////////////////////////////////////////
+PLUGIN_INIT_A InitA;
+const PLUGIN_ROUTINES_A *const * CALLBACK InitA(
+    const HUB_ROUTINES_A * pHubRoutines)
+{
+  if (!ROUTINE_IS_VALID(pHubRoutines, pBufAlloc) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pBufFree) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pBufAppend) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pMsgInsertNone) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pOnRead) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pGetArgInfo))
+  {
+    return NULL;
+  }
+
+  pBufAlloc = pHubRoutines->pBufAlloc;
+  pBufFree = pHubRoutines->pBufFree;
+  pBufAppend = pHubRoutines->pBufAppend;
+  pMsgInsertNone = pHubRoutines->pMsgInsertNone;
+  pOnRead = pHubRoutines->pOnRead;
+  pGetArgInfo = pHubRoutines->pGetArgInfo;
+
+  return plugins;
+}
+///////////////////////////////////////////////////////////////
+} // end namespace
+///////////////////////////////////////////////////////////////
+@
+
+
+1.15
+log
+@Implemented --write-limit=0 to disable writing to the port
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.14 2009/02/20 18:32:35 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008-2010 Vyacheslav Frolov
+d22 3
+d127 1
+a127 1
+  "Copyright (c) 2008 Vyacheslav Frolov",
+d177 2
+d186 2
+d191 2
+a192 1
+  << "  CONNECT(TRUE)            - serial port started." << endl
+d196 4
+a199 10
+  << "Fake read filter input data stream description:" << endl
+  << "  GET_IN_OPTS(<pOpts>,<mask>)" << endl
+  << "                           - the port removes bits from <mask> in this message" << endl
+  << "                             for locally supported input data stream options." << endl
+  << endl
+  << "Fake read filter output data stream description:" << endl
+  << "  GET_IN_OPTS(<pOpts>,<mask>)" << endl
+  << "                           - the port adds this message at detecting the" << endl
+  << "                             GET_IN_OPTS message in the stream to get the" << endl
+  << "                             required input data stream options." << endl
+d298 6
+@
+
+
+1.14
+log
+@Added info about location of options
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.13 2008/11/27 16:25:08 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008-2009 Vyacheslav Frolov
+d22 3
+d171 3
+a173 2
+  << "                             where <s> is " << ComParams::WriteQueueLimitLst() << ". The queue will be" << endl
+  << "                             purged with data lost on overruning." << endl
+@
+
+
+1.13
+log
+@Improved write buffering
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.12 2008/11/27 13:44:52 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008 Vyacheslav Frolov
+d22 3
+d72 2
+d84 29
+d229 1
+a229 1
+      cerr << "Invalid baud rate value in " << pArg << endl;
+d235 1
+a235 1
+      cerr << "Invalid data bits value in " << pArg << endl;
+d241 1
+a241 1
+      cerr << "Invalid parity value in " << pArg << endl;
+d247 1
+a247 1
+      cerr << "Invalid stop bits value in " << pArg << endl;
+d253 1
+a253 1
+      cerr << "Invalid CTS handshaking on output value in " << pArg << endl;
+d259 1
+a259 1
+      cerr << "Invalid DSR handshaking on output value in " << pArg << endl;
+d265 1
+a265 1
+      cerr << "Invalid XON/XOFF handshaking on output value in " << pArg << endl;
+d271 1
+a271 1
+      cerr << "Invalid XON/XOFF handshaking on input value in " << pArg << endl;
+d277 1
+a277 1
+      cerr << "Invalid DSR sensitivity value in " << pArg << endl;
+d283 1
+a283 1
+      cerr << "Invalid read interval timeout value in " << pArg << endl;
+d289 1
+a289 1
+      cerr << "Invalid write limit value in " << pArg << endl;
+d421 2
+a422 1
+      !ROUTINE_IS_VALID(pHubRoutines, pOnRead))
+d432 1
+@
+
+
+1.12
+log
+@Added --write-limit option
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.11 2008/11/24 16:30:56 vfrolov Exp $
+d22 3
+d375 1
+d385 1
+d394 1
+@
+
+
+1.11
+log
+@Removed pOnXoffXon
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.10 2008/11/24 12:37:00 vfrolov Exp $
+d22 3
+d130 3
+d192 1
+a192 1
+      cerr << "Unknown baud rate value in " << pArg << endl;
+d198 1
+a198 1
+      cerr << "Unknown data bits value in " << pArg << endl;
+d204 1
+a204 1
+      cerr << "Unknown parity value in " << pArg << endl;
+d210 1
+a210 1
+      cerr << "Unknown stop bits value in " << pArg << endl;
+d216 1
+a216 1
+      cerr << "Unknown CTS handshaking on output value in " << pArg << endl;
+d222 1
+a222 1
+      cerr << "Unknown DSR handshaking on output value in " << pArg << endl;
+d228 1
+a228 1
+      cerr << "Unknown XON/XOFF handshaking on output value in " << pArg << endl;
+d234 1
+a234 1
+      cerr << "Unknown XON/XOFF handshaking on input value in " << pArg << endl;
+d240 1
+a240 1
+      cerr << "Unknown DSR sensitivity value in " << pArg << endl;
+d246 7
+a252 1
+      cerr << "Unknown read interval timeout value in " << pArg << endl;
+@
+
+
+1.10
+log
+@Changed plugin API
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.9 2008/11/13 07:35:10 vfrolov Exp $
+d22 3
+a360 1
+ROUTINE_ON_XOFF_XON *pOnXoffXon;
+a369 1
+      !ROUTINE_IS_VALID(pHubRoutines, pOnXoffXon) ||
+a377 1
+  pOnXoffXon = pHubRoutines->pOnXoffXon;
+@
+
+
+1.9
+log
+@Changed for staticaly linking
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.8 2008/08/28 10:24:35 vfrolov Exp $
+d22 3
+d289 1
+a289 2
+    HMASTERPORT hMasterPort,
+    HHUB hHub)
+a292 1
+  _ASSERTE(hHub != NULL);
+d294 1
+a294 1
+  return ((ComPort *)hPort)->Init(hMasterPort, hHub);
+a323 16
+static void CALLBACK AddXoff(
+    HPORT hPort)
+{
+  _ASSERTE(hPort != NULL);
+
+  ((ComPort *)hPort)->AddXoff(1);
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK AddXon(
+    HPORT hPort)
+{
+  _ASSERTE(hPort != NULL);
+
+  ((ComPort *)hPort)->AddXoff(-1);
+}
+///////////////////////////////////////////////////////////////
+a346 2
+  AddXoff,
+  AddXon,
+d358 1
+a358 2
+ROUTINE_ON_XOFF *pOnXoff;
+ROUTINE_ON_XON *pOnXon;
+d368 1
+a368 2
+      !ROUTINE_IS_VALID(pHubRoutines, pOnXoff) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pOnXon) ||
+d377 1
+a377 2
+  pOnXoff = pHubRoutines->pOnXoff;
+  pOnXon = pHubRoutines->pOnXon;
+@
+
+
+1.8
+log
+@Removed linking with ....utils.h and ....utils.cpp
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.7 2008/08/20 14:30:19 vfrolov Exp $
+d22 3
+d49 4
+a55 1
+
+d403 2
+@
+
+
+1.7
+log
+@Redesigned serial port options
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.6 2008/08/15 12:44:59 vfrolov Exp $
+d22 3
+a48 1
+#include "../../utils.h"
+d51 10
+@
+
+
+1.6
+log
+@Added fake read filter method to ports
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.5 2008/08/13 14:33:18 vfrolov Exp $
+d22 3
+d107 1
+a107 1
+  << "  SET_OPTIONS(<opts>)      - or'e <opts> with the output data stream options." << endl
+d118 1
+a118 1
+  << "  GET_OPTIONS(<pOpts>,<mask>)" << endl
+d123 1
+a123 1
+  << "  GET_OPTIONS(<pOpts>,<mask>)" << endl
+d125 1
+a125 1
+  << "                             GET_OPTIONS message in the stream to get the" << endl
+@
+
+
+1.5
+log
+@Fixed Help
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.4 2008/04/14 07:32:04 vfrolov Exp $
+d22 3
+a108 2
+  << "  GET_OPTIONS(<pOpts>)     - the port sends this message at starting to get the" << endl
+  << "                             required input data stream options." << endl
+d114 11
+d282 10
+d339 1
+d353 1
+d364 1
+d374 1
+@
+
+
+1.4
+log
+@Renamed option --use-port-module to --use-driver
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.3 2008/04/07 12:28:03 vfrolov Exp $
+d22 3
+d101 1
+d103 1
+a103 3
+  << "  COM_FUNCTION(<function>) - direct serial port to perform <function>." << endl
+  << "  SET_RT_EVENTS(<mask>)    - direct serial port to monitor <mask> real-time" << endl
+  << "                             events." << endl
+d106 2
+d110 2
+a111 2
+  << "  MODEM_STATUS(<value>)    - modem control register changed to <value>." << endl
+  << "  COM_ERRORS(<mask>)       - occured communications errors indicated in <mask>." << endl
+@
+
+
+1.3
+log
+@Replaced --rt-events option by SET_RT_EVENTS message
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.2 2008/03/28 15:55:09 vfrolov Exp $
+d22 3
+d42 1
+a42 1
+  return PLUGIN_TYPE_PORT;
+d62 1
+a62 1
+  << "  " << pProgPath << " ... [--use-port-module=" << GetPluginAbout()->pName << "] <com port> ..." << endl
+@
+
+
+1.2
+log
+@Fixed help
+@
+text
+@d2 1
+a2 1
+ * $Id: port.cpp,v 1.1 2008/03/26 08:41:18 vfrolov Exp $
+d22 3
+a90 2
+  << "  --rt-events=<LstEv>      - set events that should be handled in real-time to" << endl
+  << "                             <LstEv> (" << ComParams().EventsStr() << " by default)." << endl
+a92 2
+  << "  The syntax of <LstEv> above is" << endl
+  << "  " << ComParams::EventsLst() << "." << endl
+d95 1
+a95 1
+  << "  LINE_DATA(<data>) - write <data> to serial port." << endl
+d97 2
+d101 4
+a104 4
+  << "  LINE_DATA(<data>) - readed <data> from serial port." << endl
+  << "  CONNECT(TRUE) - serial port started." << endl
+  << "  MODEM_STATUS(<value>) - modem control register changed to <value>." << endl
+  << "  COM_ERRORS(<mask>) - occured communications errors indicated in <mask>." << endl
+a196 6
+  } else
+  if ((pParam = GetParam(pArg, "--rt-events=")) != NULL) {
+    if (!comParams.SetEvents(pParam)) {
+      cerr << "Unknown events in " << pArg << endl;
+      exit(1);
+    }
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 3
+a23 1
+ * $Log: $
+d44 1
+a44 1
+  "Serial port",
+d55 4
+a58 1
+  << "COM port options:" << endl
+d95 10
+d107 5
+a111 1
+  << "  " << pProgPath << " --baud=9600 COM1 --baud=19200 \\\\.\\CNCB1" << endl
+@
+

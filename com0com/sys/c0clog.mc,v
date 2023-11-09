@@ -1,0 +1,71 @@
+head	1.1;
+access;
+symbols
+	v3_0_0_0:1.1
+	v2_2_2_0:1.1
+	v2_2_1_0:1.1
+	v2_2_0_0:1.1
+	v2_1_0_0:1.1
+	v2_0_0_0:1.1
+	v1_8_0_0:1.1
+	v1_7_0_0:1.1
+	v1_6_0_0:1.1
+	v1_5_0_0:1.1
+	v1_4_0_0:1.1
+	RELEASED:1.1
+	v1_3_0_0:1.1
+	v1_2_0_0:1.1
+	v1_1_1_0:1.1
+	v1_1_0_0:1.1
+	v1_0_0_0:1.1;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2005.01.26.12.18.54;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@;#ifndef _C0C_LOG_
+;#define _C0C_LOG_
+
+MessageIdTypedef=NTSTATUS
+
+SeverityNames=(Success=0x0:STATUS_SEVERITY_SUCCESS
+               Informational=0x1:STATUS_SEVERITY_INFORMATIONAL
+               Warning=0x2:STATUS_SEVERITY_WARNING
+               Error=0x3:STATUS_SEVERITY_ERROR
+              )
+
+FacilityNames=(System=0x0
+               RpcRuntime=0x2:FACILITY_RPC_RUNTIME
+               RpcStubs=0x3:FACILITY_RPC_STUBS
+               Io=0x4:FACILITY_IO_ERROR_CODE
+               com0com=0x6:FACILITY_SERIAL_ERROR_CODE
+              )
+
+
+MessageId=0x0001 Facility=com0com Severity=Informational SymbolicName=COM0COM_LOG
+Language=English
+%1: %2.
+.
+
+MessageId=0x0002 Facility=com0com Severity=Informational SymbolicName=COM0COM_LOG_DRV
+Language=English
+%2.
+.
+
+;#endif /* _C0C_LOG_ */
+
+@

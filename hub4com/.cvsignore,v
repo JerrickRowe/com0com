@@ -1,0 +1,64 @@
+head	1.3;
+access;
+symbols
+	v2_1_0_0:1.3
+	v2_0_1_0:1.3
+	v2_0_0_0:1.3
+	v1_1_0_0:1.2
+	RELEASED:1.3
+	v1_0_0_0:1.2;
+locks; strict;
+comment	@# @;
+
+
+1.3
+date	2008.03.26.08.32.08;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2007.02.06.11.45.45;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.02.01.12.16.56;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@Removed *.sln
+@
+text
+@*.ncb
+*.user
+*.suo
+Release
+Debug
+@
+
+
+1.2
+log
+@Added *.suo
+@
+text
+@a1 1
+*.sln
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d4 1
+@
+

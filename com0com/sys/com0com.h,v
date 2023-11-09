@@ -1,0 +1,1824 @@
+head	1.53;
+access;
+symbols
+	v3_0_0_0:1.53
+	v2_2_2_0:1.47
+	v2_2_1_0:1.47
+	v2_2_0_0:1.47
+	v2_1_0_0:1.43
+	v2_0_0_0:1.39
+	v1_8_0_0:1.35
+	v1_7_0_0:1.31
+	v1_6_0_0:1.27
+	v1_5_0_0:1.21
+	v1_4_0_0:1.14
+	RELEASED:1.53
+	v1_3_0_0:1.11
+	v1_2_0_0:1.10
+	v1_1_1_0:1.8
+	v1_1_0_0:1.6
+	v1_0_0_0:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.53
+date	2012.02.03.17.14.24;	author vfrolov;	state Exp;
+branches;
+next	1.52;
+
+1.52
+date	2011.12.06.16.03.22;	author vfrolov;	state Exp;
+branches;
+next	1.51;
+
+1.51
+date	2010.08.09.06.02.40;	author vfrolov;	state Exp;
+branches;
+next	1.50;
+
+1.50
+date	2010.08.04.10.38.55;	author vfrolov;	state Exp;
+branches;
+next	1.49;
+
+1.49
+date	2010.06.01.06.14.10;	author vfrolov;	state Exp;
+branches;
+next	1.48;
+
+1.48
+date	2010.05.27.11.16.46;	author vfrolov;	state Exp;
+branches;
+next	1.47;
+
+1.47
+date	2008.10.30.07.54.37;	author vfrolov;	state Exp;
+branches;
+next	1.46;
+
+1.46
+date	2008.09.17.07.58.32;	author vfrolov;	state Exp;
+branches;
+next	1.45;
+
+1.45
+date	2008.07.11.10.38.00;	author vfrolov;	state Exp;
+branches;
+next	1.44;
+
+1.44
+date	2008.06.26.13.37.10;	author vfrolov;	state Exp;
+branches;
+next	1.43;
+
+1.43
+date	2008.05.04.09.51.45;	author vfrolov;	state Exp;
+branches;
+next	1.42;
+
+1.42
+date	2008.04.08.10.27.44;	author vfrolov;	state Exp;
+branches;
+next	1.41;
+
+1.41
+date	2008.04.08.06.47.37;	author vfrolov;	state Exp;
+branches;
+next	1.40;
+
+1.40
+date	2008.03.14.15.28.39;	author vfrolov;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	2007.11.23.08.30.50;	author vfrolov;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	2007.09.17.14.31.06;	author vfrolov;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	2007.07.20.08.00.22;	author vfrolov;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	2007.07.03.14.35.17;	author vfrolov;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	2007.06.04.15.24.32;	author vfrolov;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2007.06.01.16.22.40;	author vfrolov;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2007.02.20.12.05.11;	author vfrolov;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2007.01.11.14.44.52;	author vfrolov;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2006.11.03.13.07.58;	author vfrolov;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2006.10.16.08.30.45;	author vfrolov;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2006.10.13.10.15.02;	author vfrolov;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2006.08.23.13.48.12;	author vfrolov;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2006.06.23.11.44.52;	author vfrolov;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2006.06.21.16.23.57;	author vfrolov;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2006.04.05.07.22.15;	author vfrolov;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2006.02.26.08.35.55;	author vfrolov;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2006.02.17.07.55.13;	author vfrolov;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2006.01.10.10.17.23;	author vfrolov;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2005.12.06.13.04.32;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2005.12.05.10.54.55;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2005.11.30.16.04.11;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2005.11.29.16.16.46;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2005.11.29.12.33.21;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2005.11.29.08.35.14;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2005.11.28.12.57.16;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2005.09.28.10.06.42;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2005.09.13.14.56.16;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2005.09.06.07.23.44;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2005.08.23.15.49.21;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2005.07.13.16.12.36;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2005.06.28.12.17.12;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2005.05.20.12.06.05;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2005.05.19.08.23.40;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2005.05.14.17.07.02;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2005.05.13.16.58.03;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2005.05.12.07.41.27;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.02.01.16.47.57;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.02.01.08.37.55;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.01.26.12.18.54;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.53
+log
+@Optimized GetIrpState()
+@
+text
+@/*
+ * $Id: com0com.h,v 1.52 2011/12/06 16:03:22 vfrolov Exp $
+ *
+ * Copyright (c) 2004-2012 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: com0com.h,v $
+ * Revision 1.52  2011/12/06 16:03:22  vfrolov
+ * Added cleaning high data bits for less then 8 bit data
+ * Added AllDataBits option to force 8 bit data
+ *
+ * Revision 1.51  2010/08/09 06:02:40  vfrolov
+ * Eliminated accessing undocumented structure members
+ *
+ * Revision 1.50  2010/08/04 10:38:55  vfrolov
+ * Minimized PREfast noise
+ *
+ * Revision 1.49  2010/06/01 06:14:10  vfrolov
+ * Improved driver updating
+ *
+ * Revision 1.48  2010/05/27 11:16:46  vfrolov
+ * Added ability to put the port to the Ports class
+ *
+ * Revision 1.47  2008/10/30 07:54:37  vfrolov
+ * Improved BREAK emulation
+ *
+ * Revision 1.46  2008/09/17 07:58:32  vfrolov
+ * Added AddRTTO and AddRITO parameters
+ *
+ * Revision 1.45  2008/07/11 10:38:00  vfrolov
+ * Added nonstandard ability to enable LSR insertion on BREAK OFF
+ *
+ * Revision 1.44  2008/06/26 13:37:10  vfrolov
+ * Implemented noise emulation
+ *
+ * Revision 1.43  2008/05/04 09:51:45  vfrolov
+ * Implemented HiddenMode option
+ *
+ * Revision 1.42  2008/04/08 10:27:44  vfrolov
+ * Fixed C0C_MCR_MASK
+ *
+ * Revision 1.41  2008/04/08 06:47:37  vfrolov
+ * Added pin OUT2
+ *
+ * Revision 1.40  2008/03/14 15:28:39  vfrolov
+ * Implemented ability to get paired port settings with
+ * extended IOCTL_SERIAL_LSRMST_INSERT
+ *
+ * Revision 1.39  2007/11/23 08:30:50  vfrolov
+ * Increased size of TX buffer to typical default for Windows
+ *
+ * Revision 1.38  2007/09/17 14:31:06  vfrolov
+ * Implemented pseudo pin OPEN
+ *
+ * Revision 1.37  2007/07/20 08:00:22  vfrolov
+ * Implemented TX buffer
+ *
+ * Revision 1.36  2007/07/03 14:35:17  vfrolov
+ * Implemented pinout customization
+ *
+ * Revision 1.35  2007/06/04 15:24:32  vfrolov
+ * Fixed open reject just after close in exclusiveMode
+ *
+ * Revision 1.34  2007/06/01 16:22:40  vfrolov
+ * Implemented plug-in and exclusive modes
+ *
+ * Revision 1.33  2007/02/20 12:05:11  vfrolov
+ * Implemented IOCTL_SERIAL_XOFF_COUNTER
+ * Fixed cancel and timeout routines
+ *
+ * Revision 1.32  2007/01/11 14:44:52  vfrolov
+ * Defined
+ *   C0C_TAG
+ *   C0C_ALLOCATE_POOL()
+ *   C0C_ALLOCATE_POOL_WITH_QUOTA()
+ *   C0C_FREE_POOL()
+ *
+ * Revision 1.31  2006/11/03 13:07:58  vfrolov
+ * Moved C0C_PORT_NAME_LEN from sys/com0com.h to include/com0com.h
+ *
+ * Revision 1.30  2006/10/16 08:30:45  vfrolov
+ * Added the device interface registration
+ *
+ * Revision 1.29  2006/10/13 10:15:02  vfrolov
+ * Some defines moved to ../include/com0com.h
+ * Changed defines of C0C_DOTYPE_* to more unique values
+ *
+ * Revision 1.28  2006/08/23 13:48:12  vfrolov
+ * Implemented WMI functionality
+ *
+ * Revision 1.27  2006/06/23 11:44:52  vfrolov
+ * Mass replacement pDevExt by pIoPort
+ *
+ * Revision 1.26  2006/06/21 16:23:57  vfrolov
+ * Fixed possible BSOD after one port of pair removal
+ *
+ * Revision 1.25  2006/04/05 07:22:15  vfrolov
+ * Replaced flipXoffLimit flag by writeHoldingRemote to correct handFlow changing
+ *
+ * Revision 1.24  2006/02/26 08:35:55  vfrolov
+ * Added check for start/stop queue matching
+ *
+ * Revision 1.23  2006/02/17 07:55:13  vfrolov
+ * Implemented IOCTL_SERIAL_SET_BREAK_ON and IOCTL_SERIAL_SET_BREAK_OFF
+ *
+ * Revision 1.22  2006/01/10 10:17:23  vfrolov
+ * Implemented flow control and handshaking
+ * Implemented IOCTL_SERIAL_SET_XON and IOCTL_SERIAL_SET_XOFF
+ * Added setting of HoldReasons, WaitForImmediate and AmountInOutQueue
+ *   fields of SERIAL_STATUS for IOCTL_SERIAL_GET_COMMSTATUS
+ *
+ * Revision 1.21  2005/12/06 13:04:32  vfrolov
+ * Fixed data types
+ *
+ * Revision 1.20  2005/12/05 10:54:55  vfrolov
+ * Implemented IOCTL_SERIAL_IMMEDIATE_CHAR
+ *
+ * Revision 1.19  2005/11/30 16:04:11  vfrolov
+ * Implemented IOCTL_SERIAL_GET_STATS and IOCTL_SERIAL_CLEAR_STATS
+ *
+ * Revision 1.18  2005/11/29 16:16:46  vfrolov
+ * Removed FdoPortCancelQueue()
+ *
+ * Revision 1.17  2005/11/29 12:33:21  vfrolov
+ * Changed SetModemStatus() to ability set and clear bits simultaneously
+ *
+ * Revision 1.16  2005/11/29 08:35:14  vfrolov
+ * Implemented SERIAL_EV_RX80FULL
+ *
+ * Revision 1.15  2005/11/28 12:57:16  vfrolov
+ * Moved some C0C_BUFFER code to bufutils.c
+ *
+ * Revision 1.14  2005/09/28 10:06:42  vfrolov
+ * Implemented IRP_MJ_QUERY_INFORMATION and IRP_MJ_SET_INFORMATION
+ *
+ * Revision 1.13  2005/09/13 14:56:16  vfrolov
+ * Implemented IRP_MJ_FLUSH_BUFFERS
+ *
+ * Revision 1.12  2005/09/06 07:23:44  vfrolov
+ * Implemented overrun emulation
+ *
+ * Revision 1.11  2005/08/23 15:49:21  vfrolov
+ * Implemented baudrate emulation
+ *
+ * Revision 1.10  2005/07/13 16:12:36  vfrolov
+ * Added c0cGlobal struct for global driver's data
+ *
+ * Revision 1.9  2005/06/28 12:17:12  vfrolov
+ * Added pBusExt to C0C_PDOPORT_EXTENSION
+ *
+ * Revision 1.8  2005/05/20 12:06:05  vfrolov
+ * Improved port numbering
+ *
+ * Revision 1.7  2005/05/19 08:23:40  vfrolov
+ * Fixed data types
+ *
+ * Revision 1.6  2005/05/14 17:07:02  vfrolov
+ * Implemented SERIAL_LSRMST_MST insertion
+ *
+ * Revision 1.5  2005/05/13 16:58:03  vfrolov
+ * Implemented IOCTL_SERIAL_LSRMST_INSERT
+ *
+ * Revision 1.4  2005/05/12 07:41:27  vfrolov
+ * Added ability to change the port names
+ *
+ * Revision 1.3  2005/02/01 16:47:57  vfrolov
+ * Implemented SERIAL_PURGE_RXCLEAR and IOCTL_SERIAL_GET_COMMSTATUS
+ *
+ * Revision 1.2  2005/02/01 08:37:55  vfrolov
+ * Changed SetModemStatus() to set multiple bits
+ *
+ * Revision 1.1  2005/01/26 12:18:54  vfrolov
+ * Initial revision
+ *
+ */
+
+#ifndef _C0C_COM0COM_H_
+#define _C0C_COM0COM_H_
+
+#define TEXT_PREF L
+#include "../include/com0com.h"
+
+#define C0C_SERIAL_DEVICEMAP        L"SERIALCOMM"
+#define C0C_PREF_WIN32_DEVICE_NAME  L"\\DosDevices\\"
+
+#define C0C_PORT_HARDWARE_IDS_CNCCLASS C0C_PORT_DEVICE_ID L"\0" C0C_PORT_HW_ID_CNCCLASS L"\0"
+#define C0C_PORT_HARDWARE_IDS_COMCLASS C0C_PORT_DEVICE_ID L"\0" C0C_PORT_HW_ID_COMCLASS L"\0"
+
+#define C0C_DOTYPE_FB     ((unsigned)0xC0C1)
+#define C0C_DOTYPE_PP     ((unsigned)0xC0C2)
+#define C0C_DOTYPE_FP     ((unsigned)0xC0C3)
+
+#define COMMON_EXTENSION                \
+  unsigned short          doType;       \
+  PDEVICE_OBJECT          pDevObj;      \
+  WCHAR                   portName[C0C_PORT_NAME_LEN + 1]; \
+
+#define FDO_EXTENSION                   \
+  COMMON_EXTENSION                      \
+  PDEVICE_OBJECT          pLowDevObj;   \
+
+#define C0C_XCHAR_ON      1
+#define C0C_XCHAR_OFF     2
+
+typedef struct _C0C_COMMON_EXTENSION {
+  COMMON_EXTENSION
+} C0C_COMMON_EXTENSION, *PC0C_COMMON_EXTENSION;
+
+typedef struct _C0C_COMMON_FDO_EXTENSION {
+  FDO_EXTENSION
+} C0C_COMMON_FDO_EXTENSION, *PC0C_COMMON_FDO_EXTENSION;
+
+typedef struct _C0C_IRP_QUEUE {
+  PIRP                    pCurrent;
+  LIST_ENTRY              queue;
+#if DBG
+  BOOLEAN                 started;
+#endif /* DBG */
+} C0C_IRP_QUEUE, *PC0C_IRP_QUEUE;
+
+typedef struct _C0C_RAW_DATA {
+  UCHAR                   size;
+  UCHAR                   data[3 + sizeof(ULONG)];
+} C0C_RAW_DATA, *PC0C_RAW_DATA;
+
+typedef struct _C0C_BUFFER {
+  PUCHAR                  pBase;
+  PUCHAR                  pBusy;
+  PUCHAR                  pFree;
+  PUCHAR                  pEnd;
+  SIZE_T                  busy;
+  SIZE_T                  limit;
+  SIZE_T                  size80;
+  C0C_RAW_DATA            insertData;
+} C0C_BUFFER, *PC0C_BUFFER;
+
+#define C0C_BUFFER_BUSY(pBuf) \
+  ((SIZE_T)((pBuf)->busy + (pBuf)->insertData.size))
+
+#define C0C_BUFFER_SIZE(pBuf) \
+  ((SIZE_T)((pBuf)->pEnd - (pBuf)->pBase))
+
+typedef struct _C0C_TX_BUFFER {
+  PUCHAR                  pBase;
+  PUCHAR                  pBusy;
+  PUCHAR                  pFree;
+  PUCHAR                  pEnd;
+  SIZE_T                  busy;
+  UCHAR                   leastBuf[14 + 1];  /* transmitter holding and shift registers */
+} C0C_TX_BUFFER, *PC0C_TX_BUFFER;
+
+#define C0C_TX_BUFFER_EMPTY(pTxBuf) \
+  (!(pTxBuf)->busy)
+
+#define C0C_TX_BUFFER_THR_EMPTY(pTxBuf) \
+  ((pTxBuf)->busy <= 1)
+
+#define C0C_TX_BUFFER_SIZE(pTxBuf) \
+  ((SIZE_T)((pTxBuf)->pEnd - (pTxBuf)->pBase))
+
+struct _C0C_FDOPORT_EXTENSION;
+struct _C0C_ADAPTIVE_DELAY;
+
+typedef struct _C0C_PIN_OUTS {
+  struct {
+    UCHAR positive;
+    UCHAR negative;
+  } remote, local;
+} C0C_PIN_OUTS, *PC0C_PIN_OUTS;
+
+typedef struct _C0C_IO_PORT {
+
+  struct _C0C_FDOPORT_EXTENSION *pDevExt;
+
+  PDEVICE_OBJECT          pPhDevObj;
+  struct _C0C_IO_PORT     *pIoPortRemote;
+  PKSPIN_LOCK             pIoLock;
+
+  #define C0C_QUEUE_READ  0
+  #define C0C_QUEUE_WRITE 1
+  #define C0C_QUEUE_WAIT  2
+  #define C0C_QUEUE_CLOSE 3
+
+  #define C0C_QUEUE_SIZE  4
+
+  C0C_IRP_QUEUE           irpQueues[C0C_QUEUE_SIZE];
+
+  KTIMER                  timerReadTotal;
+  KDPC                    timerReadTotalDpc;
+  ULONG                   addRTTO;
+
+  KTIMER                  timerReadInterval;
+  KDPC                    timerReadIntervalDpc;
+  LARGE_INTEGER           timeoutInterval;
+  ULONG                   addRITO;
+
+  KTIMER                  timerWriteTotal;
+  KDPC                    timerWriteTotalDpc;
+
+  KTIMER                  timerClose;
+  KDPC                    timerCloseDpc;
+
+  SERIAL_BAUD_RATE        baudRate;
+  SERIAL_LINE_CONTROL     lineControl;
+  SERIAL_TIMEOUTS         timeouts;
+
+  struct _C0C_ADAPTIVE_DELAY *pWriteDelay;
+
+  #define C0C_PIN_OUTS_RTS  0
+  #define C0C_PIN_OUTS_DTR  1
+  #define C0C_PIN_OUTS_OUT1 2
+  #define C0C_PIN_OUTS_OUT2 3
+  #define C0C_PIN_OUTS_OPEN 4
+
+  C0C_PIN_OUTS            pinOuts[5];
+
+  SERIAL_HANDFLOW         handFlow;
+  SERIAL_CHARS            specialChars;
+
+  LONG                    xoffCounter;
+  ULONG                   errors;
+  ULONG                   amountInWriteQueue;
+  ULONG                   waitMask;
+  ULONG                   eventMask;
+  ULONG                   insertMask;
+  UCHAR                   escapeChar;
+  SERIALPERF_STATS        perfStats;
+
+  #define C0C_MSB_CTS     0x10
+  #define C0C_MSB_DSR     0x20
+  #define C0C_MSB_RING    0x40
+  #define C0C_MSB_RLSD    0x80
+
+  UCHAR                   modemStatus;
+
+  #define C0C_MCR_DTR     0x01
+  #define C0C_MCR_RTS     0x02
+  #define C0C_MCR_OUT1    0x04
+  #define C0C_MCR_OUT2    0x08
+  #define C0C_MCR_LOOP    0x10
+  #define C0C_MCR_OPEN    0x80
+  #define C0C_MCR_MASK    ((UCHAR)~(C0C_MCR_OPEN))
+
+  UCHAR                   modemControl;
+
+  C0C_BUFFER              readBuf;
+  C0C_TX_BUFFER           txBuf;
+
+  ULONG                   brokeCharsProbability;
+  short                   brokeChars;  /* number of subsequent chars that should be broken */
+  SIZE_T                  brokeIdleChars;
+
+  short                   sendXonXoff;
+  ULONG                   writeHolding;
+  ULONG                   writeHoldingRemote;
+  BOOLEAN                 sendBreak;
+  BOOLEAN                 rcvdBreak;
+  BOOLEAN                 tryWrite;
+
+  BOOLEAN                 isOpen;
+  BOOLEAN                 emuOverrun;
+  BOOLEAN                 plugInMode;
+  BOOLEAN                 exclusiveMode;
+  BOOLEAN                 allDataBits;
+  BOOLEAN                 isComClass;
+} C0C_IO_PORT, *PC0C_IO_PORT;
+
+#define FDO_PORT_TO_IO_PORT(pDevObj) \
+    (((PC0C_FDOPORT_EXTENSION)((pDevObj)->DeviceExtension))->pIoPortLocal)
+
+typedef struct _C0C_PDOPORT_EXTENSION {
+  COMMON_EXTENSION
+
+  struct _C0C_FDOBUS_EXTENSION *pBusExt;
+
+  PC0C_IO_PORT            pIoPortLocal;
+} C0C_PDOPORT_EXTENSION, *PC0C_PDOPORT_EXTENSION;
+
+typedef struct _C0C_FDOPORT_EXTENSION {
+  FDO_EXTENSION
+
+  PC0C_IO_PORT            pIoPortLocal;
+
+  UNICODE_STRING          ntDeviceName;
+  UNICODE_STRING          win32DeviceName;
+  UNICODE_STRING          symbolicLinkName;
+
+  #define C0C_SHOW_PORTNAME   0x01
+  #define C0C_SHOW_SYMLINK    0x02
+  #define C0C_SHOW_DEVICEMAP  0x04
+  #define C0C_SHOW_INTERFACE  0x08
+  #define C0C_SHOW_WMIREG     0x10
+
+  UCHAR                   hide;
+
+  #define C0C_SHOW_SHOWN      0x80
+
+  UCHAR                   shown;
+
+  LONG                    openCount;
+
+} C0C_FDOPORT_EXTENSION, *PC0C_FDOPORT_EXTENSION;
+
+typedef struct _C0C_CHILD {
+  PC0C_PDOPORT_EXTENSION  pDevExt;
+  C0C_IO_PORT             ioPort;
+} C0C_CHILD, *PC0C_CHILD;
+
+typedef struct _C0C_FDOBUS_EXTENSION {
+  FDO_EXTENSION
+
+  LIST_ENTRY              listEntry;
+  KSPIN_LOCK              ioLock;
+  C0C_CHILD               childs[2];
+  ULONG                   portNum;
+} C0C_FDOBUS_EXTENSION, *PC0C_FDOBUS_EXTENSION;
+
+typedef struct _C0C_GLOBAL {
+  LIST_ENTRY listFdoBus;
+  KSPIN_LOCK listFdoBusLock;
+  PDRIVER_OBJECT pDrvObj;
+  UNICODE_STRING registryPath;
+} C0C_GLOBAL;
+
+extern C0C_GLOBAL c0cGlobal;
+
+DRIVER_UNLOAD c0cUnload;
+DRIVER_ADD_DEVICE c0cAddDevice;
+
+__drv_dispatchType(IRP_MJ_CREATE)                  DRIVER_DISPATCH c0cOpen;
+__drv_dispatchType(IRP_MJ_CLOSE)                   DRIVER_DISPATCH c0cClose;
+__drv_dispatchType(IRP_MJ_CLEANUP)                 DRIVER_DISPATCH c0cCleanup;
+__drv_dispatchType(IRP_MJ_FLUSH_BUFFERS)
+__drv_dispatchType(IRP_MJ_WRITE)                   DRIVER_DISPATCH c0cWrite;
+__drv_dispatchType(IRP_MJ_READ)                    DRIVER_DISPATCH c0cRead;
+__drv_dispatchType(IRP_MJ_DEVICE_CONTROL)          DRIVER_DISPATCH c0cIoControl;
+__drv_dispatchType(IRP_MJ_INTERNAL_DEVICE_CONTROL) DRIVER_DISPATCH c0cInternalIoControl;
+__drv_dispatchType(IRP_MJ_QUERY_INFORMATION)
+__drv_dispatchType(IRP_MJ_SET_INFORMATION)         DRIVER_DISPATCH c0cFileInformation;
+__drv_dispatchType(IRP_MJ_SYSTEM_CONTROL)          DRIVER_DISPATCH c0cSystemControlDispatch;
+__drv_dispatchType(IRP_MJ_PNP)                     DRIVER_DISPATCH c0cPnpDispatch;
+__drv_dispatchType(IRP_MJ_POWER)                   DRIVER_DISPATCH c0cPowerDispatch;
+
+VOID RemoveFdoPort(IN PC0C_FDOPORT_EXTENSION pDevExt);
+VOID RemoveFdoBus(IN PC0C_FDOBUS_EXTENSION pDevExt);
+
+typedef NTSTATUS (*PC0C_FDOPORT_START_ROUTINE)(
+    IN PC0C_IO_PORT pIoPort,
+    IN PLIST_ENTRY pQueueToComplete);
+
+VOID ShiftQueue(PC0C_IRP_QUEUE pQueue);
+
+NTSTATUS FdoPortStartIrp(
+    IN PC0C_IO_PORT pIoPort,
+    IN PIRP pIrp,
+    IN UCHAR iQueue,
+    IN PC0C_FDOPORT_START_ROUTINE pStartRoutine);
+
+VOID CompleteIrp(PIRP pIrp, NTSTATUS status, PLIST_ENTRY pQueueToComplete);
+VOID CancelQueue(PC0C_IRP_QUEUE pQueue, PLIST_ENTRY pQueueToComplete);
+VOID FdoPortCancelQueues(IN PC0C_IO_PORT pIoPort);
+VOID FdoPortCompleteQueue(IN PLIST_ENTRY pQueueToComplete);
+
+NTSTATUS FdoPortImmediateChar(
+    IN PC0C_IO_PORT pIoPort,
+    IN PIRP pIrp,
+    IN PIO_STACK_LOCATION pIrpStack);
+
+NTSTATUS FdoPortXoffCounter(
+    IN PC0C_IO_PORT pIoPort,
+    IN PIRP pIrp,
+    IN PIO_STACK_LOCATION pIrpStack);
+
+NTSTATUS FdoPortWaitOnMask(
+    IN PC0C_IO_PORT pIoPort,
+    IN PIRP pIrp,
+    IN PIO_STACK_LOCATION pIrpStack);
+
+NTSTATUS FdoPortSetWaitMask(
+    IN PC0C_IO_PORT pIoPort,
+    IN PIRP pIrp,
+    IN PIO_STACK_LOCATION pIrpStack);
+
+NTSTATUS FdoPortGetWaitMask(
+    IN PC0C_IO_PORT pIoPort,
+    IN PIRP pIrp,
+    IN PIO_STACK_LOCATION pIrpStack);
+
+VOID WaitComplete(
+    IN PC0C_IO_PORT pIoPort,
+    PLIST_ENTRY pQueueToComplete);
+
+typedef struct _C0C_IRP_STATE {
+
+#define C0C_IRP_FLAG_IN_QUEUE          0x01
+#define C0C_IRP_FLAG_IS_CURRENT        0x02
+#define C0C_IRP_FLAG_WAIT_ONE          0x04
+#define C0C_IRP_FLAG_INTERVAL_TIMEOUT  0x08
+#define C0C_IRP_FLAG_EXPIRED           0x10
+
+  UCHAR                   flags;
+  UCHAR                   iQueue;
+} C0C_IRP_STATE, *PC0C_IRP_STATE;
+
+#define GetIrpState(pIrp)                ((PC0C_IRP_STATE)&(pIrp)->Tail.Overlay.DriverContext[0])
+
+ULONG GetWriteLength(IN PIRP pIrp);
+
+#define C0C_IO_TYPE_CLOSE_COMPLETE     2
+#define C0C_IO_TYPE_WAIT_COMPLETE      3
+#define C0C_IO_TYPE_INSERT             4
+
+NTSTATUS FdoPortIo(
+    short ioType,
+    PVOID pParam,
+    PC0C_IO_PORT pIoPort,
+    PC0C_IRP_QUEUE pQueue,
+    PLIST_ENTRY pQueueToComplete);
+
+NTSTATUS ReadWrite(
+    PC0C_IO_PORT pIoPortRead,
+    BOOLEAN startRead,
+    PC0C_IO_PORT pIoPortWrite,
+    BOOLEAN startWrite,
+    PLIST_ENTRY pQueueToComplete);
+
+VOID SetModemStatus(
+    IN PC0C_IO_PORT pIoPort,
+    IN UCHAR bits,
+    IN UCHAR mask,
+    PLIST_ENTRY pQueueToComplete);
+
+VOID SetModemControl(
+    IN PC0C_IO_PORT pIoPort,
+    IN UCHAR bits,
+    IN UCHAR mask,
+    PLIST_ENTRY pQueueToComplete);
+
+VOID PinMap(
+    IN PC0C_IO_PORT pIoPort,
+    IN ULONG pinCTS,
+    IN ULONG pinDSR,
+    IN ULONG pinDCD,
+    IN ULONG pinRI);
+
+VOID InsertLsrMst(
+    PC0C_IO_PORT pIoPortRead,
+    BOOLEAN isMST,
+    UCHAR value,
+    PLIST_ENTRY pQueueToComplete);
+
+VOID InsertRemoteBr(
+    PC0C_IO_PORT pIoPortRead,
+    PLIST_ENTRY pQueueToComplete);
+
+VOID InsertRemoteLc(
+    PC0C_IO_PORT pIoPortRead,
+    PLIST_ENTRY pQueueToComplete);
+
+#define C0C_TAG 'c0c'
+#define C0C_ALLOCATE_POOL(PoolType, NumberOfBytes) \
+    ExAllocatePoolWithTag(PoolType, NumberOfBytes, C0C_TAG)
+#define C0C_ALLOCATE_POOL_WITH_QUOTA(PoolType, NumberOfBytes) \
+    ExAllocatePoolWithQuotaTag(PoolType, NumberOfBytes, C0C_TAG)
+#define C0C_FREE_POOL(P) \
+    ExFreePool(P) /*ExFreePoolWithTag(P, C0C_TAG)*/
+
+#endif /* _C0C_COM0COM_H_ */
+@
+
+
+1.52
+log
+@Added cleaning high data bits for less then 8 bit data
+Added AllDataBits option to force 8 bit data
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.51 2010/08/09 06:02:40 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2011 Vyacheslav Frolov
+d22 4
+d519 2
+a520 1
+PC0C_IRP_STATE GetIrpState(IN PIRP pIrp);
+@
+
+
+1.51
+log
+@Eliminated accessing undocumented structure members
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.50 2010/08/04 10:38:55 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2010 Vyacheslav Frolov
+d22 3
+d374 1
+@
+
+
+1.50
+log
+@Minimized PREfast noise
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.49 2010/06/01 06:14:10 vfrolov Exp $
+d22 3
+d418 1
+d425 2
+@
+
+
+1.49
+log
+@Improved driver updating
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.48 2010/05/27 11:16:46 vfrolov Exp $
+d22 3
+d427 2
+a428 17
+VOID c0cUnload(IN PDRIVER_OBJECT pDrvObj);
+
+#define DeclareMajorFunction(mfunc) \
+  NTSTATUS mfunc(IN PDEVICE_OBJECT, IN PIRP)
+
+DeclareMajorFunction(c0cOpen);
+DeclareMajorFunction(c0cClose);
+DeclareMajorFunction(c0cWrite);
+DeclareMajorFunction(c0cRead);
+DeclareMajorFunction(c0cIoControl);
+DeclareMajorFunction(c0cInternalIoControl);
+DeclareMajorFunction(c0cCleanup);
+DeclareMajorFunction(c0cFileInformation);
+DeclareMajorFunction(c0cSystemControlDispatch);
+
+DeclareMajorFunction(c0cPnpDispatch);
+DeclareMajorFunction(c0cPowerDispatch);
+d430 13
+a442 1
+#undef DeclareMajorFunction
+a443 1
+NTSTATUS c0cAddDevice(IN PDRIVER_OBJECT  pDrvObj, IN PDEVICE_OBJECT pPhDevObj);
+@
+
+
+1.48
+log
+@Added ability to put the port to the Ports class
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.47 2008/10/30 07:54:37 vfrolov Exp $
+d22 3
+d187 2
+a188 2
+#define C0C_PORT_HARDWARE_IDS_CNCCLASS C0C_PORT_DEVICE_ID L"\0" L"com0com\\cncport" L"\0"
+#define C0C_PORT_HARDWARE_IDS_COMCLASS C0C_PORT_DEVICE_ID L"\0" L"com0com\\comport" L"\0"
+@
+
+
+1.47
+log
+@Improved BREAK emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.46 2008/09/17 07:58:32 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2008 Vyacheslav Frolov
+d22 3
+d184 2
+a185 2
+#define C0C_PORT_HARDWARE_IDS       C0C_PORT_DEVICE_ID L"\0"
+#define C0C_PORT_COMPATIBLE_IDS     L"\0"
+d362 1
+d385 1
+a385 1
+  #define C0C_SHOW_SETNAME    0x01
+@
+
+
+1.46
+log
+@Added AddRTTO and AddRITO parameters
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.45 2008/07/11 10:38:00 vfrolov Exp $
+d22 3
+d352 1
+@
+
+
+1.45
+log
+@Added nonstandard ability to enable LSR insertion on BREAK OFF
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.44 2008/06/26 13:37:10 vfrolov Exp $
+d22 3
+d282 1
+d287 1
+@
+
+
+1.44
+log
+@Implemented noise emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.43 2008/05/04 09:51:45 vfrolov Exp $
+d22 3
+d530 6
+@
+
+
+1.43
+log
+@Implemented HiddenMode option
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.42 2008/04/08 10:27:44 vfrolov Exp $
+d22 3
+a219 1
+  BOOLEAN                 escape;
+d238 2
+a239 2
+#define C0C_TX_BUFFER_BUSY(pTxBuf) \
+  ((pTxBuf)->busy)
+d333 4
+@
+
+
+1.42
+log
+@Fixed C0C_MCR_MASK
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.41 2008/04/08 06:47:37 vfrolov Exp $
+d22 3
+d362 12
+a373 1
+  unsigned short          shown;
+@
+
+
+1.41
+log
+@Added pin OUT2
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.40 2008/03/14 15:28:39 vfrolov Exp $
+d22 3
+d321 1
+a321 1
+  #define C0C_MCR_MASK    (~(C0C_MCR_OPEN))
+@
+
+
+1.40
+log
+@Implemented ability to get paired port settings with
+extended IOCTL_SERIAL_LSRMST_INSERT
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.39 2007/11/23 08:30:50 vfrolov Exp $
+d22 4
+d288 2
+a289 1
+  #define C0C_PIN_OUTS_OPEN 3
+d291 1
+a291 1
+  C0C_PIN_OUTS            pinOuts[4];
+@
+
+
+1.39
+log
+@Increased size of TX buffer to typical default for Windows
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.38 2007/09/17 14:31:06 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2007 Vyacheslav Frolov
+d22 3
+d196 1
+a196 1
+  UCHAR                   data[7];
+d275 4
+d296 1
+a354 6
+  KSPIN_LOCK              controlLock;
+
+  SERIAL_BAUD_RATE        baudRate;
+  SERIAL_LINE_CONTROL     lineControl;
+  SERIAL_TIMEOUTS         timeouts;
+
+d499 8
+@
+
+
+1.38
+log
+@Implemented pseudo pin OPEN
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.37 2007/07/20 08:00:22 vfrolov Exp $
+d22 3
+d220 1
+a220 1
+  UCHAR                   leastBuf[1 + 1];  /* transmitter holding and shift registers */
+@
+
+
+1.37
+log
+@Implemented TX buffer
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.36 2007/07/03 14:35:17 vfrolov Exp $
+d22 3
+d274 1
+d276 1
+a276 1
+  C0C_PIN_OUTS            pinOuts[3];
+d301 2
+@
+
+
+1.36
+log
+@Implemented pinout customization
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.35 2007/06/04 15:24:32 vfrolov Exp $
+d22 3
+d195 1
+a196 1
+  SIZE_T                  busy;
+d208 18
+d301 1
+@
+
+
+1.35
+log
+@Fixed open reject just after close in exclusiveMode
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.34 2007/06/01 16:22:40 vfrolov Exp $
+d22 3
+d208 7
+d247 6
+d269 9
+a277 1
+  ULONG                   modemStatus;
+d449 2
+a450 2
+    IN ULONG bits,
+    IN ULONG mask,
+d453 13
+@
+
+
+1.34
+log
+@Implemented plug-in and exclusive modes
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.33 2007/02/20 12:05:11 vfrolov Exp $
+d22 3
+d216 1
+d218 1
+a218 1
+  #define C0C_QUEUE_SIZE  3
+d232 3
+d405 1
+@
+
+
+1.33
+log
+@Implemented IOCTL_SERIAL_XOFF_COUNTER
+Fixed cancel and timeout routines
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.32 2007/01/11 14:44:52 vfrolov Exp $
+d22 4
+a154 1
+  PDEVICE_OBJECT          pPhDevObj;   \
+d206 1
+d256 1
+d258 2
+d281 1
+@
+
+
+1.32
+log
+@Defined
+  C0C_TAG
+  C0C_ALLOCATE_POOL()
+  C0C_ALLOCATE_POOL_WITH_QUOTA()
+  C0C_FREE_POOL()
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.31 2006/11/03 13:07:58 vfrolov Exp $
+d22 7
+d229 1
+d341 1
+d351 5
+d381 1
+@
+
+
+1.31
+log
+@Moved C0C_PORT_NAME_LEN from sys/com0com.h to include/com0com.h
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.30 2006/10/16 08:30:45 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2006 Vyacheslav Frolov
+d22 3
+d398 8
+@
+
+
+1.30
+log
+@Added the device interface registration
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.29 2006/10/13 10:15:02 vfrolov Exp $
+d22 3
+d131 1
+a131 1
+#define C0C_DOTYPE_PP	    ((unsigned)0xC0C2)
+a133 2
+#define C0C_PORT_NAME_LEN 12
+
+d137 1
+a137 1
+  WCHAR                   portName[C0C_PORT_NAME_LEN]; \
+@
+
+
+1.29
+log
+@Some defines moved to ../include/com0com.h
+Changed defines of C0C_DOTYPE_* to more unique values
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.28 2006/08/23 13:48:12 vfrolov Exp $
+d22 4
+d261 1
+a261 2
+  BOOLEAN                 createdSymbolicLink;
+  BOOLEAN                 mappedSerialDevice;
+@
+
+
+1.28
+log
+@Implemented WMI functionality
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.27 2006/06/23 11:44:52 vfrolov Exp $
+d22 3
+d114 3
+a118 1
+#define C0C_PREF_NT_DEVICE_NAME     L"\\Device\\"
+d120 1
+a120 3
+#define C0C_BUS_DEVICE_ID           L"root\\com0com"
+#define C0C_PORT_DEVICE_ID          L"com0com\\port"
+#define C0C_PORT_HARDWARE_IDS       L"com0com\\port\0"
+d123 3
+a125 7
+#define C0C_PREF_BUS_NAME           L"CNCBUS"
+#define C0C_PREF_PORT_NAME_A        L"CNCA"
+#define C0C_PREF_PORT_NAME_B        L"CNCB"
+
+#define C0C_DOTYPE_FB     1
+#define C0C_DOTYPE_PP	    2
+#define C0C_DOTYPE_FP     3
+d130 1
+a130 1
+  short                   doType;       \
+@
+
+
+1.27
+log
+@Mass replacement pDevExt by pIoPort
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.26 2006/06/21 16:23:57 vfrolov Exp $
+d22 3
+d137 1
+@
+
+
+1.26
+log
+@Fixed possible BSOD after one port of pair removal
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.25 2006/04/05 07:22:15 vfrolov Exp $
+d22 3
+d236 3
+a249 1
+  PKSPIN_LOCK             pIoLock;
+d312 1
+a312 1
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+d318 1
+a318 1
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+d324 1
+a324 1
+VOID FdoPortCancelQueues(IN PC0C_FDOPORT_EXTENSION pDevExt);
+d328 1
+a328 1
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+d333 1
+a333 1
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+d338 1
+a338 1
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+d343 1
+a343 1
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+@
+
+
+1.25
+log
+@Replaced flipXoffLimit flag by writeHoldingRemote to correct handFlow changing
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.24 2006/02/26 08:35:55 vfrolov Exp $
+d22 3
+d182 3
+d205 3
+a237 1
+  PKSPIN_LOCK             pIoLock;
+a238 1
+  PC0C_IO_PORT            pIoPortRemote;
+a245 1
+  PC0C_IO_PORT            pIoPortRemote;
+a257 1
+  SERIAL_CHARS            specialChars;
+a258 1
+  SERIAL_HANDFLOW         handFlow;
+@
+
+
+1.24
+log
+@Added check for start/stop queue matching
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.23 2006/02/17 07:55:13 vfrolov Exp $
+d22 3
+d217 1
+a219 1
+  BOOLEAN                 flipXoffLimit;
+@
+
+
+1.23
+log
+@Implemented IOCTL_SERIAL_SET_BREAK_ON and IOCTL_SERIAL_SET_BREAK_OFF
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.22 2006/01/10 10:17:23 vfrolov Exp $
+d22 3
+d141 3
+@
+
+
+1.22
+log
+@Implemented flow control and handshaking
+Implemented IOCTL_SERIAL_SET_XON and IOCTL_SERIAL_SET_XOFF
+Added setting of HoldReasons, WaitForImmediate and AmountInOutQueue
+  fields of SERIAL_STATUS for IOCTL_SERIAL_GET_COMMSTATUS
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.21 2005/12/06 13:04:32 vfrolov Exp $
+d22 6
+d208 1
+@
+
+
+1.21
+log
+@Fixed data types
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.20 2005/12/05 10:54:55 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2005 Vyacheslav Frolov
+d22 3
+d110 1
+a110 1
+  int                     doType;       \
+d118 3
+d144 1
+d185 1
+d200 5
+d344 1
+a344 1
+    int ioType,
+a351 1
+    PC0C_IRP_QUEUE pQueueRead,
+a353 1
+    PC0C_IRP_QUEUE pQueueWrite,
+a362 4
+VOID UpdateHandFlow(
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+    IN PLIST_ENTRY pQueueToComplete);
+
+@
+
+
+1.20
+log
+@Implemented IOCTL_SERIAL_IMMEDIATE_CHAR
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.19 2005/11/30 16:04:11 vfrolov Exp $
+d22 3
+d325 1
+a325 1
+SIZE_T GetWriteLength(IN PIRP pIrp);
+@
+
+
+1.19
+log
+@Implemented IOCTL_SERIAL_GET_STATS and IOCTL_SERIAL_CLEAR_STATS
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.18 2005/11/29 16:16:46 vfrolov Exp $
+d22 3
+d286 5
+d322 1
+@
+
+
+1.18
+log
+@Removed FdoPortCancelQueue()
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.17 2005/11/29 12:33:21 vfrolov Exp $
+d22 3
+d175 1
+@
+
+
+1.17
+log
+@Changed SetModemStatus() to ability set and clear bits simultaneously
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.16 2005/11/29 08:35:14 vfrolov Exp $
+d22 3
+a275 1
+VOID FdoPortCancelQueue(IN PC0C_FDOPORT_EXTENSION pDevExt, IN PC0C_IRP_QUEUE pQueue);
+@
+
+
+1.16
+log
+@Implemented SERIAL_EV_RX80FULL
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.15 2005/11/28 12:57:16 vfrolov Exp $
+d22 3
+d331 1
+a331 1
+    IN BOOLEAN set,
+@
+
+
+1.15
+log
+@Moved some C0C_BUFFER code to bufutils.c
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.14 2005/09/28 10:06:42 vfrolov Exp $
+d22 3
+d124 1
+@
+
+
+1.14
+log
+@Implemented IRP_MJ_QUERY_INFORMATION and IRP_MJ_SET_INFORMATION
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.13 2005/09/13 14:56:16 vfrolov Exp $
+d22 3
+d125 5
+a129 5
+#define C0C_BUFFER_PURGE(buf) \
+  (buf).pFree = (buf).pBusy = (buf).pBase; \
+  (buf).busy = 0; \
+  (buf).escape = FALSE; \
+  (buf).insertData.size = 0
+@
+
+
+1.13
+log
+@Implemented IRP_MJ_FLUSH_BUFFERS
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.12 2005/09/06 07:23:44 vfrolov Exp $
+d22 3
+d238 1
+a238 3
+
+DeclareMajorFunction(c0cQueryInformation);
+DeclareMajorFunction(c0cSetInformation);
+@
+
+
+1.12
+log
+@Implemented overrun emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.11 2005/08/23 15:49:21 vfrolov Exp $
+d22 3
+a229 1
+DeclareMajorFunction(c0cFlush);
+@
+
+
+1.11
+log
+@Implemented baudrate emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.10 2005/07/13 16:12:36 vfrolov Exp $
+d22 3
+a54 1
+ *
+d149 1
+d162 2
+d259 1
+@
+
+
+1.10
+log
+@Added c0cGlobal struct for global driver's data
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.9 2005/06/28 12:17:12 vfrolov Exp $
+d22 3
+d121 1
+d125 1
+a125 1
+  struct _C0C_FDOPORT_EXTENSION  *pDevExt;
+d145 2
+a289 2
+#define C0C_IO_TYPE_READ               1
+#define C0C_IO_TYPE_WRITE              2
+d300 9
+@
+
+
+1.9
+log
+@Added pBusExt to C0C_PDOPORT_EXTENSION
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.8 2005/05/20 12:06:05 vfrolov Exp $
+d22 3
+d202 6
+a207 1
+extern UNICODE_STRING c0cRegistryPath;
+@
+
+
+1.8
+log
+@Improved port numbering
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.7 2005/05/19 08:23:40 vfrolov Exp $
+d22 3
+d155 2
+@
+
+
+1.7
+log
+@Fixed data types
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.6 2005/05/14 17:07:02 vfrolov Exp $
+d22 3
+d66 1
+a66 1
+#define C0C_PORT_NAME_LEN 10
+d191 1
+@
+
+
+1.6
+log
+@Implemented SERIAL_LSRMST_MST insertion
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.5 2005/05/13 16:58:03 vfrolov Exp $
+d22 3
+d97 1
+a97 1
+  ULONG                   busy;
+@
+
+
+1.5
+log
+@Implemented IOCTL_SERIAL_LSRMST_INSERT
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.4 2005/05/12 07:41:27 vfrolov Exp $
+d22 3
+d84 5
+d96 1
+d102 2
+a103 1
+  (buf).escape = FALSE
+d267 1
+d279 2
+a280 1
+    IN BOOLEAN set);
+@
+
+
+1.4
+log
+@Added ability to change the port names
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.3 2005/02/01 16:47:57 vfrolov Exp $
+d22 3
+d87 1
+d92 2
+a93 1
+  (buf).busy = 0
+d121 1
+@
+
+
+1.3
+log
+@Implemented SERIAL_PURGE_RXCLEAR and IOCTL_SERIAL_GET_COMMSTATUS
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.2 2005/02/01 08:37:55 vfrolov Exp $
+d22 3
+d54 2
+d59 1
+a59 1
+  WCHAR                   portName[10]; \
+d171 2
+@
+
+
+1.2
+log
+@Changed SetModemStatus() to set multiple bits
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.1 2005/01/26 12:18:54 vfrolov Exp $
+d22 3
+d81 4
+a147 1
+  SERIAL_STATUS           commStatus;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: com0com.h,v 1.1 2005/01/24 15:26:45 frolov Exp $
+d22 3
+d248 1
+a248 1
+    IN ULONG bit,
+@
+

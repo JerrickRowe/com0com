@@ -1,0 +1,184 @@
+head	1.5;
+access;
+symbols
+	v3_0_0_0:1.5
+	v2_2_2_0:1.5
+	v2_2_1_0:1.5
+	v2_2_0_0:1.5
+	v2_1_0_0:1.4
+	v2_0_0_0:1.4
+	v1_8_0_0:1.4
+	v1_7_0_0:1.4
+	RELEASED:1.5
+	v1_6_0_0:1.4;
+locks; strict;
+comment	@ * @;
+
+
+1.5
+date	2008.07.11.10.38.00;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2006.06.21.16.23.57;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2006.05.17.15.31.14;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.02.17.07.55.13;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.01.10.10.12.05;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@Added nonstandard ability to enable LSR insertion on BREAK OFF
+@
+text
+@/*
+ * $Id: handflow.h,v 1.4 2006/06/21 16:23:57 vfrolov Exp $
+ *
+ * Copyright (c) 2005-2008 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: handflow.h,v $
+ * Revision 1.4  2006/06/21 16:23:57  vfrolov
+ * Fixed possible BSOD after one port of pair removal
+ *
+ * Revision 1.3  2006/05/17 15:31:14  vfrolov
+ * Implemented SERIAL_TRANSMIT_TOGGLE
+ *
+ * Revision 1.2  2006/02/17 07:55:13  vfrolov
+ * Implemented IOCTL_SERIAL_SET_BREAK_ON and IOCTL_SERIAL_SET_BREAK_OFF
+ *
+ * Revision 1.1  2006/01/10 10:12:05  vfrolov
+ * Initial revision
+ *
+ */
+
+#ifndef _C0C_FLOW_H_
+#define _C0C_FLOW_H_
+
+NTSTATUS SetHandFlow(
+    PC0C_IO_PORT pIoPort,
+    PSERIAL_HANDFLOW pHandFlow,
+    PLIST_ENTRY pQueueToComplete);
+
+VOID UpdateHandFlow(
+    PC0C_IO_PORT pIoPort,
+    BOOLEAN freed,
+    PLIST_ENTRY pQueueToComplete);
+
+VOID UpdateTransmitToggle(
+    PC0C_IO_PORT pIoPort,
+    PLIST_ENTRY pQueueToComplete);
+
+VOID SetLimit(PC0C_IO_PORT pIoPort);
+VOID SetModemStatusHolding(PC0C_IO_PORT pIoPort);
+VOID SetXonXoffHolding(PC0C_IO_PORT pIoPort, short xonXoff);
+VOID SetBreakHolding(PC0C_IO_PORT pIoPort, BOOLEAN on, PLIST_ENTRY pQueueToComplete);
+
+#endif /* _C0C_FLOW_H_ */
+@
+
+
+1.4
+log
+@Fixed possible BSOD after one port of pair removal
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.h,v 1.3 2006/05/17 15:31:14 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2005-2006 Vyacheslav Frolov
+d22 3
+a33 1
+ *
+d56 1
+a56 1
+VOID SetBreakHolding(PC0C_IO_PORT pIoPort, BOOLEAN on);
+@
+
+
+1.3
+log
+@Implemented SERIAL_TRANSMIT_TOGGLE
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.h,v 1.2 2006/02/17 07:55:13 vfrolov Exp $
+d22 3
+d38 1
+a38 1
+    PC0C_FDOPORT_EXTENSION pDevExt,
+d43 1
+a43 1
+    PC0C_FDOPORT_EXTENSION pDevExt,
+d48 1
+a48 1
+    PC0C_FDOPORT_EXTENSION pDevExt,
+d51 1
+a51 1
+VOID SetLimit(PC0C_FDOPORT_EXTENSION pDevExt);
+@
+
+
+1.2
+log
+@Implemented IOCTL_SERIAL_SET_BREAK_ON and IOCTL_SERIAL_SET_BREAK_OFF
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.h,v 1.1 2006/01/10 10:12:05 vfrolov Exp $
+d22 3
+d44 4
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id:$
+d21 4
+a24 1
+ * $Log:$
+d44 1
+@
+

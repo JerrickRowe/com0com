@@ -1,0 +1,212 @@
+head	1.6;
+access;
+symbols
+	v3_0_0_0:1.6
+	v2_2_2_0:1.5
+	v2_2_1_0:1.5
+	v2_2_0_0:1.4
+	v2_1_0_0:1.4
+	v2_0_0_0:1.4
+	v1_8_0_0:1.3
+	RELEASED:1.6
+	v1_7_0_0:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.6
+date	2011.12.15.15.51.48;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2009.02.16.10.32.56;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2007.09.20.12.29.03;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2006.11.21.11.34.55;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.10.23.12.04.23;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.07.28.12.16.42;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.6
+log
+@Fixed types
+@
+text
+@/*
+ * $Id: msg.h,v 1.5 2009/02/16 10:32:56 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2011 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: msg.h,v $
+ * Revision 1.5  2009/02/16 10:32:56  vfrolov
+ * Added Silent() and PromptReboot()
+ *
+ * Revision 1.4  2007/09/20 12:29:03  vfrolov
+ * Added return value to SetOutputFile()
+ *
+ * Revision 1.3  2006/11/21 11:34:55  vfrolov
+ * Added
+ *   ConsoleWrite()
+ *   IsConsoleOpen()
+ *   SetOutputFile()
+ *   GetOutputFile()
+ *
+ * Revision 1.2  2006/10/23 12:04:23  vfrolov
+ * Added SetTitle()
+ *
+ * Revision 1.1  2006/07/28 12:16:42  vfrolov
+ * Initial revision
+ *
+ */
+
+#ifndef _C0C_MSG_H_
+#define _C0C_MSG_H_
+
+int ShowMsg(UINT type, const char *pFmt, ...);
+int ShowError(UINT type, DWORD err, const char *pFmt, ...);
+int ShowLastError(UINT type, const char *pFmt, ...);
+void Trace(const char *pFmt, ...);
+void ConsoleWriteRead(char *pReadBuf, int lenReadBuf, const char *pFmt, ...);
+void ConsoleWrite(const char *pFmt, ...);
+bool IsConsoleOpen();
+void SetTitle(const char *pTitle);
+bool SetOutputFile(const char *pFile);
+const char *GetOutputFile();
+bool Silent();
+void Silent(bool val);
+void PromptReboot();
+
+#endif /* _C0C_MSG_H_ */
+@
+
+
+1.5
+log
+@Added Silent() and PromptReboot()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.h,v 1.4 2007/09/20 12:29:03 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2009 Vyacheslav Frolov
+d22 3
+d52 1
+a52 1
+BOOL IsConsoleOpen();
+d54 1
+a54 1
+BOOL SetOutputFile(const char *pFile);
+d56 2
+a57 2
+BOOL Silent();
+void Silent(BOOL val);
+@
+
+
+1.4
+log
+@Added return value to SetOutputFile()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.h,v 1.3 2006/11/21 11:34:55 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+d22 3
+d53 3
+@
+
+
+1.3
+log
+@Added
+  ConsoleWrite()
+  IsConsoleOpen()
+  SetOutputFile()
+  GetOutputFile()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.h,v 1.2 2006/10/23 12:04:23 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006 Vyacheslav Frolov
+d22 7
+d48 1
+a48 1
+void SetOutputFile(const char *pFile);
+@
+
+
+1.2
+log
+@Added SetTitle()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.h,v 1.1 2006/07/28 12:16:42 vfrolov Exp $
+d22 3
+a27 1
+ *
+d38 2
+d41 2
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 4
+a24 1
+ * $Log: $
+d36 1
+@
+

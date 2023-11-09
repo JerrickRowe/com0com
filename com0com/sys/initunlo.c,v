@@ -1,0 +1,416 @@
+head	1.9;
+access;
+symbols
+	v3_0_0_0:1.9
+	v2_2_2_0:1.6
+	v2_2_1_0:1.6
+	v2_2_0_0:1.6
+	v2_1_0_0:1.6
+	v2_0_0_0:1.6
+	v1_8_0_0:1.6
+	v1_7_0_0:1.6
+	v1_6_0_0:1.5
+	v1_5_0_0:1.5
+	v1_4_0_0:1.5
+	RELEASED:1.9
+	v1_3_0_0:1.3
+	v1_2_0_0:1.3
+	v1_1_1_0:1.2
+	v1_1_0_0:1.2
+	v1_0_0_0:1.1;
+locks; strict;
+comment	@ * @;
+
+
+1.9
+date	2011.12.15.06.17.12;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2010.08.09.06.02.40;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2010.08.04.10.38.55;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2006.08.23.13.13.53;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2005.09.28.10.06.42;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2005.09.13.14.56.16;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.07.13.16.12.36;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.05.12.07.41.27;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.01.26.12.18.54;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.9
+log
+@Removed usage undocumented PDRIVER_OBJECT->Type
+@
+text
+@/*
+ * $Id: initunlo.c,v 1.8 2010/08/09 06:02:40 vfrolov Exp $
+ *
+ * Copyright (c) 2004-2011 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: initunlo.c,v $
+ * Revision 1.8  2010/08/09 06:02:40  vfrolov
+ * Eliminated accessing undocumented structure members
+ *
+ * Revision 1.7  2010/08/04 10:38:55  vfrolov
+ * Minimized PREfast noise
+ *
+ * Revision 1.6  2006/08/23 13:13:53  vfrolov
+ * Moved c0cSystemControlDispatch() to wmi.c
+ *
+ * Revision 1.5  2005/09/28 10:06:42  vfrolov
+ * Implemented IRP_MJ_QUERY_INFORMATION and IRP_MJ_SET_INFORMATION
+ *
+ * Revision 1.4  2005/09/13 14:56:16  vfrolov
+ * Implemented IRP_MJ_FLUSH_BUFFERS
+ *
+ * Revision 1.3  2005/07/13 16:12:36  vfrolov
+ * Added c0cGlobal struct for global driver's data
+ *
+ * Revision 1.2  2005/05/12 07:41:27  vfrolov
+ * Added ability to change the port names
+ *
+ * Revision 1.1  2005/01/26 12:18:54  vfrolov
+ * Initial revision
+ *
+ *
+ */
+
+#include "precomp.h"
+#include "strutils.h"
+
+C0C_GLOBAL c0cGlobal;
+
+DRIVER_INITIALIZE DriverEntry;
+NTSTATUS DriverEntry(IN PDRIVER_OBJECT pDrvObj, IN PUNICODE_STRING pRegistryPath)
+{
+  NTSTATUS status;
+
+  KeInitializeSpinLock(&c0cGlobal.listFdoBusLock);
+  InitializeListHead(&c0cGlobal.listFdoBus);
+
+  c0cGlobal.pDrvObj = pDrvObj;
+
+  status = STATUS_SUCCESS;
+
+  RtlInitUnicodeString(&c0cGlobal.registryPath, NULL);
+  StrAppendStr(&status, &c0cGlobal.registryPath, pRegistryPath->Buffer, pRegistryPath->Length);
+
+  if (!NT_SUCCESS(status)) {
+    SysLogDrv(pDrvObj, status, L"DriverEntry FAIL");
+    return status;
+  }
+
+  TraceOpen(pDrvObj, pRegistryPath);
+
+  pDrvObj->DriverUnload                                  = c0cUnload;
+  pDrvObj->DriverExtension->AddDevice                    = c0cAddDevice;
+
+  pDrvObj->MajorFunction[IRP_MJ_CREATE]                  = c0cOpen;
+  pDrvObj->MajorFunction[IRP_MJ_CLOSE]                   = c0cClose;
+  pDrvObj->MajorFunction[IRP_MJ_CLEANUP]                 = c0cCleanup;
+  pDrvObj->MajorFunction[IRP_MJ_FLUSH_BUFFERS]           = c0cWrite;
+  pDrvObj->MajorFunction[IRP_MJ_WRITE]                   = c0cWrite;
+  pDrvObj->MajorFunction[IRP_MJ_READ]                    = c0cRead;
+  pDrvObj->MajorFunction[IRP_MJ_DEVICE_CONTROL]          = c0cIoControl;
+  pDrvObj->MajorFunction[IRP_MJ_INTERNAL_DEVICE_CONTROL] = c0cInternalIoControl;
+  pDrvObj->MajorFunction[IRP_MJ_QUERY_INFORMATION]       = c0cFileInformation;
+  pDrvObj->MajorFunction[IRP_MJ_SET_INFORMATION]         = c0cFileInformation;
+  pDrvObj->MajorFunction[IRP_MJ_SYSTEM_CONTROL]          = c0cSystemControlDispatch;
+  pDrvObj->MajorFunction[IRP_MJ_PNP]                     = c0cPnpDispatch;
+  pDrvObj->MajorFunction[IRP_MJ_POWER]                   = c0cPowerDispatch;
+
+  return STATUS_SUCCESS;
+}
+
+VOID c0cUnload(IN PDRIVER_OBJECT pDrvObj)
+{
+  UNREFERENCED_PARAMETER(pDrvObj);
+
+  StrFree(&c0cGlobal.registryPath);
+
+  TraceClose();
+}
+
+NTSTATUS c0cInternalIoControl(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+{
+  NTSTATUS status;
+
+  UNREFERENCED_PARAMETER(pDevObj);
+
+  status = STATUS_INVALID_DEVICE_REQUEST;
+
+  TraceIrp("c0cInternalIoControl", pIrp, &status, TRACE_FLAG_PARAMS);
+
+  pIrp->IoStatus.Information = 0;
+  pIrp->IoStatus.Status = status;
+  IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+
+  return status;
+}
+@
+
+
+1.8
+log
+@Eliminated accessing undocumented structure members
+@
+text
+@d2 1
+a2 1
+ * $Id: initunlo.c,v 1.7 2010/08/04 10:38:55 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2010 Vyacheslav Frolov
+d22 3
+d70 1
+a70 1
+    SysLog(pDrvObj, status, L"DriverEntry FAIL");
+@
+
+
+1.7
+log
+@Minimized PREfast noise
+@
+text
+@d2 1
+a2 1
+ * $Id: initunlo.c,v 1.6 2006/08/23 13:13:53 vfrolov Exp $
+d22 3
+d56 3
+@
+
+
+1.6
+log
+@Moved c0cSystemControlDispatch() to wmi.c
+@
+text
+@d2 1
+a2 1
+ * $Id: initunlo.c,v 1.5 2005/09/28 10:06:42 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2005 Vyacheslav Frolov
+d22 3
+d48 1
+@
+
+
+1.5
+log
+@Implemented IRP_MJ_QUERY_INFORMATION and IRP_MJ_SET_INFORMATION
+@
+text
+@d2 1
+a2 1
+ * $Id: initunlo.c,v 1.4 2005/09/13 14:56:16 vfrolov Exp $
+d22 3
+a107 25
+
+NTSTATUS c0cSystemControlDispatch(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+{
+  NTSTATUS status;
+  PC0C_COMMON_EXTENSION pDevExt = pDevObj->DeviceExtension;
+
+  status = STATUS_NO_SUCH_DEVICE;
+
+  switch (pDevExt->doType) {
+  case C0C_DOTYPE_FB:
+  case C0C_DOTYPE_FP:
+    TraceIrp("c0cSystemControlDispatch", pIrp, NULL, TRACE_FLAG_PARAMS);
+    IoSkipCurrentIrpStackLocation(pIrp);
+    status = IoCallDriver(((PC0C_COMMON_FDO_EXTENSION)pDevExt)->pLowDevObj, pIrp);
+    break;
+  case C0C_DOTYPE_PP:
+    status = STATUS_NOT_SUPPORTED;
+  default:
+    TraceIrp("c0cSystemControlDispatch", pIrp, &status, TRACE_FLAG_PARAMS);
+    pIrp->IoStatus.Status = status;
+    IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+  }
+
+  return status;
+}
+@
+
+
+1.4
+log
+@Implemented IRP_MJ_FLUSH_BUFFERS
+@
+text
+@d2 1
+a2 1
+ * $Id: initunlo.c,v 1.3 2005/07/13 16:12:36 vfrolov Exp $
+d22 3
+d71 2
+a72 2
+  pDrvObj->MajorFunction[IRP_MJ_QUERY_INFORMATION]       = c0cQueryInformation;
+  pDrvObj->MajorFunction[IRP_MJ_SET_INFORMATION]         = c0cSetInformation;
+a105 34
+NTSTATUS c0cQueryInformation(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+{
+  NTSTATUS status;
+
+  UNREFERENCED_PARAMETER(pDevObj);
+
+  status = STATUS_INVALID_DEVICE_REQUEST;
+
+  TraceIrp("c0cQueryInformation", pIrp, &status, TRACE_FLAG_PARAMS);
+
+  pIrp->IoStatus.Information = 0;
+  pIrp->IoStatus.Status = status;
+  IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+
+  return status;
+}
+
+NTSTATUS c0cSetInformation(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+{
+  NTSTATUS status;
+
+  UNREFERENCED_PARAMETER(pDevObj);
+
+  status = STATUS_INVALID_DEVICE_REQUEST;
+
+  TraceIrp("c0cQueryInformation", pIrp, &status, TRACE_FLAG_PARAMS);
+
+  pIrp->IoStatus.Information = 0;
+  pIrp->IoStatus.Status = status;
+  IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+
+  return status;
+}
+
+@
+
+
+1.3
+log
+@Added c0cGlobal struct for global driver's data
+@
+text
+@d2 1
+a2 1
+ * $Id: initunlo.c,v 1.2 2005/05/12 07:41:27 vfrolov Exp $
+d22 3
+d63 1
+a63 1
+  pDrvObj->MajorFunction[IRP_MJ_FLUSH_BUFFERS]           = c0cFlush;
+a85 17
+NTSTATUS c0cFlush(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+{
+  NTSTATUS status;
+
+  UNREFERENCED_PARAMETER(pDevObj);
+
+  status = STATUS_INVALID_DEVICE_REQUEST;
+
+  TraceIrp("c0cFlush", pIrp, &status, TRACE_FLAG_PARAMS);
+
+  pIrp->IoStatus.Information = 0;
+  pIrp->IoStatus.Status = status;
+  IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+
+  return status;
+}
+
+@
+
+
+1.2
+log
+@Added ability to change the port names
+@
+text
+@d2 1
+a2 1
+ * $Id: initunlo.c,v 1.1 2005/01/26 12:18:54 vfrolov Exp $
+d22 3
+d34 1
+a34 1
+UNICODE_STRING c0cRegistryPath;
+d40 1
+a40 1
+  TraceOpen(pDrvObj, pRegistryPath);
+d44 2
+a45 2
+  RtlInitUnicodeString(&c0cRegistryPath, NULL);
+  StrAppendStr(&status, &c0cRegistryPath, pRegistryPath->Buffer, pRegistryPath->Length);
+d52 2
+d78 1
+a78 1
+  StrFree(&c0cRegistryPath);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: initunlo.c,v 1.1 2005/01/24 15:26:45 frolov Exp $
+d22 3
+d29 3
+d35 1
+a35 1
+  UNREFERENCED_PARAMETER(pRegistryPath);
+d39 10
+d73 2
+a77 1
+
+@
+

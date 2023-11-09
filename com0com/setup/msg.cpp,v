@@ -1,0 +1,787 @@
+head	1.15;
+access;
+symbols
+	v3_0_0_0:1.15
+	v2_2_2_0:1.8
+	v2_2_1_0:1.7
+	v2_2_0_0:1.6
+	v2_1_0_0:1.6
+	v2_0_0_0:1.6
+	v1_8_0_0:1.4
+	RELEASED:1.15
+	v1_7_0_0:1.4;
+locks; strict;
+comment	@// @;
+
+
+1.15
+date	2012.06.04.06.15.37;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2012.06.04.06.02.14;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2011.12.15.15.51.48;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2011.12.08.09.32.04;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2011.07.15.16.09.05;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2011.07.13.17.42.46;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2010.07.30.09.19.29;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2009.11.09.11.16.43;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2009.02.16.10.32.56;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2007.10.19.16.11.56;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2007.09.20.12.29.03;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2006.11.21.11.34.55;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2006.10.23.12.04.23;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.10.17.10.03.59;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.07.28.12.16.42;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.15
+log
+@Fixed previous commit
+@
+text
+@/*
+ * $Id: msg.cpp,v 1.14 2012/06/04 06:02:14 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2012 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: msg.cpp,v $
+ * Revision 1.14  2012/06/04 06:02:14  vfrolov
+ * Added commented code with SetupSetNonInteractiveMode
+ *
+ * Revision 1.13  2011/12/15 15:51:48  vfrolov
+ * Fixed types
+ *
+ * Revision 1.12  2011/12/08 09:32:04  vfrolov
+ * Fixed unreadable console output by changing LANG_NEUTRAL to LANG_ENGLISH
+ *
+ * Revision 1.11  2011/07/15 16:09:05  vfrolov
+ * Disabled MessageBox() for silent mode and added default processing
+ *
+ * Revision 1.10  2011/07/13 17:42:46  vfrolov
+ * Added tracing of dialogs
+ *
+ * Revision 1.9  2010/07/30 09:19:29  vfrolov
+ * Added STRDUP()
+ *
+ * Revision 1.8  2009/11/09 11:16:43  vfrolov
+ * Added restoring last error
+ *
+ * Revision 1.7  2009/02/16 10:32:56  vfrolov
+ * Added Silent() and PromptReboot()
+ *
+ * Revision 1.6  2007/10/19 16:11:56  vfrolov
+ * Added ability to redirect console output
+ *
+ * Revision 1.5  2007/09/20 12:29:03  vfrolov
+ * Added return value to SetOutputFile()
+ *
+ * Revision 1.4  2006/11/21 11:34:55  vfrolov
+ * Added
+ *   ConsoleWrite()
+ *   IsConsoleOpen()
+ *   SetOutputFile()
+ *   GetOutputFile()
+ *
+ * Revision 1.3  2006/10/23 12:04:23  vfrolov
+ * Added SetTitle()
+ *
+ * Revision 1.2  2006/10/17 10:03:59  vfrolov
+ * Added MB_SETFOREGROUND flag to MessageBox()
+ *
+ * Revision 1.1  2006/07/28 12:16:42  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "msg.h"
+#include "utils.h"
+
+static char *pOutputFile = NULL;
+static char title[80] = "";
+static bool silent = FALSE;
+
+///////////////////////////////////////////////////////////////
+static int ShowMsgDefault(LPCSTR pText, UINT type)
+{
+  return Silent() ? 0 : MessageBox(NULL, pText, title, type|MB_SETFOREGROUND);
+}
+
+static int (* pShowMsg)(LPCSTR pText, UINT type) = ShowMsgDefault;
+///////////////////////////////////////////////////////////////
+static bool isConsoleOpen = FALSE;
+
+static void ConsoleWriteReadDefault(LPSTR pReadBuf, DWORD lenReadBuf, LPCSTR pText)
+{
+  static HANDLE handle = INVALID_HANDLE_VALUE;
+
+  if (handle == INVALID_HANDLE_VALUE) {
+    AllocConsole();
+    handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTitle(title);
+    isConsoleOpen = TRUE;
+  }
+
+  if (pText) {
+    DWORD cnt;
+
+    if (GetFileType(handle) == FILE_TYPE_CHAR)
+      WriteConsole(handle, pText, lstrlen(pText), &cnt, NULL);
+    else
+      WriteFile(handle, pText, lstrlen(pText), &cnt, NULL);
+  }
+
+  if (pReadBuf && lenReadBuf > 0) {
+    if (lenReadBuf > 1 &&
+        ReadConsole(GetStdHandle(STD_INPUT_HANDLE), pReadBuf, lenReadBuf - 1, &lenReadBuf, 0))
+    {
+      pReadBuf[lenReadBuf] = 0;
+    } else {
+      pReadBuf[0] = 0;
+    }
+  }
+}
+
+static void (* pConsole)(LPSTR pReadBuf, DWORD lenReadBuf, LPCSTR pText) = ConsoleWriteReadDefault;
+///////////////////////////////////////////////////////////////
+static void TraceDefault(LPCSTR pText)
+{
+  pConsole(NULL, 0, pText);
+
+  if (!pOutputFile || !pText)
+    return;
+
+  HANDLE hFile = CreateFile(
+                   pOutputFile,
+                   GENERIC_WRITE,
+                   FILE_SHARE_READ,
+                   NULL,
+                   OPEN_ALWAYS,
+                   FILE_ATTRIBUTE_NORMAL,
+                   NULL);
+
+  if (hFile != INVALID_HANDLE_VALUE) {
+    SetFilePointer(hFile, 0, NULL, FILE_END);
+
+    LPCSTR p;
+
+    for (p = pText ; *p ; p++) {
+      DWORD not_used;
+
+      if (*p == '\n')
+        WriteFile(hFile, "\r", sizeof(*p), &not_used, NULL);
+      WriteFile(hFile, p, sizeof(*p), &not_used, NULL);
+    }
+
+    CloseHandle(hFile);
+  }
+}
+
+static void (* pTrace)(LPCSTR pText) = TraceDefault;
+///////////////////////////////////////////////////////////////
+static int ShowMsg(LPCSTR pText, UINT type)
+{
+  Trace("\nDIALOG: {\n%s} ... ", pText);
+
+#define TRACECASE(p, s) case p##s: Trace(#s); break;
+
+  int res = pShowMsg(pText, type);
+
+  switch(res) {
+    TRACECASE(ID, OK)
+    TRACECASE(ID, CANCEL)
+    TRACECASE(ID, ABORT)
+    TRACECASE(ID, RETRY)
+    TRACECASE(ID, IGNORE)
+    TRACECASE(ID, YES)
+    TRACECASE(ID, NO)
+    TRACECASE(ID, CLOSE)
+    TRACECASE(ID, HELP)
+    TRACECASE(ID, TRYAGAIN)
+    TRACECASE(ID, CONTINUE)
+    case 0:
+      Trace("ERROR");
+      break;
+    default:
+      Trace("%d", res);
+  }
+
+  Trace("\n");
+
+  return res;
+}
+///////////////////////////////////////////////////////////////
+static int ShowMsgVA(UINT type, const char *pFmt, va_list va)
+{
+  char buf[1024];
+
+  VSNPRINTF(buf, sizeof(buf)/sizeof(buf[0]), pFmt, va);
+
+  return ShowMsg(buf, type);
+}
+///////////////////////////////////////////////////////////////
+static int ShowErrorVA(UINT type, DWORD err, const char *pFmt, va_list va)
+{
+  char buf[1024];
+
+  VSNPRINTF(buf, sizeof(buf)/sizeof(buf[0]), pFmt, va);
+
+  LPVOID pMsgBuf;
+
+  FormatMessage(
+      FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+      NULL,
+      err,
+      MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
+      (LPTSTR) &pMsgBuf,
+      0,
+      NULL);
+
+  int len = lstrlen(buf);
+
+  if ((err & 0xFFFF0000) == 0)
+    SNPRINTF(buf + len, sizeof(buf)/sizeof(buf[0]) - len, "\nERROR: %lu - %s\n", (unsigned long)err, pMsgBuf);
+  else
+    SNPRINTF(buf + len, sizeof(buf)/sizeof(buf[0]) - len, "\nERROR: 0x%08lX - %s\n", (unsigned long)err, pMsgBuf);
+
+  LocalFree(pMsgBuf);
+
+  return ShowMsg(buf, type);
+}
+///////////////////////////////////////////////////////////////
+int ShowMsg(UINT type, const char *pFmt, ...)
+{
+  int res;
+  va_list va;
+
+  va_start(va, pFmt);
+  res = ShowMsgVA(type, pFmt, va);
+  va_end(va);
+
+  return res;
+}
+///////////////////////////////////////////////////////////////
+int ShowError(UINT type, DWORD err, const char *pFmt, ...)
+{
+  int res;
+  va_list va;
+
+  va_start(va, pFmt);
+  res = ShowErrorVA(type, err, pFmt, va);
+  va_end(va);
+
+  return res;
+}
+///////////////////////////////////////////////////////////////
+int ShowLastError(UINT type, const char *pFmt, ...)
+{
+  int res;
+
+  DWORD err = GetLastError();
+
+  va_list va;
+
+  va_start(va, pFmt);
+  res = ShowErrorVA(type, err, pFmt, va);
+  va_end(va);
+
+  SetLastError(err);
+
+  return res;
+}
+///////////////////////////////////////////////////////////////
+void Trace(const char *pFmt, ...)
+{
+  char buf[1024];
+  va_list va;
+
+  va_start(va, pFmt);
+
+  VSNPRINTF(buf, sizeof(buf)/sizeof(buf[0]), pFmt, va);
+
+  va_end(va);
+
+  DWORD err = GetLastError();
+
+  pTrace(buf);
+
+  SetLastError(err);
+}
+///////////////////////////////////////////////////////////////
+void ConsoleWriteRead(char *pReadBuf, int lenReadBuf, const char *pFmt, ...)
+{
+  char buf[1024];
+  va_list va;
+
+  va_start(va, pFmt);
+
+  VSNPRINTF(buf, sizeof(buf)/sizeof(buf[0]), pFmt, va);
+
+  va_end(va);
+
+  DWORD err = GetLastError();
+
+  pConsole(pReadBuf, lenReadBuf, buf);
+
+  SetLastError(err);
+}
+///////////////////////////////////////////////////////////////
+void ConsoleWrite(const char *pFmt, ...)
+{
+  char buf[1024];
+  va_list va;
+
+  va_start(va, pFmt);
+
+  VSNPRINTF(buf, sizeof(buf)/sizeof(buf[0]), pFmt, va);
+
+  va_end(va);
+
+  DWORD err = GetLastError();
+
+  pConsole(NULL, 0, buf);
+
+  SetLastError(err);
+}
+///////////////////////////////////////////////////////////////
+bool IsConsoleOpen()
+{
+  return isConsoleOpen;
+}
+///////////////////////////////////////////////////////////////
+void SetTitle(const char *pTitle)
+{
+  SNPRINTF(title, sizeof(title)/sizeof(title[0]), "%s", pTitle);
+}
+///////////////////////////////////////////////////////////////
+bool SetOutputFile(const char *pFile)
+{
+  if (pOutputFile) {
+    LocalFree(pOutputFile);
+    pOutputFile = NULL;
+  }
+
+  if (pFile) {
+    pOutputFile = STRDUP(pFile);
+
+    if (!pOutputFile)
+      return FALSE;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+const char *GetOutputFile()
+{
+  return pOutputFile;
+}
+///////////////////////////////////////////////////////////////
+bool Silent()
+{
+  return silent;
+}
+///////////////////////////////////////////////////////////////
+void Silent(bool val)
+{
+  silent = val;
+
+  /*
+  typedef BOOL (WINAPI *PSETUPSETNONINTERACTIVEMODE)(IN BOOL);
+  static PSETUPSETNONINTERACTIVEMODE pSetupSetNonInteractiveMode = NULL;
+
+  if(!pSetupSetNonInteractiveMode) {
+    HMODULE hModule = GetModuleHandle("setupapi.dll");
+
+    if (hModule) {
+      pSetupSetNonInteractiveMode =
+          (PSETUPSETNONINTERACTIVEMODE)GetProcAddress(hModule, "SetupSetNonInteractiveMode");
+    }
+  }
+
+  if (pSetupSetNonInteractiveMode)
+    pSetupSetNonInteractiveMode(silent);
+  */
+}
+///////////////////////////////////////////////////////////////
+void PromptReboot()
+{
+  Trace("\nReboot required.\n");
+
+  if (!silent)
+    SetupPromptReboot(NULL, NULL, FALSE);
+}
+///////////////////////////////////////////////////////////////
+@
+
+
+1.14
+log
+@Added commented code /* ... SetupSetNonInteractiveMode ...*/
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.13 2011/12/15 15:51:48 vfrolov Exp $
+d22 3
+@
+
+
+1.13
+log
+@Fixed types
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.12 2011/12/08 09:32:04 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2011 Vyacheslav Frolov
+d22 3
+d358 17
+@
+
+
+1.12
+log
+@Fixed unreadable console output by changing LANG_NEUTRAL to LANG_ENGLISH
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.11 2011/07/15 16:09:05 vfrolov Exp $
+d22 3
+d70 1
+a70 1
+static BOOL silent = FALSE;
+d80 1
+a80 1
+static BOOL isConsoleOpen = FALSE;
+d315 1
+a315 1
+BOOL IsConsoleOpen()
+d325 1
+a325 1
+BOOL SetOutputFile(const char *pFile)
+d347 1
+a347 1
+BOOL Silent()
+d352 1
+a352 1
+void Silent(BOOL val)
+@
+
+
+1.11
+log
+@Disabled MessageBox() for silent mode and added default processing
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.10 2011/07/13 17:42:46 vfrolov Exp $
+d22 3
+d200 1
+a200 1
+      MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL),
+@
+
+
+1.10
+log
+@Added tracing of dialogs
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.9 2010/07/30 09:19:29 vfrolov Exp $
+d22 3
+d69 1
+a69 1
+  return MessageBox(NULL, pText, title, type|MB_SETFOREGROUND);
+d165 1
+a165 1
+      Trace("error");
+@
+
+
+1.9
+log
+@Added STRDUP()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.8 2009/11/09 11:16:43 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2010 Vyacheslav Frolov
+d22 3
+d141 32
+d179 1
+a179 1
+  return pShowMsg(buf, type);
+d201 4
+a204 1
+  SNPRINTF(buf + len, sizeof(buf)/sizeof(buf[0]) - len, "\nERROR: 0x%08lX - %s\n", (unsigned long)err, pMsgBuf);
+d208 1
+a208 1
+  return pShowMsg(buf, type);
+@
+
+
+1.8
+log
+@Added restoring last error
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.7 2009/02/16 10:32:56 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2009 Vyacheslav Frolov
+d22 3
+d286 1
+a286 3
+    DWORD size = (lstrlen(pFile) + 1)*sizeof(*pFile);
+
+    pOutputFile = (char *)LocalAlloc(LPTR, size);
+d288 1
+a288 5
+    if (pOutputFile) {
+      lstrcpy(pOutputFile, pFile);
+    } else {
+      SetLastError(ERROR_NOT_ENOUGH_MEMORY);
+      ShowLastError(MB_OK|MB_ICONSTOP, "LocalAlloc(%lu)", (unsigned long)size);
+a289 1
+    }
+@
+
+
+1.7
+log
+@Added Silent() and PromptReboot()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.6 2007/10/19 16:11:56 vfrolov Exp $
+d22 3
+d222 2
+d225 2
+d240 2
+d243 2
+d258 2
+d261 2
+@
+
+
+1.6
+log
+@Added ability to redirect console output
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.5 2007/09/20 12:29:03 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+d22 3
+d50 3
+a52 2
+char *pOutputFile = NULL;
+char title[80] = "";
+d289 18
+@
+
+
+1.5
+log
+@Added return value to SetOutputFile()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.4 2006/11/21 11:34:55 vfrolov Exp $
+d22 3
+d71 8
+a78 2
+  if (pText)
+    WriteConsole(handle, pText, lstrlen(pText), NULL, NULL);
+@
+
+
+1.4
+log
+@Added
+  ConsoleWrite()
+  IsConsoleOpen()
+  SetOutputFile()
+  GetOutputFile()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.3 2006/10/23 12:04:23 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006 Vyacheslav Frolov
+d22 7
+d244 1
+a244 1
+  lstrcpyn(title, pTitle, sizeof(title)/sizeof(title[0]));
+d247 1
+a247 1
+void SetOutputFile(const char *pFile)
+d255 3
+a257 1
+    pOutputFile = (char *)LocalAlloc(LPTR, (lstrlen(pFile) + 1)*sizeof(*pFile));
+d259 1
+a259 1
+    if (pOutputFile)
+d261 5
+d267 2
+@
+
+
+1.3
+log
+@Added SetTitle()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.2 2006/10/17 10:03:59 vfrolov Exp $
+d22 3
+d37 1
+d48 2
+d58 1
+d80 28
+d216 19
+d240 20
+@
+
+
+1.2
+log
+@Added MB_SETFOREGROUND flag to MessageBox()
+@
+text
+@d2 1
+a2 1
+ * $Id: msg.cpp,v 1.1 2006/07/28 12:16:42 vfrolov Exp $
+d22 3
+d34 2
+d37 1
+a37 1
+static int ShowMsgDefault(LPCSTR pText, LPCSTR pCaption, UINT type)
+d39 1
+a39 1
+  return MessageBox(NULL, pText, pCaption, type|MB_SETFOREGROUND);
+d42 1
+a42 1
+static int (* pShowMsg)(LPCSTR pText, LPCSTR pCaption, UINT type) = ShowMsgDefault;
+d51 1
+d83 1
+a83 1
+  return pShowMsg(buf, NULL, type);
+d109 1
+a109 1
+  return pShowMsg(buf, NULL, type);
+d181 5
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 3
+a23 1
+ * $Log: $
+d34 1
+a34 1
+  return MessageBox(NULL, pText, pCaption, type);
+@
+

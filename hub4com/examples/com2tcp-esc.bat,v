@@ -1,0 +1,252 @@
+head	1.5;
+access;
+symbols
+	v2_1_0_0:1.5
+	v2_0_1_0:1.5
+	RELEASED:1.5
+	v2_0_0_0:1.5;
+locks; strict;
+comment	@:: @;
+
+
+1.5
+date	2008.12.05.14.31.05;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.11.13.07.32.06;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.10.16.16.09.35;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.10.16.07.46.04;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.10.07.14.27.47;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@Enabled quoted parameters
+@
+text
+@@@ECHO OFF
+
+SETLOCAL
+  IF DEFINED HUB4COM GOTO DEFINED_HUB4COM
+    SET HUB4COM=hub4com
+  :DEFINED_HUB4COM
+
+  PATH %~dp0;%PATH%
+
+  :BEGIN_PARSE_OPTIONS
+    SET OPTION=%~1
+    IF NOT "%OPTION:~0,2%" == "--" GOTO END_PARSE_OPTIONS
+    SHIFT /1
+
+    IF /I "%OPTION%" == "--help" GOTO USAGE
+
+    IF /I "%OPTION%" NEQ "--interface" GOTO END_OPTION_INTERFACE
+      SET OPTIONS=%OPTIONS% --interface=%~1
+      SHIFT /1
+      GOTO BEGIN_PARSE_OPTIONS
+    :END_OPTION_INTERFACE
+
+    IF /I "%OPTION%" NEQ "--linectl" GOTO END_OPTION_LINECTL
+      SET LC_CLIENT_MODE=%~1
+      SHIFT /1
+      GOTO BEGIN_PARSE_OPTIONS
+    :END_OPTION_LINECTL
+
+    GOTO USAGE
+  :END_PARSE_OPTIONS
+
+  :BEGIN_PARSE_ARGS
+    IF "%~1" == "" GOTO USAGE
+    SET COMPORT=%~1
+    SHIFT /1
+
+    IF "%~1" == "" GOTO USAGE
+    SET TCP=%~1
+    SHIFT /1
+
+    IF "%~1" == "" GOTO END_PARSE_ARGS
+    SET TCP=%TCP%:%~1
+    SHIFT /1
+
+    IF /I "%LC_CLIENT_MODE%"=="no" GOTO END_SET_LC_CLIENT_MODE
+      SET LC_CLIENT_MODE=yes
+    :END_SET_LC_CLIENT_MODE
+
+    IF NOT "%~1" == "" GOTO USAGE
+  :END_PARSE_ARGS
+
+  IF /I "%LC_CLIENT_MODE%"=="yes" GOTO END_SET_LC_SERVER_MODE_OPTIONS
+    SET TCP_LC_OPTIONS=:"--br=local --lc=local"
+  :END_SET_LC_SERVER_MODE_OPTIONS
+
+  SET TC=:
+
+  %TC% SET OPTIONS=%OPTIONS% --create-filter=trace,com,COM
+  SET OPTIONS=%OPTIONS% --create-filter=escparse,com,parse
+  %TC% SET OPTIONS=%OPTIONS% --create-filter=trace,com,ExM
+  SET OPTIONS=%OPTIONS% --create-filter=pinmap,com,pinmap:"--rts=cts --dtr=dsr --break=break"
+  SET OPTIONS=%OPTIONS% --create-filter=linectl,com,lc
+  %TC% SET OPTIONS=%OPTIONS% --create-filter=trace,com,CxT
+
+  SET OPTIONS=%OPTIONS% --add-filters=0:com
+
+  %TC% SET OPTIONS=%OPTIONS% --create-filter=trace,tcp,TCP
+  SET OPTIONS=%OPTIONS% --create-filter=escparse,tcp,parse:"--request-esc-mode=no"
+  SET OPTIONS=%OPTIONS% --create-filter=escinsert,tcp,insert
+  %TC% SET OPTIONS=%OPTIONS% --create-filter=trace,tcp,ExM
+  SET OPTIONS=%OPTIONS% --create-filter=pinmap,tcp,pinmap:"--cts=cts --dsr=dsr --ring=ring --dcd=dcd --break=break"
+  SET OPTIONS=%OPTIONS% --create-filter=linectl,tcp,lc%TCP_LC_OPTIONS%
+
+  SET OPTIONS=%OPTIONS% --add-filters=1:tcp
+
+  @@ECHO ON
+    "%HUB4COM%" %OPTIONS% --octs=off "%COMPORT%" --use-driver=tcp "*%TCP%"
+  @@ECHO OFF
+ENDLOCAL
+
+GOTO END
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:USAGE
+
+ECHO Usage (client mode):
+ECHO     %0 [options] \\.\^<com port^> ^<host addr^> ^<host port^>
+ECHO.
+ECHO Usage (server mode):
+ECHO     %0 [options] \\.\^<com port^> ^<listen port^>
+ECHO.
+ECHO Common options:
+ECHO     --linectl ^{yes^|no^}    - enable/disable forwarding of baud rate, data bits,
+ECHO                             parity and stop bits settings from COM port to TCP
+ECHO                             port (default is yes for client mode).
+ECHO     --help                - show this help.
+ECHO.
+ECHO Client mode options:
+ECHO     --interface ^<if^>      - use interface ^<if^> for connecting.
+ECHO.
+ECHO Server mode options:
+ECHO     --interface ^<if^>      - use interface ^<if^> for listening.
+
+GOTO END
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:END
+@
+
+
+1.4
+log
+@Added TC for trace commenting
+@
+text
+@d11 2
+a12 2
+    SET OPTION=%1
+    IF NOT "%OPTION:~0,2%"=="--" GOTO END_PARSE_OPTIONS
+d15 1
+a15 1
+    IF /I "%OPTION%"=="--help" GOTO USAGE
+d18 1
+a18 1
+      SET OPTIONS=%OPTIONS% --interface=%1
+d24 1
+a24 1
+      SET LC_CLIENT_MODE=%1
+d33 2
+a34 2
+    IF "%1"=="" GOTO USAGE
+    SET COMPORT=%1
+d37 2
+a38 2
+    IF "%1"=="" GOTO USAGE
+    SET TCP=%1
+d41 2
+a42 2
+    IF "%1"=="" GOTO END_PARSE_ARGS
+    SET TCP=%TCP%:%1
+d49 1
+a49 1
+    IF NOT "%1"=="" GOTO USAGE
+@
+
+
+1.3
+log
+@Added --linectl option
+@
+text
+@d56 3
+a58 1
+ :SET OPTIONS=%OPTIONS% --create-filter=trace,com,COM
+d60 1
+a60 1
+ :SET OPTIONS=%OPTIONS% --create-filter=trace,com,ExM
+d63 1
+a63 1
+ :SET OPTIONS=%OPTIONS% --create-filter=trace,com,CxT
+d67 1
+a67 1
+ :SET OPTIONS=%OPTIONS% --create-filter=trace,tcp,TCP
+d70 1
+a70 1
+ :SET OPTIONS=%OPTIONS% --create-filter=trace,tcp,ExM
+@
+
+
+1.2
+log
+@Redesigned escinsert filter to accept SET instead STATUS messages
+@
+text
+@d23 6
+d45 4
+d52 4
+d58 1
+d70 1
+a70 2
+  SET OPTIONS=%OPTIONS% --create-filter=lsrmap,tcp,lsrmap
+  SET OPTIONS=%OPTIONS% --create-filter=linectl,tcp,lc
+d90 3
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d42 15
+a56 1
+  :SET OPTIONS=%OPTIONS% --create-filter=trace,ser --add-filters=0:ser
+d58 1
+a58 10
+  SET OPTIONS=%OPTIONS% --create-filter=escparse,escparse-com --add-filters=0:escparse-com
+  SET OPTIONS=%OPTIONS% --create-filter=pinmap:"--rts=cts --dtr=dsr --break=break" --add-filters=0:pinmap
+  SET OPTIONS=%OPTIONS% --create-filter=linectl --add-filters=0:linectl
+
+  :SET OPTIONS=%OPTIONS% --create-filter=trace,tcp --add-filters=1:tcp
+
+  SET OPTIONS=%OPTIONS% --create-filter=escparse,escparse-tcp:"--request-esc-mode=no" --add-filters=1:escparse-tcp
+  SET OPTIONS=%OPTIONS% --create-filter=escinsert --add-filters=1:escinsert
+
+  :SET OPTIONS=%OPTIONS% --create-filter=trace,s2t --add-filters=1:s2t
+@
+

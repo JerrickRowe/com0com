@@ -1,0 +1,150 @@
+head	1.7;
+access;
+symbols
+	v3_0_0_0:1.7
+	v2_2_2_0:1.7
+	v2_2_1_0:1.7
+	v2_2_0_0:1.6
+	v2_1_0_0:1.6
+	v2_0_0_0:1.6
+	v1_8_0_0:1.5
+	RELEASED:1.7
+	v1_7_0_0:1.3;
+locks; strict;
+comment	@# @;
+
+
+1.7
+date	2008.12.24.15.32.22;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2007.10.01.14.56.39;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2007.06.14.16.14.19;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2007.01.15.16.23.49;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2006.11.02.16.13.03;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.10.23.12.01.49;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.07.28.12.16.42;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@Added logging COM port numbers in the COM port database
+@
+text
+@TARGETNAME=setup
+TARGETPATH=..
+TARGETTYPE=DYNLINK
+DLLENTRY=_DllMainCRTStartup
+USE_MSVCRT=1
+
+MSC_WARNING_LEVEL=/W4
+
+SOURCES= \
+        setup.cpp \
+        inffile.cpp \
+        params.cpp \
+        devutils.cpp \
+        portnum.cpp \
+        comdb.cpp \
+        msg.cpp \
+        utils.cpp \
+        setup.rc \
+
+TARGETLIBS= \
+        $(DDK_LIB_PATH)\kernel32.lib \
+        $(DDK_LIB_PATH)\advapi32.lib \
+        $(DDK_LIB_PATH)\setupapi.lib \
+        $(DDK_LIB_PATH)\newdev.lib \
+        $(DDK_LIB_PATH)\user32.lib \
+        $(DDK_LIB_PATH)\msports.lib \
+        $(DDK_LIB_PATH)\shlwapi.lib \
+
+PRECOMPILED_INCLUDE=precomp.h
+PRECOMPILED_PCH=precomp.pch
+PRECOMPILED_OBJ=precomp.obj
+@
+
+
+1.6
+log
+@Added shlwapi
+@
+text
+@d15 1
+@
+
+
+1.5
+log
+@Added test for "in use" in the COM port database
+@
+text
+@d26 1
+@
+
+
+1.4
+log
+@Added DLLENTRY and USE_MSVCRT
+@
+text
+@d25 1
+@
+
+
+1.3
+log
+@Added portnum.cpp
+@
+text
+@d4 2
+@
+
+
+1.2
+log
+@Changed TARGETPATH to ..
+@
+text
+@d12 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+TARGETPATH=obj
+@
+

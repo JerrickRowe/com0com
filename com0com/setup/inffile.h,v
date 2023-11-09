@@ -1,0 +1,231 @@
+head	1.4;
+access;
+symbols
+	v3_0_0_0:1.4
+	v2_2_2_0:1.2
+	v2_2_1_0:1.2
+	v2_2_0_0:1.2
+	v2_1_0_0:1.2
+	v2_0_0_0:1.2
+	v1_8_0_0:1.2
+	RELEASED:1.4
+	v1_7_0_0:1.2;
+locks; strict;
+comment	@ * @;
+
+
+1.4
+date	2011.12.15.15.51.48;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2010.05.27.11.16.46;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.10.19.13.28.50;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.07.28.12.16.42;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@Fixed types
+@
+text
+@/*
+ * $Id: inffile.h,v 1.3 2010/05/27 11:16:46 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2011 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: inffile.h,v $
+ * Revision 1.3  2010/05/27 11:16:46  vfrolov
+ * Added ability to put the port to the Ports class
+ *
+ * Revision 1.2  2006/10/19 13:28:50  vfrolov
+ * Added InfFile::UninstallAllInfFiles()
+ *
+ * Revision 1.1  2006/07/28 12:16:42  vfrolov
+ * Initial revision
+ *
+ *
+ */
+
+#ifndef _C0C_INFFILE_H_
+#define _C0C_INFFILE_H_
+
+class InfFile {
+  public:
+    struct InfFileField {
+      const char *pSection;
+      const char *pKey;
+      int         nField;
+      const char *pFieldValue;
+    };
+
+    struct InfFileUninstall {
+      const InfFile::InfFileField *pRequiredFields;
+      bool queryConfirmation;
+    };
+
+  public:
+    InfFile(const char *pInfName, const char *pNearPath);
+    ~InfFile();
+
+    bool Test(const InfFileField *pFields, bool showErrors = TRUE) const;
+
+    const char *Path() const { return pPath; }
+    const char *OemPath(bool showErrors = TRUE) const;
+    const char *ClassGUID(bool showErrors = TRUE) const;
+    const char *Class(bool showErrors = TRUE) const;
+    const char *Provider(bool showErrors = TRUE) const;
+    const char *DriverVer(bool showErrors = TRUE) const;
+    const char *UninstallInfTag(bool showErrors = TRUE) const;
+
+    bool UninstallFiles(const char *pFilesSection) const;
+
+    bool InstallOEMInf() const;
+    bool UninstallOEMInf() const;
+
+    static bool UninstallAllInfFiles(
+        const InfFileUninstall *pInfFileUninstallList,
+        const char *const *ppOemPathExcludeList);
+
+  protected:
+    char *pPath;
+    mutable char *pOemPath;
+    mutable char *pClassGUID;
+    mutable char *pClass;
+    mutable char *pProvider;
+    mutable char *pDriverVer;
+    mutable char *pUninstallInfTag;
+    mutable HINF hInf;
+};
+
+#endif /* _C0C_PARAMS_H_ */
+@
+
+
+1.3
+log
+@Added ability to put the port to the Ports class
+@
+text
+@d2 1
+a2 1
+ * $Id: inffile.h,v 1.2 2006/10/19 13:28:50 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2010 Vyacheslav Frolov
+d22 3
+d48 1
+a48 1
+      BOOL queryConfirmation;
+d55 1
+a55 1
+    BOOL Test(const InfFileField *pFields, BOOL showErrors = TRUE) const;
+d58 6
+a63 6
+    const char *OemPath(BOOL showErrors = TRUE) const;
+    const char *ClassGUID(BOOL showErrors = TRUE) const;
+    const char *Class(BOOL showErrors = TRUE) const;
+    const char *Provider(BOOL showErrors = TRUE) const;
+    const char *DriverVer(BOOL showErrors = TRUE) const;
+    const char *UninstallInfTag(BOOL showErrors = TRUE) const;
+d65 1
+a65 1
+    BOOL UninstallFiles(const char *pFilesSection) const;
+d67 2
+a68 2
+    BOOL InstallOEMInf() const;
+    BOOL UninstallOEMInf() const;
+d70 1
+a70 1
+    static BOOL UninstallAllInfFiles(
+@
+
+
+1.2
+log
+@Added InfFile::UninstallAllInfFiles()
+@
+text
+@d2 1
+a2 1
+ * $Id: inffile.h,v 1.1 2006/07/28 12:16:42 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006 Vyacheslav Frolov
+d22 3
+d36 13
+d52 2
+d55 1
+d59 2
+a60 6
+
+    BOOL Compare(
+        const char *_pClassGUID,
+        const char *_pClass,
+        const char *_pProvider,
+        BOOL showErrors = TRUE) const;
+d68 3
+a70 3
+        const char *_pClassGUID,
+        const char *_pClass,
+        const char *_pProvider);
+d73 7
+a79 3
+    char *pClassGUID;
+    char *pClass;
+    char *pProvider;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 4
+a24 1
+ * $Log: $
+d37 3
+a39 3
+    const char *ClassGUID() const;
+    const char *Class() const;
+    const char *Provider() const;
+d44 2
+a45 1
+        const char *_pProvider) const;
+d51 5
+@
+

@@ -1,0 +1,1115 @@
+head	1.27;
+access;
+symbols
+	v3_0_0_0:1.27
+	v2_2_2_0:1.25
+	v2_2_1_0:1.25
+	v2_2_0_0:1.25
+	v2_1_0_0:1.22
+	v2_0_0_0:1.20
+	v1_8_0_0:1.18
+	v1_7_0_0:1.15
+	v1_6_0_0:1.15
+	v1_5_0_0:1.9
+	v1_4_0_0:1.6
+	RELEASED:1.27
+	v1_3_0_0:1.5
+	v1_2_0_0:1.5
+	v1_1_1_0:1.5
+	v1_1_0_0:1.5
+	v1_0_0_0:1.3;
+locks; strict;
+comment	@ * @;
+
+
+1.27
+date	2011.12.16.17.35.17;	author vfrolov;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2011.07.26.16.07.42;	author vfrolov;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2008.12.02.16.10.09;	author vfrolov;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2008.07.11.10.38.00;	author vfrolov;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2008.06.26.13.37.10;	author vfrolov;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2008.04.08.10.30.35;	author vfrolov;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2008.03.14.15.28.39;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2007.09.17.14.31.06;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2007.07.03.14.35.17;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2007.06.04.15.24.32;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2007.06.01.16.22.40;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2007.01.11.14.50.29;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2006.06.23.11.44.52;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2006.06.21.16.23.57;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2006.06.08.11.33.35;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2006.04.05.07.22.15;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2006.02.17.07.55.13;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2006.01.10.10.17.23;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2005.11.30.16.04.12;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2005.11.29.12.33.21;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2005.11.28.12.57.16;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2005.09.06.07.23.44;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2005.05.14.17.07.02;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2005.05.13.16.58.03;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.02.01.16.51.51;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.02.01.08.37.55;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.01.26.12.18.54;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.27
+log
+@Added resuming i/o after opening port (Bugs item #3460850)
+@
+text
+@/*
+ * $Id: openclos.c,v 1.26 2011/07/26 16:07:42 vfrolov Exp $
+ *
+ * Copyright (c) 2004-2011 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: openclos.c,v $
+ * Revision 1.26  2011/07/26 16:07:42  vfrolov
+ * Fixed double closing
+ *
+ * Revision 1.25  2008/12/02 16:10:09  vfrolov
+ * Separated tracing and debuging
+ *
+ * Revision 1.24  2008/07/11 10:38:00  vfrolov
+ * Added nonstandard ability to enable LSR insertion on BREAK OFF
+ *
+ * Revision 1.23  2008/06/26 13:37:10  vfrolov
+ * Implemented noise emulation
+ *
+ * Revision 1.22  2008/04/08 10:30:35  vfrolov
+ * Fixed modem control setting on close
+ *
+ * Revision 1.21  2008/03/14 15:28:39  vfrolov
+ * Implemented ability to get paired port settings with
+ * extended IOCTL_SERIAL_LSRMST_INSERT
+ *
+ * Revision 1.20  2007/09/17 14:31:06  vfrolov
+ * Implemented pseudo pin OPEN
+ *
+ * Revision 1.19  2007/07/03 14:35:17  vfrolov
+ * Implemented pinout customization
+ *
+ * Revision 1.18  2007/06/04 15:24:32  vfrolov
+ * Fixed open reject just after close in exclusiveMode
+ *
+ * Revision 1.17  2007/06/01 16:22:40  vfrolov
+ * Implemented plug-in and exclusive modes
+ *
+ * Revision 1.16  2007/01/11 14:50:29  vfrolov
+ * Pool functions replaced by
+ *   C0C_ALLOCATE_POOL()
+ *   C0C_ALLOCATE_POOL_WITH_QUOTA()
+ *   C0C_FREE_POOL()
+ *
+ * Revision 1.15  2006/06/23 11:44:52  vfrolov
+ * Mass replacement pDevExt by pIoPort
+ *
+ * Revision 1.14  2006/06/21 16:23:57  vfrolov
+ * Fixed possible BSOD after one port of pair removal
+ *
+ * Revision 1.13  2006/06/08 11:33:35  vfrolov
+ * Fixed bugs with amountInWriteQueue
+ *
+ * Revision 1.12  2006/04/05 07:22:15  vfrolov
+ * Replaced flipXoffLimit flag by writeHoldingRemote to correct handFlow changing
+ *
+ * Revision 1.11  2006/02/17 07:55:13  vfrolov
+ * Implemented IOCTL_SERIAL_SET_BREAK_ON and IOCTL_SERIAL_SET_BREAK_OFF
+ *
+ * Revision 1.10  2006/01/10 10:17:23  vfrolov
+ * Implemented flow control and handshaking
+ * Implemented IOCTL_SERIAL_SET_XON and IOCTL_SERIAL_SET_XOFF
+ * Added setting of HoldReasons, WaitForImmediate and AmountInOutQueue
+ *   fields of SERIAL_STATUS for IOCTL_SERIAL_GET_COMMSTATUS
+ *
+ * Revision 1.9  2005/11/30 16:04:12  vfrolov
+ * Implemented IOCTL_SERIAL_GET_STATS and IOCTL_SERIAL_CLEAR_STATS
+ *
+ * Revision 1.8  2005/11/29 12:33:21  vfrolov
+ * Changed SetModemStatus() to ability set and clear bits simultaneously
+ *
+ * Revision 1.7  2005/11/28 12:57:16  vfrolov
+ * Moved some C0C_BUFFER code to bufutils.c
+ *
+ * Revision 1.6  2005/09/06 07:23:44  vfrolov
+ * Implemented overrun emulation
+ *
+ * Revision 1.5  2005/05/14 17:07:02  vfrolov
+ * Implemented SERIAL_LSRMST_MST insertion
+ *
+ * Revision 1.4  2005/05/13 16:58:03  vfrolov
+ * Implemented IOCTL_SERIAL_LSRMST_INSERT
+ *
+ * Revision 1.3  2005/02/01 16:51:51  vfrolov
+ * Used C0C_BUFFER_PURGE()
+ *
+ * Revision 1.2  2005/02/01 08:37:55  vfrolov
+ * Changed SetModemStatus() to set multiple bits
+ *
+ * Revision 1.1  2005/01/26 12:18:54  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "handflow.h"
+#include "bufutils.h"
+#include "strutils.h"
+#include "timeout.h"
+#include "delay.h"
+
+NTSTATUS FdoPortOpen(IN PC0C_FDOPORT_EXTENSION pDevExt)
+{
+  LIST_ENTRY queueToComplete;
+  PUCHAR pBase;
+  ULONG size;
+  KIRQL oldIrql;
+  PC0C_IO_PORT pIoPort;
+
+  if (InterlockedIncrement(&pDevExt->openCount) != 1) {
+    InterlockedDecrement(&pDevExt->openCount);
+    Trace0((PC0C_COMMON_EXTENSION)pDevExt, L"FdoPortOpen ACCESS_DENIED (openCount > 0)");
+    return STATUS_ACCESS_DENIED;
+  }
+
+  pIoPort = pDevExt->pIoPortLocal;
+
+  if (pIoPort->plugInMode && !pIoPort->pIoPortRemote->isOpen) {
+    InterlockedDecrement(&pDevExt->openCount);
+    Trace0((PC0C_COMMON_EXTENSION)pDevExt, L"FdoPortOpen ACCESS_DENIED (plugInMode && !pIoPortRemote->isOpen)");
+    return STATUS_ACCESS_DENIED;
+  }
+
+  if (pIoPort->exclusiveMode)
+    IoInvalidateDeviceRelations(pIoPort->pPhDevObj, BusRelations);
+
+  switch (MmQuerySystemSize()) {
+  case MmLargeSystem:
+    size = 4096;
+    pBase = (PUCHAR)C0C_ALLOCATE_POOL(NonPagedPool, size);
+    if (pBase)
+      break;
+  case MmMediumSystem:
+    size = 1024;
+    pBase = (PUCHAR)C0C_ALLOCATE_POOL(NonPagedPool, size);
+    if (pBase)
+      break;
+  case MmSmallSystem:
+    size = 128;
+    pBase = (PUCHAR)C0C_ALLOCATE_POOL(NonPagedPool, size);
+    if (pBase)
+      break;
+  default:
+    size = 0;
+    pBase = NULL;
+  }
+
+  InitializeListHead(&queueToComplete);
+
+#if ENABLE_TRACING
+  if (pIoPort->amountInWriteQueue) {
+    NTSTATUS status;
+    UNICODE_STRING msg;
+
+    status = STATUS_SUCCESS;
+    RtlInitUnicodeString(&msg, NULL);
+    StrAppendStr0(&status, &msg, L"!!!WARNING!!! amountInWriteQueue = ");
+    StrAppendNum(&status, &msg, pIoPort->amountInWriteQueue, 10);
+
+    Trace0((PC0C_COMMON_EXTENSION)pDevExt, msg.Buffer);
+
+    StrFree(&msg);
+  }
+#endif /* ENABLE_TRACING */
+
+  KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+
+  InitBuffer(&pIoPort->readBuf, pBase, size);
+
+  pIoPort->amountInWriteQueue = 0;
+  pIoPort->tryWrite = FALSE;
+  pIoPort->errors = 0;
+  pIoPort->waitMask = 0;
+  pIoPort->eventMask = 0;
+  RtlZeroMemory(&pIoPort->perfStats, sizeof(pIoPort->perfStats));
+  pIoPort->handFlow.XoffLimit = size >> 3;
+  pIoPort->handFlow.XonLimit = size >> 1;
+  pIoPort->pIoPortRemote->brokeIdleChars = 0;
+
+  SetHandFlow(pIoPort, NULL, &queueToComplete);
+  SetModemControl(pIoPort, C0C_MCR_OPEN, C0C_MCR_OPEN, &queueToComplete);
+
+  ReadWrite(
+      pIoPort, FALSE,
+      pIoPort->pIoPortRemote, FALSE,
+      &queueToComplete);
+
+  if (pIoPort->pIoPortRemote->pWriteDelay && pIoPort->pIoPortRemote->brokeCharsProbability > 0)
+    StartWriteDelayTimer(pIoPort->pIoPortRemote->pWriteDelay);
+
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+  pIoPort->isOpen = TRUE;
+
+  if (pIoPort->pIoPortRemote->plugInMode)
+    IoInvalidateDeviceRelations(pIoPort->pIoPortRemote->pPhDevObj, BusRelations);
+
+  FdoPortCompleteQueue(&queueToComplete);
+
+  return STATUS_SUCCESS;
+}
+
+NTSTATUS StartIrpClose(
+    IN PC0C_IO_PORT pIoPort,
+    IN PLIST_ENTRY pQueueToComplete)
+{
+  UNREFERENCED_PARAMETER(pQueueToComplete);
+
+  if (!pIoPort->exclusiveMode) {
+    PIRP pIrp;
+
+    InterlockedDecrement(&pIoPort->pDevExt->openCount);
+    pIrp = pIoPort->irpQueues[C0C_QUEUE_CLOSE].pCurrent;
+    pIrp->IoStatus.Information = 0;
+    return STATUS_SUCCESS;
+  }
+
+  IoInvalidateDeviceRelations(pIoPort->pPhDevObj, BusRelations);
+  SetCloseTimeout(pIoPort);
+
+  return STATUS_PENDING;
+}
+
+NTSTATUS FdoPortClose(IN PC0C_FDOPORT_EXTENSION pDevExt, IN PIRP pIrp)
+{
+  NTSTATUS status;
+  LIST_ENTRY queueToComplete;
+  KIRQL oldIrql;
+  PC0C_IO_PORT pIoPort;
+
+  pIoPort = pDevExt->pIoPortLocal;
+
+  KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+
+  if (!pIoPort->isOpen) {
+    KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+    Trace0((PC0C_COMMON_EXTENSION)pDevExt, L"FdoPortClose INVALID_DEVICE_REQUEST (!isOpen)");
+
+    pIrp->IoStatus.Information = 0;
+    pIrp->IoStatus.Status = STATUS_INVALID_DEVICE_REQUEST;
+    IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+
+    return STATUS_INVALID_DEVICE_REQUEST;
+  }
+
+  pIoPort->isOpen = FALSE;
+
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+  if (pIoPort->pIoPortRemote->plugInMode)
+    IoInvalidateDeviceRelations(pIoPort->pIoPortRemote->pPhDevObj, BusRelations);
+
+  InitializeListHead(&queueToComplete);
+
+  KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+
+  pIoPort->escapeChar = 0;
+  pIoPort->writeHoldingRemote = 0;
+  pIoPort->sendXonXoff = 0;
+  SetModemControl(pIoPort, C0C_MCR_OUT2, C0C_MCR_MASK | C0C_MCR_OPEN, &queueToComplete);
+  FreeBuffer(&pIoPort->readBuf);
+  SetBreakHolding(pIoPort, FALSE, &queueToComplete);
+
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+  FdoPortCompleteQueue(&queueToComplete);
+
+  status = FdoPortStartIrp(pIoPort, pIrp, C0C_QUEUE_CLOSE, StartIrpClose);
+
+  if (status != STATUS_PENDING) {
+    pIrp->IoStatus.Status = status;
+    IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+  }
+
+  return status;
+}
+
+NTSTATUS c0cOpen(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+{
+  NTSTATUS status;
+  PC0C_COMMON_EXTENSION pDevExt = pDevObj->DeviceExtension;
+
+  TraceIrp("--- Open ---", pIrp, NULL, TRACE_FLAG_PARAMS);
+
+  switch (pDevExt->doType) {
+  case C0C_DOTYPE_FP:
+    status = FdoPortOpen((PC0C_FDOPORT_EXTENSION)pDevExt);
+    break;
+  default:
+    status = STATUS_INVALID_DEVICE_REQUEST;
+  }
+
+  pIrp->IoStatus.Information = 0;
+
+#if ENABLE_TRACING
+  if (!NT_SUCCESS(status))
+    TraceIrp("c0cOpen", pIrp, &status, TRACE_FLAG_RESULTS);
+#endif /* ENABLE_TRACING */
+
+  pIrp->IoStatus.Status = status;
+  IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+
+  return status;
+}
+
+NTSTATUS c0cClose(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+{
+  NTSTATUS status;
+  PC0C_COMMON_EXTENSION pDevExt = pDevObj->DeviceExtension;
+
+#if ENABLE_TRACING
+  ULONG code = IoGetCurrentIrpStackLocation(pIrp)->MajorFunction;
+#endif /* ENABLE_TRACING */
+
+  TraceIrp("--- Close ---", pIrp, NULL, TRACE_FLAG_PARAMS);
+
+  switch (pDevExt->doType) {
+  case C0C_DOTYPE_FP:
+    status = FdoPortClose((PC0C_FDOPORT_EXTENSION)pDevExt, pIrp);
+    break;
+  default:
+    status = STATUS_INVALID_DEVICE_REQUEST;
+    pIrp->IoStatus.Information = 0;
+    pIrp->IoStatus.Status = status;
+    IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+  }
+
+#if ENABLE_TRACING
+  if (status != STATUS_SUCCESS)
+    TraceCode(pDevExt, "IRP_MJ_", codeNameTableIrpMj, code, &status);
+#endif /* ENABLE_TRACING */
+
+  return status;
+}
+
+NTSTATUS c0cCleanup(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+{
+  NTSTATUS status;
+  PC0C_COMMON_EXTENSION pDevExt = pDevObj->DeviceExtension;
+
+  TraceIrp("c0cCleanup", pIrp, NULL, TRACE_FLAG_PARAMS);
+
+  switch (pDevExt->doType) {
+  case C0C_DOTYPE_FP:
+    FdoPortCancelQueues(((PC0C_FDOPORT_EXTENSION)pDevExt)->pIoPortLocal);
+
+    status = STATUS_SUCCESS;
+    break;
+  default:
+    status = STATUS_INVALID_DEVICE_REQUEST;
+  }
+
+  pIrp->IoStatus.Information = 0;
+
+  TraceIrp("c0cCleanup", pIrp, &status, TRACE_FLAG_RESULTS);
+
+  pIrp->IoStatus.Status = status;
+  IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+
+  return status;
+}
+@
+
+
+1.26
+log
+@Fixed double closing
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.25 2008/12/02 16:10:09 vfrolov Exp $
+d22 3
+d197 5
+@
+
+
+1.25
+log
+@Separated tracing and debuging
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.24 2008/07/11 10:38:00 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2008 Vyacheslav Frolov
+d22 3
+d123 1
+d131 1
+d239 14
+d255 2
+@
+
+
+1.24
+log
+@Added nonstandard ability to enable LSR insertion on BREAK OFF
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.23 2008/06/26 13:37:10 vfrolov Exp $
+d22 3
+d156 1
+a156 1
+#if DBG
+d170 1
+a170 1
+#endif /* DBG */
+d281 1
+a281 1
+#if DBG
+d284 1
+a284 1
+#endif /* DBG */
+d297 1
+a297 1
+#if DBG
+d299 1
+a299 1
+#endif /* DBG */
+d314 1
+a314 1
+#if DBG
+d317 1
+a317 1
+#endif /* DBG */
+@
+
+
+1.23
+log
+@Implemented noise emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.22 2008/04/08 10:30:35 vfrolov Exp $
+d22 3
+d245 1
+a245 1
+  SetBreakHolding(pIoPort, FALSE);
+@
+
+
+1.22
+log
+@Fixed modem control setting on close
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.21 2008/03/14 15:28:39 vfrolov Exp $
+d22 3
+d102 1
+d178 1
+d183 3
+@
+
+
+1.21
+log
+@Implemented ability to get paired port settings with
+extended IOCTL_SERIAL_LSRMST_INSERT
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.20 2007/09/17 14:31:06 vfrolov Exp $
+d22 4
+d232 1
+a232 1
+  SetModemControl(pIoPort, 0, C0C_MCR_RTS | C0C_MCR_DTR | C0C_MCR_OPEN, &queueToComplete);
+@
+
+
+1.20
+log
+@Implemented pseudo pin OPEN
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.19 2007/07/03 14:35:17 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2007 Vyacheslav Frolov
+d22 3
+a166 1
+  pIoPort->escapeChar = 0;
+d225 1
+@
+
+
+1.19
+log
+@Implemented pinout customization
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.18 2007/06/04 15:24:32 vfrolov Exp $
+d22 3
+d170 1
+d225 1
+a225 1
+  SetModemControl(pIoPort, 0, C0C_MCR_RTS | C0C_MCR_DTR, &queueToComplete);
+@
+
+
+1.18
+log
+@Fixed open reject just after close in exclusiveMode
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.17 2007/06/01 16:22:40 vfrolov Exp $
+d22 3
+d221 1
+a221 1
+  SetModemStatus(pIoPort->pIoPortRemote, 0, C0C_MSB_CTS | C0C_MSB_DSR, &queueToComplete);
+@
+
+
+1.17
+log
+@Implemented plug-in and exclusive modes
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.16 2007/01/11 14:50:29 vfrolov Exp $
+d22 3
+d85 1
+d177 3
+a179 1
+NTSTATUS FdoPortClose(IN PC0C_FDOPORT_EXTENSION pDevExt)
+d181 20
+d224 1
+a224 2
+  if (pIoPort->exclusiveMode)
+    IoInvalidateDeviceRelations(pIoPort->pPhDevObj, BusRelations);
+d226 1
+a226 1
+  FdoPortCompleteQueue(&queueToComplete);
+d228 4
+a231 1
+  InterlockedDecrement(&pDevExt->openCount);
+d233 1
+a233 1
+  return STATUS_SUCCESS;
+d253 1
+d256 1
+d269 4
+d277 1
+a277 1
+    status = FdoPortClose((PC0C_FDOPORT_EXTENSION)pDevExt);
+d281 3
+d286 4
+a289 7
+  pIrp->IoStatus.Information = 0;
+
+  if (!NT_SUCCESS(status))
+    TraceIrp("c0cClose", pIrp, &status, TRACE_FLAG_RESULTS);
+
+  pIrp->IoStatus.Status = status;
+  IoCompleteRequest(pIrp, IO_NO_INCREMENT);
+@
+
+
+1.16
+log
+@Pool functions replaced by
+  C0C_ALLOCATE_POOL()
+  C0C_ALLOCATE_POOL_WITH_QUOTA()
+  C0C_FREE_POOL()
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.15 2006/06/23 11:44:52 vfrolov Exp $
+d22 6
+d98 8
+d163 5
+d181 5
+d198 3
+@
+
+
+1.15
+log
+@Mass replacement pDevExt by pIoPort
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.14 2006/06/21 16:23:57 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2006 Vyacheslav Frolov
+d22 3
+d95 1
+a95 1
+    pBase = (PUCHAR)ExAllocatePool(NonPagedPool, size);
+d100 1
+a100 1
+    pBase = (PUCHAR)ExAllocatePool(NonPagedPool, size);
+d105 1
+a105 1
+    pBase = (PUCHAR)ExAllocatePool(NonPagedPool, size);
+@
+
+
+1.14
+log
+@Fixed possible BSOD after one port of pair removal
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.13 2006/06/08 11:33:35 vfrolov Exp $
+d22 3
+d80 1
+d87 2
+d113 1
+a113 1
+  if (pDevExt->pIoPortLocal->amountInWriteQueue) {
+d120 1
+a120 1
+    StrAppendNum(&status, &msg, pDevExt->pIoPortLocal->amountInWriteQueue, 10);
+d128 1
+a128 1
+  KeAcquireSpinLock(pDevExt->pIoLock, &oldIrql);
+d130 1
+a130 1
+  InitBuffer(&pDevExt->pIoPortLocal->readBuf, pBase, size);
+d132 9
+a140 9
+  pDevExt->pIoPortLocal->amountInWriteQueue = 0;
+  pDevExt->pIoPortLocal->tryWrite = FALSE;
+  pDevExt->pIoPortLocal->errors = 0;
+  pDevExt->pIoPortLocal->waitMask = 0;
+  pDevExt->pIoPortLocal->eventMask = 0;
+  pDevExt->pIoPortLocal->escapeChar = 0;
+  RtlZeroMemory(&pDevExt->pIoPortLocal->perfStats, sizeof(pDevExt->pIoPortLocal->perfStats));
+  pDevExt->pIoPortLocal->handFlow.XoffLimit = size >> 3;
+  pDevExt->pIoPortLocal->handFlow.XonLimit = size >> 1;
+d142 1
+a142 1
+  SetHandFlow(pDevExt->pIoPortLocal, NULL, &queueToComplete);
+d144 1
+a144 1
+  KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+d155 3
+d161 1
+a161 1
+  KeAcquireSpinLock(pDevExt->pIoLock, &oldIrql);
+d163 5
+a167 5
+  pDevExt->pIoPortLocal->writeHoldingRemote = 0;
+  pDevExt->pIoPortLocal->sendXonXoff = 0;
+  SetModemStatus(pDevExt->pIoPortLocal->pIoPortRemote, 0, C0C_MSB_CTS | C0C_MSB_DSR, &queueToComplete);
+  FreeBuffer(&pDevExt->pIoPortLocal->readBuf);
+  SetBreakHolding(pDevExt->pIoPortLocal, FALSE);
+d169 1
+a169 1
+  KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+d239 1
+a239 1
+    FdoPortCancelQueues((PC0C_FDOPORT_EXTENSION)pDevExt);
+@
+
+
+1.13
+log
+@Fixed bugs with amountInWriteQueue
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.12 2006/04/05 07:22:15 vfrolov Exp $
+d22 3
+a82 5
+  if (!pDevExt->pIoPortRemote->pDevExt) {
+    InterlockedDecrement(&pDevExt->openCount);
+    return STATUS_INSUFFICIENT_RESOURCES;
+  }
+
+d133 2
+a134 2
+  pDevExt->handFlow.XoffLimit = size >> 3;
+  pDevExt->handFlow.XonLimit = size >> 1;
+d136 1
+a136 1
+  SetHandFlow(pDevExt, NULL, &queueToComplete);
+d156 1
+a156 1
+  SetModemStatus(pDevExt->pIoPortRemote, 0, C0C_MSB_CTS | C0C_MSB_DSR, &queueToComplete);
+@
+
+
+1.12
+log
+@Replaced flipXoffLimit flag by writeHoldingRemote to correct handFlow changing
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.11 2006/02/17 07:55:13 vfrolov Exp $
+d22 3
+d66 1
+d110 11
+a120 1
+    Trace0((PC0C_COMMON_EXTENSION)pDevExt, L"!!!WARNING!!! amountInWriteQueue != 0");
+d128 1
+@
+
+
+1.11
+log
+@Implemented IOCTL_SERIAL_SET_BREAK_ON and IOCTL_SERIAL_SET_BREAK_OFF
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.10 2006/01/10 10:17:23 vfrolov Exp $
+d22 3
+d141 2
+a142 1
+  pDevExt->pIoPortLocal->flipXoffLimit = FALSE;
+@
+
+
+1.10
+log
+@Implemented flow control and handshaking
+Implemented IOCTL_SERIAL_SET_XON and IOCTL_SERIAL_SET_XOFF
+Added setting of HoldReasons, WaitForImmediate and AmountInOutQueue
+  fields of SERIAL_STATUS for IOCTL_SERIAL_GET_COMMSTATUS
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.9 2005/11/30 16:04:12 vfrolov Exp $
+d22 6
+d141 1
+@
+
+
+1.9
+log
+@Implemented IOCTL_SERIAL_GET_STATS and IOCTL_SERIAL_CLEAR_STATS
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.8 2005/11/29 12:33:21 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2005 Vyacheslav Frolov
+d22 3
+d52 1
+d95 6
+d105 1
+d114 1
+a114 1
+  UpdateHandFlow(pDevExt, &queueToComplete);
+d132 1
+@
+
+
+1.8
+log
+@Changed SetModemStatus() to ability set and clear bits simultaneously
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.7 2005/11/28 12:57:16 vfrolov Exp $
+d22 3
+d99 1
+@
+
+
+1.7
+log
+@Moved some C0C_BUFFER code to bufutils.c
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.6 2005/09/06 07:23:44 vfrolov Exp $
+d22 3
+d117 1
+a117 1
+  SetModemStatus(pDevExt->pIoPortRemote, C0C_MSB_CTS | C0C_MSB_DSR, FALSE, &queueToComplete);
+@
+
+
+1.6
+log
+@Implemented overrun emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.5 2005/05/14 17:07:02 vfrolov Exp $
+d22 3
+d43 1
+d48 1
+a48 1
+  C0C_BUFFER readBufNew;
+d57 5
+d65 2
+a66 2
+    readBufNew.pBase = (PUCHAR)ExAllocatePool(NonPagedPool, size);
+    if (readBufNew.pBase)
+d70 2
+a71 2
+    readBufNew.pBase = (PUCHAR)ExAllocatePool(NonPagedPool, size);
+    if (readBufNew.pBase)
+d75 2
+a76 2
+    readBufNew.pBase = (PUCHAR)ExAllocatePool(NonPagedPool, size);
+    if (readBufNew.pBase)
+d80 1
+a80 1
+    readBufNew.pBase = NULL;
+a82 4
+  readBufNew.pEnd = readBufNew.pBase + size;
+
+  C0C_BUFFER_PURGE(readBufNew);
+
+d87 1
+a87 1
+  pDevExt->pIoPortLocal->readBuf = readBufNew;
+d93 2
+a107 1
+  C0C_BUFFER readBuf;
+d115 1
+a115 3
+
+  readBuf = pDevExt->pIoPortLocal->readBuf;
+  RtlZeroMemory(&pDevExt->pIoPortLocal->readBuf, sizeof(pDevExt->pIoPortLocal->readBuf));
+a120 3
+  if (readBuf.pBase)
+    ExFreePool(readBuf.pBase);
+
+@
+
+
+1.5
+log
+@Implemented SERIAL_LSRMST_MST insertion
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.4 2005/05/13 16:58:03 vfrolov Exp $
+d22 3
+a36 1
+ *
+d84 1
+@
+
+
+1.4
+log
+@Implemented IOCTL_SERIAL_LSRMST_INSERT
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.3 2005/02/01 16:51:51 vfrolov Exp $
+d22 3
+d105 1
+a105 3
+  SetModemStatus(pDevExt->pIoPortRemote, C0C_MSB_CTS | C0C_MSB_DSR, FALSE);
+
+  WaitComplete(pDevExt->pIoPortRemote, &queueToComplete);
+@
+
+
+1.3
+log
+@Used C0C_BUFFER_PURGE()
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.2 2005/02/01 08:37:55 vfrolov Exp $
+d22 3
+d81 1
+@
+
+
+1.2
+log
+@Changed SetModemStatus() to set multiple bits
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.1 2005/01/26 12:18:54 vfrolov Exp $
+d22 3
+a65 1
+  readBufNew.pFree = readBufNew.pBusy = readBufNew.pBase;
+d67 2
+a68 1
+  readBufNew.busy = 0;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: openclos.c,v 1.1 2005/01/24 15:26:45 frolov Exp $
+d22 3
+d95 1
+a95 2
+  SetModemStatus(pDevExt->pIoPortRemote, C0C_MSB_CTS, FALSE);
+  SetModemStatus(pDevExt->pIoPortRemote, C0C_MSB_DSR, FALSE);
+@
+

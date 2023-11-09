@@ -1,0 +1,1070 @@
+head	1.13;
+access;
+symbols
+	v3_0_0_0:1.13
+	v2_2_2_0:1.12
+	v2_2_1_0:1.12
+	v2_2_0_0:1.12
+	v2_1_0_0:1.8
+	v2_0_0_0:1.8
+	v1_8_0_0:1.7
+	v1_7_0_0:1.7
+	RELEASED:1.13
+	v1_6_0_0:1.7;
+locks; strict;
+comment	@ * @;
+
+
+1.13
+date	2010.12.27.14.14.06;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2008.10.30.07.54.37;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.08.25.14.18.58;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.08.19.12.40.58;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2008.07.11.10.38.00;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2007.07.03.14.35.17;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2006.06.21.16.23.57;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2006.05.19.12.16.19;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2006.05.17.15.31.14;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2006.04.05.07.22.15;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2006.03.15.13.49.15;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.02.17.07.55.13;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.01.10.10.12.05;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.13
+log
+@Added cleaning SERIAL_TX_WAITING_FOR_XON on opening port
+@
+text
+@/*
+ * $Id: handflow.c,v 1.12 2008/10/30 07:54:37 vfrolov Exp $
+ *
+ * Copyright (c) 2005-2008 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: handflow.c,v $
+ * Revision 1.12  2008/10/30 07:54:37  vfrolov
+ * Improved BREAK emulation
+ *
+ * Revision 1.11  2008/08/25 14:18:58  vfrolov
+ * Fixed SERIAL_TRANSMIT_TOGGLE
+ *
+ * Revision 1.10  2008/08/19 12:40:58  vfrolov
+ * Replaces C0CE_INSERT_ENABLE_LSR_NBI (insertion on BREAK OFF)
+ * by C0CE_INSERT_ENABLE_LSR_BI (insertion on BREAK change)
+ *
+ * Revision 1.9  2008/07/11 10:38:00  vfrolov
+ * Added nonstandard ability to enable LSR insertion on BREAK OFF
+ *
+ * Revision 1.8  2007/07/03 14:35:17  vfrolov
+ * Implemented pinout customization
+ *
+ * Revision 1.7  2006/06/21 16:23:57  vfrolov
+ * Fixed possible BSOD after one port of pair removal
+ *
+ * Revision 1.6  2006/05/19 12:16:19  vfrolov
+ * Implemented SERIAL_XOFF_CONTINUE
+ *
+ * Revision 1.5  2006/05/17 15:31:14  vfrolov
+ * Implemented SERIAL_TRANSMIT_TOGGLE
+ *
+ * Revision 1.4  2006/04/05 07:22:15  vfrolov
+ * Replaced flipXoffLimit flag by writeHoldingRemote to correct handFlow changing
+ *
+ * Revision 1.3  2006/03/15 13:49:15  vfrolov
+ * Fixed [1446861] Problems with setting DCB.fOutxCtsFlow and DCB.fRtsControl
+ * Thanks to Brad (bdwade100 at users.sourceforge.net)
+ *
+ * Revision 1.2  2006/02/17 07:55:13  vfrolov
+ * Implemented IOCTL_SERIAL_SET_BREAK_ON and IOCTL_SERIAL_SET_BREAK_OFF
+ *
+ * Revision 1.1  2006/01/10 10:12:05  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "handflow.h"
+#include "bufutils.h"
+#include "../include/cncext.h"
+
+/*
+ * FILE_ID used by HALT_UNLESS to put it on BSOD
+ */
+#define FILE_ID 9
+
+NTSTATUS SetHandFlow(
+    PC0C_IO_PORT pIoPort,
+    PSERIAL_HANDFLOW pHandFlow,
+    PLIST_ENTRY pQueueToComplete)
+{
+  UCHAR bits, mask;
+  PC0C_BUFFER pReadBuf;
+  PSERIAL_HANDFLOW pNewHandFlow;
+  BOOLEAN setModemStatusHolding;
+
+  pReadBuf = &pIoPort->readBuf;
+
+  if (pHandFlow) {
+    if ((pIoPort->escapeChar && (pHandFlow->FlowReplace & SERIAL_ERROR_CHAR)) ||
+        ((SIZE_T)pHandFlow->XonLimit > C0C_BUFFER_SIZE(pReadBuf)) ||
+        ((SIZE_T)pHandFlow->XoffLimit > C0C_BUFFER_SIZE(pReadBuf)))
+    {
+      return STATUS_INVALID_PARAMETER;
+    }
+
+    pNewHandFlow = pHandFlow;
+  } else {
+    pNewHandFlow = &pIoPort->handFlow;
+  }
+
+  // Set local side
+  if (!pHandFlow)
+    pIoPort->writeHolding &= ~SERIAL_TX_WAITING_FOR_XON;
+
+  if (pHandFlow &&
+      ((pIoPort->handFlow.FlowReplace & SERIAL_AUTO_TRANSMIT) != 0) &&
+      ((pHandFlow->FlowReplace & SERIAL_AUTO_TRANSMIT) == 0))
+  {
+    SetXonXoffHolding(pIoPort, C0C_XCHAR_ON);
+  }
+
+  if (!pHandFlow ||
+      (pIoPort->handFlow.ControlHandShake & SERIAL_OUT_HANDSHAKEMASK) !=
+          (pHandFlow->ControlHandShake & SERIAL_OUT_HANDSHAKEMASK))
+  {
+    setModemStatusHolding = TRUE;
+  } else {
+    setModemStatusHolding = FALSE;
+  }
+
+  // Set remote side
+  bits = mask = 0;
+
+  if (!pHandFlow ||
+      (pIoPort->handFlow.FlowReplace & SERIAL_RTS_MASK) !=
+          (pHandFlow->FlowReplace & SERIAL_RTS_MASK))
+  {
+    switch (pNewHandFlow->FlowReplace & SERIAL_RTS_MASK) {
+    case 0:
+      pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_CTS;
+      mask |= C0C_MCR_RTS;
+      break;
+    case SERIAL_RTS_CONTROL:
+      pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_CTS;
+      bits |= C0C_MCR_RTS;
+      mask |= C0C_MCR_RTS;
+      break;
+    case SERIAL_RTS_HANDSHAKE:
+      if (C0C_BUFFER_BUSY(pReadBuf) > (C0C_BUFFER_SIZE(pReadBuf) - pNewHandFlow->XoffLimit)) {
+        pIoPort->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_CTS;
+        mask |= C0C_MCR_RTS;
+      }
+      else
+      if (pIoPort->writeHoldingRemote & SERIAL_TX_WAITING_FOR_CTS) {
+        if (C0C_BUFFER_BUSY(pReadBuf) <= (SIZE_T)pNewHandFlow->XonLimit) {
+          pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_CTS;
+          bits |= C0C_MCR_RTS;
+          mask |= C0C_MCR_RTS;
+        }
+      }
+      else {
+        bits |= C0C_MCR_RTS;
+        mask |= C0C_MCR_RTS;
+      }
+    }
+  }
+
+  if (!pHandFlow ||
+      (pIoPort->handFlow.ControlHandShake & SERIAL_DTR_MASK) !=
+          (pHandFlow->ControlHandShake & SERIAL_DTR_MASK))
+  {
+    switch (pNewHandFlow->ControlHandShake & SERIAL_DTR_MASK) {
+    case 0:
+      pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_DSR;
+      mask |= C0C_MCR_DTR;
+      break;
+    case SERIAL_DTR_CONTROL:
+      pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_DSR;
+      bits |= C0C_MCR_DTR;
+      mask |= C0C_MCR_DTR;
+      break;
+    case SERIAL_DTR_HANDSHAKE:
+      if (C0C_BUFFER_BUSY(pReadBuf) > (C0C_BUFFER_SIZE(pReadBuf) - pNewHandFlow->XoffLimit)) {
+        pIoPort->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_DSR;
+        mask |= C0C_MCR_DTR;
+      }
+      else
+      if (pIoPort->writeHoldingRemote & SERIAL_TX_WAITING_FOR_DSR) {
+        if (C0C_BUFFER_BUSY(pReadBuf) <= (SIZE_T)pNewHandFlow->XonLimit) {
+          pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_DSR;
+          bits |= C0C_MCR_DTR;
+          mask |= C0C_MCR_DTR;
+        }
+      }
+      else {
+        bits |= C0C_MCR_DTR;
+        mask |= C0C_MCR_DTR;
+      }
+    }
+  }
+
+  if (!pHandFlow ||
+      (pIoPort->handFlow.FlowReplace & SERIAL_AUTO_RECEIVE) !=
+          (pHandFlow->FlowReplace & SERIAL_AUTO_RECEIVE))
+  {
+    if (pNewHandFlow->FlowReplace & SERIAL_AUTO_RECEIVE) {
+      if (C0C_BUFFER_BUSY(pReadBuf) > (C0C_BUFFER_SIZE(pReadBuf) - pNewHandFlow->XoffLimit)) {
+        pIoPort->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_XON;
+        if ((pNewHandFlow->FlowReplace & SERIAL_XOFF_CONTINUE) == 0)
+          pIoPort->writeHolding |= SERIAL_TX_WAITING_FOR_XON;
+        pIoPort->sendXonXoff = C0C_XCHAR_OFF;
+        pIoPort->tryWrite = TRUE;
+      }
+    }
+    else
+    if (pIoPort->writeHoldingRemote & SERIAL_TX_WAITING_FOR_XON) {
+      pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_XON;
+      pIoPort->writeHolding &= ~SERIAL_TX_WAITING_FOR_XON;
+      if (pIoPort->sendXonXoff != C0C_XCHAR_OFF) {
+        // XOFF was sent so send XON
+        pIoPort->sendXonXoff = C0C_XCHAR_ON;
+        pIoPort->tryWrite = TRUE;
+      } else {
+        // XOFF still was not sent so cancel it
+        pIoPort->sendXonXoff = 0;
+      }
+    }
+  }
+
+  if (pHandFlow)
+    pIoPort->handFlow = *pHandFlow;
+
+  if (setModemStatusHolding)
+    SetModemStatusHolding(pIoPort);
+
+  if (mask)
+    SetModemControl(pIoPort, bits, mask, pQueueToComplete);
+
+  UpdateTransmitToggle(pIoPort, pQueueToComplete);
+
+  SetLimit(pIoPort->pIoPortRemote);
+  SetLimit(pIoPort);
+
+  if (pIoPort->pIoPortRemote->tryWrite) {
+    ReadWrite(
+        pIoPort, FALSE,
+        pIoPort->pIoPortRemote, FALSE,
+        pQueueToComplete);
+  }
+
+  if (pIoPort->tryWrite) {
+    ReadWrite(
+        pIoPort->pIoPortRemote, FALSE,
+        pIoPort, FALSE,
+        pQueueToComplete);
+  }
+
+  return STATUS_SUCCESS;
+}
+
+VOID UpdateHandFlow(
+    PC0C_IO_PORT pIoPort,
+    BOOLEAN freed,
+    PLIST_ENTRY pQueueToComplete)
+{
+  UCHAR bits, mask;
+  PC0C_BUFFER pReadBuf;
+  PSERIAL_HANDFLOW pHandFlowLocal, pHandFlowRemote;
+
+  pHandFlowLocal = &pIoPort->handFlow;
+  pHandFlowRemote = &pIoPort->pIoPortRemote->handFlow;
+  pReadBuf = &pIoPort->readBuf;
+
+  bits = mask = 0;
+
+  if (!pIoPort->writeHoldingRemote) {
+    if (!freed && C0C_BUFFER_BUSY(pReadBuf) > (C0C_BUFFER_SIZE(pReadBuf) - pHandFlowLocal->XoffLimit)) {
+      if ((pHandFlowLocal->FlowReplace & SERIAL_RTS_MASK) == SERIAL_RTS_HANDSHAKE) {
+        pIoPort->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_CTS;
+        mask |= C0C_MCR_RTS;
+      }
+
+      if ((pHandFlowLocal->ControlHandShake & SERIAL_DTR_MASK) == SERIAL_DTR_HANDSHAKE) {
+        pIoPort->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_DSR;
+        mask |= C0C_MCR_DTR;
+      }
+
+      if (pHandFlowLocal->FlowReplace & SERIAL_AUTO_RECEIVE) {
+        pIoPort->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_XON;
+        if ((pHandFlowLocal->FlowReplace & SERIAL_XOFF_CONTINUE) == 0)
+          pIoPort->writeHolding |= SERIAL_TX_WAITING_FOR_XON;
+        pIoPort->sendXonXoff = C0C_XCHAR_OFF;
+        pIoPort->tryWrite = TRUE;
+      }
+    }
+  } else {
+    if (freed && C0C_BUFFER_BUSY(pReadBuf) <= (SIZE_T)pHandFlowLocal->XonLimit) {
+      if ((pHandFlowLocal->FlowReplace & SERIAL_RTS_MASK) == SERIAL_RTS_HANDSHAKE) {
+        pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_CTS;
+        bits |= C0C_MCR_RTS;
+        mask |= C0C_MCR_RTS;
+      }
+
+      if ((pHandFlowLocal->ControlHandShake & SERIAL_DTR_MASK) == SERIAL_DTR_HANDSHAKE) {
+        pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_DSR;
+        bits |= C0C_MCR_DTR;
+        mask |= C0C_MCR_DTR;
+      }
+
+      if (pHandFlowLocal->FlowReplace & SERIAL_AUTO_RECEIVE) {
+        pIoPort->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_XON;
+        pIoPort->writeHolding &= ~SERIAL_TX_WAITING_FOR_XON;
+        pIoPort->sendXonXoff = C0C_XCHAR_ON;
+        pIoPort->tryWrite = TRUE;
+      }
+    }
+  }
+
+  if (mask)
+    SetModemControl(pIoPort, bits, mask, pQueueToComplete);
+}
+
+VOID UpdateTransmitToggle(
+    PC0C_IO_PORT pIoPort,
+    PLIST_ENTRY pQueueToComplete)
+{
+  if ((pIoPort->handFlow.FlowReplace & SERIAL_RTS_MASK) == SERIAL_TRANSMIT_TOGGLE) {
+    UCHAR bits;
+
+    if ((pIoPort->writeHolding & SERIAL_TX_WAITING_ON_BREAK) != 0 ||
+        !C0C_TX_BUFFER_EMPTY(&pIoPort->txBuf) ||
+        (pIoPort->irpQueues[C0C_QUEUE_WRITE].pCurrent && !pIoPort->writeHolding) ||
+        (pIoPort->sendXonXoff && (pIoPort->writeHolding & ~SERIAL_TX_WAITING_FOR_XON) == 0))
+    {
+      bits = C0C_MCR_RTS;
+    } else {
+      bits = 0;
+    }
+
+    SetModemControl(pIoPort, bits, C0C_MCR_RTS, pQueueToComplete);
+  }
+}
+
+VOID SetLimit(PC0C_IO_PORT pIoPort)
+{
+  PC0C_BUFFER pReadBuf;
+  SIZE_T limit;
+  PSERIAL_HANDFLOW pHandFlowLocal, pHandFlowRemote;
+
+  pHandFlowLocal = &pIoPort->handFlow;
+  pHandFlowRemote = &pIoPort->pIoPortRemote->handFlow;
+  pReadBuf = &pIoPort->readBuf;
+
+  /* DCD = DSR */
+  #define C0C_DSR_HANDSHAKE (SERIAL_DSR_HANDSHAKE|SERIAL_DCD_HANDSHAKE)
+
+  if ((((pHandFlowLocal->FlowReplace & SERIAL_RTS_MASK) == SERIAL_RTS_HANDSHAKE) &&
+                             (pHandFlowRemote->ControlHandShake & SERIAL_CTS_HANDSHAKE)) ||
+      (((pHandFlowLocal->ControlHandShake & SERIAL_DTR_MASK) == SERIAL_DTR_HANDSHAKE) &&
+                             (pHandFlowRemote->ControlHandShake & C0C_DSR_HANDSHAKE)))
+  {
+    limit = C0C_BUFFER_SIZE(pReadBuf) - pHandFlowLocal->XoffLimit + 1;
+  } else {
+    limit = C0C_BUFFER_SIZE(pReadBuf);
+  }
+  SetBufferLimit(pReadBuf, limit);
+}
+
+VOID SetModemStatusHolding(PC0C_IO_PORT pIoPort)
+{
+  ULONG writeHolding;
+  PSERIAL_HANDFLOW pHandFlow;
+
+  pHandFlow = &pIoPort->handFlow;
+  writeHolding = pIoPort->writeHolding;
+
+  if ((pHandFlow->ControlHandShake & SERIAL_CTS_HANDSHAKE) && !(pIoPort->modemStatus & C0C_MSB_CTS))
+    writeHolding |= SERIAL_TX_WAITING_FOR_CTS;
+  else
+    writeHolding &= ~SERIAL_TX_WAITING_FOR_CTS;
+
+  if ((pHandFlow->ControlHandShake & SERIAL_DSR_HANDSHAKE) && !(pIoPort->modemStatus & C0C_MSB_DSR))
+    writeHolding |= SERIAL_TX_WAITING_FOR_DSR;
+  else
+    writeHolding &= ~SERIAL_TX_WAITING_FOR_DSR;
+
+  if ((pHandFlow->ControlHandShake & SERIAL_DCD_HANDSHAKE) && !(pIoPort->modemStatus & C0C_MSB_RLSD))
+    writeHolding |= SERIAL_TX_WAITING_FOR_DCD;
+  else
+    writeHolding &= ~SERIAL_TX_WAITING_FOR_DCD;
+
+  if (!(writeHolding & ~SERIAL_TX_WAITING_FOR_XON) &&
+      (pIoPort->writeHolding & ~SERIAL_TX_WAITING_FOR_XON))
+  {
+    if (pIoPort->sendXonXoff || (!writeHolding && pIoPort->irpQueues[C0C_QUEUE_WRITE].pCurrent))
+      pIoPort->tryWrite = TRUE;
+  }
+
+  pIoPort->writeHolding = writeHolding;
+}
+
+VOID SetXonXoffHolding(PC0C_IO_PORT pIoPort, short xonXoff)
+{
+  switch (xonXoff) {
+  case C0C_XCHAR_ON:
+    if (pIoPort->writeHolding & SERIAL_TX_WAITING_FOR_XON) {
+      pIoPort->writeHolding &= ~SERIAL_TX_WAITING_FOR_XON;
+
+      if (!pIoPort->writeHolding && pIoPort->irpQueues[C0C_QUEUE_WRITE].pCurrent)
+        pIoPort->tryWrite = TRUE;
+    }
+    break;
+  case C0C_XCHAR_OFF:
+    pIoPort->writeHolding |= SERIAL_TX_WAITING_FOR_XON;
+    break;
+  }
+}
+
+VOID SetBreakHolding(PC0C_IO_PORT pIoPort, BOOLEAN on, PLIST_ENTRY pQueueToComplete)
+{
+  if (on) {
+    if ((pIoPort->writeHolding & SERIAL_TX_WAITING_ON_BREAK) == 0) {
+      pIoPort->writeHolding |= SERIAL_TX_WAITING_ON_BREAK;
+      pIoPort->sendBreak = TRUE;
+      pIoPort->tryWrite = TRUE;
+    }
+  } else {
+    if (pIoPort->writeHolding & SERIAL_TX_WAITING_ON_BREAK) {
+      PC0C_IO_PORT pIoPortRead;
+
+      pIoPort->writeHolding &= ~SERIAL_TX_WAITING_ON_BREAK;
+      pIoPort->sendBreak = FALSE;
+
+      pIoPortRead = pIoPort->pIoPortRemote;
+
+      pIoPortRead->rcvdBreak = FALSE;
+
+      if (pIoPortRead->escapeChar && (pIoPortRead->insertMask & C0CE_INSERT_ENABLE_LSR_BI)) {
+        UCHAR lsr = 0;
+
+        if (C0C_TX_BUFFER_THR_EMPTY(&pIoPortRead->txBuf)) {
+          lsr |= 0x20;  /* transmit holding register empty */
+
+          if (C0C_TX_BUFFER_EMPTY(&pIoPortRead->txBuf))
+            lsr |= 0x40;  /* transmit holding register empty and line is idle */
+        }
+
+        InsertLsrMst(pIoPortRead, FALSE,  lsr, pQueueToComplete);
+      }
+
+      if ((!(pIoPort->writeHolding & ~SERIAL_TX_WAITING_FOR_XON) && pIoPort->sendXonXoff) ||
+          (!pIoPort->writeHolding && pIoPort->irpQueues[C0C_QUEUE_WRITE].pCurrent))
+      {
+        pIoPort->tryWrite = TRUE;
+      }
+    }
+  }
+}
+@
+
+
+1.12
+log
+@Improved BREAK emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.11 2008/08/25 14:18:58 vfrolov Exp $
+d22 3
+d98 3
+@
+
+
+1.11
+log
+@Fixed SERIAL_TRANSMIT_TOGGLE
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.10 2008/08/19 12:40:58 vfrolov Exp $
+d22 3
+d416 2
+@
+
+
+1.10
+log
+@Replaces C0CE_INSERT_ENABLE_LSR_NBI (insertion on BREAK OFF)
+by C0CE_INSERT_ENABLE_LSR_BI (insertion on BREAK change)
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.9 2008/07/11 10:38:00 vfrolov Exp $
+d22 4
+d307 4
+a310 2
+    if ((pIoPort->writeHolding & SERIAL_TX_WAITING_ON_BREAK) == 0 &&
+        (pIoPort->sendXonXoff || pIoPort->irpQueues[C0C_QUEUE_WRITE].pCurrent))
+@
+
+
+1.9
+log
+@Added nonstandard ability to enable LSR insertion on BREAK OFF
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.8 2007/07/03 14:35:17 vfrolov Exp $
+d22 3
+d407 1
+a407 1
+      if (pIoPortRead->escapeChar && (pIoPortRead->insertMask & C0CE_INSERT_ENABLE_LSR_NBI)) {
+@
+
+
+1.8
+log
+@Implemented pinout customization
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.7 2006/06/21 16:23:57 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2005-2007 Vyacheslav Frolov
+d22 3
+a46 1
+ *
+d52 1
+d387 1
+a387 1
+VOID SetBreakHolding(PC0C_IO_PORT pIoPort, BOOLEAN on)
+d397 2
+d402 15
+d418 1
+a418 1
+          !pIoPort->writeHolding && pIoPort->irpQueues[C0C_QUEUE_WRITE].pCurrent)
+@
+
+
+1.7
+log
+@Fixed possible BSOD after one port of pair removal
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.6 2006/05/19 12:16:19 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2005-2006 Vyacheslav Frolov
+d22 3
+d61 1
+a61 1
+  ULONG bits, mask;
+d108 1
+a108 1
+      mask |= C0C_MSB_CTS; // Turn off CTS on remote side if RTS is disabled
+d112 2
+a113 2
+      bits |= C0C_MSB_CTS;
+      mask |= C0C_MSB_CTS;
+d118 1
+a118 1
+        mask |= C0C_MSB_CTS;
+d124 2
+a125 2
+          bits |= C0C_MSB_CTS;
+          mask |= C0C_MSB_CTS;
+d129 2
+a130 2
+        bits |= C0C_MSB_CTS;
+        mask |= C0C_MSB_CTS;
+d142 1
+a142 1
+      mask |= C0C_MSB_DSR; // Turn off DSR on remote side if DTR is disabled
+d146 2
+a147 2
+      bits |= C0C_MSB_DSR;
+      mask |= C0C_MSB_DSR;
+d152 1
+a152 1
+        mask |= C0C_MSB_DSR;
+d158 2
+a159 2
+          bits |= C0C_MSB_DSR;
+          mask |= C0C_MSB_DSR;
+d163 2
+a164 2
+        bits |= C0C_MSB_DSR;
+        mask |= C0C_MSB_DSR;
+d204 1
+a204 1
+    SetModemStatus(pIoPort->pIoPortRemote, bits, mask, pQueueToComplete);
+d233 1
+a233 1
+  ULONG bits, mask;
+d247 1
+a247 1
+        mask |= C0C_MSB_CTS;
+d252 1
+a252 1
+        mask |= C0C_MSB_DSR;
+d267 2
+a268 2
+        bits |= C0C_MSB_CTS;
+        mask |= C0C_MSB_CTS;
+d273 2
+a274 2
+        bits |= C0C_MSB_DSR;
+        mask |= C0C_MSB_DSR;
+d287 1
+a287 1
+    SetModemStatus(pIoPort->pIoPortRemote, bits, mask, pQueueToComplete);
+d295 1
+a295 1
+    ULONG bits;
+d300 1
+a300 1
+      bits = C0C_MSB_CTS;
+d305 1
+a305 1
+    SetModemStatus(pIoPort->pIoPortRemote, bits, C0C_MSB_CTS, pQueueToComplete);
+@
+
+
+1.6
+log
+@Implemented SERIAL_XOFF_CONTINUE
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.5 2006/05/17 15:31:14 vfrolov Exp $
+d22 3
+d54 1
+a54 1
+    PC0C_FDOPORT_EXTENSION pDevExt,
+a57 1
+  PC0C_IO_PORT pIoPortLocal;
+d63 1
+a63 2
+  pIoPortLocal = pDevExt->pIoPortLocal;
+  pReadBuf = &pIoPortLocal->readBuf;
+d66 1
+a66 1
+    if ((pIoPortLocal->escapeChar && (pHandFlow->FlowReplace & SERIAL_ERROR_CHAR)) ||
+d75 1
+a75 1
+    pNewHandFlow = &pDevExt->handFlow;
+d80 1
+a80 1
+      ((pDevExt->handFlow.FlowReplace & SERIAL_AUTO_TRANSMIT) != 0) &&
+d83 1
+a83 1
+    SetXonXoffHolding(pIoPortLocal, C0C_XCHAR_ON);
+d87 1
+a87 1
+      (pDevExt->handFlow.ControlHandShake & SERIAL_OUT_HANDSHAKEMASK) !=
+d99 1
+a99 1
+      (pDevExt->handFlow.FlowReplace & SERIAL_RTS_MASK) !=
+d104 1
+a104 1
+      pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_CTS;
+d108 1
+a108 1
+      pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_CTS;
+d114 1
+a114 1
+        pIoPortLocal->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_CTS;
+d118 1
+a118 1
+      if (pIoPortLocal->writeHoldingRemote & SERIAL_TX_WAITING_FOR_CTS) {
+d120 1
+a120 1
+          pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_CTS;
+d133 1
+a133 1
+      (pDevExt->handFlow.ControlHandShake & SERIAL_DTR_MASK) !=
+d138 1
+a138 1
+      pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_DSR;
+d142 1
+a142 1
+      pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_DSR;
+d148 1
+a148 1
+        pIoPortLocal->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_DSR;
+d152 1
+a152 1
+      if (pIoPortLocal->writeHoldingRemote & SERIAL_TX_WAITING_FOR_DSR) {
+d154 1
+a154 1
+          pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_DSR;
+d167 1
+a167 1
+      (pDevExt->handFlow.FlowReplace & SERIAL_AUTO_RECEIVE) !=
+d172 1
+a172 1
+        pIoPortLocal->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_XON;
+d174 3
+a176 3
+          pIoPortLocal->writeHolding |= SERIAL_TX_WAITING_FOR_XON;
+        pIoPortLocal->sendXonXoff = C0C_XCHAR_OFF;
+        pIoPortLocal->tryWrite = TRUE;
+d180 4
+a183 4
+    if (pIoPortLocal->writeHoldingRemote & SERIAL_TX_WAITING_FOR_XON) {
+      pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_XON;
+      pIoPortLocal->writeHolding &= ~SERIAL_TX_WAITING_FOR_XON;
+      if (pIoPortLocal->sendXonXoff != C0C_XCHAR_OFF) {
+d185 2
+a186 2
+        pIoPortLocal->sendXonXoff = C0C_XCHAR_ON;
+        pIoPortLocal->tryWrite = TRUE;
+d189 1
+a189 1
+        pIoPortLocal->sendXonXoff = 0;
+d195 1
+a195 1
+    pDevExt->handFlow = *pHandFlow;
+d198 1
+a198 1
+    SetModemStatusHolding(pIoPortLocal);
+d201 1
+a201 1
+    SetModemStatus(pDevExt->pIoPortRemote, bits, mask, pQueueToComplete);
+d203 1
+a203 1
+  UpdateTransmitToggle(pDevExt, pQueueToComplete);
+d205 2
+a206 2
+  SetLimit(pDevExt->pIoPortRemote->pDevExt);
+  SetLimit(pDevExt);
+d208 1
+a208 1
+  if (pDevExt->pIoPortRemote->tryWrite) {
+d210 2
+a211 2
+        pIoPortLocal, FALSE,
+        pDevExt->pIoPortRemote, FALSE,
+d215 1
+a215 1
+  if (pIoPortLocal->tryWrite) {
+d217 2
+a218 2
+        pDevExt->pIoPortRemote, FALSE,
+        pIoPortLocal, FALSE,
+d226 1
+a226 1
+    PC0C_FDOPORT_EXTENSION pDevExt,
+a232 1
+  PC0C_IO_PORT pIoPortLocal;
+d234 3
+a236 4
+  pIoPortLocal = pDevExt->pIoPortLocal;
+  pHandFlowLocal = &pDevExt->handFlow;
+  pHandFlowRemote = &pDevExt->pIoPortRemote->pDevExt->handFlow;
+  pReadBuf = &pIoPortLocal->readBuf;
+d240 1
+a240 1
+  if (!pIoPortLocal->writeHoldingRemote) {
+d243 1
+a243 1
+        pIoPortLocal->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_CTS;
+d248 1
+a248 1
+        pIoPortLocal->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_DSR;
+d253 1
+a253 1
+        pIoPortLocal->writeHoldingRemote |= SERIAL_TX_WAITING_FOR_XON;
+d255 3
+a257 3
+          pIoPortLocal->writeHolding |= SERIAL_TX_WAITING_FOR_XON;
+        pIoPortLocal->sendXonXoff = C0C_XCHAR_OFF;
+        pIoPortLocal->tryWrite = TRUE;
+d263 1
+a263 1
+        pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_CTS;
+d269 1
+a269 1
+        pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_DSR;
+d275 4
+a278 4
+        pIoPortLocal->writeHoldingRemote &= ~SERIAL_TX_WAITING_FOR_XON;
+        pIoPortLocal->writeHolding &= ~SERIAL_TX_WAITING_FOR_XON;
+        pIoPortLocal->sendXonXoff = C0C_XCHAR_ON;
+        pIoPortLocal->tryWrite = TRUE;
+d284 1
+a284 1
+    SetModemStatus(pDevExt->pIoPortRemote, bits, mask, pQueueToComplete);
+d288 1
+a288 1
+    PC0C_FDOPORT_EXTENSION pDevExt,
+d291 1
+a291 1
+  if ((pDevExt->handFlow.FlowReplace & SERIAL_RTS_MASK) == SERIAL_TRANSMIT_TOGGLE) {
+a292 3
+    PC0C_IO_PORT pIoPortLocal;
+
+    pIoPortLocal = pDevExt->pIoPortLocal;
+d294 2
+a295 2
+    if ((pIoPortLocal->writeHolding & SERIAL_TX_WAITING_ON_BREAK) == 0 &&
+        (pIoPortLocal->sendXonXoff || pIoPortLocal->irpQueues[C0C_QUEUE_WRITE].pCurrent))
+d302 1
+a302 1
+    SetModemStatus(pDevExt->pIoPortRemote, bits, C0C_MSB_CTS, pQueueToComplete);
+d306 1
+a306 1
+VOID SetLimit(PC0C_FDOPORT_EXTENSION pDevExt)
+d312 3
+a314 3
+  pHandFlowLocal = &pDevExt->handFlow;
+  pHandFlowRemote = &pDevExt->pIoPortRemote->pDevExt->handFlow;
+  pReadBuf = &pDevExt->pIoPortLocal->readBuf;
+d336 1
+a336 1
+  pHandFlow = &pIoPort->pDevExt->handFlow;
+@
+
+
+1.5
+log
+@Implemented SERIAL_TRANSMIT_TOGGLE
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.4 2006/04/05 07:22:15 vfrolov Exp $
+d22 3
+d78 4
+a81 1
+  if ((pNewHandFlow->FlowReplace & SERIAL_AUTO_TRANSMIT) == 0)
+d83 1
+d172 2
+d181 1
+d255 2
+d277 1
+@
+
+
+1.4
+log
+@Replaced flipXoffLimit flag by writeHoldingRemote to correct handFlow changing
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.3 2006/03/15 13:49:15 vfrolov Exp $
+d22 3
+d192 2
+d275 22
+d307 3
+d313 1
+a313 1
+                             (pHandFlowRemote->ControlHandShake & SERIAL_DSR_HANDSHAKE)))
+d383 1
+d385 3
+a387 1
+      if (!pIoPort->writeHolding && pIoPort->irpQueues[C0C_QUEUE_WRITE].pCurrent)
+d389 1
+@
+
+
+1.3
+log
+@Fixed [1446861] Problems with setting DCB.fOutxCtsFlow and DCB.fRtsControl
+Thanks to Brad (bdwade100 at users.sourceforge.net)
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.2 2006/02/17 07:55:13 vfrolov Exp $
+d22 4
+d49 1
+d55 2
+a56 1
+  pReadBuf = &pDevExt->pIoPortLocal->readBuf;
+d59 1
+a59 1
+    if ((pDevExt->pIoPortLocal->escapeChar && (pHandFlow->FlowReplace & SERIAL_ERROR_CHAR)) ||
+d73 1
+a73 1
+    SetXonXoffHolding(pDevExt->pIoPortLocal, C0C_XCHAR_ON);
+d91 3
+a93 1
+    if ((pNewHandFlow->FlowReplace & SERIAL_RTS_MASK) == 0) {
+d95 3
+a97 3
+    }
+    else
+    if ((pNewHandFlow->FlowReplace & SERIAL_RTS_MASK) == SERIAL_RTS_CONTROL) {
+d100 18
+d125 3
+a127 1
+    if ((pNewHandFlow->ControlHandShake & SERIAL_DTR_MASK) == 0) {
+d129 36
+d167 10
+a176 3
+    if ((pNewHandFlow->ControlHandShake & SERIAL_DTR_MASK) == SERIAL_DTR_CONTROL) {
+      bits |= C0C_MSB_DSR;
+      mask |= C0C_MSB_DSR;
+d184 1
+a184 1
+    SetModemStatusHolding(pDevExt->pIoPortLocal);
+a190 1
+  UpdateHandFlow(pDevExt, TRUE, pQueueToComplete);
+d194 1
+a194 1
+        pDevExt->pIoPortLocal, FALSE,
+d199 1
+a199 1
+  if (pDevExt->pIoPortLocal->tryWrite) {
+d202 1
+a202 1
+        pDevExt->pIoPortLocal, FALSE,
+d226 1
+a226 1
+  if (pIoPortLocal->flipXoffLimit) {
+d228 2
+a229 3
+      pIoPortLocal->flipXoffLimit = FALSE;
+
+      if ((pHandFlowLocal->FlowReplace & SERIAL_RTS_MASK) == SERIAL_RTS_HANDSHAKE)
+d231 1
+d233 2
+a234 1
+      if ((pHandFlowLocal->ControlHandShake & SERIAL_DTR_MASK) == SERIAL_DTR_HANDSHAKE)
+d236 1
+d239 1
+a245 2
+      pIoPortLocal->flipXoffLimit = TRUE;
+
+d247 1
+d253 1
+d259 1
+@
+
+
+1.2
+log
+@Implemented IOCTL_SERIAL_SET_BREAK_ON and IOCTL_SERIAL_SET_BREAK_OFF
+@
+text
+@d2 1
+a2 1
+ * $Id: handflow.c,v 1.1 2006/01/10 10:12:05 vfrolov Exp $
+d22 3
+d45 1
+a45 1
+  ULONG bits;
+d48 1
+d65 1
+d69 11
+a79 1
+  bits = 0;
+d85 5
+a89 1
+    if ((pNewHandFlow->FlowReplace & SERIAL_RTS_MASK) == SERIAL_RTS_CONTROL)
+d91 2
+d99 5
+a103 1
+    if ((pNewHandFlow->ControlHandShake & SERIAL_DTR_MASK) == SERIAL_DTR_CONTROL)
+d105 2
+d112 5
+a116 2
+  if (bits)
+    SetModemStatus(pDevExt->pIoPortRemote, bits, bits, pQueueToComplete);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id:$
+d21 4
+a24 1
+ * $Log:$
+d237 18
+@
+

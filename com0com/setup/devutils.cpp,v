@@ -1,0 +1,2259 @@
+head	1.21;
+access;
+symbols
+	v3_0_0_0:1.21
+	v2_2_2_0:1.12
+	v2_2_1_0:1.11
+	v2_2_0_0:1.9
+	v2_1_0_0:1.9
+	v2_0_0_0:1.9
+	v1_8_0_0:1.5
+	RELEASED:1.21
+	v1_7_0_0:1.4;
+locks; strict;
+comment	@// @;
+
+
+1.21
+date	2012.01.10.11.24.27;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2011.12.15.15.51.48;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2011.07.15.16.09.05;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2011.07.13.17.39.55;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2010.07.29.12.18.43;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2010.07.15.18.11.09;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2010.07.12.18.14.44;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2010.06.07.07.03.31;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2010.05.27.11.16.46;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2009.09.21.08.54.05;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2009.02.16.10.36.16;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2009.02.11.07.35.21;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2007.11.27.16.35.49;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2007.10.01.15.01.35;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2007.09.25.12.42.49;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2007.09.14.12.58.44;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2007.02.15.08.48.45;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2006.11.10.14.07.40;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2006.11.02.16.20.44;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.10.13.10.26.35;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.07.28.12.16.42;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.21
+log
+@Added ability to repeate waiting for no pending device
+installation activities
+@
+text
+@/*
+ * $Id: devutils.cpp,v 1.20 2011/12/15 15:51:48 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2012 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: devutils.cpp,v $
+ * Revision 1.20  2011/12/15 15:51:48  vfrolov
+ * Fixed types
+ *
+ * Revision 1.19  2011/07/15 16:09:05  vfrolov
+ * Disabled MessageBox() for silent mode and added default processing
+ *
+ * Revision 1.18  2011/07/13 17:39:55  vfrolov
+ * Fixed result treatment of UpdateDriverForPlugAndPlayDevices()
+ *
+ * Revision 1.17  2010/07/29 12:18:43  vfrolov
+ * Fixed waiting stuff
+ *
+ * Revision 1.16  2010/07/15 18:11:09  vfrolov
+ * Fixed --wait option for Ports class
+ *
+ * Revision 1.15  2010/07/12 18:14:44  vfrolov
+ * Fixed driver update duplication
+ *
+ * Revision 1.14  2010/06/07 07:03:31  vfrolov
+ * Added wrapper UpdateDriver() for UpdateDriverForPlugAndPlayDevices()
+ *
+ * Revision 1.13  2010/05/27 11:16:46  vfrolov
+ * Added ability to put the port to the Ports class
+ *
+ * Revision 1.12  2009/09/21 08:54:05  vfrolov
+ * Added DI_NEEDRESTART check
+ *
+ * Revision 1.11  2009/02/16 10:36:16  vfrolov
+ * Done --silent option more silent
+ *
+ * Revision 1.10  2009/02/11 07:35:21  vfrolov
+ * Added --no-update option
+ *
+ * Revision 1.9  2007/11/27 16:35:49  vfrolov
+ * Added state check before enabling
+ *
+ * Revision 1.8  2007/10/01 15:01:35  vfrolov
+ * Added pDevInstID parameter to InstallDevice()
+ *
+ * Revision 1.7  2007/09/25 12:42:49  vfrolov
+ * Fixed update command (bug if multiple pairs active)
+ * Fixed uninstall command (restore active ports on cancell)
+ *
+ * Revision 1.6  2007/09/14 12:58:44  vfrolov
+ * Removed INSTALLFLAG_FORCE
+ * Added UpdateDriverForPlugAndPlayDevices() retrying
+ *
+ * Revision 1.5  2007/02/15 08:48:45  vfrolov
+ * Fixed 1658441 - Installation Failed
+ * Thanks to Michael A. Smith
+ *
+ * Revision 1.4  2006/11/10 14:07:40  vfrolov
+ * Implemented remove command
+ *
+ * Revision 1.3  2006/11/02 16:20:44  vfrolov
+ * Added usage the fixed port numbers
+ *
+ * Revision 1.2  2006/10/13 10:26:35  vfrolov
+ * Some defines moved to ../include/com0com.h
+ * Changed name of device object (for WMI)
+ *
+ * Revision 1.1  2006/07/28 12:16:42  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "msg.h"
+#include "devutils.h"
+#include "utils.h"
+
+///////////////////////////////////////////////////////////////
+struct EnumParams {
+  EnumParams() {
+    pDevProperties = NULL;
+    pDevCallBack = NULL;
+    pDevCallBackParam = NULL;
+    pStack = NULL;
+    count = 0;
+    pRebootRequired = NULL;
+  }
+
+  PCDevProperties pDevProperties;
+  PCNC_DEV_CALLBACK pDevCallBack;
+  void *pDevCallBackParam;
+  Stack *pStack;
+  int count;
+  BOOL *pRebootRequired;
+};
+
+typedef EnumParams *PEnumParams;
+
+struct DevParams {
+  DevParams(PEnumParams _pEnumParams) {
+    pEnumParams = _pEnumParams;
+  }
+
+  PEnumParams pEnumParams;
+  DevProperties devProperties;
+};
+
+typedef DevParams *PDevParams;
+///////////////////////////////////////////////////////////////
+static const char *SetStr(char **ppDst, const char *pSrc)
+{
+  if (*ppDst) {
+    LocalFree(*ppDst);
+    *ppDst = NULL;
+  }
+
+  if (pSrc) {
+    int len = lstrlen(pSrc) + 1;
+
+    *ppDst = (char *)LocalAlloc(LPTR, len * sizeof(pSrc[0]));
+
+    if (*ppDst) {
+      SNPRINTF(*ppDst, len, "%s", pSrc);
+    } else {
+      SetLastError(ERROR_NOT_ENOUGH_MEMORY);
+      ShowLastError(MB_OK|MB_ICONSTOP, "LocalAlloc(%lu)", (unsigned long)(len * sizeof(pSrc[0])));
+    }
+  }
+
+  return *ppDst;
+}
+///////////////////////////////////////////////////////////////
+const char *DevProperties::DevId(const char *_pDevId)
+{
+  return SetStr(&pDevId, _pDevId);
+}
+
+const char *DevProperties::PhObjName(const char *_pPhObjName)
+{
+  return SetStr(&pPhObjName, _pPhObjName);
+}
+
+const char *DevProperties::Location(const char *_pLocation)
+{
+  return SetStr(&pLocation, _pLocation);
+}
+///////////////////////////////////////////////////////////////
+typedef int CNC_DEV_ROUTINE(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PDevParams pDevParams);
+
+typedef CNC_DEV_ROUTINE *PCNC_DEV_ROUTINE;
+
+static int EnumDevices(
+    PCNC_ENUM_FILTER pFilter,
+    DWORD flags,
+    PCNC_DEV_ROUTINE pDevRoutine,
+    PEnumParams pEnumParams)
+{
+  HDEVINFO hDevInfo;
+
+  hDevInfo = SetupDiGetClassDevs(NULL, NULL, NULL, DIGCF_ALLCLASSES|flags);
+
+  if (hDevInfo == INVALID_HANDLE_VALUE) {
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiGetClassDevs()");
+    return IDCANCEL;
+  }
+
+  SP_DEVINFO_DATA devInfoData;
+
+  devInfoData.cbSize = sizeof(devInfoData);
+
+  int res = IDCONTINUE;
+
+  for (int i = 0 ; SetupDiEnumDeviceInfo(hDevInfo, i, &devInfoData) ; i++) {
+    char hardwareId[40];
+
+    if (!SetupDiGetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_HARDWAREID, NULL, (PBYTE)hardwareId, sizeof(hardwareId), NULL)) {
+      memset(hardwareId, 0, sizeof(hardwareId));
+      SNPRINTF(hardwareId, sizeof(hardwareId)/sizeof(hardwareId[0]), "UNKNOWN HARDWAREID" "\0");
+    }
+
+    if (!pFilter(hardwareId))
+      continue;
+
+    const char *pHardwareId = hardwareId;
+
+    if (pEnumParams->pDevProperties && pEnumParams->pDevProperties->DevId()) {
+      while (lstrcmpi(pHardwareId, pEnumParams->pDevProperties->DevId()) != 0) {
+        pHardwareId = pHardwareId + lstrlen(pHardwareId) + 1;
+
+        if (!*pHardwareId) {
+          pHardwareId = NULL;
+          break;
+        }
+      }
+
+      if (!pHardwareId)
+        continue;
+    }
+
+    DevParams devParams(pEnumParams);
+
+    if (!devParams.devProperties.DevId(pHardwareId)) {
+      res = IDCANCEL;
+      break;
+    }
+
+    char location[40];
+
+    if (SetupDiGetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_LOCATION_INFORMATION, NULL, (PBYTE)location, sizeof(location), NULL)) {
+      if (!devParams.devProperties.Location(location)) {
+        res = IDCANCEL;
+        break;
+      }
+    }
+
+    if (pEnumParams->pDevProperties &&
+        pEnumParams->pDevProperties->Location() && (!devParams.devProperties.Location() ||
+        lstrcmpi(devParams.devProperties.Location(), pEnumParams->pDevProperties->Location())))
+    {
+      continue;
+    }
+
+    char name[40];
+
+    if (SetupDiGetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME, NULL, (PBYTE)name, sizeof(name), NULL)) {
+      if (!devParams.devProperties.PhObjName(name)) {
+        res = IDCANCEL;
+        break;
+      }
+    }
+
+    if (pEnumParams->pDevProperties &&
+        pEnumParams->pDevProperties->PhObjName() && (!devParams.devProperties.PhObjName() ||
+        lstrcmpi(devParams.devProperties.PhObjName(), pEnumParams->pDevProperties->PhObjName())))
+    {
+      continue;
+    }
+
+    res = pDevRoutine(hDevInfo, &devInfoData, &devParams);
+
+    if (res != IDCONTINUE)
+      break;
+  }
+
+  DWORD err = GetLastError();
+
+  SetupDiDestroyDeviceInfoList(hDevInfo);
+
+  SetLastError(err);
+
+  return res;
+}
+///////////////////////////////////////////////////////////////
+static bool UpdateRebootRequired(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, BOOL *pRebootRequired)
+{
+  if (!pRebootRequired)
+    return TRUE;
+
+  if (*pRebootRequired)
+    return TRUE;
+
+  ULONG status = 0;
+  ULONG problem = 0;
+
+  *pRebootRequired =
+      CM_Get_DevNode_Status(&status, &problem, pDevInfoData->DevInst, 0) == CR_SUCCESS &&
+      (status & DN_NEED_RESTART) != 0;
+
+  //if (*pRebootRequired)
+  //  Trace("Enumerated status=0x%lX problem=0x%lX\n", status, problem);
+
+  if (*pRebootRequired)
+    return TRUE;
+
+  SP_DEVINSTALL_PARAMS installParams;
+
+  memset(&installParams, 0, sizeof(installParams));
+  installParams.cbSize = sizeof(SP_DEVINSTALL_PARAMS);
+
+  if (!SetupDiGetDeviceInstallParams(hDevInfo, pDevInfoData, &installParams)) {
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiGetDeviceInstallParams()");
+    return FALSE;
+  }
+
+  *pRebootRequired = (installParams.Flags & (DI_NEEDREBOOT|DI_NEEDRESTART)) ? TRUE : FALSE;
+
+  //if (*pRebootRequired)
+  //  Trace("Enumerated Flags=0x%lX\n", installParams.Flags);
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static bool ChangeState(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, DWORD stateChange)
+{
+  SP_PROPCHANGE_PARAMS propChangeParams;
+
+  memset(&propChangeParams, 0, sizeof(propChangeParams));
+  propChangeParams.ClassInstallHeader.cbSize = sizeof(SP_CLASSINSTALL_HEADER);
+  propChangeParams.ClassInstallHeader.InstallFunction = DIF_PROPERTYCHANGE;
+  propChangeParams.StateChange = stateChange;
+  propChangeParams.Scope = DICS_FLAG_CONFIGSPECIFIC;
+  propChangeParams.HwProfile = 0;
+
+  if (!SetupDiSetClassInstallParams(hDevInfo, pDevInfoData, (SP_CLASSINSTALL_HEADER *)&propChangeParams, sizeof(propChangeParams))) {
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiSetClassInstallParams()");
+    return FALSE;
+  }
+
+  if (!SetupDiCallClassInstaller(DIF_PROPERTYCHANGE, hDevInfo, pDevInfoData)) {
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiCallClassInstaller(DIF_PROPERTYCHANGE)");
+    return FALSE;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static bool IsDisabled(PSP_DEVINFO_DATA pDevInfoData)
+{
+  ULONG status = 0;
+  ULONG problem = 0;
+
+  if (CM_Get_DevNode_Status(&status, &problem, pDevInfoData->DevInst, 0) != CR_SUCCESS)
+    return FALSE;
+
+  return (status & DN_HAS_PROBLEM) != 0 && problem == CM_PROB_DISABLED;
+}
+///////////////////////////////////////////////////////////////
+static bool IsEnabled(PSP_DEVINFO_DATA pDevInfoData)
+{
+  ULONG status = 0;
+  ULONG problem = 0;
+
+  if (CM_Get_DevNode_Status(&status, &problem, pDevInfoData->DevInst, 0) != CR_SUCCESS)
+    return FALSE;
+
+  return (status & (DN_HAS_PROBLEM|DN_NEED_RESTART)) == 0;
+}
+///////////////////////////////////////////////////////////////
+static CNC_DEV_ROUTINE EnumDevice;
+static int EnumDevice(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, PDevParams pDevParams)
+{
+  /*
+  Trace("Enumerated %s %s %s\n",
+        pDevParams->devProperties.Location(),
+        pDevParams->devProperties.DevId(),
+        pDevParams->devProperties.PhObjName());
+  */
+
+  int res = IDCONTINUE;
+
+  if (pDevParams->pEnumParams->pDevCallBack) {
+    if (!pDevParams->pEnumParams->pDevCallBack(         hDevInfo,
+                                                        pDevInfoData,
+                                                        &pDevParams->devProperties,
+                                                        pDevParams->pEnumParams->pRebootRequired,
+                                                        pDevParams->pEnumParams->pDevCallBackParam))
+    {
+      res = IDCANCEL;
+    }
+  }
+
+  pDevParams->pEnumParams->count++;
+
+  return res;
+}
+
+int EnumDevices(
+    PCNC_ENUM_FILTER pFilter,
+    PCDevProperties pDevProperties,
+    BOOL *pRebootRequired,
+    PCNC_DEV_CALLBACK pDevCallBack,
+    void *pDevCallBackParam)
+{
+  EnumParams enumParams;
+
+  enumParams.pDevProperties = pDevProperties;
+  enumParams.pRebootRequired = pRebootRequired;
+  enumParams.pDevCallBack = pDevCallBack;
+  enumParams.pDevCallBackParam = pDevCallBackParam;
+
+  if (EnumDevices(pFilter, DIGCF_PRESENT, EnumDevice, &enumParams) != IDCONTINUE)
+    return -1;
+
+  return enumParams.count;
+}
+///////////////////////////////////////////////////////////////
+int DisableDevice(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties pDevProperties,
+    BOOL *pRebootRequired,
+    Stack *pDevPropertiesStack)
+{
+  if (IsDisabled(pDevInfoData))
+    return IDCONTINUE;
+
+  BOOL rebootRequired = FALSE;
+
+  if (!UpdateRebootRequired(hDevInfo, pDevInfoData, &rebootRequired))
+    return IDCANCEL;
+
+  //if (rebootRequired && pRebootRequired)
+  //  *pRebootRequired = TRUE;
+
+  if (!ChangeState(hDevInfo, pDevInfoData, DICS_DISABLE))
+    return IDCANCEL;
+
+  Trace("Disabled %s %s %s\n",
+        pDevProperties->Location(),
+        pDevProperties->DevId(),
+        pDevProperties->PhObjName());
+
+  if (!rebootRequired) {
+    if (!UpdateRebootRequired(hDevInfo, pDevInfoData, &rebootRequired))
+      return IDCANCEL;
+
+    if (rebootRequired) {
+      Trace("Can't stop device %s %s %s\n",
+            pDevProperties->Location(),
+            pDevProperties->DevId(),
+            pDevProperties->PhObjName());
+
+      int res;
+
+      res = ShowMsg(MB_CANCELTRYCONTINUE,
+                        "Can't stop device %s %s %s.\n"
+                        "Close application that use this device and Try Again.\n"
+                        "Or Continue and then reboot system.\n",
+                        pDevProperties->Location(),
+                        pDevProperties->DevId(),
+                        pDevProperties->PhObjName());
+
+      if (res == 0)
+        res = IDCONTINUE;
+
+      if (res != IDCONTINUE) {
+        if (!ChangeState(hDevInfo, pDevInfoData, DICS_ENABLE))
+          return IDCANCEL;
+
+        Trace("Enabled %s %s %s\n",
+              pDevProperties->Location(),
+              pDevProperties->DevId(),
+              pDevProperties->PhObjName());
+
+        return res;
+      }
+
+      if (pRebootRequired)
+        *pRebootRequired = TRUE;
+    }
+  }
+
+  if (pDevPropertiesStack) {
+    DevProperties *pDevProp = new DevProperties(*pDevProperties);
+
+    if (pDevProp) {
+      StackEl *pElem = new StackEl(pDevProp);
+
+      if (pElem)
+        pDevPropertiesStack->Push(pElem);
+      else
+        delete pDevProp;
+    }
+  }
+
+  return IDCONTINUE;
+}
+///////////////////////////////////////////////////////////////
+static CNC_DEV_ROUTINE DisableDevice;
+static int DisableDevice(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, PDevParams pDevParams)
+{
+  int res = DisableDevice(hDevInfo,
+                          pDevInfoData,
+                          &pDevParams->devProperties,
+                          pDevParams->pEnumParams->pRebootRequired,
+                          pDevParams->pEnumParams->pStack);
+
+  if (res == IDCONTINUE)
+    pDevParams->pEnumParams->count++;
+
+  return res;
+}
+
+bool DisableDevices(
+    PCNC_ENUM_FILTER pFilter,
+    PCDevProperties pDevProperties,
+    BOOL *pRebootRequired,
+    Stack *pDevPropertiesStack)
+{
+  EnumParams enumParams;
+
+  int res;
+
+  enumParams.pRebootRequired = pRebootRequired;
+  enumParams.pDevProperties = pDevProperties;
+  enumParams.pStack = pDevPropertiesStack;
+
+  do {
+    res = EnumDevices(pFilter, DIGCF_PRESENT, DisableDevice, &enumParams);
+  } while (res == IDTRYAGAIN);
+
+  if (res != IDCONTINUE)
+    return FALSE;
+
+  if (!WaitNoPendingInstallEvents(10))
+    Sleep(1000);
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static CNC_DEV_ROUTINE EnableDevice;
+static int EnableDevice(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, PDevParams pDevParams)
+{
+  if (IsEnabled(pDevInfoData))
+    return IDCONTINUE;
+
+  if (ChangeState(hDevInfo, pDevInfoData, DICS_ENABLE)) {
+    Trace("Enabled %s %s %s\n",
+          pDevParams->devProperties.Location(),
+          pDevParams->devProperties.DevId(),
+          pDevParams->devProperties.PhObjName());
+  }
+
+  UpdateRebootRequired(hDevInfo, pDevInfoData, pDevParams->pEnumParams->pRebootRequired);
+
+  return IDCONTINUE;
+}
+
+bool EnableDevices(
+    PCNC_ENUM_FILTER pFilter,
+    PCDevProperties pDevProperties,
+    BOOL *pRebootRequired)
+{
+  EnumParams enumParams;
+
+  int res;
+
+  enumParams.pRebootRequired = pRebootRequired;
+  enumParams.pDevProperties = pDevProperties;
+
+  do {
+    res = EnumDevices(pFilter, DIGCF_PRESENT, EnableDevice, &enumParams);
+  } while (res == IDTRYAGAIN);
+
+  if (res != IDCONTINUE)
+    return FALSE;
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static CNC_DEV_ROUTINE RestartDevice;
+static int RestartDevice(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, PDevParams pDevParams)
+{
+  if (!ChangeState(hDevInfo, pDevInfoData, DICS_PROPCHANGE))
+    return IDCANCEL;
+
+  BOOL rebootRequired = FALSE;
+
+  if (!UpdateRebootRequired(hDevInfo, pDevInfoData, &rebootRequired))
+    return IDCANCEL;
+
+  if (rebootRequired) {
+    Trace("Can't reastart device %s %s %s\n",
+          pDevParams->devProperties.Location(),
+          pDevParams->devProperties.DevId(),
+          pDevParams->devProperties.PhObjName());
+
+    if (pDevParams->pEnumParams->pRebootRequired && !*pDevParams->pEnumParams->pRebootRequired) {
+      int res;
+
+      res = ShowMsg(MB_CANCELTRYCONTINUE,
+                        "Can't reastart device %s %s %s.\n"
+                        "Close application that use this device and Try Again.\n"
+                        "Or Continue and then reboot system.\n",
+                        pDevParams->devProperties.Location(),
+                        pDevParams->devProperties.DevId(),
+                        pDevParams->devProperties.PhObjName());
+
+      if (res == 0)
+        res = IDCONTINUE;
+
+      if (res != IDCONTINUE) {
+        if (!ChangeState(hDevInfo, pDevInfoData, DICS_ENABLE))
+          return IDCANCEL;
+
+        return res;
+      }
+
+      *pDevParams->pEnumParams->pRebootRequired = TRUE;
+    }
+  } else {
+    Trace("Restarted %s %s %s\n",
+        pDevParams->devProperties.Location(),
+        pDevParams->devProperties.DevId(),
+        pDevParams->devProperties.PhObjName());
+
+    pDevParams->pEnumParams->count++;
+  }
+
+  return IDCONTINUE;
+}
+
+bool RestartDevices(
+    PCNC_ENUM_FILTER pFilter,
+    PCDevProperties pDevProperties,
+    BOOL *pRebootRequired)
+{
+  EnumParams enumParams;
+
+  int res;
+
+  enumParams.pRebootRequired = pRebootRequired;
+  enumParams.pDevProperties = pDevProperties;
+
+  do {
+    res = EnumDevices(pFilter, DIGCF_PRESENT, RestartDevice, &enumParams);
+  } while (res == IDTRYAGAIN);
+
+  if (res != IDCONTINUE)
+    return FALSE;
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool RemoveDevice(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties pDevProperties,
+    BOOL *pRebootRequired)
+{
+  if (!SetupDiCallClassInstaller(DIF_REMOVE, hDevInfo, pDevInfoData)) {
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiCallClassInstaller(DIF_REMOVE, %s, %s)",
+                  pDevProperties->DevId(), pDevProperties->PhObjName());
+    return FALSE;
+  }
+
+  Trace("Removed %s %s %s\n", pDevProperties->Location(), pDevProperties->DevId(), pDevProperties->PhObjName());
+
+  return UpdateRebootRequired(hDevInfo, pDevInfoData, pRebootRequired);
+}
+///////////////////////////////////////////////////////////////
+static CNC_DEV_ROUTINE RemoveDevice;
+static int RemoveDevice(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, PDevParams pDevParams)
+{
+  if (!RemoveDevice(hDevInfo, pDevInfoData, &pDevParams->devProperties, pDevParams->pEnumParams->pRebootRequired))
+    return IDCANCEL;
+
+  pDevParams->pEnumParams->count++;
+
+  return IDCONTINUE;
+}
+
+bool RemoveDevices(
+    PCNC_ENUM_FILTER pFilter,
+    PCDevProperties pDevProperties,
+    BOOL *pRebootRequired)
+{
+  EnumParams enumParams;
+
+  int res;
+
+  enumParams.pRebootRequired = pRebootRequired;
+  enumParams.pDevProperties = pDevProperties;
+
+  do {
+    res = EnumDevices(pFilter, 0, RemoveDevice, &enumParams);
+  } while (res == IDTRYAGAIN);
+
+  if (res != IDCONTINUE)
+    return FALSE;
+
+  if (!enumParams.count)
+    Trace("No devices found\n");
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool ReenumerateDeviceNode(PSP_DEVINFO_DATA pDevInfoData)
+{
+  return CM_Reenumerate_DevNode(pDevInfoData->DevInst, 0) == CR_SUCCESS;
+}
+///////////////////////////////////////////////////////////////
+int UpdateDriver(
+    const char *pInfFilePath,
+    const char *pHardwareId,
+    DWORD flags,
+    bool mandatory,
+    BOOL *pRebootRequired)
+{
+  DWORD updateErr = ERROR_SUCCESS;
+
+  for (int i = 0 ; i < 10 ; i++) {
+    if (UpdateDriverForPlugAndPlayDevices(0, pHardwareId, pInfFilePath, flags, pRebootRequired))
+    {
+      updateErr = ERROR_SUCCESS;
+    } else {
+      updateErr = GetLastError();
+
+      if (updateErr == ERROR_SHARING_VIOLATION) {
+        Trace(".");
+        Sleep(1000);
+        continue;
+      }
+      else
+      if (!mandatory) {
+        if (updateErr == ERROR_NO_SUCH_DEVINST) {
+          updateErr = ERROR_SUCCESS;
+        }
+        else
+        if (updateErr == ERROR_NO_MORE_ITEMS && (flags & INSTALLFLAG_FORCE) == 0) {
+          updateErr = ERROR_SUCCESS;
+        }
+      }
+    }
+
+    if (i)
+      Trace("\n");
+
+    break;
+  }
+
+  if (updateErr != ERROR_SUCCESS) {
+    if (updateErr == ERROR_FILE_NOT_FOUND) {
+      LONG err;
+      HKEY hKey;
+
+      err = RegOpenKeyEx(HKEY_LOCAL_MACHINE, REGSTR_PATH_RUNONCE, 0, KEY_READ, &hKey);
+
+      if (err == ERROR_SUCCESS)
+        RegCloseKey(hKey);
+
+      if (err == ERROR_FILE_NOT_FOUND) {
+        int res = ShowMsg(MB_CANCELTRYCONTINUE,
+                          "Can't update driver. Possible it's because your Windows registry is corrupted and\n"
+                          "there is not the following key:\n"
+                          "\n"
+                          "HKEY_LOCAL_MACHINE\\" REGSTR_PATH_RUNONCE "\n"
+                          "\n"
+                          "Continue to add the key to the registry.\n");
+
+        if (res == 0)
+          return IDCANCEL;
+
+        if (res == IDCONTINUE) {
+          err = RegCreateKeyEx(HKEY_LOCAL_MACHINE, REGSTR_PATH_RUNONCE, 0, NULL, 0, KEY_WRITE, NULL, &hKey, NULL);
+
+          if (err == ERROR_SUCCESS) {
+            RegCloseKey(hKey);
+            return IDTRYAGAIN;
+          } else {
+            ShowLastError(MB_OK|MB_ICONSTOP, "RegCreateKeyEx()");
+            return IDCANCEL;
+          }
+        }
+
+        return res;
+      }
+    }
+
+    return ShowError(MB_CANCELTRYCONTINUE, updateErr,
+                     "UpdateDriverForPlugAndPlayDevices(\"%s\", \"%s\", 0x%lX)",
+                     pHardwareId, pInfFilePath, (long)flags);
+  }
+
+  return IDCONTINUE;
+}
+///////////////////////////////////////////////////////////////
+static int TryInstallDevice(
+    const char *pInfFilePath,
+    const char *pDevId,
+    const char *pDevInstID,
+    PCNC_DEV_CALLBACK pDevCallBack,
+    void *pDevCallBackParam,
+    bool updateDriver,
+    BOOL *pRebootRequired)
+{
+  GUID classGUID;
+  char className[32];
+
+  if (!SetupDiGetINFClass(pInfFilePath, &classGUID, className, sizeof(className)/sizeof(className[0]), 0)) {
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiGetINFClass(%s)", pInfFilePath);
+    return IDCANCEL;
+  }
+
+  //Trace("className=%s\n", className);
+
+  HDEVINFO hDevInfo;
+
+  hDevInfo = SetupDiCreateDeviceInfoList(&classGUID, 0);
+
+  if (hDevInfo == INVALID_HANDLE_VALUE) {
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiCreateDeviceInfoList()");
+    return IDCANCEL;
+  }
+
+  int res = IDCONTINUE;
+  SP_DEVINFO_DATA devInfoData;
+
+  devInfoData.cbSize = sizeof(devInfoData);
+
+  if (!pDevInstID) {
+    if (StrCmpNI(pDevId, "root\\", 5) == 0) {
+      /*
+       * root\<enumerator-specific-device-ID>
+       */
+
+      if (!SetupDiCreateDeviceInfo(hDevInfo, pDevId + 5, &classGUID, NULL, 0, DICD_GENERATE_ID, &devInfoData))
+        res = IDCANCEL;
+    } else {
+      SetLastError(ERROR_INVALID_DEVINST_NAME);
+      res = IDCANCEL;
+    }
+  }
+  else
+  if (StrChr(pDevInstID, '\\')) {
+    /*
+     * <enumerator>\<enumerator-specific-device-ID>\<instance-specific-ID>
+     */
+
+    if (!SetupDiCreateDeviceInfo(hDevInfo, pDevInstID, &classGUID, NULL, 0, 0, &devInfoData))
+      res = IDCANCEL;
+
+    if (res != IDCONTINUE && GetLastError() == ERROR_DEVINST_ALREADY_EXISTS) {
+      char *pTmpDevInstID = NULL;
+
+      if (SetStr(&pTmpDevInstID, pDevInstID)) {
+        char *pSave;
+        char *p;
+
+        p = STRTOK_R(pTmpDevInstID, "\\", &pSave);
+
+        if (p && !lstrcmp(p, REGSTR_KEY_ROOTENUM)) {
+          p = STRTOK_R(NULL, "\\", &pSave);
+
+          if (SetupDiCreateDeviceInfo(hDevInfo, p, &classGUID, NULL, 0, DICD_GENERATE_ID, &devInfoData))
+            res = IDCONTINUE;
+        }
+
+        SetStr(&pTmpDevInstID, NULL);
+      } else {
+        SetLastError(ERROR_DEVINST_ALREADY_EXISTS);
+      }
+    }
+  } else {
+    /*
+     * <enumerator-specific-device-ID>
+     */
+
+    if (!SetupDiCreateDeviceInfo(hDevInfo, pDevInstID, &classGUID, NULL, 0, DICD_GENERATE_ID, &devInfoData))
+      res = IDCANCEL;
+  }
+
+  if (res != IDCONTINUE) {
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiCreateDeviceInfo()");
+    goto exit1;
+  }
+
+  char hardwareId[MAX_DEVICE_ID_LEN + 1 + 1];
+
+  SNPRINTF(hardwareId, sizeof(hardwareId)/sizeof(hardwareId[0]) - 1, "%s", pDevId);
+
+  int hardwareIdLen;
+
+  hardwareIdLen = lstrlen(hardwareId) + 1 + 1;
+  hardwareId[hardwareIdLen - 1] = 0;
+
+  if (!SetupDiSetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_HARDWAREID,
+                                        (LPBYTE)hardwareId, hardwareIdLen * sizeof(hardwareId[0])))
+  {
+    res = IDCANCEL;
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiSetDeviceRegistryProperty()");
+    goto exit1;
+  }
+
+  if (!SetupDiCallClassInstaller(DIF_REGISTERDEVICE, hDevInfo, &devInfoData)) {
+    res = IDCANCEL;
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiCallClassInstaller()");
+    goto exit1;
+  }
+
+  if (pDevCallBack) {
+    DevProperties devProperties;
+
+    if (!devProperties.DevId(pDevId)) {
+      res = IDCANCEL;
+      goto exit2;
+    }
+
+    if (!pDevCallBack(hDevInfo, &devInfoData, &devProperties, NULL, pDevCallBackParam)) {
+      res = IDCANCEL;
+      goto exit2;
+    }
+  }
+
+  if (updateDriver)
+    res = UpdateDriver(pInfFilePath, pDevId, 0, TRUE, pRebootRequired);
+
+exit2:
+
+  if (res != IDCONTINUE) {
+    if (!SetupDiCallClassInstaller(DIF_REMOVE, hDevInfo, &devInfoData))
+      ShowLastError(MB_OK|MB_ICONWARNING, "SetupDiCallClassInstaller()");
+  }
+
+exit1:
+
+  SetupDiDestroyDeviceInfoList(hDevInfo);
+
+  return res;
+}
+
+bool InstallDevice(
+    const char *pInfFilePath,
+    const char *pDevId,
+    const char *pDevInstID,
+    PCNC_DEV_CALLBACK pDevCallBack,
+    void *pDevCallBackParam,
+    bool updateDriver,
+    BOOL *pRebootRequired)
+{
+  int res;
+
+  do {
+    res = TryInstallDevice(pInfFilePath, pDevId, pDevInstID, pDevCallBack, pDevCallBackParam, updateDriver, pRebootRequired);
+  } while (res == IDTRYAGAIN);
+
+  return res == IDCONTINUE;
+}
+///////////////////////////////////////////////////////////////
+bool WaitNoPendingInstallEvents(int timeLimit, bool repeate)
+{
+  typedef DWORD  (WINAPI *PWAITNOPENDINGINSTALLEVENTS)(IN DWORD);
+  static PWAITNOPENDINGINSTALLEVENTS pWaitNoPendingInstallEvents = NULL;
+
+  if(!pWaitNoPendingInstallEvents) {
+    HMODULE hModule = GetModuleHandle("setupapi.dll");
+
+    if (!hModule)
+      return FALSE;
+
+    pWaitNoPendingInstallEvents =
+        (PWAITNOPENDINGINSTALLEVENTS)GetProcAddress(hModule, "CMP_WaitNoPendingInstallEvents");
+
+    if (!pWaitNoPendingInstallEvents)
+      return FALSE;
+  }
+
+  if (int(DWORD(timeLimit * 1000)/1000) != timeLimit)
+    timeLimit = -1;
+
+  bool inTrace = FALSE;
+  DWORD startTime = GetTickCount();
+
+  for (int count = 0 ;;) {
+    DWORD res = pWaitNoPendingInstallEvents(0);
+
+    if (res == WAIT_OBJECT_0) {
+      if (++count < 5) {
+        Sleep(100);
+        continue;
+      }
+
+      if (inTrace)
+        Trace(" OK\n");
+
+      SetLastError(ERROR_SUCCESS);
+      break;
+    }
+
+    count = 0;
+
+    if (res != WAIT_TIMEOUT) {
+      ShowLastError(MB_OK|MB_ICONWARNING, "CMP_WaitNoPendingInstallEvents()");
+      if (inTrace)
+        Trace(" FAIL\n");
+      return FALSE;
+    }
+
+    DWORD timeElapsed = GetTickCount() - startTime;
+
+    if (timeLimit != -1 && timeElapsed >= DWORD(timeLimit * 1000)) {
+      if (inTrace) {
+        Trace(" timeout\n");
+        inTrace = FALSE;
+      }
+
+      if (!Silent() && repeate) {
+        if (ShowMsg(MB_YESNO,
+            "The device installation activities are still pending.\n"
+            "Continue to wait?\n") == IDYES)
+        {
+          startTime = GetTickCount();
+        } else {
+          repeate = FALSE;
+        }
+
+        continue;
+      }
+
+      SetLastError(ERROR_TIMEOUT);
+      break;
+    }
+
+    if (!inTrace) {
+      if (timeLimit != -1)
+        Trace("Waiting for no pending device installation activities (%u secs) ", (unsigned)timeLimit);
+      else
+        Trace("Waiting for no pending device installation activities (perpetually) ");
+
+      inTrace = TRUE;
+    }
+
+    Sleep(1000);
+
+    Trace(".");
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+@
+
+
+1.20
+log
+@Fixed types
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.19 2011/07/15 16:09:05 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2011 Vyacheslav Frolov
+d22 3
+d948 1
+a948 1
+bool WaitNoPendingInstallEvents(int timeLimit)
+d983 1
+d1000 1
+a1000 1
+      if (inTrace)
+d1002 16
+d1024 1
+a1024 1
+        Trace("Wating for no pending device installation activities (%u secs) ", (unsigned)timeLimit);
+d1026 1
+a1026 1
+        Trace("Wating for no pending device installation activities (perpetually) ");
+@
+
+
+1.19
+log
+@Disabled MessageBox() for silent mode and added default processing
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.18 2011/07/13 17:39:55 vfrolov Exp $
+d22 3
+d94 3
+a96 2
+    pParam1 = NULL;
+    pParam2 = NULL;
+d102 3
+a104 2
+  void *pParam1;
+  void *pParam2;
+d160 7
+d168 1
+a168 1
+    C0C_ENUM_FILTER pFilter,
+d170 1
+a170 1
+    BOOL (* pFunk)(HDEVINFO, PSP_DEVINFO_DATA, PDevParams),
+d254 1
+a254 1
+    res = pFunk(hDevInfo, &devInfoData, &devParams);
+d269 1
+a269 1
+static BOOL UpdateRebootRequired(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, BOOL *pRebootRequired)
+d308 1
+a308 1
+static BOOL ChangeState(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, DWORD stateChange)
+d332 1
+a332 1
+static BOOL IsDisabled(PSP_DEVINFO_DATA pDevInfoData)
+d343 1
+a343 1
+static BOOL IsEnabled(PSP_DEVINFO_DATA pDevInfoData)
+d354 1
+d366 2
+a367 2
+  if (pDevParams->pEnumParams->pParam1) {
+    if (!PDEVCALLBACK(pDevParams->pEnumParams->pParam1)(hDevInfo,
+d371 1
+a371 1
+                                                        pDevParams->pEnumParams->pParam2))
+d383 1
+a383 1
+    C0C_ENUM_FILTER pFilter,
+d386 2
+a387 2
+    PDEVCALLBACK pDevCallBack,
+    void *pCallBackParam)
+d393 2
+a394 2
+  enumParams.pParam1 = pDevCallBack;
+  enumParams.pParam2 = pCallBackParam;
+d484 1
+d491 1
+a491 1
+                          (Stack *)pDevParams->pEnumParams->pParam1);
+d499 2
+a500 2
+BOOL DisableDevices(
+    C0C_ENUM_FILTER pFilter,
+d511 1
+a511 1
+  enumParams.pParam1 = pDevPropertiesStack;
+d526 1
+d544 2
+a545 2
+BOOL EnableDevices(
+    C0C_ENUM_FILTER pFilter,
+d566 1
+d618 2
+a619 2
+BOOL RestartDevices(
+    C0C_ENUM_FILTER pFilter,
+d640 1
+a640 1
+BOOL RemoveDevice(
+d657 1
+d668 2
+a669 2
+BOOL RemoveDevices(
+    C0C_ENUM_FILTER pFilter,
+d693 1
+a693 1
+BOOL ReenumerateDeviceNode(PSP_DEVINFO_DATA pDevInfoData)
+d702 1
+a702 1
+    BOOL mandatory,
+d787 3
+a789 3
+    PDEVCALLBACK pDevCallBack,
+    void *pCallBackParam,
+    BOOL updateDriver,
+d904 1
+a904 1
+    if (!pDevCallBack(hDevInfo, &devInfoData, &devProperties, NULL, pCallBackParam)) {
+d927 1
+a927 1
+BOOL InstallDevice(
+d931 3
+a933 3
+    PDEVCALLBACK pDevCallBack,
+    void *pCallBackParam,
+    BOOL updateDriver,
+d939 1
+a939 1
+    res = TryInstallDevice(pInfFilePath, pDevId, pDevInstID, pDevCallBack, pCallBackParam, updateDriver, pRebootRequired);
+d945 1
+a945 1
+BOOL WaitNoPendingInstallEvents(int timeLimit)
+d966 1
+a966 1
+  BOOL inTrace = FALSE;
+d969 1
+a969 1
+  for (BOOL count = 0 ;;) {
+@
+
+
+1.18
+log
+@Fixed result treatment of UpdateDriverForPlugAndPlayDevices()
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.17 2010/07/29 12:18:43 vfrolov Exp $
+d22 3
+d427 1
+a427 2
+      if (!Silent()) {
+        res = ShowMsg(MB_CANCELTRYCONTINUE,
+d434 2
+a435 1
+      } else {
+a436 1
+      }
+d570 1
+a570 2
+      if (!Silent()) {
+        res = ShowMsg(MB_CANCELTRYCONTINUE,
+d577 2
+a578 1
+      } else {
+a579 1
+      }
+d739 3
+@
+
+
+1.17
+log
+@Fixed waiting stuff
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.16 2010/07/15 18:11:09 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2010 Vyacheslav Frolov
+d22 3
+d684 1
+a695 4
+      if (updateErr == ERROR_NO_SUCH_DEVINST) {
+        updateErr = ERROR_SUCCESS;
+      }
+      else
+d701 10
+d754 3
+a756 1
+    return ShowError(MB_CANCELTRYCONTINUE, updateErr, "UpdateDriverForPlugAndPlayDevices()");
+d890 1
+a890 1
+    res = UpdateDriver(pInfFilePath, pDevId, 0, pRebootRequired);
+d982 5
+a986 1
+      Trace("Wating for no pending device installation activities ");
+@
+
+
+1.16
+log
+@Fixed --wait option for Ports class
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.15 2010/07/12 18:14:44 vfrolov Exp $
+d22 3
+d501 2
+a502 1
+  Sleep(1000);
+d912 1
+a912 1
+int WaitNoPendingInstallEvents(int timeLimit)
+d921 1
+a921 1
+      return 0;
+d925 3
+d930 2
+a931 2
+  if (!pWaitNoPendingInstallEvents)
+    return 0;
+d933 1
+a935 2
+  Trace("Wating for no pending device installation activities ");
+
+d945 3
+a947 1
+      Trace(". OK\n");
+d954 12
+a965 1
+      Trace(". FAIL\n");
+d969 3
+a971 5
+    Trace(".");
+
+    if (GetTickCount() - startTime >= DWORD(timeLimit * 1000)) {
+      Trace(" timeout\n");
+      return -1;
+d975 2
+d979 1
+a979 1
+  return int((GetTickCount() - startTime) / 1000);
+@
+
+
+1.15
+log
+@Fixed driver update duplication
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.14 2010/06/07 07:03:31 vfrolov Exp $
+d22 3
+d908 55
+@
+
+
+1.14
+log
+@Added wrapper UpdateDriver() for UpdateDriverForPlugAndPlayDevices()
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.13 2010/05/27 11:16:46 vfrolov Exp $
+d22 3
+d169 1
+a169 1
+      SNPRINTF(hardwareId, sizeof(hardwareId)/sizeof(hardwareId[0]), "UNKNOWN HARDWAREID");
+d175 16
+d193 1
+a193 1
+    if (!devParams.devProperties.DevId(hardwareId)) {
+a197 7
+    if (pEnumParams->pDevProperties &&
+        pEnumParams->pDevProperties->DevId() && (!devParams.devProperties.DevId() ||
+        lstrcmpi(devParams.devProperties.DevId(), pEnumParams->pDevProperties->DevId())))
+    {
+      continue;
+    }
+
+@
+
+
+1.13
+log
+@Added ability to put the port to the Ports class
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.12 2009/09/21 08:54:05 vfrolov Exp $
+d22 3
+d658 73
+d737 2
+a738 1
+    BOOL update)
+a741 3
+  DWORD updateErr;
+
+  updateErr = ERROR_SUCCESS;
+d759 1
+a759 1
+  BOOL res;
+d770 2
+a771 1
+      res = SetupDiCreateDeviceInfo(hDevInfo, pDevId + 5, &classGUID, NULL, 0, DICD_GENERATE_ID, &devInfoData);
+d774 1
+a774 1
+      res = FALSE;
+d783 2
+a784 1
+    res = SetupDiCreateDeviceInfo(hDevInfo, pDevInstID, &classGUID, NULL, 0, 0, &devInfoData);
+d786 1
+a786 1
+    if (!res && GetLastError() == ERROR_DEVINST_ALREADY_EXISTS) {
+d798 2
+a799 1
+          res = SetupDiCreateDeviceInfo(hDevInfo, p, &classGUID, NULL, 0, DICD_GENERATE_ID, &devInfoData);
+d812 2
+a813 1
+    res = SetupDiCreateDeviceInfo(hDevInfo, pDevInstID, &classGUID, NULL, 0, DICD_GENERATE_ID, &devInfoData);
+d816 1
+a816 1
+  if (!res) {
+d818 1
+a818 1
+    goto err;
+d830 4
+a833 3
+  res = SetupDiSetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_HARDWAREID,
+                                         (LPBYTE)hardwareId, hardwareIdLen * sizeof(hardwareId[0]));
+  if (!res) {
+d835 1
+a835 1
+    goto err;
+d838 2
+a839 3
+  res = SetupDiCallClassInstaller(DIF_REGISTERDEVICE, hDevInfo, &devInfoData);
+
+  if (!res) {
+d841 1
+a841 1
+    goto err;
+d848 2
+a849 2
+      res = FALSE;
+      goto err1;
+d852 4
+a855 4
+    res = pDevCallBack(hDevInfo, &devInfoData, &devProperties, NULL, pCallBackParam);
+
+    if (!res)
+      goto err1;
+d858 2
+a859 10
+  int i;
+
+  for (i = 0 ; i < 10 ; i++) {
+    if (update) {
+      BOOL rebootRequired;
+
+      res = UpdateDriverForPlugAndPlayDevices(0, pDevId, pInfFilePath, 0, &rebootRequired);
+    } else {
+      res = TRUE;
+    }
+d861 1
+a861 20
+    if (res) {
+      updateErr = ERROR_SUCCESS;
+    } else {
+      updateErr = GetLastError();
+
+      if (updateErr == ERROR_SHARING_VIOLATION) {
+        Trace(".");
+        Sleep(1000);
+        continue;
+      }
+    }
+
+    if (i)
+      Trace("\n");
+
+    break;
+  }
+
+  if (updateErr != ERROR_SUCCESS) {
+err1:
+d863 1
+d868 1
+a868 1
+err:
+d872 1
+a872 39
+  if (updateErr != ERROR_SUCCESS) {
+    if (updateErr == ERROR_FILE_NOT_FOUND) {
+      LONG err;
+      HKEY hKey;
+
+      err = RegOpenKeyEx(HKEY_LOCAL_MACHINE, REGSTR_PATH_RUNONCE, 0, KEY_READ, &hKey);
+
+      if (err == ERROR_SUCCESS)
+        RegCloseKey(hKey);
+
+      if (err == ERROR_FILE_NOT_FOUND) {
+        int res2 = ShowMsg(MB_CANCELTRYCONTINUE,
+                           "Can't update driver. Possible it's because your Windows registry is corrupted and\n"
+                           "there is not the following key:\n"
+                           "\n"
+                           "HKEY_LOCAL_MACHINE\\" REGSTR_PATH_RUNONCE "\n"
+                           "\n"
+                           "Continue to add the key to the registry.\n");
+
+        if (res2 == IDCONTINUE) {
+          err = RegCreateKeyEx(HKEY_LOCAL_MACHINE, REGSTR_PATH_RUNONCE, 0, NULL, 0, KEY_WRITE, NULL, &hKey, NULL);
+
+          if (err == ERROR_SUCCESS) {
+            RegCloseKey(hKey);
+            return IDTRYAGAIN;
+          } else {
+            ShowLastError(MB_OK|MB_ICONSTOP, "RegCreateKeyEx()");
+            return IDCANCEL;
+          }
+        }
+
+        return res2;
+      }
+    }
+
+    return ShowError(MB_CANCELTRYCONTINUE, updateErr, "UpdateDriverForPlugAndPlayDevices()");
+  }
+
+  return res ? IDCONTINUE : IDCANCEL;
+d881 2
+a882 1
+    BOOL update)
+d887 1
+a887 1
+    res = TryInstallDevice(pInfFilePath, pDevId, pDevInstID, pDevCallBack, pCallBackParam, update);
+@
+
+
+1.12
+log
+@Added DI_NEEDRESTART check
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.11 2009/02/16 10:36:16 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2009 Vyacheslav Frolov
+d22 3
+a64 1
+#include "inffile.h"
+d138 1
+a138 1
+    InfFile &infFile,
+d159 1
+a159 1
+    char classGUID[100];
+d161 4
+a164 2
+    if (!SetupDiGetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_CLASSGUID, NULL, (PBYTE)classGUID, sizeof(classGUID), NULL))
+      continue;
+d166 1
+a166 1
+    if (lstrcmpi(classGUID, infFile.ClassGUID()))
+a168 8
+    char provider[100];
+
+    if (SetupDiGetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_MFG, NULL, (PBYTE)provider, sizeof(provider), NULL)) {
+      // check provider if exists
+      if (lstrcmpi(provider, infFile.Provider()))
+        continue;
+    }
+
+d171 3
+a173 7
+    char hwid[40];
+
+    if (SetupDiGetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_HARDWAREID, NULL, (PBYTE)hwid, sizeof(hwid), NULL)) {
+      if (!devParams.devProperties.DevId(hwid)) {
+        res = IDCANCEL;
+        break;
+      }
+d343 1
+a343 1
+    InfFile &infFile,
+d356 1
+a356 1
+  if (EnumDevices(infFile, DIGCF_PRESENT, EnumDevice, &enumParams) != IDCONTINUE)
+d460 1
+a460 1
+    InfFile &infFile,
+d474 1
+a474 1
+    res = EnumDevices(infFile, DIGCF_PRESENT, DisableDevice, &enumParams);
+d503 1
+a503 1
+    InfFile &infFile,
+d515 1
+a515 1
+    res = EnumDevices(infFile, DIGCF_PRESENT, EnableDevice, &enumParams);
+d577 1
+a577 1
+    InfFile &infFile,
+d589 1
+a589 1
+    res = EnumDevices(infFile, DIGCF_PRESENT, RestartDevice, &enumParams);
+d626 1
+a626 1
+    InfFile &infFile,
+d638 1
+a638 1
+    res = EnumDevices(infFile, 0, RemoveDevice, &enumParams);
+d650 5
+d656 1
+a656 1
+    InfFile &infFile,
+d669 2
+a670 2
+  if (!SetupDiGetINFClass(infFile.Path(), &classGUID, className, sizeof(className)/sizeof(className[0]), 0)) {
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiGetINFClass(%s)", infFile.Path());
+d690 13
+d786 1
+a786 1
+      res = UpdateDriverForPlugAndPlayDevices(0, pDevId, infFile.Path(), 0, &rebootRequired);
+d862 1
+a862 1
+    InfFile &infFile,
+d872 1
+a872 1
+    res = TryInstallDevice(infFile, pDevId, pDevInstID, pDevCallBack, pCallBackParam, update);
+@
+
+
+1.11
+log
+@Done --silent option more silent
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.10 2009/02/11 07:35:21 vfrolov Exp $
+d22 3
+d249 1
+a249 1
+  *pRebootRequired = 
+d269 1
+a269 1
+  *pRebootRequired = (installParams.Flags & DI_NEEDREBOOT) ? TRUE : FALSE;
+@
+
+
+1.10
+log
+@Added --no-update option
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.9 2007/11/27 16:35:49 vfrolov Exp $
+d22 3
+d243 13
+d268 3
+d317 1
+a317 1
+  return (status & DN_HAS_PROBLEM) == 0;
+d377 8
+d393 1
+a393 3
+  if (pRebootRequired && !*pRebootRequired) {
+    BOOL rebootRequired = FALSE;
+
+d398 10
+a407 2
+      int res = ShowMsg(MB_CANCELTRYCONTINUE,
+                        "Can't disable device %s %s %s.\n"
+d413 3
+d429 2
+a430 1
+      *pRebootRequired = TRUE;
+d502 2
+d534 10
+a543 2
+  if (pDevParams->pEnumParams->pRebootRequired && !*pDevParams->pEnumParams->pRebootRequired) {
+    BOOL rebootRequired = FALSE;
+d545 2
+a546 2
+    if (!UpdateRebootRequired(hDevInfo, pDevInfoData, &rebootRequired))
+      return IDCANCEL;
+d548 2
+a549 2
+    if (rebootRequired) {
+      int res = ShowMsg(MB_CANCELTRYCONTINUE,
+d556 3
+d569 1
+a569 3
+  }
+
+  if (!pDevParams->pEnumParams->pRebootRequired || !*pDevParams->pEnumParams->pRebootRequired) {
+@
+
+
+1.9
+log
+@Added state check before enabling
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.8 2007/10/01 15:01:35 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+d22 3
+d612 2
+a613 1
+    void *pCallBackParam)
+d722 2
+a723 1
+    BOOL rebootRequired;
+d725 4
+a728 1
+    res = UpdateDriverForPlugAndPlayDevices(0, pDevId, infFile.Path(), 0, &rebootRequired);
+d805 2
+a806 1
+    void *pCallBackParam)
+d811 1
+a811 1
+    res = TryInstallDevice(infFile, pDevId, pDevInstID, pDevCallBack, pCallBackParam);
+@
+
+
+1.8
+log
+@Added pDevInstID parameter to InstallDevice()
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.7 2007/09/25 12:42:49 vfrolov Exp $
+d22 3
+d287 11
+d452 3
+@
+
+
+1.7
+log
+@Fixed update command (bug if multiple pairs active)
+Fixed uninstall command (restore active ports on cancell)
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.6 2007/09/14 12:58:44 vfrolov Exp $
+d22 4
+a83 1
+
+d107 1
+a107 2
+
+
+d590 1
+d621 35
+a655 2
+  res = SetupDiCreateDeviceInfo(hDevInfo, className, &classGUID, NULL, 0,
+                                DICD_GENERATE_ID, &devInfoData);
+d778 1
+d785 1
+a785 1
+    res = TryInstallDevice(infFile, pDevId, pDevCallBack, pCallBackParam);
+@
+
+
+1.6
+log
+@Removed INSTALLFLAG_FORCE
+Added UpdateDriverForPlugAndPlayDevices() retrying
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.5 2007/02/15 08:48:45 vfrolov Exp $
+d22 4
+d54 1
+d61 1
+a61 1
+  DevProperties devProperties;
+d80 40
+d163 6
+a168 2
+    if (SetupDiGetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_HARDWAREID, NULL, (PBYTE)hwid, sizeof(hwid), NULL))
+      devParams.devProperties.pDevId = hwid;
+d170 3
+a172 2
+    if (pEnumParams->devProperties.pDevId && (!devParams.devProperties.pDevId ||
+        lstrcmpi(devParams.devProperties.pDevId, pEnumParams->devProperties.pDevId)))
+d179 6
+a184 2
+    if (SetupDiGetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_LOCATION_INFORMATION, NULL, (PBYTE)location, sizeof(location), NULL))
+      devParams.devProperties.pLocation = location;
+d186 3
+a188 2
+    if (pEnumParams->devProperties.pLocation && (!devParams.devProperties.pLocation ||
+        lstrcmpi(devParams.devProperties.pLocation, pEnumParams->devProperties.pLocation)))
+d195 6
+a200 2
+    if (SetupDiGetDeviceRegistryProperty(hDevInfo, &devInfoData, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME, NULL, (PBYTE)name, sizeof(name), NULL))
+      devParams.devProperties.pPhObjName = name;
+d202 3
+a204 2
+    if (pEnumParams->devProperties.pPhObjName && (!devParams.devProperties.pPhObjName ||
+        lstrcmpi(devParams.devProperties.pPhObjName, pEnumParams->devProperties.pPhObjName)))
+d271 11
+d286 3
+a288 3
+        pDevParams->devProperties.pLocation,
+        pDevParams->devProperties.pDevId,
+        pDevParams->devProperties.pPhObjName);
+d318 1
+a318 3
+  if (pDevProperties)
+    enumParams.devProperties = *pDevProperties;
+
+d333 2
+a334 1
+    BOOL *pRebootRequired)
+d336 3
+d343 3
+a345 3
+        pDevProperties->pLocation,
+        pDevProperties->pDevId,
+        pDevProperties->pPhObjName);
+d358 3
+a360 3
+                        pDevProperties->pLocation,
+                        pDevProperties->pDevId,
+                        pDevProperties->pPhObjName);
+d367 3
+a369 3
+              pDevProperties->pLocation,
+              pDevProperties->pDevId,
+              pDevProperties->pPhObjName);
+d378 13
+d396 5
+a400 1
+  int res = DisableDevice(hDevInfo, pDevInfoData, &pDevParams->devProperties, pDevParams->pEnumParams->pRebootRequired);
+d402 1
+a402 1
+  if (res != IDCONTINUE)
+d411 2
+a412 1
+    BOOL *pRebootRequired)
+d419 2
+a420 2
+  if (pDevProperties)
+    enumParams.devProperties = *pDevProperties;
+d434 34
+d484 3
+a486 3
+                        pDevParams->devProperties.pLocation,
+                        pDevParams->devProperties.pDevId,
+                        pDevParams->devProperties.pPhObjName);
+d501 3
+a503 3
+        pDevParams->devProperties.pLocation,
+        pDevParams->devProperties.pDevId,
+        pDevParams->devProperties.pPhObjName);
+d521 1
+a521 2
+  if (pDevProperties)
+    enumParams.devProperties = *pDevProperties;
+d541 1
+a541 1
+                  pDevProperties->pDevId, pDevProperties->pPhObjName);
+d545 1
+a545 1
+  Trace("Removed %s %s %s\n", pDevProperties->pLocation, pDevProperties->pDevId, pDevProperties->pPhObjName);
+d570 1
+a570 2
+  if (pDevProperties)
+    enumParams.devProperties = *pDevProperties;
+d597 1
+a597 1
+  if (!SetupDiGetINFClass(infFile.Path(), &classGUID, className, sizeof(className), 0)) {
+d627 1
+a627 2
+  memset(hardwareId, 0, sizeof(hardwareId));
+  lstrcpyn(hardwareId, pDevId, sizeof(hardwareId) - 1 - 1);
+d629 1
+a629 1
+  int hardwareIdSize;
+d631 2
+a632 1
+  hardwareIdSize = (lstrlen(hardwareId) + 1 + 1) * sizeof(hardwareId[0]);
+d635 1
+a635 1
+                                         (LPBYTE)hardwareId, hardwareIdSize);
+d651 4
+a654 1
+    devProperties.pDevId = pDevId;
+@
+
+
+1.5
+log
+@Fixed 1658441 - Installation Failed
+Thanks to Michael A. Smith
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.4 2006/11/10 14:07:40 vfrolov Exp $
+d22 4
+d536 21
+a556 2
+  BOOL rebootRequired;
+  res = UpdateDriverForPlugAndPlayDevices(0, pDevId, infFile.Path(), INSTALLFLAG_FORCE, &rebootRequired);
+d558 2
+a559 2
+  if (!res) {
+    updateErr = GetLastError();
+d561 1
+d607 1
+a607 1
+    ShowError(MB_OK|MB_ICONSTOP, updateErr, "UpdateDriverForPlugAndPlayDevices()");
+@
+
+
+1.4
+log
+@Implemented remove command
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.3 2006/11/02 16:20:44 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006 Vyacheslav Frolov
+d22 3
+d458 1
+a458 1
+BOOL InstallDevice(
+d466 3
+d472 1
+a472 1
+    return FALSE;
+d483 1
+a483 1
+    return FALSE;
+d536 1
+a536 1
+    ShowLastError(MB_OK|MB_ICONSTOP, "UpdateDriverForPlugAndPlayDevices()");
+d547 55
+a601 1
+  return res;
+@
+
+
+1.3
+log
+@Added usage the fixed port numbers
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.2 2006/10/13 10:26:35 vfrolov Exp $
+d22 3
+a42 2
+    pDevId = NULL;
+    pPhObjName = NULL;
+a44 1
+
+d49 1
+a49 2
+  const char *pDevId;
+  const char *pPhObjName;
+a51 1
+
+a60 3
+
+    pDevId = NULL;
+    pPhObjName = NULL;
+d64 1
+a64 3
+
+  const char *pDevId;
+  const char *pPhObjName;
+d109 1
+a109 1
+    char hwid[150];
+d112 7
+a118 1
+      devParams.pDevId = hwid;
+d120 8
+a127 1
+    if (pEnumParams->pDevId && (!devParams.pDevId || lstrcmpi(devParams.pDevId, pEnumParams->pDevId)))
+d129 1
+d131 1
+a131 1
+    char name[150];
+d134 1
+a134 1
+      devParams.pPhObjName = name;
+d136 3
+a138 1
+    if (pEnumParams->pPhObjName && (!devParams.pPhObjName || lstrcmpi(devParams.pPhObjName, pEnumParams->pPhObjName)))
+d140 1
+d206 6
+a211 1
+  //Trace("Enumerated %s %s\n", pDevParams->pDevId, pDevParams->pPhObjName);
+d218 1
+d233 1
+a233 1
+    const char *pDevId,
+d240 3
+a242 1
+  enumParams.pDevId = pDevId;
+d253 5
+a257 1
+static int DisableDevice(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, PDevParams pDevParams)
+d262 4
+a265 2
+  Trace("Disabled %s %s\n", pDevParams->pDevId, pDevParams->pPhObjName);
+  pDevParams->pEnumParams->count++;
+d267 1
+a267 1
+  if (pDevParams->pEnumParams->pRebootRequired && !*pDevParams->pEnumParams->pRebootRequired) {
+d275 1
+a275 1
+                        "Can't disable device %s %s.\n"
+d278 3
+a280 1
+                        pDevParams->pDevId, pDevParams->pPhObjName);
+d286 4
+a289 2
+        Trace("Enabled %s %s\n", pDevParams->pDevId, pDevParams->pPhObjName);
+        pDevParams->pEnumParams->count--;
+d294 1
+a294 1
+      *pDevParams->pEnumParams->pRebootRequired = TRUE;
+d300 10
+d313 1
+a313 1
+    const char *pDevId,
+d321 2
+a322 1
+  enumParams.pDevId = pDevId;
+d349 1
+a349 1
+                        "Can't reastart device %s %s.\n"
+d352 3
+a354 1
+                        pDevParams->pDevId, pDevParams->pPhObjName);
+d368 5
+a372 1
+    Trace("Restarted %s %s\n", pDevParams->pDevId, pDevParams->pPhObjName);
+d381 1
+a381 2
+    const char *pDevId,
+    const char *pPhDevName,
+d389 2
+a390 2
+  enumParams.pDevId = pDevId;
+  enumParams.pPhObjName = pPhDevName;
+d402 5
+a406 1
+static int RemoveDevice(HDEVINFO hDevInfo, PSP_DEVINFO_DATA pDevInfoData, PDevParams pDevParams)
+d409 3
+a411 2
+    ShowLastError(MB_OK|MB_ICONSTOP, "SetupDiCallClassInstaller(DIF_REMOVE, %s, %s)", pDevParams->pDevId, pDevParams->pPhObjName);
+    return IDCANCEL;
+d414 1
+a414 2
+  Trace("Removed %s %s\n", pDevParams->pDevId, pDevParams->pPhObjName);
+  pDevParams->pEnumParams->count++;
+d416 6
+a421 1
+  if (!UpdateRebootRequired(hDevInfo, pDevInfoData, pDevParams->pEnumParams->pRebootRequired))
+d424 2
+d431 1
+a431 1
+    const char *pDevId,
+d439 2
+a440 1
+  enumParams.pDevId = pDevId;
+d516 5
+a520 1
+    res = pDevCallBack(hDevInfo, &devInfoData, NULL, pCallBackParam);
+@
+
+
+1.2
+log
+@Some defines moved to ../include/com0com.h
+Changed name of device object (for WMI)
+@
+text
+@d2 1
+a2 1
+ * $Id: devutils.cpp,v 1.1 2006/07/28 12:16:42 vfrolov Exp $
+d22 4
+a28 1
+ *
+d42 2
+d51 2
+d194 1
+a194 1
+static int CountDevice(HDEVINFO /*hDevInfo*/, PSP_DEVINFO_DATA /*pDevInfoData*/, PDevParams pDevParams)
+d196 13
+a208 1
+  //Trace("Counted %s %s\n", pDevParams->pDevId, pDevParams->pPhObjName);
+d212 1
+a212 1
+  return IDCONTINUE;
+d215 1
+a215 1
+int CountDevices(
+d217 4
+a220 1
+    const char *pDevId)
+d225 3
+d229 1
+a229 1
+  if (EnumDevices(infFile, DIGCF_PRESENT, CountDevice, &enumParams) != IDCONTINUE)
+d399 5
+a403 1
+BOOL InstallDevice(InfFile &infFile, const char *pDevId)
+d459 7
+d472 2
+a475 2
+
+    goto err;
+a477 2
+  res = TRUE;
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 4
+a24 1
+ * $Log: $
+a314 7
+  char phDevObjName[30];
+
+  if (SNPRINTF(phDevObjName, sizeof(phDevObjName), "\\Device\\%s", pPhDevName) < 0)
+    return FALSE;
+
+  phDevObjName[sizeof(phDevObjName) - 1] = 0;
+
+d321 1
+a321 1
+  enumParams.pPhObjName = phDevObjName;
+@
+

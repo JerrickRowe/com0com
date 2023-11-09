@@ -1,0 +1,53 @@
+head	1.2;
+access;
+symbols
+	v3_0_0_0:1.2
+	v2_2_2_0:1.2
+	v2_2_1_0:1.2
+	v2_2_0_0:1.2
+	v2_1_0_0:1.2
+	v2_0_0_0:1.2
+	v1_8_0_0:1.2
+	RELEASED:1.2
+	v1_7_0_0:1.2;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2006.10.27.13.08.05;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.10.13.11.20.28;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Added *
+@
+text
+@obj
+objchk*
+objfre*
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 2
+a3 2
+objchk
+objfre
+@
+

@@ -1,0 +1,2228 @@
+head	1.23;
+access;
+symbols
+	v3_0_0_0:1.23
+	v2_2_2_0:1.15
+	v2_2_1_0:1.15
+	v2_2_0_0:1.14
+	v2_1_0_0:1.11
+	v2_0_0_0:1.9
+	v1_8_0_0:1.5
+	RELEASED:1.23
+	v1_7_0_0:1.3;
+locks; strict;
+comment	@// @;
+
+
+1.23
+date	2012.01.31.05.48.32;	author vfrolov;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2011.12.29.14.34.23;	author vfrolov;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2011.12.27.11.38.13;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2011.12.15.15.51.48;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2011.12.06.16.03.22;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2010.06.01.12.54.12;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2010.05.31.07.58.14;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2010.05.27.11.16.46;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2008.12.25.16.55.23;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2008.12.02.11.54.28;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2008.09.17.07.58.32;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2008.06.26.13.39.19;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.05.04.09.53.51;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.04.08.06.49.44;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2007.10.19.16.09.55;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2007.09.20.12.43.03;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2007.09.17.14.33.38;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2007.07.03.14.39.49;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2007.06.01.16.32.04;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2007.01.11.15.05.03;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2006.11.02.16.11.58;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.10.27.13.11.58;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.07.28.12.16.43;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.23
+log
+@Deprecated invoking of system-supplied advanced settings dialog box
+@
+text
+@/*
+ * $Id: params.cpp,v 1.22 2011/12/29 14:34:23 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2012 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: params.cpp,v $
+ * Revision 1.22  2011/12/29 14:34:23  vfrolov
+ * Implemented RealPortName=COM<n> for PortName=COM#
+ *
+ * Revision 1.21  2011/12/27 11:38:13  vfrolov
+ * Superseded incorrect PortParameters::ClassChanged()
+ *
+ * Revision 1.20  2011/12/15 15:51:48  vfrolov
+ * Fixed types
+ *
+ * Revision 1.19  2011/12/06 16:03:22  vfrolov
+ * Added cleaning high data bits for less then 8 bit data
+ * Added AllDataBits option to force 8 bit data
+ *
+ * Revision 1.18  2010/06/01 12:54:12  vfrolov
+ * Fixed bit settings
+ *
+ * Revision 1.17  2010/05/31 07:58:14  vfrolov
+ * Added ability to invoke the system-supplied advanced settings dialog box
+ *
+ * Revision 1.16  2010/05/27 11:16:46  vfrolov
+ * Added ability to put the port to the Ports class
+ *
+ * Revision 1.15  2008/12/25 16:55:23  vfrolov
+ * Added converting portnames to uppercase
+ *
+ * Revision 1.14  2008/12/02 11:54:28  vfrolov
+ * Fixed typo
+ *
+ * Revision 1.13  2008/09/17 07:58:32  vfrolov
+ * Added AddRTTO and AddRITO parameters
+ *
+ * Revision 1.12  2008/06/26 13:39:19  vfrolov
+ * Implemented noise emulation
+ *
+ * Revision 1.11  2008/05/04 09:53:51  vfrolov
+ * Implemented HiddenMode option
+ *
+ * Revision 1.10  2008/04/08 06:49:44  vfrolov
+ * Added pin OUT2
+ *
+ * Revision 1.9  2007/10/19 16:09:55  vfrolov
+ * Implemented --detail-prms option
+ *
+ * Revision 1.8  2007/09/20 12:43:03  vfrolov
+ * Added parameters string length check
+ *
+ * Revision 1.7  2007/09/17 14:33:38  vfrolov
+ * Implemented pseudo pin OPEN
+ *
+ * Revision 1.6  2007/07/03 14:39:49  vfrolov
+ * Implemented pinout customization
+ *
+ * Revision 1.5  2007/06/01 16:32:04  vfrolov
+ * Implemented plug-in and exclusive modes
+ *
+ * Revision 1.4  2007/01/11 15:05:03  vfrolov
+ * Replaced strtok() by STRTOK_R()
+ *
+ * Revision 1.3  2006/11/02 16:11:58  vfrolov
+ * Added default values to help text
+ *
+ * Revision 1.2  2006/10/27 13:11:58  vfrolov
+ * Added PortParameters::FillPortName()
+ *
+ * Revision 1.1  2006/07/28 12:16:43  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "params.h"
+#include "utils.h"
+#include "msg.h"
+
+#define TEXT_PREF
+#include "../include/com0com.h"
+
+///////////////////////////////////////////////////////////////
+enum {
+  m_portName       = 0x00000001,
+  m_emuBR          = 0x00000002,
+  m_emuOverrun     = 0x00000004,
+  m_plugInMode     = 0x00000008,
+  m_exclusiveMode  = 0x00000010,
+  m_hiddenMode     = 0x00000020,
+  m_allDataBits    = 0x00000040,
+  m_pinCTS         = 0x00000100,
+  m_pinDSR         = 0x00000200,
+  m_pinDCD         = 0x00000400,
+  m_pinRI          = 0x00000800,
+  m_emuNoise       = 0x00010000,
+  m_addRTTO        = 0x00020000,
+  m_addRITO        = 0x00040000,
+  m_realPortName   = 0x01000000,
+};
+///////////////////////////////////////////////////////////////
+static struct Bit
+{
+  DWORD bit;
+
+  enum {
+    OTHER,
+    FLAG,
+    PIN,
+    PROBABILITY,
+    UNSIGNED,
+  } type;
+} bits[] = {
+  {m_portName,       Bit::OTHER},
+  {m_realPortName,   Bit::OTHER},
+  {m_emuBR,          Bit::FLAG},
+  {m_emuOverrun,     Bit::FLAG},
+  {m_plugInMode,     Bit::FLAG},
+  {m_exclusiveMode,  Bit::FLAG},
+  {m_hiddenMode,     Bit::FLAG},
+  {m_allDataBits,    Bit::FLAG},
+  {m_pinCTS,         Bit::PIN},
+  {m_pinDSR,         Bit::PIN},
+  {m_pinDCD,         Bit::PIN},
+  {m_pinRI,          Bit::PIN},
+  {m_emuNoise,       Bit::PROBABILITY},
+  {m_addRTTO,        Bit::UNSIGNED},
+  {m_addRITO,        Bit::UNSIGNED},
+};
+///////////////////////////////////////////////////////////////
+PortParameters::PortParameters(const char *pService, const char *pPhPortName)
+{
+  SNPRINTF(service, sizeof(service)/sizeof(service[0]), "%s", pService);
+  SNPRINTF(phPortName, sizeof(phPortName)/sizeof(phPortName[0]), "%s", pPhPortName);
+
+  Init();
+}
+///////////////////////////////////////////////////////////////
+void PortParameters::Init()
+{
+  portName[0] = 0;
+  realPortName[0] = 0;
+  emuBR = 0;
+  emuOverrun = 0;
+  plugInMode = 0;
+  exclusiveMode = 0;
+  hiddenMode = 0;
+  allDataBits = 0;
+
+  pinCTS = 0;
+  pinDSR = 0;
+  pinDCD = 0;
+  pinRI = 0;
+
+  emuNoise = 0;
+  addRTTO = 0;
+  addRITO = 0;
+
+  maskChanged = 0;
+  maskExplicit = 0;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::SetPortName(const char *pNewPortName)
+{
+  if (lstrcmpi(portName, pNewPortName) != 0) {
+    if (SNPRINTF(portName, sizeof(portName)/sizeof(portName[0]), "%s", pNewPortName) <= 0) {
+      Trace("Invalid port name '%s'\n", pNewPortName);
+      return FALSE;
+    }
+
+    CharUpper(portName);
+    maskChanged |= m_portName;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::SetRealPortName(const char *pNewRealPortName)
+{
+  if (lstrcmpi(realPortName, pNewRealPortName) != 0) {
+    if (SNPRINTF(realPortName, sizeof(realPortName)/sizeof(realPortName[0]), "%s", pNewRealPortName) <= 0) {
+      Trace("Invalid real port name '%s'\n", pNewRealPortName);
+      return FALSE;
+    }
+
+    CharUpper(realPortName);
+    maskChanged |= m_realPortName;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::InitRealPortName(const char *pRealPortName)
+{
+  if (!lstrcmpi("", pRealPortName)) {
+    maskExplicit &= ~m_realPortName;
+    maskChanged &= ~m_realPortName;
+
+    return TRUE;
+  }
+
+  if (SNPRINTF(realPortName, sizeof(realPortName)/sizeof(realPortName[0]), "%s", pRealPortName) <= 0) {
+    Trace("Invalid real port name '%s'\n", pRealPortName);
+    return FALSE;
+  }
+
+  CharUpper(realPortName);
+
+  maskChanged &= ~m_realPortName;
+  maskExplicit |= m_realPortName;
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+DWORD *PortParameters::GetDwPtr(DWORD bit)
+{
+  switch (bit) {
+    case m_emuBR:          return &emuBR;
+    case m_emuOverrun:     return &emuOverrun;
+    case m_plugInMode:     return &plugInMode;
+    case m_exclusiveMode:  return &exclusiveMode;
+    case m_hiddenMode:     return &hiddenMode;
+    case m_allDataBits:    return &allDataBits;
+    case m_pinCTS:         return &pinCTS;
+    case m_pinDSR:         return &pinDSR;
+    case m_pinDCD:         return &pinDCD;
+    case m_pinRI:          return &pinRI;
+    case m_emuNoise:       return &emuNoise;
+    case m_addRTTO:        return &addRTTO;
+    case m_addRITO:        return &addRITO;
+  }
+
+  return NULL;
+}
+///////////////////////////////////////////////////////////////
+static const DWORD *GetDwPtrDefault(DWORD bit)
+{
+  static const DWORD emuBR = C0C_DEFAULT_EMUBR;
+  static const DWORD emuOverrun = C0C_DEFAULT_EMUOVERRUN;
+  static const DWORD plugInMode = C0C_DEFAULT_PLUGINMODE;
+  static const DWORD exclusiveMode = C0C_DEFAULT_EXCLUSIVEMODE;
+  static const DWORD hiddenMode = C0C_DEFAULT_HIDDENMODE;
+  static const DWORD allDataBits = C0C_DEFAULT_ALLDATABITS;
+  static const DWORD pinCTS = C0C_DEFAULT_PIN_CTS;
+  static const DWORD pinDSR = C0C_DEFAULT_PIN_DSR;
+  static const DWORD pinDCD = C0C_DEFAULT_PIN_DCD;
+  static const DWORD pinRI = C0C_DEFAULT_PIN_RI;
+  static const DWORD emuNoise = C0C_DEFAULT_EMUNOISE;
+  static const DWORD addRTTO = C0C_DEFAULT_ADDRTTO;
+  static const DWORD addRITO = C0C_DEFAULT_ADDRITO;
+
+  switch (bit) {
+    case m_emuBR:          return &emuBR;
+    case m_emuOverrun:     return &emuOverrun;
+    case m_plugInMode:     return &plugInMode;
+    case m_exclusiveMode:  return &exclusiveMode;
+    case m_hiddenMode:     return &hiddenMode;
+    case m_allDataBits:    return &allDataBits;
+    case m_pinCTS:         return &pinCTS;
+    case m_pinDSR:         return &pinDSR;
+    case m_pinDCD:         return &pinDCD;
+    case m_pinRI:          return &pinRI;
+    case m_emuNoise:       return &emuNoise;
+    case m_addRTTO:        return &addRTTO;
+    case m_addRITO:        return &addRITO;
+  }
+
+  return NULL;
+}
+///////////////////////////////////////////////////////////////
+static const char *GetBitName(DWORD bit)
+{
+  switch (bit) {
+    case m_portName:       return "PortName";
+    case m_realPortName:   return "RealPortName";
+    case m_emuBR:          return "EmuBR";
+    case m_emuOverrun:     return "EmuOverrun";
+    case m_plugInMode:     return "PlugInMode";
+    case m_exclusiveMode:  return "ExclusiveMode";
+    case m_hiddenMode:     return "HiddenMode";
+    case m_allDataBits:    return "AllDataBits";
+    case m_pinCTS:         return "cts";
+    case m_pinDSR:         return "dsr";
+    case m_pinDCD:         return "dcd";
+    case m_pinRI:          return "ri";
+    case m_emuNoise:       return "EmuNoise";
+    case m_addRTTO:        return "AddRTTO";
+    case m_addRITO:        return "AddRITO";
+  }
+
+  return NULL;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::SetFlag(const char *pNewVal, DWORD bit)
+{
+  DWORD newFlag;
+
+  if (!lstrcmpi(pNewVal, "yes")) {
+    newFlag = 0xFFFFFFFF;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "no")) {
+    newFlag = 0;
+  }
+  else {
+    Trace("Invalid value '%s'\n", pNewVal);
+    return FALSE;
+  }
+
+  DWORD *pFlag = GetDwPtr(bit);
+
+  if (pFlag == NULL)
+    return FALSE;
+
+  if (*pFlag != newFlag) {
+    *pFlag = newFlag;
+    maskChanged |= bit;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::SetPin(const char *pNewVal, DWORD bit)
+{
+  DWORD newPin;
+
+  if (*pNewVal == '!') {
+    newPin = C0C_PIN_NEGATIVE;
+    pNewVal++;
+  } else {
+    newPin = 0;
+  }
+
+  if (!lstrcmpi(pNewVal, "rrts")) {
+    newPin |= C0C_PIN_RRTS;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "rdtr")) {
+    newPin |= C0C_PIN_RDTR;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "rout1")) {
+    newPin |= C0C_PIN_ROUT1;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "rout2")) {
+    newPin |= C0C_PIN_ROUT2;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "ropen")) {
+    newPin |= C0C_PIN_ROPEN;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "lrts")) {
+    newPin |= C0C_PIN_LRTS;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "ldtr")) {
+    newPin |= C0C_PIN_LDTR;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "lout1")) {
+    newPin |= C0C_PIN_LOUT1;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "lout2")) {
+    newPin |= C0C_PIN_LOUT2;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "lopen")) {
+    newPin |= C0C_PIN_LOPEN;
+  }
+  else
+  if (!lstrcmpi(pNewVal, "on")) {
+    newPin |= C0C_PIN_ON;
+  }
+  else {
+    Trace("Invalid value '%s'\n", pNewVal);
+    return FALSE;
+  }
+
+  DWORD *pPin = GetDwPtr(bit);
+
+  if (pPin == NULL)
+    return FALSE;
+
+  if (*pPin != newPin) {
+    *pPin = newPin;
+    maskChanged |= bit;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::SetProbability(const char *pNewVal, DWORD bit)
+{
+  DWORD newVal = 0;
+
+  if (pNewVal[0] == '0' && pNewVal[1] == '.') {
+    const char *p = pNewVal + 2;
+
+    for (DWORD one = C0C_PROBABILITY_ONE ; one > 1 ; one /= 10) {
+      newVal *= 10;
+
+      if (*p == 0)
+        continue;
+
+      if (*p < '0' || *p > '9') {
+        Trace("Invalid value '%s'\n", pNewVal);
+        return FALSE;
+      }
+
+      newVal += *p++ - '0';
+    }
+
+    while (*p == '0')
+      p++;
+
+    if (*p != 0) {
+      Trace("Too long value '%s'\n", pNewVal);
+      return FALSE;
+    }
+  }
+  else
+  if (pNewVal[0] == '0') {
+  }
+  else {
+    Trace("Invalid value '%s'\n", pNewVal);
+    return FALSE;
+  }
+
+  DWORD *pVal = GetDwPtr(bit);
+
+  if (pVal == NULL)
+    return FALSE;
+
+  if (*pVal != newVal) {
+    *pVal = newVal;
+    maskChanged |= bit;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::SetUnsigned(const char *pNewVal, DWORD bit)
+{
+  DWORD newVal = 0;
+
+  for (const char *p = pNewVal ; *p ; p++) {
+    if (*p < '0' || *p > '9') {
+      Trace("Invalid value '%s'\n", pNewVal);
+      return FALSE;
+    }
+    newVal = newVal*10 + (*p - '0');
+  }
+
+  DWORD *pVal = GetDwPtr(bit);
+
+  if (pVal == NULL)
+    return FALSE;
+
+  if (*pVal != newVal) {
+    *pVal = newVal;
+    maskChanged |= bit;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::SetBit(const char *pVal, const Bit &bit)
+{
+  if (!lstrcmpi(pVal, "*"))
+    return TRUE;
+
+  if (!lstrcmpi("-", pVal)) {
+    if (maskExplicit & bit.bit) {
+      maskExplicit &= ~bit.bit;
+      maskChanged |= bit.bit;
+    }
+    return TRUE;
+  }
+
+  if (bit.type == Bit::FLAG) {
+    if (!SetFlag(pVal, bit.bit))
+      return FALSE;
+  }
+  else
+  if (bit.type == Bit::PIN) {
+    if (!SetPin(pVal, bit.bit))
+      return FALSE;
+  }
+  else
+  if (bit.type == Bit::PROBABILITY) {
+    if (!SetProbability(pVal, bit.bit))
+      return FALSE;
+  }
+  else
+  if (bit.type == Bit::UNSIGNED) {
+    if (!SetUnsigned(pVal, bit.bit))
+      return FALSE;
+  }
+  else
+  if (bit.type == Bit::OTHER) {
+    if (bit.bit == m_portName) {
+      if (!SetPortName(pVal))
+        return FALSE;
+    }
+    else
+    if (bit.bit == m_realPortName) {
+      if (!SetRealPortName(pVal))
+        return FALSE;
+    }
+    else {
+      return FALSE;
+    }
+  }
+  else {
+    return FALSE;
+  }
+
+  if (maskChanged & bit.bit)
+    maskExplicit |= bit.bit;
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::FillParametersKey(char *pRegKey, int size)
+{
+  int len;
+
+  len = SNPRINTF(pRegKey, size, REGSTR_PATH_SERVICES "\\%s\\Parameters\\%s", service, phPortName);
+
+  //Trace("%s\n", pRegKey);
+
+  return len >= 0;
+}
+///////////////////////////////////////////////////////////////
+void PortParameters::LoadDw(HKEY hKey, DWORD bit)
+{
+  DWORD *pDw = GetDwPtr(bit);
+  const char *pName = GetBitName(bit);
+
+  if (pDw == NULL || pName == NULL)
+    return;
+
+  DWORD buf;
+  DWORD len = sizeof(buf);
+
+  LONG err = RegQueryValueEx(hKey,
+                             pName,
+                             NULL,
+                             NULL,
+                             (PBYTE)&buf,
+                             &len);
+
+  if (err == ERROR_SUCCESS) {
+    *pDw = buf;
+    maskExplicit |= bit;
+
+    //Trace("  %s=0x%lX\n", pName, (unsigned long)*pDw);
+  }
+}
+///////////////////////////////////////////////////////////////
+LONG PortParameters::SaveDw(HKEY hKey, DWORD bit)
+{
+  if (maskChanged & bit) {
+    DWORD *pDw = GetDwPtr(bit);
+    const char *pName = GetBitName(bit);
+
+    if (pDw == NULL || pName == NULL)
+      return ERROR_BAD_COMMAND;
+
+    LONG err;
+
+    if (maskExplicit & bit) {
+      err = RegSetValueEx(hKey,
+                          pName,
+                          NULL,
+                          REG_DWORD,
+                          (PBYTE)pDw,
+                          sizeof(*pDw));
+    } else {
+      err = RegDeleteValue(hKey, pName);
+
+      if (err == ERROR_FILE_NOT_FOUND)
+        err = ERROR_SUCCESS;
+    }
+
+    if (err != ERROR_SUCCESS)
+      return err;
+
+    maskChanged &= ~bit;
+    //Trace("  New %s=0x%lX\n", pName, (unsigned long)*pDw);
+  }
+
+  return ERROR_SUCCESS;
+}
+///////////////////////////////////////////////////////////////
+LONG PortParameters::Load()
+{
+  Init();
+
+  char reqKey[100];
+
+  FillParametersKey(reqKey, sizeof(reqKey)/sizeof(reqKey[0]));
+
+  LONG err;
+  HKEY hKey;
+
+  err = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+                     reqKey,
+                     0,
+                     KEY_READ,
+                     &hKey);
+
+  if (err == ERROR_FILE_NOT_FOUND)
+    return ERROR_SUCCESS;
+
+  if (err != ERROR_SUCCESS)
+    return err;
+
+  BYTE buf[sizeof(portName)];
+  DWORD len;
+
+  len = sizeof(buf);
+
+  err = RegQueryValueEx(hKey,
+                        "PortName",
+                        NULL,
+                        NULL,
+                        buf,
+                        &len);
+
+  if (err == ERROR_SUCCESS) {
+    SNPRINTF(portName, sizeof(portName)/sizeof(portName[0]), "%s", (char *)buf);
+    maskExplicit |= m_portName;
+
+    //Trace("  PortName=%s\n", portName);
+  }
+
+  int i;
+
+  for (i = 0 ; i < sizeof(bits)/sizeof(bits[0]) ; i++) {
+    if (!GetDwPtr(bits[i].bit))
+      continue;
+
+    LoadDw(hKey, bits[i].bit);
+  }
+
+  RegCloseKey(hKey);
+
+  return ERROR_SUCCESS;
+}
+///////////////////////////////////////////////////////////////
+LONG PortParameters::Save()
+{
+  if (!Changed()) {
+    return ERROR_SUCCESS;
+  }
+
+  char reqKey[100];
+
+  FillParametersKey(reqKey, sizeof(reqKey)/sizeof(reqKey[0]));
+
+  LONG err;
+  HKEY hKey;
+
+  err = RegCreateKeyEx(HKEY_LOCAL_MACHINE,
+                       reqKey,
+                       0,
+                       NULL,
+                       0,
+                       KEY_WRITE,
+                       NULL,
+                       &hKey,
+                       NULL);
+
+  if (err != ERROR_SUCCESS)
+    return err;
+
+  if (maskChanged & m_portName) {
+    if (maskExplicit & m_portName) {
+      err = RegSetValueEx(hKey,
+                          "PortName",
+                          NULL,
+                          REG_SZ,
+                          (PBYTE)portName,
+                          (lstrlen(portName) + 1) * sizeof(portName[0]));
+    } else {
+      err = RegDeleteValue(hKey, "PortName");
+
+      if (err == ERROR_FILE_NOT_FOUND)
+        err = ERROR_SUCCESS;
+    }
+
+    if (err != ERROR_SUCCESS)
+      goto err;
+
+    maskChanged &= ~m_portName;
+
+    //Trace("  New PortName=%s\n", portName);
+  }
+
+  int i;
+
+  for (i = 0 ; i < sizeof(bits)/sizeof(bits[0]) ; i++) {
+    if (!GetDwPtr(bits[i].bit))
+      continue;
+
+    if (SaveDw(hKey, bits[i].bit) != ERROR_SUCCESS)
+      goto err;
+  }
+
+err:
+
+  RegCloseKey(hKey);
+
+  return err;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::ParseParametersStr(const char *pParameters)
+{
+  PortParameters tmp = *this;
+
+  if (!lstrcmpi(pParameters, "-") || !lstrcmpi(pParameters, "*")) {
+    int i;
+
+    for (i = 0 ; i < sizeof(bits)/sizeof(bits[0]) ; i++) {
+      if (!tmp.SetBit(pParameters, bits[i]))
+        return FALSE;
+    }
+  } else {
+    char pars[200];
+
+    if (SNPRINTF(pars, sizeof(pars)/sizeof(pars[0]), "%s", pParameters) < 0) {
+      Trace("The parameters string '%s' is too long\n", pParameters);
+      return FALSE;
+    }
+
+    char *pSave1;
+
+    for (char *pPar = STRTOK_R(pars, ",", &pSave1) ; pPar ; pPar = STRTOK_R(NULL, ",", &pSave1)) {
+      char *pSave2;
+      const char *pKey = STRTOK_R(pPar, "=", &pSave2);
+      const char *pVal = STRTOK_R(NULL, "=", &pSave2);
+
+      //Trace("'%s'='%s'\n", pKey, pVal);
+
+      if (!pVal) {
+        Trace("Missing value for '%s'\n", pKey);
+        return FALSE;
+      }
+
+      int i;
+
+      for (i = 0 ; i < sizeof(bits)/sizeof(bits[0]) ; i++) {
+        DWORD bit = bits[i].bit;
+        const char *pName = GetBitName(bit);
+
+        if (pName == NULL)
+          continue;
+
+        if (!lstrcmpi(pKey, pName)) {
+          if (!tmp.SetBit(pVal, bits[i]))
+            return FALSE;
+          break;
+        }
+      }
+
+      if (i >= sizeof(bits)/sizeof(bits[0])) {
+        Trace("Invalid parameter '%s'\n", pKey);
+        return FALSE;
+      }
+    }
+  }
+
+  *this = tmp;
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::FillParametersStr(char *pParameters, int size, bool detail)
+{
+  int len;
+
+  len = SNPRINTF(pParameters, size, "PortName=%s",
+                 (maskExplicit & m_portName) ? portName : (detail ? phPortName : "-"));
+
+  if (len < 0)
+    return FALSE;
+
+  pParameters += len;
+  size -= len;
+
+  if (maskExplicit & m_realPortName) {
+    len = SNPRINTF(pParameters, size, ",RealPortName=%s", realPortName);
+
+    if (len < 0)
+      return FALSE;
+
+    pParameters += len;
+    size -= len;
+  }
+
+  for (int i = 0 ; i < sizeof(bits)/sizeof(bits[0]) ; i++) {
+    DWORD bit = bits[i].bit;
+
+    if (!GetDwPtr(bit))
+      continue;
+
+    const char *pName = GetBitName(bit);
+
+    if (pName) {
+      const DWORD *pBit;
+
+      if ((maskExplicit & bit) != 0)
+        pBit = GetDwPtr(bit);
+      else
+      if (detail)
+        pBit = GetDwPtrDefault(bit);
+      else
+        continue;
+
+      if (pBit == NULL)
+        continue;
+
+      if (bits[i].type == Bit::FLAG) {
+        len = SNPRINTF(pParameters, size, ",%s=%s", pName, *pBit ? "yes" : "no");
+      }
+      else
+      if (bits[i].type == Bit::PIN) {
+        const char *pVal = NULL;
+
+        switch (*pBit & ~C0C_PIN_NEGATIVE) {
+          case C0C_PIN_RRTS:  pVal = "rrts";  break;
+          case C0C_PIN_RDTR:  pVal = "rdtr";  break;
+          case C0C_PIN_ROUT1: pVal = "rout1"; break;
+          case C0C_PIN_ROUT2: pVal = "rout2"; break;
+          case C0C_PIN_ROPEN: pVal = "ropen"; break;
+          case C0C_PIN_LRTS:  pVal = "lrts";  break;
+          case C0C_PIN_LDTR:  pVal = "ldtr";  break;
+          case C0C_PIN_LOUT1: pVal = "lout1"; break;
+          case C0C_PIN_LOUT2: pVal = "lout2"; break;
+          case C0C_PIN_LOPEN: pVal = "lopen"; break;
+          case C0C_PIN_ON:    pVal = "on";    break;
+        }
+
+        if (pVal == NULL)
+          continue;
+
+        len = SNPRINTF(pParameters, size, ",%s=%s%s", pName, (*pBit & C0C_PIN_NEGATIVE) == 0 ? "" : "!", pVal);
+      }
+      else
+      if (bits[i].type == Bit::PROBABILITY) {
+          if (*pBit == 0) {
+            len = SNPRINTF(pParameters, size, ",%s=0", pName);
+          } else {
+            char strVal[11] = "";
+            char digits[11];
+
+            SNPRINTF(digits, sizeof(digits)/sizeof(digits[0]), "%ld", (unsigned long)*pBit);
+
+            for (int i = lstrlen(digits) ; i ; i--) {
+              if (digits[i - 1] > '0')
+                break;
+
+              digits[i - 1] = 0;
+            }
+
+            const char *p = digits;
+
+            for (DWORD one = C0C_PROBABILITY_ONE/10 ; one > 0 ; one /= 10) {
+              if (one > *pBit) {
+                lstrcat(strVal, "0");
+              }
+              else
+              if (*p) {
+                char sc[2];
+
+                sc[0] = *p++;
+                sc[1] = 0;
+                lstrcat(strVal, sc);
+              }
+              else {
+                break;
+              }
+            }
+
+            len = SNPRINTF(pParameters, size, ",%s=0.%s", pName, strVal);
+          }
+      }
+      else
+      if (bits[i].type == Bit::UNSIGNED) {
+        len = SNPRINTF(pParameters, size, ",%s=%lu", pName, (unsigned long)*pBit);
+      }
+
+      if (len < 0)
+        return FALSE;
+
+      pParameters += len;
+      size -= len;
+    }
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::FillPortName(char *pPortName, int size)
+{
+  int len;
+
+  len = SNPRINTF(pPortName, size, "%s",
+                 (maskExplicit & m_portName) ? portName : phPortName);
+
+  return len >= 0;
+}
+///////////////////////////////////////////////////////////////
+bool PortParameters::FillRealPortName(char *pRealPortName, int size)
+{
+  int len;
+
+  len = SNPRINTF(pRealPortName, size, "%s",
+                 (maskExplicit & m_realPortName) ? realPortName : "");
+
+  return len >= 0;
+}
+///////////////////////////////////////////////////////////////
+const char *PortParameters::GetHelp()
+{
+  return
+    "Syntax of port parameters string:\n"
+    "  -                       - use driver's defaults for all parameters\n"
+    "  *                       - use current settings for all parameters\n"
+    "  <par>=<val>[,...]       - set value <val> for each parameter <par>\n"
+    "\n"
+    "Parameters:\n"
+    "  PortName=<portname>     - set port name to <portname>\n"
+    "                            (port identifier by default)\n"
+    "  EmuBR={yes|no}          - enable/disable baud rate emulation in the direction\n"
+    "                            to the paired port (disabled by default)\n"
+    "  EmuOverrun={yes|no}     - enable/disable buffer overrun (disabled by default)\n"
+    "  EmuNoise=<n>            - probability in range 0-0.99999999 of error per\n"
+    "                            character frame in the direction to the paired port\n"
+    "                            (0 by default)\n"
+    "  AddRTTO=<n>             - add <n> milliseconds to the total time-out period\n"
+    "                            for read operations (0 by default)\n"
+    "  AddRITO=<n>             - add <n> milliseconds to the maximum time allowed to\n"
+    "                            elapse between the arrival of two characters for\n"
+    "                            read operations (0 by default)\n"
+    "  PlugInMode={yes|no}     - enable/disable plug-in mode, the plug-in mode port\n"
+    "                            is hidden and can't be open if the paired port is\n"
+    "                            not open (disabled by default)\n"
+    "  ExclusiveMode={yes|no}  - enable/disable exclusive mode, the exclusive mode\n"
+    "                            port is hidden if it is open (disabled by default)\n"
+    "  HiddenMode={yes|no}     - enable/disable hidden mode, the hidden mode port is\n"
+    "                            hidden as it is possible for port enumerators\n"
+    "                            (disabled by default)\n"
+    "  AllDataBits={yes|no}    - enable/disable all data bits transfer disregard\n"
+    "                            data bits setting (disabled by default)\n"
+    "  cts=[!]<p>              - wire CTS pin to <p> (rrts by default)\n"
+    "  dsr=[!]<p>              - wire DSR pin to <p> (rdtr by default)\n"
+    "  dcd=[!]<p>              - wire DCD pin to <p> (rdtr by default)\n"
+    "  ri=[!]<p>               - wire RI pin to <p> (!on by default)\n"
+    "\n"
+    "The possible values of <p> above can be rrts, lrts, rdtr, ldtr, rout1, lout1,\n"
+    "rout2, lout2 (remote/local RTS/DTR/OUT1/OUT2), ropen, lopen (logical ON if\n"
+    "remote/local port is open) or on (logical ON). The exclamation sign (!) can be\n"
+    "used to invert the value.\n"
+    "\n"
+    "Special values:\n"
+    "  -                       - use driver's default value\n"
+    "  *                       - use current setting\n"
+    ;
+}
+///////////////////////////////////////////////////////////////
+@
+
+
+1.22
+log
+@Implemented RealPortName=COM<n> for PortName=COM#
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.21 2011/12/27 11:38:13 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2011 Vyacheslav Frolov
+d22 3
+a174 1
+  dialogRequested = FALSE;
+a180 4
+  if (lstrcmpi(pNewPortName, "?") == 0) {
+    dialogRequested = TRUE;
+  }
+  else
+@
+
+
+1.21
+log
+@Superseded incorrect PortParameters::ClassChanged()
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.20 2011/12/15 15:51:48 vfrolov Exp $
+d22 3
+d112 1
+d128 1
+d155 1
+d184 6
+a190 2
+    SNPRINTF(portName, sizeof(portName)/sizeof(portName[0]), "%s", pNewPortName);
+    CharUpper(portName);
+d196 37
+d293 1
+d526 5
+d813 9
+a821 1
+  int i;
+d823 1
+a823 1
+  for (i = 0 ; i < sizeof(bits)/sizeof(bits[0]) ; i++) {
+d936 10
+@
+
+
+1.20
+log
+@Fixed types
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.19 2011/12/06 16:03:22 vfrolov Exp $
+d22 3
+a165 1
+  classChanged = FALSE;
+a177 2
+    classChanged = ((lstrcmpi(C0C_PORT_NAME_COMCLASS, portName) == 0) !=
+                    (lstrcmpi(C0C_PORT_NAME_COMCLASS, pNewPortName) == 0));
+a916 6
+    "If <portname> above is '" C0C_PORT_NAME_COMCLASS "' then the Ports class installer will be used to\n"
+    "manage port name. The Ports class installer selects the COM port number and\n"
+    "sets the port name to COM<n>, where <n> is the selected port number.\n"
+    "Use 'PortName=?' to invoke the system-supplied advanced settings dialog box to\n"
+    "change the port number.\n"
+    "\n"
+@
+
+
+1.19
+log
+@Added cleaning high data bits for less then 8 bit data
+Added AllDataBits option to force 8 bit data
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.18 2010/06/01 12:54:12 vfrolov Exp $
+d22 4
+d169 1
+a169 1
+BOOL PortParameters::SetPortName(const char *pNewPortName)
+d264 1
+a264 1
+BOOL PortParameters::SetFlag(const char *pNewVal, DWORD bit)
+d293 1
+a293 1
+BOOL PortParameters::SetPin(const char *pNewVal, DWORD bit)
+d365 1
+a365 1
+BOOL PortParameters::SetProbability(const char *pNewVal, DWORD bit)
+d415 1
+a415 1
+BOOL PortParameters::SetUnsigned(const char *pNewVal, DWORD bit)
+d440 1
+a440 1
+BOOL PortParameters::SetBit(const char *pVal, const Bit &bit)
+d492 1
+a492 1
+BOOL PortParameters::FillParametersKey(char *pRegKey, int size)
+d686 1
+a686 1
+BOOL PortParameters::ParseParametersStr(const char *pParameters)
+d747 1
+a747 1
+BOOL PortParameters::FillParametersStr(char *pParameters, int size, BOOL detail)
+d865 1
+a865 1
+BOOL PortParameters::FillPortName(char *pPortName, int size)
+@
+
+
+1.18
+log
+@Fixed bit settings
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.17 2010/05/31 07:58:14 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2010 Vyacheslav Frolov
+d22 3
+d94 1
+d122 1
+d148 1
+d190 1
+d210 1
+d225 1
+d247 1
+d901 2
+@
+
+
+1.17
+log
+@Added ability to invoke the system-supplied advanced settings dialog box
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.16 2010/05/27 11:16:46 vfrolov Exp $
+d22 3
+d472 1
+a472 1
+  if ((maskExplicit & bit.bit) == 0) {
+a473 2
+    maskChanged |= bit.bit;
+  }
+@
+
+
+1.16
+log
+@Added ability to put the port to the Ports class
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.15 2008/12/25 16:55:23 vfrolov Exp $
+d22 3
+d150 2
+d158 8
+a165 1
+  if (lstrcmpi(portName, pNewPortName)) {
+a167 1
+    maskChanged |= m_portName;
+d870 1
+a870 1
+    "                            (port identifier by default).\n"
+d903 2
+@
+
+
+1.15
+log
+@Added converting portnames to uppercase
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.14 2008/12/02 11:54:28 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2008 Vyacheslav Frolov
+d22 3
+d858 2
+a859 2
+    "  PortName=<name>         - set port name to <name>\n"
+    "                            (port identifier by default)\n"
+d889 4
+@
+
+
+1.14
+log
+@Fixed typo
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.13 2008/09/17 07:58:32 vfrolov Exp $
+d22 3
+d152 1
+@
+
+
+1.13
+log
+@Added AddRTTO and AddRITO parameters
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.12 2008/06/26 13:39:19 vfrolov Exp $
+d22 3
+d861 1
+a861 1
+    "  AddRITO=<n>             - add <n> milliseconds to the ìaximum time allowed to\n"
+@
+
+
+1.12
+log
+@Implemented noise emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.11 2008/05/04 09:53:51 vfrolov Exp $
+d22 3
+d81 2
+d93 2
+d107 3
+a109 1
+  {m_emuNoise,       Bit::OTHER},
+d122 1
+a122 1
+  SNPRINTF(portName, sizeof(portName)/sizeof(portName[0]), "%s", phPortName);
+d135 2
+a143 13
+  if (lstrcmpi(pNewPortName, "-")) {
+    if ((maskExplicit & m_portName) == 0) {
+      maskExplicit |= m_portName;
+      maskChanged |= m_portName;
+    }
+  } else {
+    pNewPortName = phPortName;
+    if (maskExplicit & m_portName) {
+      maskExplicit &= ~m_portName;
+      maskChanged |= m_portName;
+    }
+  }
+
+d165 2
+d184 2
+d198 2
+d219 2
+a236 4
+  else
+  if (!lstrcmpi(pNewVal, "-")) {
+    newFlag = 0;
+  }
+a246 12
+  if (lstrcmpi("-", pNewVal)) {
+    if ((maskExplicit & bit) == 0) {
+      maskExplicit |= bit;
+      maskChanged |= bit;
+    }
+  } else {
+    if (maskExplicit & bit) {
+      maskExplicit &= ~bit;
+      maskChanged |= bit;
+    }
+  }
+
+a308 3
+  else
+  if (!lstrcmpi(pNewVal, "-") && newPin == 0) {
+  }
+a318 12
+  if (lstrcmpi("-", pNewVal)) {
+    if ((maskExplicit & bit) == 0) {
+      maskExplicit |= bit;
+      maskChanged |= bit;
+    }
+  } else {
+    if (maskExplicit & bit) {
+      maskExplicit &= ~bit;
+      maskChanged |= bit;
+    }
+  }
+
+a330 3
+  if (!lstrcmpi(pNewVal, "-")) {
+  }
+  else
+d369 16
+a384 9
+  if (lstrcmpi("-", pNewVal)) {
+    if ((maskExplicit & bit) == 0) {
+      maskExplicit |= bit;
+      maskChanged |= bit;
+    }
+  } else {
+    if (maskExplicit & bit) {
+      maskExplicit &= ~bit;
+      maskChanged |= bit;
+d386 1
+d389 5
+d407 8
+d416 2
+a417 1
+    return SetFlag(pVal, bit.bit);
+d421 12
+a432 1
+    return SetPin(pVal, bit.bit);
+d436 10
+a445 4
+    if (bit.bit == m_portName)
+      return SetPortName(pVal);
+    if (bit.bit == m_emuNoise)
+      return SetProbability(pVal, bit.bit);
+d448 6
+a453 1
+  return FALSE;
+d774 2
+a775 2
+      else {
+        if (bit == m_emuNoise) {
+d812 4
+a815 1
+        }
+d856 5
+@
+
+
+1.11
+log
+@Implemented HiddenMode option
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.10 2008/04/08 06:49:44 vfrolov Exp $
+d22 3
+d67 11
+a77 10
+  m_portName       = 0x0001,
+  m_emuBR          = 0x0002,
+  m_emuOverrun     = 0x0004,
+  m_plugInMode     = 0x0008,
+  m_exclusiveMode  = 0x0010,
+  m_hiddenMode     = 0x0020,
+  m_pinCTS         = 0x0100,
+  m_pinDSR         = 0x0200,
+  m_pinDCD         = 0x0400,
+  m_pinRI          = 0x0800,
+d80 21
+a100 13
+static DWORD flagBits[] = {
+  m_emuBR,
+  m_emuOverrun,
+  m_plugInMode,
+  m_exclusiveMode,
+  m_hiddenMode
+};
+///////////////////////////////////////////////////////////////
+static DWORD pinBits[] = {
+  m_pinCTS,
+  m_pinDSR,
+  m_pinDCD,
+  m_pinRI
+d125 2
+a132 3
+  if (!lstrcmpi(pNewPortName, "*"))
+    return TRUE;
+
+d166 1
+d183 1
+d195 1
+d214 1
+a221 3
+  if (!lstrcmpi(pNewVal, "*"))
+    return TRUE;
+
+a266 3
+  if (!lstrcmpi(pNewVal, "*"))
+    return TRUE;
+
+d320 1
+a320 2
+  if (!lstrcmpi(pNewVal, "-")) {
+    newPin = 0;
+d352 88
+d556 3
+a558 2
+  for (i = 0 ; i < sizeof(flagBits)/sizeof(flagBits[0]) ; i++)
+    LoadDw(hKey, flagBits[i]);
+d560 2
+a561 2
+  for (i = 0 ; i < sizeof(pinBits)/sizeof(pinBits[0]) ; i++)
+    LoadDw(hKey, pinBits[i]);
+d619 3
+a621 4
+  for (i = 0 ; i < sizeof(flagBits)/sizeof(flagBits[0]) ; i++) {
+    if (SaveDw(hKey, flagBits[i]) != ERROR_SUCCESS)
+      goto err;
+  }
+d623 1
+a623 2
+  for (i = 0 ; i < sizeof(pinBits)/sizeof(pinBits[0]) ; i++) {
+    if (SaveDw(hKey, pinBits[i]) != ERROR_SUCCESS)
+a638 3
+    if (!tmp.SetPortName(pParameters))
+      return FALSE;
+
+d641 2
+a642 7
+    for (i = 0 ; i < sizeof(flagBits)/sizeof(flagBits[0]) ; i++) {
+      if (!tmp.SetFlag(pParameters, flagBits[i]))
+        return FALSE;
+    }
+
+    for (i = 0 ; i < sizeof(pinBits)/sizeof(pinBits[0]) ; i++) {
+      if (!tmp.SetPin(pParameters, pinBits[i]))
+d667 8
+a674 35
+      if (!lstrcmpi(pKey, "PortName")) {
+        if (!tmp.SetPortName(pVal))
+          return FALSE;
+      } else {
+        int i;
+
+        for (i = 0 ; i < sizeof(flagBits)/sizeof(flagBits[0]) ; i++) {
+          DWORD bit = flagBits[i];
+          DWORD *pFlag = GetDwPtr(bit);
+          const char *pName = GetBitName(bit);
+
+          if (pFlag == NULL || pName == NULL)
+            continue;
+
+          if (!lstrcmpi(pKey, pName)) {
+            if (!tmp.SetFlag(pVal, bit))
+              return FALSE;
+            break;
+          }
+        }
+        if (i >= sizeof(flagBits)/sizeof(flagBits[0])) {
+          for (i = 0 ; i < sizeof(pinBits)/sizeof(pinBits[0]) ; i++) {
+            DWORD bit = pinBits[i];
+            DWORD *pPin = GetDwPtr(bit);
+            const char *pName = GetBitName(bit);
+
+            if (pPin == NULL || pName == NULL)
+              continue;
+
+            if (!lstrcmpi(pKey, pName)) {
+              if (!tmp.SetPin(pVal, bit))
+                return FALSE;
+              break;
+            }
+          }
+d676 2
+a677 2
+          if (i >= sizeof(pinBits)/sizeof(pinBits[0])) {
+            Trace("Invalid parameter '%s'\n", pKey);
+d679 1
+a679 1
+          }
+d682 5
+d710 6
+a715 2
+  for (i = 0 ; i < sizeof(flagBits)/sizeof(flagBits[0]) ; i++) {
+    DWORD bit = flagBits[i];
+d719 1
+a719 1
+      const DWORD *pFlag;
+d722 1
+a722 1
+        pFlag = GetDwPtr(bit);
+d725 1
+a725 1
+        pFlag = GetDwPtrDefault(bit);
+d729 1
+a729 1
+      if (pFlag == NULL)
+d732 6
+a737 1
+      len = SNPRINTF(pParameters, size, ",%s=%s", pName, *pFlag ? "yes" : "no");
+d739 13
+a751 2
+      if (len < 0)
+        return FALSE;
+d753 2
+a754 4
+      pParameters += len;
+      size -= len;
+    }
+  }
+d756 15
+a770 3
+  for (i = 0 ; i < sizeof(pinBits)/sizeof(pinBits[0]) ; i++) {
+    DWORD bit = pinBits[i];
+    const char *pName = GetBitName(bit);
+d772 2
+a773 2
+    if (pName) {
+      const DWORD *pPin;
+d775 1
+a775 7
+      if ((maskExplicit & bit) != 0)
+        pPin = GetDwPtr(bit);
+      else
+      if (detail)
+        pPin = GetDwPtrDefault(bit);
+      else
+        continue;
+d777 16
+a792 2
+      if (pPin == NULL)
+        continue;
+d794 3
+a796 14
+      const char *pVal = NULL;
+
+      switch (*pPin & ~C0C_PIN_NEGATIVE) {
+        case C0C_PIN_RRTS:  pVal = "rrts";  break;
+        case C0C_PIN_RDTR:  pVal = "rdtr";  break;
+        case C0C_PIN_ROUT1: pVal = "rout1"; break;
+        case C0C_PIN_ROUT2: pVal = "rout2"; break;
+        case C0C_PIN_ROPEN: pVal = "ropen"; break;
+        case C0C_PIN_LRTS:  pVal = "lrts";  break;
+        case C0C_PIN_LDTR:  pVal = "ldtr";  break;
+        case C0C_PIN_LOUT1: pVal = "lout1"; break;
+        case C0C_PIN_LOUT2: pVal = "lout2"; break;
+        case C0C_PIN_LOPEN: pVal = "lopen"; break;
+        case C0C_PIN_ON:    pVal = "on";    break;
+a798 5
+      if (pVal == NULL)
+        continue;
+
+      len = SNPRINTF(pParameters, size, ",%s=%s%s", pName, (*pPin & C0C_PIN_NEGATIVE) == 0 ? "" : "!", pVal);
+
+d834 3
+@
+
+
+1.10
+log
+@Added pin OUT2
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.9 2007/10/19 16:09:55 vfrolov Exp $
+d22 3
+d69 1
+d80 2
+a81 1
+  m_exclusiveMode
+d106 1
+d150 1
+d166 1
+d177 1
+d195 1
+d752 3
+@
+
+
+1.9
+log
+@Implemented --detail-prms option
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.8 2007/09/20 12:43:03 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+d22 3
+d269 4
+d289 4
+d687 1
+d692 1
+d747 4
+a750 4
+    "The possible values of <p> above can be rrts, lrts, rdtr, ldtr, rout1, lout1\n"
+    "(remote/local RTS/DTR/OUT1), ropen, lopen (logical ON if remote/local port is\n"
+    "open) or on (logical ON). The exclamation sign (!) can be used to invert the\n"
+    "value.\n"
+@
+
+
+1.8
+log
+@Added parameters string length check
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.7 2007/09/17 14:33:38 vfrolov Exp $
+d22 3
+d150 26
+a175 1
+const char *PortParameters::GetBitName(DWORD bit)
+d609 1
+a609 1
+BOOL PortParameters::FillParametersStr(char *pParameters, int size)
+d613 2
+a614 1
+  len = SNPRINTF(pParameters, size, "PortName=%s", (maskExplicit & m_portName) ? (portName) : "-");
+d626 1
+d628 2
+a629 3
+    if ((maskExplicit & bit) != 0) {
+      DWORD *pFlag = GetDwPtr(bit);
+      const char *pName = GetBitName(bit);
+d631 9
+a639 1
+      if (pFlag == NULL || pName == NULL)
+d654 1
+d656 10
+a665 3
+    if ((maskExplicit & bit) != 0) {
+      DWORD *pPin = GetDwPtr(bit);
+      const char *pName = GetBitName(bit);
+d667 1
+a667 1
+      if (pPin == NULL || pName == NULL)
+@
+
+
+1.7
+log
+@Implemented pseudo pin OPEN
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.6 2007/07/03 14:39:49 vfrolov Exp $
+d22 3
+d82 2
+a83 2
+  SNPRINTF(service, sizeof(service), "%s", pService);
+  SNPRINTF(phPortName, sizeof(phPortName), "%s", pPhPortName);
+d90 1
+a90 1
+  SNPRINTF(portName, sizeof(portName), "%s", phPortName);
+d124 1
+a124 2
+    lstrcpyn(portName, pNewPortName, sizeof(portName));
+    portName[sizeof(portName) - 1] = 0;
+d373 1
+a373 1
+  FillParametersKey(reqKey, sizeof(reqKey));
+d390 1
+a390 1
+  char buf[20];
+d399 1
+a399 1
+                        (PBYTE)buf,
+d403 1
+a403 1
+    SNPRINTF(portName, sizeof(portName), "%s", buf);
+d430 1
+a430 1
+  FillParametersKey(reqKey, sizeof(reqKey));
+d512 4
+a515 2
+    lstrcpyn(pars, pParameters, sizeof(pars));
+    pars[sizeof(pars) - 1] = 0;
+@
+
+
+1.6
+log
+@Implemented pinout customization
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.5 2007/06/01 16:32:04 vfrolov Exp $
+d22 3
+d236 4
+d252 4
+d627 1
+d631 1
+d686 3
+a688 2
+    "(remote/local RTS/DTR/OUT1) or on (logical ON). The exclamation sign (!) can\n"
+    "be used to invert the value.\n"
+@
+
+
+1.5
+log
+@Implemented plug-in and exclusive modes
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.4 2007/01/11 15:05:03 vfrolov Exp $
+d22 3
+d44 3
+d54 4
+d67 7
+d90 5
+d126 1
+a126 1
+DWORD *PortParameters::GetFlagPtr(DWORD bit)
+d133 4
+d150 4
+d159 1
+a159 1
+BOOL PortParameters::SetFlag(const char *pNewFlag, DWORD bit)
+d161 1
+a161 1
+  if (!lstrcmpi(pNewFlag, "*"))
+d166 1
+a166 1
+  if (!lstrcmpi(pNewFlag, "yes")) {
+d170 1
+a170 1
+  if (!lstrcmpi(pNewFlag, "no")) {
+d174 1
+a174 1
+  if (!lstrcmpi(pNewFlag, "-")) {
+d178 1
+d182 1
+a182 1
+  DWORD *pFlag = GetFlagPtr(bit);
+d187 1
+a187 1
+  if (lstrcmpi("-", pNewFlag)) {
+d207 75
+d293 1
+a293 1
+void PortParameters::LoadFlag(HKEY hKey, DWORD bit)
+d295 1
+a295 1
+  DWORD *pFlag = GetFlagPtr(bit);
+d298 1
+a298 1
+  if (pFlag == NULL || pName == NULL)
+d312 1
+a312 1
+    *pFlag = buf;
+d315 1
+a315 1
+    //Trace("  %s=0x%lX\n", pName, (unsigned long)*pFlag);
+d319 1
+a319 1
+LONG PortParameters::SaveFlag(HKEY hKey, DWORD bit)
+d322 1
+a322 1
+    DWORD *pFlag = GetFlagPtr(bit);
+d325 1
+a325 1
+    if (pFlag == NULL || pName == NULL)
+d335 2
+a336 2
+                          (PBYTE)pFlag,
+                          sizeof(*pFlag));
+d348 1
+a348 1
+    //Trace("  New %s=0x%lX\n", pName, (unsigned long)*pFlag);
+d396 7
+a402 2
+  for (int i = 0 ; i < sizeof(flagBits)/sizeof(flagBits[0]) ; i++)
+    LoadFlag(hKey, flagBits[i]);
+d458 9
+a466 2
+  for (int i = 0 ; i < sizeof(flagBits)/sizeof(flagBits[0]) ; i++) {
+    if (SaveFlag(hKey, flagBits[i]) != ERROR_SUCCESS)
+d485 3
+a487 1
+    for (int i = 0 ; i < sizeof(flagBits)/sizeof(flagBits[0]) ; i++) {
+d491 5
+d511 2
+a512 1
+      if (!pVal)
+d514 1
+d524 1
+a524 1
+          DWORD *pFlag = GetFlagPtr(bit);
+d536 21
+a556 2
+        if (i >= sizeof(flagBits)/sizeof(flagBits[0]))
+          return FALSE;
+d578 3
+a580 1
+  for (int i = 0 ; i < sizeof(flagBits)/sizeof(flagBits[0]) ; i++) {
+d584 1
+a584 1
+      DWORD *pFlag = GetFlagPtr(bit);
+d600 35
+d662 13
+a674 5
+    "  PlugInMode={yes|no}     - enable/disable plug-in mode (disabled by default),\n"
+    "                            the plug-in mode port is hidden and can't be open if\n"
+    "                            the paired port is not open\n"
+    "  ExclusiveMode={yes|no}  - enable/disable exclusive mode (disabled by default),\n"
+    "                            the exclusive mode port is hidden if it is open\n"
+@
+
+
+1.4
+log
+@Replaced strtok() by STRTOK_R()
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.3 2006/11/02 16:11:58 vfrolov Exp $
+d22 3
+d43 12
+a54 3
+  m_portName    = 0x0001,
+  m_emuBR       = 0x0002,
+  m_emuOverrun  = 0x0004,
+d70 2
+d104 1
+a104 1
+BOOL PortParameters::SetEmuBR(const char *pNewEmuBR)
+d106 5
+a110 18
+  if (!lstrcmpi(pNewEmuBR, "*"))
+    return TRUE;
+
+  DWORD newEmuBR;
+
+  if (!lstrcmpi(pNewEmuBR, "yes")) {
+    newEmuBR = 0xFFFFFFFF;
+  }
+  else
+  if (!lstrcmpi(pNewEmuBR, "no")) {
+    newEmuBR = 0;
+  }
+  else
+  if (!lstrcmpi(pNewEmuBR, "-")) {
+    newEmuBR = 0;
+  }
+  else {
+    return FALSE;
+d113 11
+a123 15
+  if (lstrcmpi("-", pNewEmuBR)) {
+    if ((maskExplicit & m_emuBR) == 0) {
+      maskExplicit |= m_emuBR;
+      maskChanged |= m_emuBR;
+    }
+  } else {
+    if (maskExplicit & m_emuBR) {
+      maskExplicit &= ~m_emuBR;
+      maskChanged |= m_emuBR;
+    }
+  }
+
+  if (emuBR != newEmuBR) {
+    emuBR = newEmuBR;
+    maskChanged |= m_emuBR;
+d126 1
+a126 1
+  return TRUE;
+d129 1
+a129 1
+BOOL PortParameters::SetEmuOverrun(const char *pNewEmuOverrun)
+d131 1
+a131 1
+  if (!lstrcmpi(pNewEmuOverrun, "*"))
+d134 1
+a134 1
+  DWORD newEmuOverrun;
+d136 2
+a137 2
+  if (!lstrcmpi(pNewEmuOverrun, "yes")) {
+    newEmuOverrun = 0xFFFFFFFF;
+d140 2
+a141 2
+  if (!lstrcmpi(pNewEmuOverrun, "no")) {
+    newEmuOverrun = 0;
+d144 2
+a145 2
+  if (!lstrcmpi(pNewEmuOverrun, "-")) {
+    newEmuOverrun = 0;
+d151 9
+a159 4
+  if (lstrcmpi("-", pNewEmuOverrun)) {
+    if ((maskExplicit & m_emuOverrun) == 0) {
+      maskExplicit |= m_emuOverrun;
+      maskChanged |= m_emuOverrun;
+d162 3
+a164 3
+    if (maskExplicit & m_emuOverrun) {
+      maskExplicit &= ~m_emuOverrun;
+      maskChanged |= m_emuOverrun;
+d168 3
+a170 3
+  if (emuOverrun != newEmuOverrun) {
+    emuOverrun = newEmuOverrun;
+    maskChanged |= m_emuOverrun;
+d187 61
+d290 2
+a291 31
+  len = sizeof(buf);
+
+  err = RegQueryValueEx(hKey,
+                        "EmuBR",
+                        NULL,
+                        NULL,
+                        (PBYTE)buf,
+                        &len);
+
+  if (err == ERROR_SUCCESS) {
+    emuBR = *(PDWORD)buf;
+    maskExplicit |= m_emuBR;
+
+    //Trace("  EmuBR=0x%lX\n", (unsigned long)emuBR);
+  }
+
+  len = sizeof(buf);
+
+  err = RegQueryValueEx(hKey,
+                        "EmuOverrun",
+                        NULL,
+                        NULL,
+                        (PBYTE)buf,
+                        &len);
+
+  if (err == ERROR_SUCCESS) {
+    emuOverrun = *(PDWORD)buf;
+    maskExplicit |= m_emuOverrun;
+
+    //Trace("  EmuOverrun=0x%lX\n", (unsigned long)emuOverrun);
+  }
+d347 2
+a348 16
+  if (maskChanged & m_emuBR) {
+    if (maskExplicit & m_emuBR) {
+      err = RegSetValueEx(hKey,
+                          "EmuBR",
+                          NULL,
+                          REG_DWORD,
+                          (PBYTE)&emuBR,
+                          sizeof(emuBR));
+    } else {
+      err = RegDeleteValue(hKey, "EmuBR");
+
+      if (err == ERROR_FILE_NOT_FOUND)
+        err = ERROR_SUCCESS;
+    }
+
+    if (err != ERROR_SUCCESS)
+a349 25
+
+    maskChanged &= ~m_emuBR;
+    //Trace("  New EmuBR=0x%lX\n", (unsigned long)emuBR);
+  }
+
+  if (maskChanged & m_emuOverrun) {
+    if (maskExplicit & m_emuOverrun) {
+      err = RegSetValueEx(hKey,
+                          "EmuOverrun",
+                          NULL,
+                          REG_DWORD,
+                          (PBYTE)&emuOverrun,
+                          sizeof(emuOverrun));
+    } else {
+      err = RegDeleteValue(hKey, "EmuOverrun");
+
+      if (err == ERROR_FILE_NOT_FOUND)
+        err = ERROR_SUCCESS;
+    }
+
+    if (err != ERROR_SUCCESS)
+      goto err;
+
+    maskChanged &= ~m_emuOverrun;
+    //Trace("  New EmuOverrun=0x%lX\n", (unsigned long)emuOverrun);
+d366 5
+a370 4
+    if (!tmp.SetEmuBR(pParameters))
+      return FALSE;
+    if (!tmp.SetEmuOverrun(pParameters))
+      return FALSE;
+d372 1
+a372 1
+    char pars[100];
+d392 18
+a409 9
+      }
+      else
+      if (!lstrcmpi(pKey, "EmuBR")) {
+        if (!tmp.SetEmuBR(pVal))
+          return FALSE;
+      }
+      else
+      if (!lstrcmpi(pKey, "EmuOverrun")) {
+        if (!tmp.SetEmuOverrun(pVal))
+a411 3
+      else {
+        return FALSE;
+      }
+d424 19
+a442 4
+  len = SNPRINTF(pParameters, size, "PortName=%s,EmuBR=%s,EmuOverrun=%s",
+                 (maskExplicit & m_portName) ? (portName) : "-",
+                 (maskExplicit & m_emuBR) ? (emuBR ? "yes" : "no") : "-",
+                 (maskExplicit & m_emuOverrun) ? (emuOverrun ? "yes" : "no") : "-");
+d444 9
+a452 1
+  return len >= 0;
+d476 8
+a483 4
+    "  EmuBR={yes|no}          - enable/disable baud rate emulation\n"
+    "                            (disabled by default)\n"
+    "  EmuOverrun={yes|no}     - enable/disable buffer overrun\n"
+    "                            (disabled by default)\n"
+@
+
+
+1.3
+log
+@Added default values to help text
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.2 2006/10/27 13:11:58 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006 Vyacheslav Frolov
+d22 3
+d36 1
+d381 6
+a386 2
+    for (const char *pPar = strtok(pars, "=") ; pPar ; pPar = strtok(NULL, "=")) {
+      const char *pVal = strtok(NULL, ",");
+d388 1
+a388 1
+      //Trace("'%s'='%s'\n", pPar, pVal);
+d393 1
+a393 1
+      if (!lstrcmpi(pPar, "PortName")) {
+d398 1
+a398 1
+      if (!lstrcmpi(pPar, "EmuBR")) {
+d403 1
+a403 1
+      if (!lstrcmpi(pPar, "EmuOverrun")) {
+@
+
+
+1.2
+log
+@Added PortParameters::FillPortName()
+@
+text
+@d2 1
+a2 1
+ * $Id: params.cpp,v 1.1 2006/07/28 12:16:43 vfrolov Exp $
+d22 3
+a27 1
+ *
+d442 1
+d444 1
+d446 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 4
+a24 1
+ * $Log: $
+d420 10
+@
+

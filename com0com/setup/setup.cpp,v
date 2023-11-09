@@ -1,0 +1,5102 @@
+head	1.55;
+access;
+symbols
+	v3_0_0_0:1.55
+	v2_2_2_0:1.33
+	v2_2_1_0:1.30
+	v2_2_0_0:1.25
+	v2_1_0_0:1.23
+	v2_0_0_0:1.22
+	v1_8_0_0:1.14
+	RELEASED:1.55
+	v1_7_0_0:1.11;
+locks; strict;
+comment	@// @;
+
+
+1.55
+date	2012.01.31.05.47.22;	author vfrolov;	state Exp;
+branches;
+next	1.54;
+
+1.54
+date	2012.01.10.11.24.27;	author vfrolov;	state Exp;
+branches;
+next	1.53;
+
+1.53
+date	2011.12.29.14.34.23;	author vfrolov;	state Exp;
+branches;
+next	1.52;
+
+1.52
+date	2011.12.28.06.23.50;	author vfrolov;	state Exp;
+branches;
+next	1.51;
+
+1.51
+date	2011.12.27.11.38.13;	author vfrolov;	state Exp;
+branches;
+next	1.50;
+
+1.50
+date	2011.12.23.05.37.21;	author vfrolov;	state Exp;
+branches;
+next	1.49;
+
+1.49
+date	2011.12.21.13.24.12;	author vfrolov;	state Exp;
+branches;
+next	1.48;
+
+1.48
+date	2011.12.15.16.43.20;	author vfrolov;	state Exp;
+branches;
+next	1.47;
+
+1.47
+date	2011.12.15.15.51.48;	author vfrolov;	state Exp;
+branches;
+next	1.46;
+
+1.46
+date	2011.07.15.16.09.05;	author vfrolov;	state Exp;
+branches;
+next	1.45;
+
+1.45
+date	2011.07.13.17.39.56;	author vfrolov;	state Exp;
+branches;
+next	1.44;
+
+1.44
+date	2010.07.30.09.19.29;	author vfrolov;	state Exp;
+branches;
+next	1.43;
+
+1.43
+date	2010.07.29.12.18.43;	author vfrolov;	state Exp;
+branches;
+next	1.42;
+
+1.42
+date	2010.07.19.11.23.54;	author vfrolov;	state Exp;
+branches;
+next	1.41;
+
+1.41
+date	2010.07.15.18.11.10;	author vfrolov;	state Exp;
+branches;
+next	1.40;
+
+1.40
+date	2010.07.12.18.14.44;	author vfrolov;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	2010.06.07.07.03.31;	author vfrolov;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	2010.06.01.06.14.10;	author vfrolov;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	2010.05.31.07.58.14;	author vfrolov;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	2010.05.27.11.16.46;	author vfrolov;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	2010.03.30.08.05.15;	author vfrolov;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2010.03.11.13.40.57;	author vfrolov;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2009.11.16.08.43.44;	author vfrolov;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2009.09.18.11.21.31;	author vfrolov;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2009.09.18.07.48.11;	author vfrolov;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2009.02.16.10.32.56;	author vfrolov;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2009.02.11.07.35.22;	author vfrolov;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2009.01.12.12.48.05;	author vfrolov;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2008.12.25.16.58.45;	author vfrolov;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2008.12.24.15.32.22;	author vfrolov;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2008.09.12.12.21.49;	author vfrolov;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2008.09.12.09.55.59;	author vfrolov;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2008.04.02.10.28.24;	author vfrolov;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2007.11.27.16.32.54;	author vfrolov;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2007.10.19.16.09.55;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2007.10.15.13.49.04;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2007.10.05.07.28.26;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2007.10.01.15.44.19;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2007.10.01.15.01.35;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2007.09.25.12.42.49;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2007.07.03.14.42.10;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2007.06.14.16.14.19;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2007.05.29.15.30.41;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2007.01.11.15.05.03;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2006.11.21.11.36.06;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2006.11.10.14.07.40;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2006.11.03.16.13.29;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2006.11.03.13.22.07;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2006.11.02.16.20.44;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2006.10.27.13.23.49;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2006.10.23.12.08.31;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2006.10.19.13.28.50;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2006.10.13.10.26.35;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2006.08.25.10.36.48;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2006.07.28.12.16.42;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.55
+log
+@Deprecated invoking of system-supplied advanced settings dialog box
+Allowed re-use port name while migration from Ports class to CNCPorts class
+@
+text
+@/*
+ * $Id: setup.cpp,v 1.54 2012/01/10 11:24:27 vfrolov Exp $
+ *
+ * Copyright (c) 2006-2012 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: setup.cpp,v $
+ * Revision 1.54  2012/01/10 11:24:27  vfrolov
+ * Added ability to repeate waiting for no pending device
+ * installation activities
+ *
+ * Revision 1.53  2011/12/29 14:34:23  vfrolov
+ * Implemented RealPortName=COM<n> for PortName=COM#
+ *
+ * Revision 1.52  2011/12/28 06:23:50  vfrolov
+ * Added setting friendly names for ports after changing port class
+ *
+ * Revision 1.51  2011/12/27 11:38:13  vfrolov
+ * Superseded incorrect PortParameters::ClassChanged()
+ *
+ * Revision 1.50  2011/12/23 05:37:21  vfrolov
+ * Implemented setting friendly names for ports
+ * Added options -no-update-fnames and --show-fnames
+ * Added commands updatefnames and listfnames
+ *
+ * Revision 1.49  2011/12/21 13:24:12  vfrolov
+ * Added using DeviceDesc to set FriendlyName
+ *
+ * Revision 1.48  2011/12/15 16:43:20  vfrolov
+ * Added parameters parsing result check
+ *
+ * Revision 1.47  2011/12/15 15:51:48  vfrolov
+ * Fixed types
+ *
+ * Revision 1.46  2011/07/15 16:09:05  vfrolov
+ * Disabled MessageBox() for silent mode and added default processing
+ *
+ * Revision 1.45  2011/07/13 17:39:56  vfrolov
+ * Fixed result treatment of UpdateDriverForPlugAndPlayDevices()
+ *
+ * Revision 1.44  2010/07/30 09:19:29  vfrolov
+ * Added STRDUP()
+ *
+ * Revision 1.43  2010/07/29 12:18:43  vfrolov
+ * Fixed waiting stuff
+ *
+ * Revision 1.42  2010/07/19 11:23:54  vfrolov
+ * Added install command w/o prms to update driver
+ * Added ability to use --wait option with any command
+ *
+ * Revision 1.41  2010/07/15 18:11:10  vfrolov
+ * Fixed --wait option for Ports class
+ *
+ * Revision 1.40  2010/07/12 18:14:44  vfrolov
+ * Fixed driver update duplication
+ *
+ * Revision 1.39  2010/06/07 07:03:31  vfrolov
+ * Added wrapper UpdateDriver() for UpdateDriverForPlugAndPlayDevices()
+ *
+ * Revision 1.38  2010/06/01 06:14:10  vfrolov
+ * Improved driver updating
+ *
+ * Revision 1.37  2010/05/31 07:58:14  vfrolov
+ * Added ability to invoke the system-supplied advanced settings dialog box
+ *
+ * Revision 1.36  2010/05/27 11:16:46  vfrolov
+ * Added ability to put the port to the Ports class
+ *
+ * Revision 1.35  2010/03/30 08:05:15  vfrolov
+ * Fixed bugs item #2979007 "setupc command line limited to 200 chars"
+ * Reported by Henrik Maier (hwmaier)
+ *
+ * Revision 1.34  2010/03/11 13:40:57  vfrolov
+ * Fixed size typo, bug #2968585
+ * Thanks Xlnt (xlnt9568)
+ *
+ * Revision 1.33  2009/11/16 08:43:44  vfrolov
+ * Fixed endless loop if no ports logged in ComDB
+ *
+ * Revision 1.32  2009/09/18 11:21:31  vfrolov
+ * Added --wait option
+ *
+ * Revision 1.31  2009/09/18 07:48:11  vfrolov
+ * Added missing argv[0] shift
+ *
+ * Revision 1.30  2009/02/16 10:32:56  vfrolov
+ * Added Silent() and PromptReboot()
+ *
+ * Revision 1.29  2009/02/11 07:35:22  vfrolov
+ * Added --no-update option
+ *
+ * Revision 1.28  2009/01/12 12:48:05  vfrolov
+ * Fixed typo
+ *
+ * Revision 1.27  2008/12/25 16:58:45  vfrolov
+ * Implemented busynames command
+ *
+ * Revision 1.26  2008/12/24 15:32:22  vfrolov
+ * Added logging COM port numbers in the COM port database
+ *
+ * Revision 1.25  2008/09/12 12:21:49  vfrolov
+ * Added --silent option
+ *
+ * Revision 1.24  2008/09/12 09:55:59  vfrolov
+ * Fixed help cutting
+ *
+ * Revision 1.23  2008/04/02 10:28:24  vfrolov
+ * Added reload command
+ *
+ * Revision 1.22  2007/11/27 16:32:54  vfrolov
+ * Added disable and enable options
+ *
+ * Revision 1.21  2007/10/19 16:09:55  vfrolov
+ * Implemented --detail-prms option
+ *
+ * Revision 1.20  2007/10/15 13:49:04  vfrolov
+ * Added entry point MainA
+ *
+ * Revision 1.19  2007/10/05 07:28:26  vfrolov
+ * Added listing pairs w/o PortNum
+ *
+ * Revision 1.18  2007/10/01 15:44:19  vfrolov
+ * Added check for install two ports with the same name
+ *
+ * Revision 1.17  2007/10/01 15:01:35  vfrolov
+ * Added pDevInstID parameter to InstallDevice()
+ *
+ * Revision 1.16  2007/09/25 12:42:49  vfrolov
+ * Fixed update command (bug if multiple pairs active)
+ * Fixed uninstall command (restore active ports on cancell)
+ *
+ * Revision 1.15  2007/07/03 14:42:10  vfrolov
+ * Added friendly name setting for bus device
+ *
+ * Revision 1.14  2007/06/14 16:14:19  vfrolov
+ * Added test for "in use" in the COM port database
+ *
+ * Revision 1.13  2007/05/29 15:30:41  vfrolov
+ * Fixed big hepl text interrupt
+ *
+ * Revision 1.12  2007/01/11 15:05:03  vfrolov
+ * Replaced strtok() by STRTOK_R()
+ *
+ * Revision 1.11  2006/11/21 11:36:06  vfrolov
+ * Added --output option
+ *
+ * Revision 1.10  2006/11/10 14:07:40  vfrolov
+ * Implemented remove command
+ *
+ * Revision 1.9  2006/11/03 16:13:29  vfrolov
+ * Added port name length checkings
+ *
+ * Revision 1.8  2006/11/03 13:22:07  vfrolov
+ * Added checking of BusyMask::AddNum() return value
+ *
+ * Revision 1.7  2006/11/02 16:20:44  vfrolov
+ * Added usage the fixed port numbers
+ *
+ * Revision 1.6  2006/10/27 13:23:49  vfrolov
+ * Added check if port name is already used for other device
+ * Fixed incorrect port restart
+ * Fixed prompts
+ *
+ * Revision 1.5  2006/10/23 12:08:31  vfrolov
+ * Added interactive mode
+ * Added more help
+ * Added SetTitle() calls
+ *
+ * Revision 1.4  2006/10/19 13:28:50  vfrolov
+ * Added InfFile::UninstallAllInfFiles()
+ *
+ * Revision 1.3  2006/10/13 10:26:35  vfrolov
+ * Some defines moved to ../include/com0com.h
+ * Changed name of device object (for WMI)
+ *
+ * Revision 1.2  2006/08/25 10:36:48  vfrolov
+ * Added C0C_PREF_PORT_NAME_A and C0C_PREF_PORT_NAME_B defines
+ * Added deleting Class subkeys
+ *
+ * Revision 1.1  2006/07/28 12:16:42  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "inffile.h"
+#include "params.h"
+#include "devutils.h"
+#include "msg.h"
+#include "utils.h"
+#include "portnum.h"
+#include "comdb.h"
+#include <msports.h>
+
+#define TEXT_PREF
+#include "../include/com0com.h"
+
+#define C0C_INF_NAME             "com0com.inf"
+#define C0C_INF_NAME_CNCPORT     "cncport.inf"
+#define C0C_INF_NAME_COMPORT     "comport.inf"
+#define C0C_CNCCLASS_GUID        "{df799e12-3c56-421b-b298-b6d3642bc878}"
+#define C0C_COMCLASS_GUID        "{4d36e978-e325-11ce-bfc1-08002be10318}"
+#define C0C_PROVIDER             "Vyacheslav Frolov"
+#define C0C_REGKEY_EVENTLOG      REGSTR_PATH_SERVICES "\\Eventlog\\System\\" C0C_SERVICE
+#define C0C_COPY_DRIVERS_SECTION "com0com_CopyDrivers"
+
+#define C0C_SETUP_TITLE          "Setup for com0com"
+///////////////////////////////////////////////////////////////
+static const InfFile::InfFileField requiredFieldsInfBusInstall[] = {
+  { "Version",         "ClassGUID",          1, C0C_CNCCLASS_GUID },
+  { "Version",         "Provider",           1, C0C_PROVIDER },
+  { "Version",         "UninstallInfTag",    1, C0C_CNCCLASS_GUID },
+  { "Manufacturer",    NULL,                 1, C0C_SERVICE },
+  { NULL },
+};
+
+static const InfFile::InfFileField requiredFieldsInfCNCPortInstall[] = {
+  { "Version",         "ClassGUID",          1, C0C_CNCCLASS_GUID },
+  { "Version",         "Provider",           1, C0C_PROVIDER },
+  { "Version",         "UninstallInfTag",    1, C0C_CNCCLASS_GUID },
+  { "Manufacturer",    NULL,                 1, C0C_SERVICE },
+  { NULL },
+};
+
+static const InfFile::InfFileField requiredFieldsInfCOMPortInstall[] = {
+  { "Version",         "ClassGUID",          1, C0C_COMCLASS_GUID },
+  { "Version",         "Provider",           1, C0C_PROVIDER },
+  { "Version",         "UninstallInfTag",    1, C0C_CNCCLASS_GUID },
+  { "Manufacturer",    NULL,                 1, C0C_SERVICE },
+  { NULL },
+};
+
+struct InfFileInstall {
+  const char *pInfName;
+  const char *pCopyDriversSection;
+  const char *pHardwareId;
+  bool preinstallClass;
+  const InfFile::InfFileField *pRequiredFields;
+};
+
+static const InfFileInstall infFileInstallList[] = {
+  { C0C_INF_NAME,          C0C_COPY_DRIVERS_SECTION,  C0C_BUS_DEVICE_ID,        TRUE,  requiredFieldsInfBusInstall },
+  { C0C_INF_NAME_CNCPORT,  NULL,                      C0C_PORT_HW_ID_CNCCLASS,  FALSE, requiredFieldsInfCNCPortInstall },
+  { C0C_INF_NAME_COMPORT,  NULL,                      C0C_PORT_HW_ID_COMCLASS,  FALSE, requiredFieldsInfCOMPortInstall },
+  { NULL },
+};
+///////////////////////////////////////////////////////////////
+static const InfFile::InfFileField requiredFieldsInfUnnstallInfTag[] = {
+  { "Version",         "UninstallInfTag",    1, C0C_CNCCLASS_GUID },
+  { "Manufacturer",    NULL,                 1, C0C_SERVICE },
+  { NULL },
+};
+
+static const InfFile::InfFileField requiredFieldsInfUnnstallCNCOld[] = {
+  { "Version",         "ClassGUID",          1, C0C_CNCCLASS_GUID },
+  { "Version",         "Provider",           1, C0C_PROVIDER },
+  { "Version",         "CatalogFile",        1, "com0com.cat" },
+  { NULL },
+};
+
+static const InfFile::InfFileField requiredFieldsInfUnnstallCNCClass[] = {
+  { "Version",         "ClassGUID",          1, C0C_CNCCLASS_GUID },
+  { NULL },
+};
+
+static const InfFile::InfFileField requiredFieldsInfUnnstallCOMClass[] = {
+  { "Version",         "ClassGUID",          1, C0C_COMCLASS_GUID },
+  { "Manufacturer",    NULL,                 1, C0C_SERVICE },
+  { NULL },
+};
+
+static const InfFile::InfFileUninstall infFileUnnstallList[] = {
+  { requiredFieldsInfUnnstallInfTag,    FALSE },
+  { requiredFieldsInfUnnstallCNCOld,    FALSE },
+  { requiredFieldsInfUnnstallCNCClass,  TRUE },
+  { requiredFieldsInfUnnstallCOMClass,  TRUE },
+  { NULL },
+};
+///////////////////////////////////////////////////////////////
+static int timeout = 0;
+static bool repeate_timeout = FALSE;
+static bool detailPrms = FALSE;
+static bool no_update = FALSE;
+static bool no_update_fnames = FALSE;
+static bool show_fnames = FALSE;
+///////////////////////////////////////////////////////////////
+bool IsComClass(const char *pPortName)
+{
+  return lstrcmpi(pPortName, C0C_PORT_NAME_COMCLASS) == 0;
+}
+///////////////////////////////////////////////////////////////
+static CNC_ENUM_FILTER EnumFilter;
+static bool EnumFilter(const char *pHardwareId)
+{
+  if (!pHardwareId)
+    return FALSE;
+
+  if (lstrcmpi(pHardwareId, C0C_BUS_DEVICE_ID) == 0 ||
+      lstrcmpi(pHardwareId, C0C_PORT_DEVICE_ID) == 0)
+  {
+    //Trace("CNC %s\n", pHardwareId);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+///////////////////////////////////////////////////////////////
+static bool FillPortDevProperties(DevProperties &devProperties, int iBus, bool isA)
+{
+  char phDevName[40];
+
+  SNPRINTF(phDevName, sizeof(phDevName)/sizeof(phDevName[0]), "%s%d",
+    isA ? C0C_PREF_DEVICE_NAME_A : C0C_PREF_DEVICE_NAME_B, iBus);
+
+  if (!devProperties.DevId(C0C_PORT_DEVICE_ID))
+    return FALSE;
+
+  if (!devProperties.PhObjName(phDevName))
+    return FALSE;
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static bool IsValidPortNum(int num)
+{
+  if (num < 0)
+    return FALSE;
+
+  char buf[C0C_PORT_NAME_LEN + 1];
+
+  if (SNPRINTF(buf, sizeof(buf)/sizeof(buf[0]), C0C_PREF_BUS_NAME "%d", num) < 0 ||
+      SNPRINTF(buf, sizeof(buf)/sizeof(buf[0]), C0C_PREF_PORT_NAME_A "%d", num) < 0 ||
+      SNPRINTF(buf, sizeof(buf)/sizeof(buf[0]), C0C_PREF_PORT_NAME_B "%d", num) < 0)
+  {
+    int res = ShowMsg(MB_OKCANCEL|MB_ICONWARNING, "The port number %d is too big.\n", num);
+
+    if (res == IDCANCEL || res == 0)
+      return FALSE;
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static bool IsValidPortName(
+    const char *pPortName)
+{
+  int res;
+  int len = lstrlen(pPortName);
+
+  if (len <= 0) {
+    ShowMsg(MB_OK|MB_ICONSTOP, "The port name is empty.\n");
+    return FALSE;
+  }
+  else
+  if (len > C0C_PORT_NAME_LEN) {
+    res = ShowMsg(MB_OKCANCEL|MB_ICONWARNING,
+                  "The length of port name %s\n"
+                  "is too big (greater then %d).\n",
+                  pPortName, C0C_PORT_NAME_LEN);
+
+    if (res == IDCANCEL || res == 0)
+      return FALSE;
+  }
+
+  do {
+    res = IDCONTINUE;
+
+    char phDevName[80];
+
+    if (!QueryDosDevice(pPortName, phDevName, sizeof(phDevName)/sizeof(phDevName[0]))) {
+      if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+        continue;
+
+      phDevName[0] = 0;
+    }
+
+    res = ShowMsg(MB_CANCELTRYCONTINUE,
+                  "The port name %s is already used for other device %s.\n",
+                  pPortName, phDevName);
+
+  } while (res == IDTRYAGAIN);
+
+  if (res != IDCONTINUE)
+    return FALSE;
+
+  do {
+    res = IDCONTINUE;
+
+    bool inUse;
+
+    if (!ComDbGetInUse(pPortName, inUse)) {
+      res = IDCANCEL;
+      continue;
+    }
+
+    if (inUse) {
+      res = ShowMsg(MB_CANCELTRYCONTINUE,
+                    "The port name %s is already logged as \"in use\"\n"
+                    "in the COM port database.\n",
+                    pPortName);
+    }
+  } while (res == IDTRYAGAIN);
+
+  if (res != IDCONTINUE)
+    return FALSE;
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static VOID UpdateFriendlyNameBus(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    int num)
+{
+  char portName[2][20];
+
+  for (int j = 0 ; j < 2 ; j++) {
+    char phPortName[20];
+
+    SNPRINTF(phPortName, sizeof(phPortName)/sizeof(phPortName[0]), "%s%d",
+             j ? C0C_PREF_PORT_NAME_B : C0C_PREF_PORT_NAME_A, num);
+
+    PortParameters portParameters(C0C_SERVICE, phPortName);
+
+    if (portParameters.Load() == ERROR_SUCCESS)
+      portParameters.FillPortName(portName[j], sizeof(portName[j])/sizeof(portName[j][0]));
+    else
+      SNPRINTF(portName[j], sizeof(portName[j])/sizeof(portName[j][0]), "%s", phPortName);
+  }
+
+  char friendlyNameOld[120];
+
+  if (!SetupDiGetDeviceRegistryProperty(hDevInfo, pDevInfoData, SPDRP_FRIENDLYNAME, NULL,
+                                        (LPBYTE)friendlyNameOld, sizeof(friendlyNameOld), NULL))
+  {
+    SNPRINTF(friendlyNameOld, sizeof(friendlyNameOld)/sizeof(friendlyNameOld[0]), "");
+  }
+
+  if (show_fnames)
+    Trace("       " C0C_PREF_BUS_NAME "%d FriendlyName=\"%s\"\n", num, friendlyNameOld);
+
+  if (!no_update_fnames) {
+    char deviceDesc[80];
+
+    if (!SetupDiGetDeviceRegistryProperty(hDevInfo, pDevInfoData, SPDRP_DEVICEDESC, NULL,
+                                          (LPBYTE)deviceDesc, sizeof(deviceDesc), NULL))
+    {
+      SNPRINTF(deviceDesc, sizeof(deviceDesc)/sizeof(deviceDesc[0]),
+               "com0com - bus for serial port pair emulator");
+    }
+
+    char friendlyName[120];
+
+    SNPRINTF(friendlyName, sizeof(friendlyName)/sizeof(friendlyName[0]),
+             "%s %d (%s <-> %s)",
+             deviceDesc, num, portName[0], portName[1]);
+
+    if (lstrcmp(friendlyName, friendlyNameOld) != 0) {
+      if (SetupDiSetDeviceRegistryProperty(hDevInfo, pDevInfoData, SPDRP_FRIENDLYNAME,
+                                      (LPBYTE)friendlyName, (lstrlen(friendlyName) + 1) * sizeof(*friendlyName)))
+      {
+        if (show_fnames)
+          Trace("update " C0C_PREF_BUS_NAME "%d FriendlyName=\"%s\"\n", num, friendlyName);
+      }
+    }
+  }
+}
+///////////////////////////////////////////////////////////////
+static VOID SetFriendlyNamePort(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    const char *pPhObjName)
+{
+  //Trace("SetFriendlyNamePort pPhObjName=%s\n", pPhObjName);
+
+  if (!pPhObjName)
+    return;
+
+  char phPortName[20];
+
+  for (int j = 0 ;; j++) {
+    if (j > 1)
+      return;
+
+    const char *pPref = (j ? C0C_PREF_DEVICE_NAME_B : C0C_PREF_DEVICE_NAME_A);
+    int lenPref = lstrlen(pPref);
+
+    if (lenPref >= lstrlen(pPhObjName))
+      continue;
+
+    if (memcmp(pPhObjName, pPref, lenPref*sizeof(pPref[0])) != 0)
+      continue;
+
+    int num;
+
+    if (!StrToInt(pPhObjName + lenPref, &num) || num < 0)
+      continue;
+
+    SNPRINTF(phPortName, sizeof(phPortName)/sizeof(phPortName[0]), "%s%d",
+             j ? C0C_PREF_PORT_NAME_B : C0C_PREF_PORT_NAME_A, num);
+
+    break;
+  }
+
+  //Trace("SetFriendlyNamePort phPortName=%s\n", phPortName);
+
+  char portName[20];
+  PortParameters portParameters(C0C_SERVICE, phPortName);
+
+  if (portParameters.Load() == ERROR_SUCCESS)
+    portParameters.FillPortName(portName, sizeof(portName)/sizeof(portName[0]));
+  else
+    SNPRINTF(portName, sizeof(portName)/sizeof(portName[0]), "%s", phPortName);
+
+  //Trace("SetFriendlyNamePort portName=%s\n", portName);
+
+  char friendlyNameOld[120];
+
+  if (!SetupDiGetDeviceRegistryProperty(hDevInfo, pDevInfoData, SPDRP_FRIENDLYNAME, NULL,
+                                        (LPBYTE)friendlyNameOld, sizeof(friendlyNameOld), NULL))
+  {
+    SNPRINTF(friendlyNameOld, sizeof(friendlyNameOld)/sizeof(friendlyNameOld[0]), "");
+  }
+
+  if (show_fnames)
+    Trace("       %s FriendlyName=\"%s\"\n", phPortName, friendlyNameOld);
+
+  if (IsComClass(portName)) {
+    HKEY hKey = SetupDiOpenDevRegKey(hDevInfo, pDevInfoData, DICS_FLAG_GLOBAL, 0, DIREG_DEV, KEY_READ);
+
+    if (hKey == INVALID_HANDLE_VALUE)
+      return;
+
+    DWORD len = sizeof(portName);
+
+    LONG err = RegQueryValueEx(hKey, "PortName", NULL, NULL, (PBYTE)portName, &len);
+
+    RegCloseKey(hKey);
+
+    if (err != ERROR_SUCCESS)
+      return;
+  }
+
+  if (!no_update_fnames) {
+    char deviceDesc[80];
+
+    if (!SetupDiGetDeviceRegistryProperty(hDevInfo, pDevInfoData, SPDRP_DEVICEDESC, NULL,
+                                          (LPBYTE)deviceDesc, sizeof(deviceDesc), NULL))
+    {
+      SNPRINTF(deviceDesc, sizeof(deviceDesc)/sizeof(deviceDesc[0]),
+               "com0com - serial port emulator");
+    }
+
+    char friendlyName[120];
+
+    SNPRINTF(friendlyName, sizeof(friendlyName)/sizeof(friendlyName[0]), "%s %s (%s)", deviceDesc, phPortName, portName);
+
+    //Trace("SetFriendlyNamePort friendlyName=%s\n", friendlyName);
+
+    if (lstrcmp(friendlyName, friendlyNameOld) != 0) {
+      if (SetupDiSetDeviceRegistryProperty(hDevInfo, pDevInfoData, SPDRP_FRIENDLYNAME,
+                                      (LPBYTE)friendlyName, (lstrlen(friendlyName) + 1) * sizeof(*friendlyName)))
+      {
+        if (show_fnames)
+          Trace("update %s FriendlyName=\"%s\"\n", phPortName, friendlyName);
+      }
+    }
+  }
+}
+///////////////////////////////////////////////////////////////
+static CNC_DEV_CALLBACK UpdateFriendlyNamePort;
+static bool UpdateFriendlyNamePort(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties pDevProperties,
+    BOOL * /*pRebootRequired*/,
+    void * /*pParam*/)
+{
+  if (!lstrcmp(pDevProperties->DevId(), C0C_PORT_DEVICE_ID)) {
+    SetFriendlyNamePort(hDevInfo, pDevInfoData, pDevProperties->PhObjName());
+    return TRUE;
+  }
+
+  // we never should be here
+  return FALSE;
+}
+///////////////////////////////////////////////////////////////
+static CNC_DEV_CALLBACK UpdateFriendlyNamesBus;
+static bool UpdateFriendlyNamesBus(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties pDevProperties,
+    BOOL *pRebootRequired,
+    void *pParam)
+{
+  if (!lstrcmp(pDevProperties->DevId(), C0C_BUS_DEVICE_ID)) {
+    int num = GetPortNum(hDevInfo, pDevInfoData);
+
+    if (*(int *)pParam == num || *(int *)pParam == -1) {
+      UpdateFriendlyNameBus(hDevInfo, pDevInfoData, num);
+
+      for (int j = 0 ; j < 2 ; j++) {
+        DevProperties devProperties;
+
+        if (!FillPortDevProperties(devProperties, num, j == 0))
+          return FALSE;
+
+        EnumDevices(EnumFilter, &devProperties, pRebootRequired, UpdateFriendlyNamePort, NULL);
+      }
+    }
+
+    return TRUE;
+  }
+
+  // we never should be here
+  return FALSE;
+}
+///////////////////////////////////////////////////////////////
+static VOID CleanDevPropertiesStack(
+    Stack &stack,
+    bool enable,
+    BOOL *pRebootRequired)
+{
+  for (;;) {
+    StackEl *pElem = stack.Pop();
+
+    if (!pElem)
+      break;
+
+    DevProperties *pDevProperties = (DevProperties *)pElem->pData;
+
+    delete pElem;
+
+    if (pDevProperties) {
+      if (enable && pDevProperties->PhObjName())
+        EnableDevices(EnumFilter, pDevProperties, pRebootRequired);
+
+      delete pDevProperties;
+    }
+  }
+}
+///////////////////////////////////////////////////////////////
+static CNC_DEV_CALLBACK LoadRealPortName;
+static bool LoadRealPortName(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties pDevProperties,
+    BOOL * /*pRebootRequired*/,
+    void *pParam)
+{
+  if (!lstrcmp(pDevProperties->DevId(), C0C_PORT_DEVICE_ID)) {
+    HKEY hKey = SetupDiOpenDevRegKey(hDevInfo, pDevInfoData, DICS_FLAG_GLOBAL, 0, DIREG_DEV, KEY_READ);
+
+    if (hKey != INVALID_HANDLE_VALUE) {
+      char portNameOld[20];
+      DWORD len = sizeof(portNameOld);
+
+      LONG err = RegQueryValueEx(hKey, "PortName", NULL, NULL, (PBYTE)portNameOld, &len);
+
+      if (err == ERROR_SUCCESS)
+        ((PortParameters *)pParam)->InitRealPortName(portNameOld);
+
+      RegCloseKey(hKey);
+    }
+
+    return TRUE;
+  }
+
+  // we never should be here
+  return FALSE;
+}
+
+static CNC_DEV_CALLBACK UpdateRealPortName;
+static bool UpdateRealPortName(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties pDevProperties,
+    BOOL * /*pRebootRequired*/,
+    void *pParam)
+{
+  if (!lstrcmp(pDevProperties->DevId(), C0C_PORT_DEVICE_ID)) {
+    HKEY hKey = SetupDiOpenDevRegKey(hDevInfo, pDevInfoData, DICS_FLAG_GLOBAL, 0, DIREG_DEV, KEY_READ|KEY_WRITE);
+
+    if (hKey != INVALID_HANDLE_VALUE) {
+      char portNameOld[20];
+      DWORD len = sizeof(portNameOld);
+
+      LONG err = RegQueryValueEx(hKey, "PortName", NULL, NULL, (PBYTE)portNameOld, &len);
+
+      if (err == ERROR_SUCCESS) {
+        const char*pPortNameNew = (const char*)pParam;
+
+        if (ComDbClaim(pPortNameNew)) {
+          err = RegSetValueEx(hKey, "PortName", 0, REG_SZ,
+                              (PBYTE)pPortNameNew, (lstrlen(pPortNameNew) + 1) * sizeof(pPortNameNew[0]));
+
+          if (err == ERROR_SUCCESS) {
+            ComDbRelease((const char*)portNameOld);
+            SetFriendlyNamePort(hDevInfo, pDevInfoData, pDevProperties->PhObjName());
+          } else {
+            ComDbRelease(pPortNameNew);
+          }
+        }
+      }
+
+      RegCloseKey(hKey);
+    }
+
+    return TRUE;
+  }
+
+  // we never should be here
+  return FALSE;
+}
+
+struct ChangeDeviceParams {
+  ChangeDeviceParams(
+    const char *_pPhPortName,
+    const char *_pParameters)
+  : pPhPortName(_pPhPortName), pParameters(_pParameters), changed(FALSE) {}
+
+  const char *pPhPortName;
+  const char *pParameters;
+  bool changed;
+};
+
+static CNC_DEV_CALLBACK ChangeDevice;
+static bool ChangeDevice(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties /*pDevProperties*/,
+    BOOL *pRebootRequired,
+    void *pParam)
+{
+  int i = GetPortNum(hDevInfo, pDevInfoData);
+
+  if (i >= 0) {
+    const char *pPhPortName = ((ChangeDeviceParams *)pParam)->pPhPortName;
+    const char *pParameters = ((ChangeDeviceParams *)pParam)->pParameters;
+
+    for (int j = 0 ; j < 2 ; j++) {
+      char buf[200];
+      char phPortName[20];
+
+      SNPRINTF(phPortName, sizeof(phPortName)/sizeof(phPortName[0]), "%s%d",
+               j ? C0C_PREF_PORT_NAME_B : C0C_PREF_PORT_NAME_A, i);
+
+      PortParameters portParameters(C0C_SERVICE, phPortName);
+      LONG err = portParameters.Load();
+
+      if (err != ERROR_SUCCESS) {
+        portParameters.FillParametersStr(buf, sizeof(buf)/sizeof(buf[0]), detailPrms);
+        Trace("       %s %s\n", phPortName, buf);
+        ShowError(MB_OK|MB_ICONWARNING, err, "portParameters.Load(%s)", phPortName);
+        continue;
+      }
+
+      char portNameOld[20];
+
+      if (!portParameters.FillPortName(portNameOld, sizeof(portNameOld)/sizeof(portNameOld[0])))
+        continue;
+
+      bool isComClassOld = IsComClass(portNameOld);
+
+      DevProperties devProperties;
+
+      if (!FillPortDevProperties(devProperties, i, j == 0))
+        continue;
+
+      if (isComClassOld)
+        EnumDevices(EnumFilter, &devProperties, pRebootRequired, LoadRealPortName, &portParameters);
+
+      portParameters.FillParametersStr(buf, sizeof(buf)/sizeof(buf[0]), detailPrms);
+
+      Trace("       %s %s\n", phPortName, buf);
+
+      if (!pPhPortName || lstrcmpi(pPhPortName, phPortName) != 0 || !pParameters)
+        continue;
+
+      char realPortNameOld[20];
+
+      if (!portParameters.FillRealPortName(realPortNameOld, sizeof(realPortNameOld)/sizeof(realPortNameOld[0])))
+        continue;
+
+      if (!portParameters.ParseParametersStr(pParameters))
+        continue;
+
+      char portNameNew[20];
+
+      if (!portParameters.FillPortName(portNameNew, sizeof(portNameNew)/sizeof(portNameNew[0])))
+        continue;
+
+      if (lstrcmpi(portNameNew, portNameOld) != 0) {
+        if (!isComClassOld || lstrcmpi("", realPortNameOld) == 0 || lstrcmpi(portNameNew, realPortNameOld) != 0) {
+          if (!IsValidPortName(portNameNew))
+            continue;
+        }
+      }
+
+      bool isComClassNew = IsComClass(portNameNew);
+
+      if (!isComClassNew || !isComClassOld) {
+        realPortNameOld[0] = 0;
+        portParameters.InitRealPortName();   // ignore RealPortName param
+      }
+
+      if (!portParameters.Changed())
+        continue;
+
+      char realPortNameNew[20];
+
+      if (!portParameters.FillRealPortName(realPortNameNew, sizeof(realPortNameNew)/sizeof(realPortNameNew[0])))
+        continue;
+
+      if (lstrcmpi(realPortNameNew, realPortNameOld) != 0) {
+        if (!IsValidPortName(realPortNameNew) || !ComDbIsValidName(realPortNameNew))
+          continue;
+      }
+
+      err = portParameters.Save();
+
+      if (err != ERROR_SUCCESS) {
+        ShowError(MB_OK|MB_ICONWARNING, err, "portParameters.Save(%s)", phPortName);
+        continue;
+      }
+
+      ((ChangeDeviceParams *)pParam)->changed = TRUE;
+
+      portParameters.FillParametersStr(buf, sizeof(buf)/sizeof(buf[0]), detailPrms);
+      Trace("change %s %s\n", phPortName, buf);
+
+      if (lstrcmpi(portNameNew, portNameOld) != 0)
+        UpdateFriendlyNameBus(hDevInfo, pDevInfoData, i);
+
+      if (isComClassNew != isComClassOld) {
+        Trace("Changed port class for %s (renamed %s to %s)\n", phPortName, portNameOld, portNameNew);
+        DisableDevices(EnumFilter, &devProperties, pRebootRequired, NULL);  // show msg if in use
+        RemoveDevices(EnumFilter, &devProperties, pRebootRequired);
+        ReenumerateDeviceNode(pDevInfoData);
+        EnumDevices(EnumFilter, &devProperties, pRebootRequired, UpdateFriendlyNamePort, NULL);
+      } else {
+        if (lstrcmpi(portNameNew, portNameOld) != 0)
+          EnumDevices(EnumFilter, &devProperties, pRebootRequired, UpdateFriendlyNamePort, NULL);
+
+        if (lstrcmpi(realPortNameNew, realPortNameOld) != 0)
+          EnumDevices(EnumFilter, &devProperties, pRebootRequired, UpdateRealPortName, realPortNameNew);
+
+        RestartDevices(EnumFilter, &devProperties, pRebootRequired);
+      }
+    }
+  } else {
+    Trace("       " C0C_PREF_PORT_NAME_A "?\n");
+    Trace("       " C0C_PREF_PORT_NAME_B "?\n");
+  }
+
+  return TRUE;
+}
+
+bool Change(const char *pPhPortName, const char *pParameters)
+{
+  BOOL rebootRequired = FALSE;
+  ChangeDeviceParams params(pPhPortName, pParameters);
+
+  DevProperties devProperties;
+  if (!devProperties.DevId(C0C_BUS_DEVICE_ID))
+    return FALSE;
+
+  EnumDevices(EnumFilter, &devProperties, &rebootRequired, ChangeDevice, &params);
+
+  if (params.changed)
+    ComDbSync(EnumFilter);
+
+  if (rebootRequired)
+    PromptReboot();
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+struct RemoveDeviceParams {
+  RemoveDeviceParams(int _num) : num(_num), res(IDCANCEL) {}
+
+  int num;
+  int res;
+};
+
+static CNC_DEV_CALLBACK RemoveDevice;
+static bool RemoveDevice(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties pDevProperties,
+    BOOL *pRebootRequired,
+    void *pParam)
+{
+  int i = GetPortNum(hDevInfo, pDevInfoData);
+
+  if (i == ((RemoveDeviceParams *)pParam)->num) {
+    ((RemoveDeviceParams *)pParam)->res =
+        DisableDevice(hDevInfo, pDevInfoData, pDevProperties, pRebootRequired, NULL);
+
+    if (((RemoveDeviceParams *)pParam)->res != IDCONTINUE)
+      return FALSE;
+
+    return RemoveDevice(hDevInfo, pDevInfoData, pDevProperties, pRebootRequired);
+  }
+
+  return TRUE;
+}
+
+bool Remove(int num)
+{
+  int res;
+  BOOL rebootRequired = FALSE;
+
+  do {
+    RemoveDeviceParams removeDeviceParams(num);
+
+    DevProperties devProperties;
+    if (!devProperties.DevId(C0C_BUS_DEVICE_ID))
+      return FALSE;
+
+    EnumDevices(EnumFilter, &devProperties, &rebootRequired, RemoveDevice, &removeDeviceParams);
+
+    res = removeDeviceParams.res;
+
+  } while (res == IDTRYAGAIN);
+
+  if (res == IDCONTINUE) {
+    for (int j = 0 ; j < 2 ; j++) {
+      char phPortName[20];
+
+      SNPRINTF(phPortName, sizeof(phPortName)/sizeof(phPortName[0]), "%s%d",
+               j ? C0C_PREF_PORT_NAME_B : C0C_PREF_PORT_NAME_A, num);
+
+      DevProperties devProperties;
+
+      if (!devProperties.DevId(C0C_PORT_DEVICE_ID))
+        return FALSE;
+
+      if (!devProperties.Location(phPortName))
+        return FALSE;
+
+      RemoveDevices(EnumFilter, &devProperties, NULL);
+    }
+  }
+
+  ComDbSync(EnumFilter);
+
+  if (rebootRequired)
+    PromptReboot();
+
+  return (res == IDCONTINUE);
+}
+///////////////////////////////////////////////////////////////
+bool Preinstall(const InfFileInstall *pInfFileInstallList)
+{
+  for (
+      const InfFileInstall *pInfFileInstall = pInfFileInstallList ;
+      pInfFileInstall->pInfName != NULL ;
+      pInfFileInstall++)
+  {
+    InfFile infFile(pInfFileInstall->pInfName, pInfFileInstall->pInfName);
+
+    if (pInfFileInstall->preinstallClass) {
+      int res;
+
+      do {
+        res = IDCONTINUE;
+
+        if (SetupDiInstallClass(NULL, infFile.Path(), Silent() ? 0 : DI_QUIETINSTALL, NULL)) {
+          Trace("Installed Class %s\n", infFile.ClassGUID());
+        } else {
+          res = ShowLastError(MB_CANCELTRYCONTINUE, "SetupDiInstallClass()");
+        }
+      } while (res == IDTRYAGAIN);
+
+      if (res != IDCONTINUE)
+        goto err;
+    }
+
+    if (!infFile.InstallOEMInf())
+      goto err;
+  }
+
+  return TRUE;
+
+err:
+
+  Trace("\nPreinstall not completed!\n");
+
+  return FALSE;
+}
+///////////////////////////////////////////////////////////////
+bool Reload(
+    const char *pHardwareId,
+    const char *pInfFilePath,
+    BOOL *pRebootRequired)
+{
+  Stack stack;
+  BOOL rebootRequired = FALSE;
+
+  DevProperties devProperties;
+  if (!devProperties.DevId(pHardwareId))
+    return FALSE;
+
+  if (!DisableDevices(EnumFilter, &devProperties, &rebootRequired, &stack)) {
+    CleanDevPropertiesStack(stack, TRUE, &rebootRequired);
+    return FALSE;
+  }
+
+  if (pHardwareId && pInfFilePath && !no_update) {
+    int res;
+
+    do {
+      res = UpdateDriver(pInfFilePath, pHardwareId, INSTALLFLAG_FORCE, FALSE, &rebootRequired);
+    } while (res == IDTRYAGAIN);
+
+    if (res != IDCONTINUE) {
+      CleanDevPropertiesStack(stack, TRUE, &rebootRequired);
+      return FALSE;
+    }
+  }
+
+  CleanDevPropertiesStack(stack, TRUE, &rebootRequired);
+
+  ComDbSync(EnumFilter);
+
+  if (rebootRequired) {
+    if (pRebootRequired != NULL)
+      *pRebootRequired = TRUE;
+    else
+      PromptReboot();
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool Update(const InfFileInstall *pInfFileInstallList)
+{
+  bool ok = TRUE;
+  BOOL rebootRequired = FALSE;
+
+  for (
+      const InfFileInstall *pInfFileInstall = pInfFileInstallList ;
+      pInfFileInstall->pInfName != NULL ;
+      pInfFileInstall++)
+  {
+    InfFile infFile(pInfFileInstall->pInfName, pInfFileInstall->pInfName);
+
+    if (!Reload(pInfFileInstall->pHardwareId, infFile.Path(), &rebootRequired))
+      ok = FALSE;
+  }
+
+  if (!ok) {
+    Trace("\nUpdate not completed!\n");
+  } else {
+    DevProperties devProperties;
+
+    if (devProperties.DevId(C0C_BUS_DEVICE_ID)) {
+      int num = -1;
+
+      EnumDevices(EnumFilter, &devProperties, &rebootRequired, UpdateFriendlyNamesBus, &num);
+    }
+
+    if (rebootRequired) {
+      PromptReboot();
+    }
+  }
+
+  return ok;
+}
+///////////////////////////////////////////////////////////////
+bool Disable()
+{
+  BOOL rebootRequired = FALSE;
+
+  DevProperties devProperties;
+  if (!devProperties.DevId(C0C_BUS_DEVICE_ID))
+    return FALSE;
+
+  if (!DisableDevices(EnumFilter, &devProperties, &rebootRequired, NULL))
+    return FALSE;
+
+  if (rebootRequired)
+    PromptReboot();
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool Enable()
+{
+  BOOL rebootRequired = FALSE;
+
+  DevProperties devProperties;
+  if (!devProperties.DevId(C0C_BUS_DEVICE_ID))
+    return FALSE;
+
+  if (!EnableDevices(EnumFilter, &devProperties, &rebootRequired)) {
+    return FALSE;
+  }
+
+  if (rebootRequired)
+    PromptReboot();
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+bool Install(const char *pInfFilePath)
+{
+  if (no_update)
+    return TRUE;
+
+  BOOL rebootRequired = FALSE;
+
+  int res;
+
+  do {
+    res = UpdateDriver(pInfFilePath, C0C_BUS_DEVICE_ID, 0, FALSE, &rebootRequired);
+  } while (res == IDTRYAGAIN);
+
+  if (res != IDCONTINUE)
+    return FALSE;
+
+  ComDbSync(EnumFilter);
+
+  DevProperties devProperties;
+
+  if (devProperties.DevId(C0C_BUS_DEVICE_ID)) {
+    int num = -1;
+
+    EnumDevices(EnumFilter, &devProperties, &rebootRequired, UpdateFriendlyNamesBus, &num);
+  }
+
+  if (rebootRequired)
+    PromptReboot();
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static bool UpdateFriendlyNames(bool update)
+{
+  bool no_update_fnames_save = no_update_fnames;
+
+  if (!update)
+    no_update_fnames = TRUE;
+
+  bool show_fnames_save = show_fnames;
+
+  show_fnames = TRUE;
+
+  BOOL rebootRequired = FALSE;
+
+  DevProperties devProperties;
+
+  if (devProperties.DevId(C0C_BUS_DEVICE_ID)) {
+    int num = -1;
+
+    EnumDevices(EnumFilter, &devProperties, &rebootRequired, UpdateFriendlyNamesBus, &num);
+  }
+
+  if (rebootRequired)
+    PromptReboot();
+
+  show_fnames = show_fnames_save;
+  no_update_fnames = no_update_fnames_save;
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static CNC_DEV_CALLBACK InstallDeviceCallBack;
+static bool InstallDeviceCallBack(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties pDevProperties,
+    BOOL * /*pRebootRequired*/,
+    void *pParam)
+{
+  if (!lstrcmp(pDevProperties->DevId(), C0C_BUS_DEVICE_ID)) {
+    int res;
+    int num = *(int *)pParam;
+
+    do {
+      res = IDCONTINUE;
+
+      LONG err = SetPortNum(hDevInfo, pDevInfoData, num);
+
+      if (err != ERROR_SUCCESS)
+        res = ShowError(MB_CANCELTRYCONTINUE, err, "SetPortNum(%d)", num);
+
+    } while (res == IDTRYAGAIN);
+
+    if (res != IDCONTINUE)
+      return FALSE;
+
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+static bool InstallBusDevice(const char *pInfFilePath, int num)
+{
+  BOOL rebootRequired = FALSE;
+
+  if (!InstallDevice(pInfFilePath, C0C_BUS_DEVICE_ID, NULL, InstallDeviceCallBack, &num, !no_update, &rebootRequired))
+    return FALSE;
+
+  DevProperties devProperties;
+
+  if (devProperties.DevId(C0C_BUS_DEVICE_ID))
+    EnumDevices(EnumFilter, &devProperties, &rebootRequired, UpdateFriendlyNamesBus, &num);
+
+  if (rebootRequired)
+    PromptReboot();
+
+  return TRUE;
+}
+
+static CNC_DEV_CALLBACK AddDeviceToBusyMask;
+static bool AddDeviceToBusyMask(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties /*pDevProperties*/,
+    BOOL * /*pRebootRequired*/,
+    void *pParam)
+{
+  int i = GetPortNum(hDevInfo, pDevInfoData);
+
+  if (i >= 0) {
+    if (!((BusyMask *)pParam)->AddNum(i)) {
+      if (ShowLastError(MB_OKCANCEL|MB_ICONWARNING, "AddDeviceToBusyMask(%d)", i) != IDOK)
+        return FALSE;
+    }
+  }
+
+  return TRUE;
+}
+
+static int AllocPortNum(int num)
+{
+  BusyMask busyMask;
+
+  DevProperties devProperties;
+  if (!devProperties.DevId(C0C_BUS_DEVICE_ID))
+    return -1;
+
+  if (EnumDevices(EnumFilter, &devProperties, NULL, AddDeviceToBusyMask, &busyMask) < 0)
+    return -1;
+
+  return busyMask.IsFreeNum(num) ? num : busyMask.GetFirstFreeNum();
+}
+
+bool Install(const char *pInfFilePath, const char *pParametersA, const char *pParametersB, int num)
+{
+  int i;
+  int res;
+
+  do {
+    res = IDCONTINUE;
+
+    i = AllocPortNum(num >= 0 ? num : 0);
+
+    if (i < 0)
+      goto err;
+
+    if (num >= 0 && num != i) {
+      res = ShowMsg(MB_CANCELTRYCONTINUE|MB_ICONWARNING,
+                    "The identifiers " C0C_PREF_PORT_NAME_A "%d and "
+                    C0C_PREF_PORT_NAME_B "%d are already used for other ports\n"
+                    "so ports with identifiers " C0C_PREF_PORT_NAME_A "%d and "
+                    C0C_PREF_PORT_NAME_B "%d will be installed instead.\n",
+                    num, num, i, i);
+    }
+  } while (res == IDTRYAGAIN);
+
+  if (res != IDCONTINUE)
+    goto err;
+
+  if (!IsValidPortNum(i))
+    goto err;
+
+  char portName[2][20];
+
+  for (int j = 0 ; j < 2 ; j++) {
+    char phPortName[20];
+    const char *pParameters;
+
+    pParameters = j ? pParametersB : pParametersA;
+
+    SNPRINTF(phPortName, sizeof(phPortName)/sizeof(phPortName[0]), "%s%d",
+             j ? C0C_PREF_PORT_NAME_B : C0C_PREF_PORT_NAME_A, i);
+
+    PortParameters portParameters(C0C_SERVICE, phPortName);
+
+    LONG err = portParameters.Load();
+
+    if (err == ERROR_SUCCESS) {
+      if (!portParameters.ParseParametersStr(pParameters))
+        goto err;
+
+      portParameters.FillPortName(portName[j], sizeof(portName[j])/sizeof(portName[j][0]));
+
+      if (!IsValidPortName(portName[j]))
+        goto err;
+
+      portParameters.InitRealPortName();   // ignore RealPortName param
+
+      if (portParameters.Changed()) {
+        err = portParameters.Save();
+
+        if (err != ERROR_SUCCESS)
+          ShowError(MB_OK|MB_ICONWARNING, err, "portParameters.Save(%s)", phPortName);
+      }
+    } else {
+      ShowError(MB_OK|MB_ICONWARNING, err, "portParameters.Load(%s)", phPortName);
+      SNPRINTF(portName[j], sizeof(portName[j])/sizeof(portName[j][0]), "%s", phPortName);
+    }
+
+    char buf[200];
+
+    portParameters.FillParametersStr(buf, sizeof(buf)/sizeof(buf[0]), detailPrms);
+
+    Trace("       %s %s\n", phPortName, buf);
+  }
+
+  if (lstrcmpi(portName[0], portName[1]) == 0 && !IsComClass(portName[0]) &&
+      ShowMsg(MB_OKCANCEL|MB_ICONWARNING,
+              "The same port name %s is used for both ports.\n",
+              portName[0]) != IDOK)
+  {
+    goto err;
+  }
+
+  if (!InstallBusDevice(pInfFilePath, i))
+    goto err;
+
+  ComDbSync(EnumFilter);
+
+  return TRUE;
+
+err:
+
+  Trace("\nInstall not completed!\n");
+
+  return FALSE;
+}
+///////////////////////////////////////////////////////////////
+bool Uninstall(
+    const InfFileInstall *pInfFileInstallList,
+    const InfFile::InfFileUninstall *pInfFileUninstallList)
+{
+  BOOL rebootRequired = FALSE;
+  DevProperties devProperties;
+
+  devProperties = DevProperties();
+  if (!devProperties.DevId(C0C_PORT_DEVICE_ID))
+    goto err;
+
+  {
+    Stack stack;
+
+    if (!DisableDevices(EnumFilter, &devProperties, &rebootRequired, &stack)) {
+      CleanDevPropertiesStack(stack, TRUE, &rebootRequired);
+      goto err;
+    }
+
+    CleanDevPropertiesStack(stack, FALSE, &rebootRequired);
+  }
+
+  devProperties = DevProperties();
+  if (!devProperties.DevId(C0C_BUS_DEVICE_ID))
+    goto err;
+
+  if (!RemoveDevices(EnumFilter, &devProperties, &rebootRequired))
+    goto err;
+
+  if (!RemoveDevices(EnumFilter, NULL, NULL))
+    goto err;
+
+  ComDbSync(EnumFilter);
+
+  if (rebootRequired) {
+    PromptReboot();
+    goto err;
+  }
+
+  int res;
+  bool notDeleted;
+  LONG err;
+
+  do {
+    notDeleted = TRUE;
+    res = IDCONTINUE;
+
+    SC_HANDLE hSCM = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+
+    if (hSCM) {
+      do {
+        res = IDCONTINUE;
+
+        SC_HANDLE hSrv = OpenService(hSCM, C0C_SERVICE, DELETE|SERVICE_QUERY_STATUS);
+
+        if (hSrv) {
+          SERVICE_STATUS srvStatus;
+
+          if (QueryServiceStatus(hSrv, &srvStatus)) {
+            if (srvStatus.dwCurrentState == SERVICE_STOPPED) {
+              if (Silent() ||
+                  ShowMsg(MB_YESNO,
+                  "The deleting %s service will remove your manual settings.\n"
+                  "Would you like to delete service?\n",
+                  C0C_SERVICE) == IDYES)
+              {
+                if (DeleteService(hSrv)) {
+                  Trace("Deleted Service %s\n", C0C_SERVICE);
+                  notDeleted = FALSE;
+                } else {
+                  res = ShowLastError(MB_CANCELTRYCONTINUE, "DeleteService(%s)", C0C_SERVICE);
+                }
+              }
+            } else {
+              res = ShowMsg(MB_CANCELTRYCONTINUE,
+                            "Service %s is not stopped (state %ld).\n",
+                            C0C_SERVICE, (long)srvStatus.dwCurrentState);
+            }
+          } else {
+            res = ShowLastError(MB_CANCELTRYCONTINUE, "QueryServiceStatus(%s)", C0C_SERVICE);
+          }
+
+          if (!CloseServiceHandle(hSrv))
+            ShowLastError(MB_OK|MB_ICONWARNING, "CloseServiceHandle(hSrv)");
+        } else {
+          if (GetLastError() == ERROR_SERVICE_DOES_NOT_EXIST) {
+            Trace("Service %s not installed\n", C0C_SERVICE);
+            notDeleted = FALSE;
+          } else {
+            res = ShowLastError(MB_CANCELTRYCONTINUE, "OpenService(%s)", C0C_SERVICE);
+          }
+        }
+      } while (res == IDTRYAGAIN);
+
+      if (!CloseServiceHandle(hSCM))
+        ShowLastError(MB_OK|MB_ICONWARNING, "CloseServiceHandle(hSCM)");
+    } else {
+      res = ShowLastError(MB_CANCELTRYCONTINUE, "OpenSCManager()");
+    }
+  } while (res == IDTRYAGAIN);
+
+  if (notDeleted)
+    Trace("WARNING: Service %s not deleted\n", C0C_SERVICE);
+
+  if (res != IDCONTINUE)
+    goto err;
+
+  do {
+    notDeleted = TRUE;
+    res = IDCONTINUE;
+
+    err = RegDeleteKey(HKEY_LOCAL_MACHINE, C0C_REGKEY_EVENTLOG);
+
+    if (err == ERROR_SUCCESS) {
+      Trace("Deleted EventLog %s\n", C0C_SERVICE);
+      notDeleted = FALSE;
+    }
+    else
+    if (err == ERROR_FILE_NOT_FOUND) {
+      Trace("EventLog %s not installed\n", C0C_SERVICE);
+      notDeleted = FALSE;
+    }
+    else {
+      res = ShowError(MB_CANCELTRYCONTINUE, err, "RegDeleteKey(%s)", C0C_REGKEY_EVENTLOG);
+    }
+  } while (res == IDTRYAGAIN);
+
+  if (notDeleted)
+    Trace("WARNING: Key %s not deleted\n", C0C_REGKEY_EVENTLOG);
+
+  if (res != IDCONTINUE)
+    goto err;
+
+  do {
+    notDeleted = TRUE;
+    res = IDCONTINUE;
+
+    HKEY hKey = SetupDiOpenClassRegKey(NULL, DELETE);
+
+    if (hKey != INVALID_HANDLE_VALUE) {
+      do {
+        res = IDCONTINUE;
+
+        err = RegDeleteKey(hKey, C0C_CNCCLASS_GUID);
+
+        if (err != ERROR_SUCCESS) {
+          HKEY hClassGuidKey;
+          err = RegOpenKeyEx(hKey, C0C_CNCCLASS_GUID, 0, KEY_READ, &hClassGuidKey);
+
+          if (err == ERROR_SUCCESS) {
+            for (;;) {
+              char subKey[MAX_PATH + 1];
+              DWORD subKeySize = sizeof(subKey)/sizeof(subKey[0]);
+
+              err = RegEnumKeyEx(hClassGuidKey, 0, subKey, &subKeySize, NULL, NULL, NULL, NULL);
+
+              if (err != ERROR_SUCCESS)
+                break;
+
+              err = RegDeleteKey(hClassGuidKey, subKey);
+
+              if (err == ERROR_SUCCESS)
+                Trace("Deleted Class subkey %s\\%s\n", C0C_CNCCLASS_GUID, subKey);
+              else
+              if (err != ERROR_FILE_NOT_FOUND) {
+                ShowError(MB_OK|MB_ICONWARNING, err, "RegDeleteKey(%s\\%s)", C0C_CNCCLASS_GUID, subKey);
+                break;
+              }
+            }
+
+            err = RegCloseKey(hClassGuidKey);
+
+            if (err != ERROR_SUCCESS)
+              ShowError(MB_OK|MB_ICONWARNING, err, "RegCloseKey()");
+          }
+
+          err = RegDeleteKey(hKey, C0C_CNCCLASS_GUID);
+        }
+
+        if (err == ERROR_SUCCESS) {
+          Trace("Deleted Class %s\n", C0C_CNCCLASS_GUID);
+          notDeleted = FALSE;
+        }
+        else
+        if (err == ERROR_FILE_NOT_FOUND) {
+          Trace("Class %s not installed\n", C0C_CNCCLASS_GUID);
+          notDeleted = FALSE;
+        }
+        else {
+          res = ShowError(MB_CANCELTRYCONTINUE, err, "RegDeleteKey(%s)", C0C_CNCCLASS_GUID);
+        }
+      } while (res == IDTRYAGAIN);
+
+      err = RegCloseKey(hKey);
+
+      if (err != ERROR_SUCCESS)
+        ShowError(MB_OK|MB_ICONWARNING, err, "RegCloseKey()");
+    } else {
+      res = ShowLastError(MB_CANCELTRYCONTINUE, "SetupDiOpenClassRegKey(NULL)");
+    }
+  } while (res == IDTRYAGAIN);
+
+  if (notDeleted)
+    Trace("WARNING: Class %s not deleted\n", C0C_CNCCLASS_GUID);
+
+  if (res != IDCONTINUE)
+    goto err;
+
+  for (
+      const InfFileInstall *pInfFileInstall = pInfFileInstallList ;
+      pInfFileInstall->pInfName != NULL ;
+      pInfFileInstall++)
+  {
+    InfFile infFile(pInfFileInstall->pInfName, pInfFileInstall->pInfName);
+
+    if (!infFile.UninstallOEMInf())
+      goto err;
+
+    if (pInfFileInstall->pCopyDriversSection != NULL) {
+      if (!infFile.UninstallFiles(pInfFileInstall->pCopyDriversSection))
+        goto err;
+    }
+  }
+
+  if (!InfFile::UninstallAllInfFiles(pInfFileUninstallList, NULL))
+    goto err;
+
+  return TRUE;
+
+err:
+
+  Trace("\nUninstall not completed!\n");
+
+  return FALSE;
+}
+///////////////////////////////////////////////////////////////
+bool InfClean(
+    const InfFileInstall *pInfFileInstallList,
+    const InfFile::InfFileUninstall *pInfFileUninstallList)
+{
+  bool ok = TRUE;
+  InfFile **pInfFiles = NULL;
+  const char **ppOemPathExcludeList = NULL;
+  int numInfFiles = 0;
+
+  for (
+      const InfFileInstall *pInfFileInstall = pInfFileInstallList ;
+      pInfFileInstall->pInfName != NULL ;
+      pInfFileInstall++)
+  {
+    InfFile *pInfFile = new InfFile(pInfFileInstall->pInfName, pInfFileInstall->pInfName);
+
+    if (pInfFile->OemPath() == NULL) {
+      delete pInfFile;
+      continue;
+    }
+
+    InfFile **pNewInfFiles;
+
+    if (!pInfFiles)
+      pNewInfFiles = (InfFile **)LocalAlloc(LPTR, (numInfFiles + 1) * sizeof(InfFile *));
+    else
+      pNewInfFiles = (InfFile **)LocalReAlloc(pInfFiles, (numInfFiles + 1) * sizeof(InfFile *), LMEM_ZEROINIT|LMEM_MOVEABLE);
+
+    if (!pNewInfFiles) {
+      ShowError(MB_OK|MB_ICONSTOP, ERROR_NOT_ENOUGH_MEMORY, "LocalAlloc(%lu)", (numInfFiles + 1) * sizeof(InfFile *));
+      ok = FALSE;
+      goto end;
+    }
+
+    pInfFiles = pNewInfFiles;
+    pInfFiles[numInfFiles++] = pInfFile;
+  }
+
+  if (pInfFiles != NULL) {
+    ppOemPathExcludeList = (const char **)LocalAlloc(LPTR, (numInfFiles + 1) * sizeof(const char *));
+
+    if (!ppOemPathExcludeList) {
+      ShowError(MB_OK|MB_ICONSTOP, ERROR_NOT_ENOUGH_MEMORY, "LocalAlloc(%lu)", (numInfFiles + 1) * sizeof(const char *));
+      ok = FALSE;
+      goto end;
+    }
+
+    for (int i = 0 ; i < numInfFiles ; i++)
+      ppOemPathExcludeList[i] = pInfFiles[i]->OemPath();
+  }
+
+
+  if (!InfFile::UninstallAllInfFiles(pInfFileUninstallList, ppOemPathExcludeList)) {
+    ok = FALSE;
+    goto end;
+  }
+
+end:
+
+  if (ppOemPathExcludeList != NULL)
+    LocalFree((HLOCAL)ppOemPathExcludeList);
+
+  if (pInfFiles != NULL) {
+    for (int i = 0 ; i < numInfFiles ; i++) {
+      delete pInfFiles[i];
+    }
+
+    LocalFree((HLOCAL)pInfFiles);
+  }
+
+  if (!ok)
+    Trace("\nCleaning not completed!\n");
+
+  return ok;
+}
+///////////////////////////////////////////////////////////////
+bool ShowBusyNames(const char *pPattern)
+{
+  char *pPatternUp;
+
+  pPatternUp = STRDUP(pPattern);
+
+  if (!pPatternUp)
+    return FALSE;
+
+  CharUpper(pPatternUp);
+
+  char *pNames = NULL;
+  DWORD iNamesEnd = 0;
+
+  for (int i = 0 ; i < 2 ; i++) {
+    char *pBuf = NULL;
+
+    for (DWORD size = 1024 ; size >= 1024 ; size += 1024) {
+      char *pBufNew;
+
+      if (!pBuf)
+        pBufNew = (char *)LocalAlloc(LPTR, size);
+      else
+        pBufNew = (char *)LocalReAlloc(pBuf, size, LMEM_ZEROINIT|LMEM_MOVEABLE);
+
+      if (!pBufNew) {
+        if (pBuf) {
+          LocalFree(pBuf);
+          pBuf = NULL;
+        }
+
+        if (ShowError(MB_OKCANCEL, ERROR_NOT_ENOUGH_MEMORY, "LocalAlloc(%lu)", (unsigned long)size) != IDOK) {
+          if (pNames)
+            LocalFree(pNames);
+
+          LocalFree(pPatternUp);
+          return FALSE;
+        }
+
+        break;
+      }
+
+      pBuf = pBufNew;
+
+      DWORD res = (i != 0
+                   ? QueryDosDevice(NULL, pBuf, size/sizeof(pBuf[0]))
+                   : ComDbQueryNames(pBuf, size/sizeof(pBuf[0])));
+
+      if (!res) {
+        if (GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+          continue;
+
+        LocalFree(pBuf);
+        pBuf = NULL;
+
+        if (GetLastError() == ERROR_FILE_NOT_FOUND)
+          break;
+
+        if (ShowLastError(MB_OKCANCEL,
+            i != 0 ? "QueryDosDevice()" : "ComDbNames()") != IDOK)
+        {
+          if (pNames)
+            LocalFree(pNames);
+
+          LocalFree(pPatternUp);
+          return FALSE;
+        }
+
+        break;
+      }
+
+      // Workaround for succeeds even if buffer cannot hold all returned information
+
+      if ((size/sizeof(pBuf[0]) - res) > 100)
+        break;
+    }
+
+    if (pBuf) {
+      for (char *pName = pBuf ; *pName ; pName += lstrlen(pName) + 1) {
+        static const char strangeChars[] = ":#&$?!{}()[]/\\ \t\r\n";
+
+        if (strpbrk(pName, strangeChars))
+          continue;  // skip strange names
+
+        CharUpper(pName);
+
+        if (!MatchPattern(pPatternUp, pName))
+          continue;
+
+        if (pNames) {
+          char *pNamesName;
+
+          for (pNamesName = pNames ; *pNamesName ; pNamesName += lstrlen(pNamesName) + 1) {
+            if (!lstrcmp(pNamesName, pName))
+              break;
+          }
+
+          if (*pNamesName)
+            continue;
+        }
+
+        DWORD iNamesEndNew = iNamesEnd + lstrlen(pName) + 1;
+        DWORD sizeNamesNew = (iNamesEndNew + 1) * sizeof(pNames[0]);
+
+        char *pNamesNew;
+
+        if (!pNames)
+          pNamesNew = (char *)LocalAlloc(LPTR, sizeNamesNew);
+        else
+          pNamesNew = (char *)LocalReAlloc(pNames, sizeNamesNew, LMEM_ZEROINIT|LMEM_MOVEABLE);
+
+        if (!pNamesNew) {
+          if (ShowError(MB_OKCANCEL, ERROR_NOT_ENOUGH_MEMORY, "LocalAlloc(%lu)", (unsigned long)sizeNamesNew) != IDOK) {
+            if (pNames)
+              LocalFree(pNames);
+
+            LocalFree(pPatternUp);
+            return FALSE;
+          }
+
+          break;
+        }
+
+        pNames = pNamesNew;
+
+        lstrcpy(pNames + iNamesEnd, pName);
+
+        iNamesEnd = iNamesEndNew;
+      }
+
+      LocalFree(pBuf);
+    }
+  }
+
+  if (pNames) {
+    for (char *pName = pNames ; *pName ; pName += lstrlen(pName) + 1)
+      Trace("%s\n", pName);
+
+    LocalFree(pNames);
+  }
+
+  LocalFree(pPatternUp);
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+void Help(const char *pProgName)
+{
+  SetTitle(C0C_SETUP_TITLE " (HELP)");
+
+  ConsoleWrite(
+    C0C_SETUP_TITLE "\n"
+    "\n");
+  ConsoleWrite(
+    "Usage:\n"
+    "  %s%s[options] <command>\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "\n"
+    "Options:\n"
+    "  --output <file>              - file for output, default is console\n"
+    "  --wait [+]<to>               - wait <to> seconds for install completion. If\n"
+    "                                 <to> has '+' prefix then ask user to continue\n"
+    "                                 waiting after <to> seconds elapsing\n"
+    "                                 (by default <to> is 0 - no wait)\n"
+    "  --detail-prms                - show detailed parameters\n"
+    "  --silent                     - suppress dialogs if possible\n"
+    "  --no-update                  - do not update driver while install command\n"
+    "                                 execution (the other install command w/o this\n"
+    "                                 option expected later)\n"
+    "  --no-update-fnames           - do not update friendly names\n"
+    "  --show-fnames                - show friendly names activity\n"
+    );
+  ConsoleWrite(
+    "\n"
+    "Commands:\n"
+    "  install <n> <prmsA> <prmsB>  - install a pair of linked ports with\n"
+    "   or                            identifiers " C0C_PREF_PORT_NAME_A "<n> and "
+                                      C0C_PREF_PORT_NAME_B "<n>\n"
+    "  install <prmsA> <prmsB>        (by default <n> is the first not used number),\n"
+    "                                 set their parameters to <prmsA> and <prmsB>\n"
+    "  install                      - can be used to update driver after execution\n"
+    "                                 of install commands with --no-update option\n"
+    "  remove <n>                   - remove a pair of linked ports with\n"
+    "                                 identifiers " C0C_PREF_PORT_NAME_A "<n> and "
+                                      C0C_PREF_PORT_NAME_B "<n>\n"
+    "  disable all                  - disable all ports in current hardware profile\n"
+    "  enable all                   - enable all ports in current hardware profile\n"
+    );
+  ConsoleWrite(
+    "  change <portid> <prms>       - set parameters <prms> for port with\n"
+    "                                 identifier <portid>\n"
+    "  list                         - for each port show its identifier and\n"
+    "                                 parameters\n"
+    "  preinstall                   - preinstall driver\n"
+    "  update                       - update driver\n"
+    "  reload                       - reload driver\n"
+    "  uninstall                    - uninstall all ports and the driver\n"
+    "  infclean                     - clean old INF files\n"
+    "  busynames <pattern>          - show names that already in use and match the\n"
+    "                                 <pattern> (wildcards: '*' and '?')\n"
+    "  updatefnames                 - update friendly names\n"
+    "  listfnames                   - for each bus and port show its identifier and\n"
+    "                                 friendly name\n"
+    );
+  ConsoleWrite(
+    "  quit                         - quit\n"
+    "  help                         - print this help\n"
+    );
+  ConsoleWrite(
+    "\n");
+
+  const char *pStr = PortParameters::GetHelp();
+
+  while (*pStr) {
+    char buf[100];
+
+    SNPRINTF(buf, sizeof(buf)/sizeof(buf[0]), "%s", pStr);
+    pStr += lstrlen(buf);
+
+    ConsoleWrite("%s", buf);
+  }
+
+  ConsoleWrite(
+    "\n"
+    "If parameter 'PortName=" C0C_PORT_NAME_COMCLASS "' is used then the Ports class installer will be\n"
+    "invoked to set the real port name. The Ports class installer selects the COM\n"
+    "port number and sets the real port name to COM<n>, where <n> is the selected\n"
+    "port number. Thereafter use parameter RealPortName=COM<n> to change the real\n"
+    "port name.\n"
+    );
+
+  ConsoleWrite(
+    "\n"
+    "Examples:\n"
+    );
+  ConsoleWrite(
+    "  %s%sinstall - -\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "  %s%sinstall 5 * *\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "  %s%sremove 0\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "  %s%sinstall PortName=COM2 PortName=COM4\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "  %s%sinstall PortName=COM5,EmuBR=yes,EmuOverrun=yes -\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "  %s%schange " C0C_PREF_PORT_NAME_A "0 EmuBR=yes,EmuOverrun=yes\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "  %s%schange " C0C_PREF_PORT_NAME_A "0 PortName=-\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "  %s%slist\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "  %s%suninstall\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "  %s%sbusynames COM?*\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+    "\n");
+}
+///////////////////////////////////////////////////////////////
+static int Complete(bool ok)
+{
+  if (ok) {
+    if (timeout > 0)
+      WaitNoPendingInstallEvents(timeout, repeate_timeout);
+
+    return 0;
+  }
+
+  return 1;
+}
+
+int Main(int argc, const char* argv[])
+{
+  if (!SetOutputFile(NULL))
+    return 1;
+
+  Silent(FALSE);
+  timeout = 0;
+  repeate_timeout = FALSE;
+  detailPrms = FALSE;
+  no_update = FALSE;
+  no_update_fnames = FALSE;
+  show_fnames = FALSE;
+
+  while (argc > 1) {
+    if (*argv[1] != '-')
+      break;
+
+    if (!strcmp(argv[1], "--output") && argc > 2) {
+      if (!SetOutputFile(argv[2]))
+        return 1;
+      argv[2] = argv[0];
+      argv += 2;
+      argc -= 2;
+    }
+    else
+    if (!strcmp(argv[1], "--wait") && argc > 2) {
+      int num;
+
+      if (!StrToInt(argv[2], &num) || num < 0) {
+        ConsoleWrite("Invalid option %s %s\n", argv[1], argv[2]);
+        return 1;
+      }
+
+      timeout = num;
+
+      if (argv[2][0] == '+')
+        repeate_timeout = TRUE;
+
+      argv[2] = argv[0];
+      argv += 2;
+      argc -= 2;
+    }
+    else
+    if (!strcmp(argv[1], "--detail-prms")) {
+      detailPrms = TRUE;
+      argv[1] = argv[0];
+      argv++;
+      argc--;
+    }
+    else
+    if (!strcmp(argv[1], "--silent")) {
+      Silent(TRUE);
+      argv[1] = argv[0];
+      argv++;
+      argc--;
+    }
+    else
+    if (!strcmp(argv[1], "--no-update")) {
+      no_update = TRUE;
+      argv[1] = argv[0];
+      argv++;
+      argc--;
+    }
+    else
+    if (!strcmp(argv[1], "--no-update-fnames")) {
+      no_update_fnames = TRUE;
+      argv[1] = argv[0];
+      argv++;
+      argc--;
+    }
+    else
+    if (!strcmp(argv[1], "--show-fnames")) {
+      show_fnames = TRUE;
+      argv[1] = argv[0];
+      argv++;
+      argc--;
+    }
+    else {
+      ConsoleWrite("Invalid option %s\n", argv[1]);
+      return 1;
+    }
+  }
+
+  if (argc == 1) {
+    return Complete(TRUE);
+  }
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "help")) {
+    Help(argv[0]);
+    return Complete(TRUE);
+  }
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "quit")) {
+    return Complete(TRUE);
+  }
+  else
+  if (argc == 3 && !lstrcmpi(argv[1], "busynames")) {
+    SetTitle(C0C_SETUP_TITLE " (BUSY NAMES)");
+    return Complete(ShowBusyNames(argv[2]));
+  }
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "list")) {
+    SetTitle(C0C_SETUP_TITLE " (LIST)");
+    return Complete(Change(NULL, NULL));
+  }
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "updatefnames")) {
+    SetTitle(C0C_SETUP_TITLE " (UPDATE FRIENDLY NAMES)");
+    return Complete(UpdateFriendlyNames(TRUE));
+  }
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "listfnames")) {
+    SetTitle(C0C_SETUP_TITLE " (LIST FRIENDLY NAMES)");
+    return Complete(UpdateFriendlyNames(FALSE));
+  }
+  else
+  if (argc == 4 && !lstrcmpi(argv[1], "change")) {
+    SetTitle(C0C_SETUP_TITLE " (CHANGE)");
+    return Complete(Change(argv[2], argv[3]));
+  }
+  else
+  if (argc == 3 && !lstrcmpi(argv[1], "remove")) {
+    SetTitle(C0C_SETUP_TITLE " (REMOVE)");
+
+    int num;
+
+    if (StrToInt(argv[2], &num) && num >= 0)
+      return Complete(Remove(num));
+  }
+  else
+  if (argc == 3 && !lstrcmpi(argv[1], "disable")) {
+    SetTitle(C0C_SETUP_TITLE " (DISABLE)");
+
+    if (!lstrcmpi(argv[2], "all"))
+      return Complete(Disable());
+  }
+  else
+  if (argc == 3 && !lstrcmpi(argv[1], "enable")) {
+    SetTitle(C0C_SETUP_TITLE " (ENABLE)");
+
+    if (!lstrcmpi(argv[2], "all"))
+      return Complete(Enable());
+  }
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "reload")) {
+    SetTitle(C0C_SETUP_TITLE " (RELOAD)");
+    return Complete(Reload(C0C_BUS_DEVICE_ID, NULL, NULL));
+  }
+
+  for (
+      const InfFileInstall *pInfFileInstall = infFileInstallList ;
+      pInfFileInstall->pInfName != NULL ;
+      pInfFileInstall++)
+  {
+    InfFile infFile(pInfFileInstall->pInfName, pInfFileInstall->pInfName);
+    if (!infFile.Test(pInfFileInstall->pRequiredFields))
+      return 1;
+  }
+
+  if (argc == 2 && !lstrcmpi(argv[1], "preinstall")) {
+    SetTitle(C0C_SETUP_TITLE " (PREINSTALL)");
+    return Complete(Preinstall(infFileInstallList));
+  }
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "uninstall")) {
+    SetTitle(C0C_SETUP_TITLE " (UNINSTALL)");
+    return Complete(Uninstall(infFileInstallList, infFileUnnstallList));
+  }
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "infclean")) {
+    SetTitle(C0C_SETUP_TITLE " (INF CLEAN)");
+    return Complete(InfClean(infFileInstallList, infFileUnnstallList));
+  }
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "update")) {
+    SetTitle(C0C_SETUP_TITLE " (UPDATE)");
+    return Complete(Update(infFileInstallList));
+  }
+
+  InfFile infFile(C0C_INF_NAME, C0C_INF_NAME);
+
+  const char *pPath = infFile.Path();
+
+  if (!pPath)
+    return 1;
+
+  if (argc == 2 && !lstrcmpi(argv[1], "install")) {
+    SetTitle(C0C_SETUP_TITLE " (INSTALL)");
+    return Complete(Install(pPath));
+  }
+  else
+  if (argc == 4 && !lstrcmpi(argv[1], "install")) {
+    SetTitle(C0C_SETUP_TITLE " (INSTALL)");
+    return Complete(Install(pPath, argv[2], argv[3], -1));
+  }
+  else
+  if (argc == 5 && !lstrcmpi(argv[1], "install")) {
+    SetTitle(C0C_SETUP_TITLE " (INSTALL)");
+
+    int num;
+
+    if (StrToInt(argv[2], &num) && num >= 0)
+      return Complete(Install(pPath, argv[3], argv[4], num));
+  }
+
+  ConsoleWrite("Invalid command\n");
+
+  return 1;
+}
+///////////////////////////////////////////////////////////////
+static int ParseCmd(char *pCmd, const char* argv[], int sizeArgv)
+{
+  int argc;
+
+  argc = 0;
+
+  char *pSave;
+
+  for (char *pArg = STRTOK_R(pCmd, " \t\r\n", &pSave) ; pArg ; pArg = STRTOK_R(NULL, " \t\r\n", &pSave)) {
+    if ((argc + 2) > sizeArgv)
+      break;
+
+    if (*pArg == '"')
+      pArg++;
+
+    char *pEnd = pArg + lstrlen(pArg);
+
+    if (pEnd-- != pArg && *pEnd == '"')
+      *pEnd = 0;
+
+    argv[argc++] = pArg;
+  }
+
+  argv[argc] = NULL;
+
+  return argc;
+}
+///////////////////////////////////////////////////////////////
+int CALLBACK MainA(const char *pProgName, const char *pCmdLine)
+{
+  SetTitle(C0C_SETUP_TITLE);
+
+  char cmd[1024];
+
+  SNPRINTF(cmd, sizeof(cmd)/sizeof(cmd[0]), "%s", pCmdLine);
+
+  int argc;
+  const char* argv[10];
+
+  argc = ParseCmd(cmd, argv + 1, sizeof(argv)/sizeof(argv[0]) - 1) + 1;
+
+  if (argc == 1) {
+    ConsoleWrite("Enter 'help' to get info about usage of " C0C_SETUP_TITLE ".\n\n");
+
+    argv[0] = "";
+
+    for (;;) {
+      argv[1] = NULL;
+
+      ConsoleWriteRead(cmd, sizeof(cmd)/sizeof(cmd[0]), "command> ");
+
+      argc = ParseCmd(cmd, argv + 1, sizeof(argv)/sizeof(argv[0]) - 1) + 1;
+
+      if (argc == 2 && !lstrcmpi(argv[1], "quit"))
+        return 0;
+
+      Main(argc, argv);
+    }
+  }
+
+  argv[0] = pProgName;
+
+  return Main(argc, argv);
+}
+///////////////////////////////////////////////////////////////
+int CALLBACK RunDllA(HWND /*hWnd*/, HINSTANCE /*hInst*/, LPSTR pCmdLine, int /*nCmdShow*/)
+{
+  int res = MainA("rundll32 setup,RunDll", pCmdLine);
+
+  if (!GetOutputFile()) {
+    char buf[10];
+
+    ConsoleWriteRead(buf, sizeof(buf)/sizeof(buf[0]), "\nPress <RETURN> to continue\n");
+  }
+
+  return res;
+}
+///////////////////////////////////////////////////////////////
+@
+
+
+1.54
+log
+@Added ability to repeate waiting for no pending device
+installation activities
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.53 2011/12/29 14:34:23 vfrolov Exp $
+d22 4
+a206 1
+#define SERIAL_ADVANCED_SETTINGS 1
+a740 14
+static CNC_DEV_CALLBACK ShowDialog;
+static bool ShowDialog(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties /*pDevProperties*/,
+    BOOL * /*pRebootRequired*/,
+    void * /*pParam*/)
+{
+  if (SerialDisplayAdvancedSettings(NULL, hDevInfo, pDevInfoData) != ERROR_SUCCESS)
+    return FALSE;
+
+  return TRUE;
+}
+
+d807 6
+a812 2
+      if (lstrcmpi(portNameNew, portNameOld) != 0 && !IsValidPortName(portNameNew))
+        continue;
+a815 12
+      if (!Silent() && portParameters.DialogRequested()) {
+        if (isComClassNew) {
+          if (isComClassOld) {
+            EnumDevices(EnumFilter, &devProperties, pRebootRequired, ShowDialog, NULL);
+          } else {
+            ShowMsg(MB_OK|MB_ICONWARNING, "Can't display the dialog while changing the class of port.\n");
+          }
+        } else {
+          ShowMsg(MB_OK|MB_ICONWARNING, "Can't display the dialog for non Ports class port.\n");
+        }
+      }
+
+a1320 3
+      if (!Silent() && portParameters.DialogRequested())
+        ShowMsg(MB_OK|MB_ICONWARNING, "Can't display the dialog while installing a pair of linked ports.\n");
+
+a1930 3
+    "  %s%schange " C0C_PREF_PORT_NAME_A "0 PortName=?\n"
+    , pProgName, (pProgName && *pProgName) ? " " : "");
+  ConsoleWrite(
+@
+
+
+1.53
+log
+@Implemented RealPortName=COM<n> for PortName=COM#
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.52 2011/12/28 06:23:50 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2011 Vyacheslav Frolov
+d22 3
+d292 1
+d1856 3
+a1858 1
+    "  --wait <to>                  - wait <to> seconds for install completion\n"
+d1972 1
+a1972 1
+      WaitNoPendingInstallEvents(timeout);
+d1987 1
+d2008 9
+a2016 2
+      if (StrToInt(argv[2], &num) && num >= 0)
+        timeout = num;
+@
+
+
+1.52
+log
+@Added setting friendly names for ports after changing port class
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.51 2011/12/27 11:38:13 vfrolov Exp $
+d22 3
+d315 16
+d355 1
+d357 6
+a362 1
+  if (lstrlen(pPortName) > C0C_PORT_NAME_LEN) {
+d483 3
+d535 15
+a549 2
+  if (IsComClass(portName))
+    return;
+d610 1
+a610 1
+        char phDevName[40];
+d612 1
+a612 7
+        SNPRINTF(phDevName, sizeof(phDevName)/sizeof(phDevName[0]), "%s%d",
+                 j ? C0C_PREF_DEVICE_NAME_B : C0C_PREF_DEVICE_NAME_A, num);
+
+        DevProperties devProperties;
+        if (!devProperties.DevId(C0C_PORT_DEVICE_ID))
+          return FALSE;
+        if (!devProperties.PhObjName(phDevName))
+d650 73
+d763 1
+d770 1
+d772 18
+a789 1
+      LONG err = portParameters.Load();
+d791 2
+a792 1
+      char buf[200];
+d795 1
+d798 4
+a801 3
+      if (err == ERROR_SUCCESS) {
+        if (pPhPortName && lstrcmpi(pPhPortName, phPortName) == 0 && pParameters) {
+          char portNameOld[20];
+d803 2
+a804 1
+          portParameters.FillPortName(portNameOld, sizeof(portNameOld)/sizeof(portNameOld[0]));
+d806 2
+a807 2
+          if (!portParameters.ParseParametersStr(pParameters))
+            return FALSE;
+d809 1
+a809 1
+          char phDevName[40];
+d811 2
+a812 2
+          SNPRINTF(phDevName, sizeof(phDevName)/sizeof(phDevName[0]), "%s%d",
+                   j ? C0C_PREF_DEVICE_NAME_B : C0C_PREF_DEVICE_NAME_A, i);
+d814 2
+a815 1
+          char portName[20];
+d817 1
+a817 1
+          portParameters.FillPortName(portName, sizeof(portName)/sizeof(portName[0]));
+d819 6
+a824 16
+          if (!Silent() && portParameters.DialogRequested()) {
+            if (IsComClass(portName)) {
+              if (IsComClass(portNameOld)) {
+                DevProperties devProperties;
+                if (!devProperties.DevId(C0C_PORT_DEVICE_ID))
+                  return FALSE;
+                if (!devProperties.PhObjName(phDevName))
+                  return FALSE;
+
+                EnumDevices(EnumFilter, &devProperties, pRebootRequired, ShowDialog, NULL);
+              } else {
+                ShowMsg(MB_OK|MB_ICONWARNING, "Can't display the dialog while changing the class of port.\n");
+              }
+            } else {
+              ShowMsg(MB_OK|MB_ICONWARNING, "Can't display the dialog for non Ports class port.\n");
+            }
+d826 22
+d849 1
+a849 29
+          if (portParameters.Changed() &&
+              (!lstrcmpi(portName, portNameOld) || IsValidPortName(portName)))
+          {
+            err = portParameters.Save();
+
+            if (err == ERROR_SUCCESS) {
+              ((ChangeDeviceParams *)pParam)->changed = TRUE;
+
+              portParameters.FillParametersStr(buf, sizeof(buf)/sizeof(buf[0]), detailPrms);
+              Trace("change %s %s\n", phPortName, buf);
+
+              if (lstrcmpi(portName, portNameOld) != 0)
+                UpdateFriendlyNameBus(hDevInfo, pDevInfoData, i);
+
+              DevProperties devProperties;
+              if (!devProperties.DevId(C0C_PORT_DEVICE_ID))
+                return FALSE;
+              if (!devProperties.PhObjName(phDevName))
+                return FALSE;
+
+              if (IsComClass(portName) != IsComClass(portNameOld)) {
+                Trace("Changed port class for %s (renamed %s to %s)\n", phPortName, portNameOld, portName);
+                DisableDevices(EnumFilter, &devProperties, pRebootRequired, NULL);  // show msg if in use
+                RemoveDevices(EnumFilter, &devProperties, pRebootRequired);
+                ReenumerateDeviceNode(pDevInfoData);
+                EnumDevices(EnumFilter, &devProperties, pRebootRequired, UpdateFriendlyNamePort, NULL);
+              } else {
+                if (lstrcmpi(portName, portNameOld) != 0)
+                  EnumDevices(EnumFilter, &devProperties, pRebootRequired, UpdateFriendlyNamePort, NULL);
+d851 19
+a869 7
+                RestartDevices(EnumFilter, &devProperties, pRebootRequired);
+              }
+            } else {
+              ShowError(MB_OK|MB_ICONWARNING, err, "portParameters.Save(%s)", phPortName);
+            }
+          }
+        }
+d871 7
+a877 1
+        ShowError(MB_OK|MB_ICONWARNING, err, "portParameters.Load(%s)", phPortName);
+d1334 2
+d1917 2
+a1918 2
+    "port number. Use parameter 'PortName=?' to invoke the system-supplied advanced\n"
+    "settings dialog box to change the real port name.\n"
+@
+
+
+1.51
+log
+@Superseded incorrect PortParameters::ClassChanged()
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.50 2011/12/23 05:37:21 vfrolov Exp $
+d22 3
+d730 1
+@
+
+
+1.50
+log
+@Implemented setting friendly names for ports
+Added options -no-update-fnames and --show-fnames
+Added commands updatefnames and listfnames
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.49 2011/12/21 13:24:12 vfrolov Exp $
+d22 5
+d288 5
+d504 1
+a504 1
+  if (lstrcmpi(C0C_PORT_NAME_COMCLASS, portName) == 0)
+a587 46
+/*
+static int SleepTillPortNotFound(
+    const char *pPortName,
+    int timeLimit)
+{
+  if (lstrcmpi(C0C_PORT_NAME_COMCLASS, pPortName) == 0)
+    return 0;
+
+  if (int(DWORD(timeLimit * 1000)/1000) != timeLimit)
+    timeLimit = -1;
+
+  DWORD startTime = GetTickCount();
+  char path[40];
+
+  SNPRINTF(path, sizeof(path)/sizeof(path[0]), "\\\\.\\%s", pPortName);
+
+  Trace("Wating for %s ", path);
+
+  for (;;) {
+    HANDLE handle = CreateFile(path, GENERIC_READ|GENERIC_WRITE, 0, NULL,
+                               OPEN_EXISTING, 0, NULL);
+
+    if (handle == INVALID_HANDLE_VALUE) {
+      if (GetLastError() != ERROR_FILE_NOT_FOUND)
+        break;
+    } else {
+      CloseHandle(handle);
+      break;
+    }
+
+    Trace(".");
+
+    if (timeLimit != -1 && GetTickCount() - startTime >= DWORD(timeLimit * 1000)) {
+      Trace(" timeout\n");
+      return -1;
+    }
+
+    Sleep(1000);
+  }
+
+  Trace(". OK\n");
+
+  return int((GetTickCount() - startTime) / 1000);
+}
+*/
+///////////////////////////////////////////////////////////////
+d685 2
+a686 2
+            if (lstrcmpi(C0C_PORT_NAME_COMCLASS, portName) == 0) {
+              if (!portParameters.ClassChanged()) {
+d722 2
+a723 2
+              if (portParameters.ClassChanged()) {
+                Trace("Changed port class for %s (%s -> %s)\n", phPortName, portNameOld, portName);
+d1217 1
+a1217 2
+  if (lstrcmpi(portName[0], portName[1]) == 0 &&
+      lstrcmpi(portName[0], C0C_PORT_NAME_COMCLASS) != 0 &&
+a1229 19
+  /*
+  if (timeout > 0 && !no_update) {
+    if (WaitNoPendingInstallEvents(timeout)) {
+      timeout = 0;
+    } else {
+      for (int j = 0 ; j < 2 ; j++) {
+        int timeElapsed = SleepTillPortNotFound(portName[j], timeout);
+
+        if (timeElapsed < 0 || timeout < timeElapsed) {
+          timeout = 0;
+          break;
+        }
+
+        timeout -= timeElapsed;
+      }
+    }
+  }
+  */
+
+d1774 9
+d1804 6
+@
+
+
+1.49
+log
+@Added using DeviceDesc to set FriendlyName
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.48 2011/12/15 16:43:20 vfrolov Exp $
+d22 3
+d280 2
+d379 1
+a379 1
+static VOID SetFriendlyNameBus(
+d400 82
+a481 2
+  char friendlyName[120];
+  char deviceDesc[80];
+d483 4
+a486 7
+  if (!SetupDiGetDeviceRegistryProperty(hDevInfo,
+                                         pDevInfoData,
+                                         SPDRP_DEVICEDESC,
+                                         NULL,
+                                         (LPBYTE)deviceDesc,
+                                         sizeof(deviceDesc),
+                                         NULL))
+d488 47
+a534 2
+    SNPRINTF(deviceDesc, sizeof(deviceDesc)/sizeof(deviceDesc[0]),
+             "com0com - bus for serial port pair emulator");
+d537 33
+a569 3
+  SNPRINTF(friendlyName, sizeof(friendlyName)/sizeof(friendlyName[0]),
+           "%s %d (%s <-> %s)",
+           deviceDesc, num, portName[0], portName[1]);
+d571 5
+a575 2
+  SetupDiSetDeviceRegistryProperty(hDevInfo, pDevInfoData, SPDRP_FRIENDLYNAME,
+                                  (LPBYTE)friendlyName, (lstrlen(friendlyName) + 1) * sizeof(*friendlyName));
+d749 2
+a750 1
+              SetFriendlyNameBus(hDevInfo, pDevInfoData, i);
+d764 3
+d982 12
+a993 4
+  }
+  else
+  if (rebootRequired) {
+    PromptReboot();
+d1052 35
+d1090 3
+a1126 21
+static CNC_DEV_CALLBACK SetFriendlyNameBus;
+static bool SetFriendlyNameBus(
+    HDEVINFO hDevInfo,
+    PSP_DEVINFO_DATA pDevInfoData,
+    PCDevProperties pDevProperties,
+    BOOL * /*pRebootRequired*/,
+    void *pParam)
+{
+  if (!lstrcmp(pDevProperties->DevId(), C0C_BUS_DEVICE_ID)) {
+    int num = GetPortNum(hDevInfo, pDevInfoData);
+
+    if (num == *(int *)pParam)
+      SetFriendlyNameBus(hDevInfo, pDevInfoData, num);
+
+    return TRUE;
+  }
+
+  // we never should be here
+  return FALSE;
+}
+
+d1137 1
+a1137 1
+    EnumDevices(EnumFilter, &devProperties, &rebootRequired, SetFriendlyNameBus, &num);
+d1775 2
+d1806 5
+d1884 2
+d1930 14
+d1973 10
+@
+
+
+1.48
+log
+@Added parameters parsing result check
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.47 2011/12/15 15:51:48 vfrolov Exp $
+d22 3
+d374 1
+a374 1
+static VOID SetFriendlyName(
+d395 14
+a408 1
+  char friendlyName[80];
+d411 2
+a412 2
+           "com0com - bus for serial port pair emulator %d (%s <-> %s)",
+           num, portName[0], portName[1]);
+d589 1
+a589 1
+              SetFriendlyName(hDevInfo, pDevInfoData, i);
+d911 19
+a929 1
+    SetFriendlyName(hDevInfo, pDevInfoData, num);
+d934 1
+d945 5
+@
+
+
+1.47
+log
+@Fixed types
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.46 2011/07/15 16:09:05 vfrolov Exp $
+d22 3
+d532 2
+a533 1
+          portParameters.ParseParametersStr(pParameters);
+d995 2
+a996 1
+      portParameters.ParseParametersStr(pParameters);
+@
+
+
+1.46
+log
+@Disabled MessageBox() for silent mode and added default processing
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.45 2011/07/13 17:39:56 vfrolov Exp $
+d22 3
+d225 1
+a225 1
+  BOOL preinstallClass;
+d269 2
+a270 2
+static BOOL detailPrms = FALSE;
+static BOOL no_update = FALSE;
+d272 2
+a273 1
+static BOOL EnumFilter(const char *pHardwareId)
+d288 1
+a288 1
+static BOOL IsValidPortNum(int num)
+d308 1
+a308 1
+static BOOL IsValidPortName(
+d347 1
+a347 1
+    BOOL inUse;
+d447 1
+a447 1
+    BOOL enable,
+d477 1
+a477 1
+  BOOL changed;
+d480 2
+a481 1
+static BOOL ShowDialog(
+d494 2
+a495 1
+static BOOL ChangeDevice(
+d602 1
+a602 1
+BOOL Change(const char *pPhPortName, const char *pParameters)
+d629 2
+a630 1
+static BOOL RemoveDevice(
+d652 1
+a652 1
+BOOL Remove(int num)
+d697 1
+a697 1
+BOOL Preinstall(const InfFileInstall *pInfFileInstallList)
+d736 1
+a736 1
+BOOL Reload(
+d780 1
+a780 1
+BOOL Update(const InfFileInstall *pInfFileInstallList)
+d782 1
+a782 1
+  BOOL ok = TRUE;
+d807 1
+a807 1
+BOOL Disable()
+d824 1
+a824 1
+BOOL Enable()
+d842 1
+a842 1
+BOOL Install(const char *pInfFilePath)
+d866 2
+a867 1
+static BOOL InstallDeviceCallBack(
+d899 1
+a899 1
+static BOOL InstallBusDevice(const char *pInfFilePath, int num)
+d912 2
+a913 1
+static BOOL AddDeviceToBusyMask(
+d946 1
+a946 1
+BOOL Install(const char *pInfFilePath, const char *pParametersA, const char *pParametersB, int num)
+d1061 1
+a1061 1
+BOOL Uninstall(
+d1101 1
+a1101 1
+  BOOL notDeleted;
+d1297 1
+a1297 1
+BOOL InfClean(
+d1301 1
+a1301 1
+  BOOL ok = TRUE;
+d1373 1
+a1373 1
+BOOL ShowBusyNames(const char *pPattern)
+d1622 1
+a1622 1
+static int Complete(BOOL ok)
+@
+
+
+1.45
+log
+@Fixed result treatment of UpdateDriverForPlugAndPlayDevices()
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.44 2010/07/30 09:19:29 vfrolov Exp $
+d22 3
+d297 1
+a297 1
+    if (res == IDCANCEL)
+d315 1
+a315 1
+    if (res == IDCANCEL)
+d915 1
+a915 1
+      if (ShowLastError(MB_OKCANCEL|MB_ICONWARNING, "AddDeviceToBusyMask(%d)", i) == IDCANCEL)
+d1014 1
+a1014 1
+              portName[0]) == IDCANCEL)
+d1395 1
+a1395 1
+        if (ShowError(MB_OKCANCEL, ERROR_NOT_ENOUGH_MEMORY, "LocalAlloc(%lu)", (unsigned long)size) == IDCANCEL) {
+d1423 1
+a1423 1
+            i != 0 ? "QueryDosDevice()" : "ComDbNames()") == IDCANCEL)
+d1476 1
+a1476 1
+          if (ShowError(MB_OKCANCEL, ERROR_NOT_ENOUGH_MEMORY, "LocalAlloc(%lu)", (unsigned long)sizeNamesNew) == IDCANCEL) {
+@
+
+
+1.44
+log
+@Added STRDUP()
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.43 2010/07/29 12:18:43 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2010 Vyacheslav Frolov
+d22 3
+d329 1
+a329 1
+                  "The port name %s is already used for other device %s.",
+d350 1
+a350 1
+                    "in the COM port database.",
+d542 1
+a542 1
+                ShowMsg(MB_OK|MB_ICONWARNING, "Can't display the dialog while changing the class of port");
+d545 1
+a545 1
+              ShowMsg(MB_OK|MB_ICONWARNING, "Can't display the dialog for non Ports class port");
+d747 1
+a747 1
+      res = UpdateDriver(pInfFilePath, pHardwareId, INSTALLFLAG_FORCE, &rebootRequired);
+d842 1
+a842 1
+    res = UpdateDriver(pInfFilePath, C0C_BUS_DEVICE_ID, 0, &rebootRequired);
+d987 1
+a987 1
+        ShowMsg(MB_OK|MB_ICONWARNING, "Can't display the dialog while installing a pair of linked ports");
+d1010 1
+a1010 1
+              "The same port name %s is used for both ports.",
+d1124 1
+a1124 1
+                            "Service %s is not stopped (state %ld).",
+@
+
+
+1.43
+log
+@Fixed waiting stuff
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.42 2010/07/19 11:23:54 vfrolov Exp $
+d22 3
+d214 1
+a214 1
+  const char *CopyDriversSection;
+d1264 2
+a1265 2
+    if (pInfFileInstall->CopyDriversSection != NULL) {
+      if (!infFile.UninstallFiles(pInfFileInstall->CopyDriversSection))
+a1360 3
+  SIZE_T sizePattern;
+
+  sizePattern = (lstrlen(pPattern) + 1) * sizeof(pPatternUp[0]);
+d1362 1
+a1362 1
+  pPatternUp = (char *)LocalAlloc(LPTR, sizePattern);
+d1364 1
+a1364 2
+  if (!pPatternUp) {
+    ShowError(MB_OK|MB_ICONSTOP, ERROR_NOT_ENOUGH_MEMORY, "LocalAlloc(%lu)", (unsigned long)sizePattern);
+a1365 1
+  }
+a1366 1
+  lstrcpy(pPatternUp, pPattern);
+@
+
+
+1.42
+log
+@Added install command w/o prms to update driver
+Added ability to use --wait option with any command
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.41 2010/07/15 18:11:10 vfrolov Exp $
+d22 4
+d386 1
+d394 3
+d418 1
+a418 1
+    if (GetTickCount() - startTime >= DWORD(timeLimit * 1000)) {
+d430 1
+d1015 7
+a1021 2
+  if (timeout > 0) {
+    int timeElapsed = WaitNoPendingInstallEvents(timeout);
+d1023 2
+a1024 3
+    if (!no_update) {
+      for (int j = 0 ; j < 2 ; j++) {
+        if (timeElapsed < 0)
+d1026 1
+a1028 5
+
+        if (timeout < 0)
+          timeout = 0;
+
+        timeElapsed = SleepTillPortNotFound(portName[j], timeout);
+a1030 5
+
+    if (timeElapsed < 0 || timeout < timeElapsed)
+      timeout = 0;
+    else
+      timeout -= timeElapsed;
+d1032 1
+@
+
+
+1.41
+log
+@Fixed --wait option for Ports class
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.40 2010/07/12 18:14:44 vfrolov Exp $
+d22 3
+d578 1
+a578 1
+int Change(const char *pPhPortName, const char *pParameters)
+d585 1
+a585 1
+    return 1;
+d595 1
+a595 1
+  return 0;
+d627 1
+a627 1
+int Remove(int num)
+d637 1
+a637 1
+      return 1;
+d655 2
+a656 1
+        return 1;
+d658 1
+a658 1
+        return 1;
+d669 1
+a669 4
+  if (res != IDCONTINUE)
+    return 1;
+
+  return 0;
+d672 1
+a672 1
+int Preinstall(const InfFileInstall *pInfFileInstallList)
+d702 1
+a702 1
+  return 0;
+d708 1
+a708 1
+  return  1;
+d711 1
+a711 1
+int Reload(
+d721 1
+a721 1
+    return 1;
+d725 1
+a725 1
+    return 1;
+d737 1
+a737 1
+      return 1;
+d752 1
+a752 1
+  return 0;
+d755 1
+a755 1
+int Update(const InfFileInstall *pInfFileInstallList)
+d757 1
+a757 1
+  int res = 0;
+d767 2
+a768 2
+    if (Reload(pInfFileInstall->pHardwareId, infFile.Path(), &rebootRequired) != 0)
+      res = 1;
+d771 1
+a771 1
+  if (res != 0) {
+d779 1
+a779 1
+  return  res;
+d782 1
+a782 1
+int Disable()
+d788 1
+a788 1
+    return 1;
+d791 1
+a791 1
+    return 1;
+d796 1
+a796 1
+  return 0;
+d799 1
+a799 1
+int Enable()
+d805 1
+a805 1
+    return 1;
+d808 1
+a808 1
+    return 1;
+d814 25
+a838 1
+  return  0;
+d919 1
+a919 1
+int Install(const char *pInfFilePath, const char *pParametersA, const char *pParametersB, int num)
+d1007 1
+a1007 2
+    int timeLimit = timeout;
+    int timeElapsed = WaitNoPendingInstallEvents(timeLimit);
+d1014 1
+a1014 1
+        timeLimit -= timeElapsed;
+d1016 2
+a1017 2
+        if (timeLimit < 0)
+          timeLimit = 0;
+d1019 1
+a1019 1
+        timeElapsed = SleepTillPortNotFound(portName[j], timeLimit);
+d1022 5
+d1029 1
+a1029 1
+  return  0;
+d1035 1
+a1035 1
+  return  1;
+d1038 1
+a1038 1
+int Uninstall(
+d1265 1
+a1265 1
+  return 0;
+d1271 1
+a1271 1
+  return  1;
+d1274 1
+a1274 1
+int InfClean(
+d1278 1
+a1278 1
+  int res = 0;
+d1304 1
+a1304 1
+      res = 1;
+d1317 1
+a1317 1
+      res = 1;
+d1327 1
+a1327 1
+    res = 1;
+d1344 1
+a1344 1
+  if (res != 0)
+d1347 1
+a1347 1
+  return res;
+d1350 1
+a1350 1
+int ShowBusyNames(const char *pPattern)
+d1361 1
+a1361 1
+    return 1;
+d1392 1
+a1392 1
+          return 1;
+d1421 1
+a1421 1
+          return 1;
+d1473 1
+a1473 1
+            return 1;
+d1499 1
+a1499 1
+  return 0;
+d1502 1
+a1502 1
+int Help(const char *pProgName)
+d1522 2
+a1523 1
+    "                                 execution (update command expected later)\n"
+d1533 2
+d1603 10
+d1616 1
+a1616 1
+///////////////////////////////////////////////////////////////
+d1623 1
+d1677 1
+a1677 1
+    return 0;
+d1682 1
+a1682 1
+    return 0;
+d1686 1
+a1686 1
+    return 0;
+d1691 1
+a1691 1
+    return ShowBusyNames(argv[2]);
+d1696 1
+a1696 1
+    return Change(NULL, NULL);
+d1701 1
+a1701 1
+    return Change(argv[2], argv[3]);
+d1710 1
+a1710 1
+      return Remove(num);
+d1717 1
+a1717 1
+      return Disable();
+d1724 1
+a1724 1
+      return Enable();
+d1729 1
+a1729 1
+    return Reload(C0C_BUS_DEVICE_ID, NULL, NULL);
+d1744 1
+a1744 1
+    return Preinstall(infFileInstallList);
+d1749 1
+a1749 1
+    return Uninstall(infFileInstallList, infFileUnnstallList);
+d1754 1
+a1754 1
+    return InfClean(infFileInstallList, infFileUnnstallList);
+d1759 1
+a1759 1
+    return Update(infFileInstallList);
+d1769 5
+d1776 1
+a1776 1
+    return Install(pPath, argv[2], argv[3], -1);
+d1785 1
+a1785 1
+      return Install(pPath, argv[3], argv[4], num);
+@
+
+
+1.40
+log
+@Fixed driver update duplication
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.39 2010/06/07 07:03:31 vfrolov Exp $
+d22 3
+d383 3
+d391 1
+a391 1
+  Trace("Wating %s ", path);
+d415 1
+a415 1
+  Trace(" OK\n");
+d981 8
+a988 3
+  if (!no_update && timeout > 0) {
+    for (int j = 0, timeLimit = timeout ; j < 2 ; j++) {
+      int timeElapsed = SleepTillPortNotFound(portName[j], timeLimit);
+d990 1
+a990 2
+      if (timeElapsed < 0)
+        break;
+d992 2
+a993 1
+      timeLimit -= timeElapsed;
+d995 2
+a996 2
+      if (timeLimit < 0)
+        timeLimit = 0;
+@
+
+
+1.39
+log
+@Added wrapper UpdateDriver() for UpdateDriverForPlugAndPlayDevices()
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.38 2010/06/01 06:14:10 vfrolov Exp $
+d22 3
+a201 1
+  const char *pDeviceId;
+d208 3
+a210 3
+  { C0C_INF_NAME,          C0C_COPY_DRIVERS_SECTION,  C0C_BUS_DEVICE_ID,   C0C_BUS_DEVICE_ID,        TRUE,  requiredFieldsInfBusInstall },
+  { C0C_INF_NAME_CNCPORT,  NULL,                      C0C_PORT_DEVICE_ID,  C0C_PORT_HW_ID_CNCCLASS,  FALSE, requiredFieldsInfCNCPortInstall },
+  { C0C_INF_NAME_COMPORT,  NULL,                      C0C_PORT_DEVICE_ID,  C0C_PORT_HW_ID_COMCLASS,  FALSE, requiredFieldsInfCOMPortInstall },
+a704 1
+    const char *pDeviceId,
+d713 1
+a713 1
+  if (!devProperties.DevId(pDeviceId))
+d760 1
+a760 1
+    if (Reload(pInfFileInstall->pDeviceId, pInfFileInstall->pHardwareId, infFile.Path(), &rebootRequired) != 0)
+d1675 1
+a1675 1
+    return Reload(C0C_BUS_DEVICE_ID, NULL, NULL, NULL);
+@
+
+
+1.38
+log
+@Improved driver updating
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.37 2010/05/31 07:58:14 vfrolov Exp $
+d22 3
+d720 6
+a725 1
+  BOOL rr = FALSE;
+d727 1
+a727 2
+  if (pHardwareId && pInfFilePath && !no_update) {
+    if (!UpdateDriverForPlugAndPlayDevices(0, pHardwareId, pInfFilePath, INSTALLFLAG_FORCE, &rr)) {
+d737 1
+a737 1
+  if (rebootRequired || rr) {
+d843 9
+a851 1
+  return InstallDevice(pInfFilePath, C0C_BUS_DEVICE_ID, NULL, InstallDeviceCallBack, &num, !no_update);
+@
+
+
+1.37
+log
+@Added ability to invoke the system-supplied advanced settings dialog box
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.36 2010/05/27 11:16:46 vfrolov Exp $
+d22 3
+d196 2
+d203 3
+a205 3
+  { C0C_INF_NAME,          C0C_COPY_DRIVERS_SECTION,  TRUE,  requiredFieldsInfBusInstall },
+  { C0C_INF_NAME_CNCPORT,  NULL,                      FALSE, requiredFieldsInfCNCPortInstall },
+  { C0C_INF_NAME_COMPORT,  NULL,                      FALSE, requiredFieldsInfCOMPortInstall },
+d699 5
+a703 1
+int Reload(const char *pInfFilePath)
+d709 1
+a709 1
+  if (!devProperties.DevId(C0C_BUS_DEVICE_ID))
+d719 2
+a720 2
+  if (pInfFilePath && !no_update) {
+    if (!UpdateDriverForPlugAndPlayDevices(0, C0C_BUS_DEVICE_ID, pInfFilePath, INSTALLFLAG_FORCE, &rr)) {
+d730 31
+a760 1
+  if (rebootRequired || rr)
+d762 1
+d764 1
+a764 1
+  return 0;
+d1659 1
+a1659 1
+    return Reload(NULL);
+d1686 5
+a1711 5
+  else
+  if (argc == 2 && !lstrcmpi(argv[1], "update")) {
+    SetTitle(C0C_SETUP_TITLE " (UPDATE)");
+    return Reload(pPath);
+  }
+@
+
+
+1.36
+log
+@Added ability to put the port to the Ports class
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.35 2010/03/30 08:05:15 vfrolov Exp $
+d22 3
+d149 2
+d439 13
+d481 1
+a481 1
+        if (pPhPortName && !lstrcmpi(pPhPortName, phPortName)) {
+d497 18
+d534 2
+a535 5
+
+              if ((lstrcmpi(C0C_PORT_NAME_COMCLASS, portName) == 0 ? 1 : 0) ^
+                  (lstrcmpi(C0C_PORT_NAME_COMCLASS, portNameOld) == 0) ? 1 : 0)
+              {
+                Trace("Changed port class for %s PortName (%s -> %s)\n", phPortName, portNameOld, portName);
+d884 3
+@
+
+
+1.35
+log
+@Fixed bugs item #2979007 "setupc command line limited to 200 chars"
+Reported by Henrik Maier (hwmaier)
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.34 2010/03/11 13:40:57 vfrolov Exp $
+d22 4
+d151 4
+a154 2
+#define C0C_CLASS_GUID           "{df799e12-3c56-421b-b298-b6d3642bc878}"
+#define C0C_CLASS                "CNCPorts"
+d160 16
+d177 53
+d235 15
+d399 4
+a402 1
+static VOID CleanDevPropertiesStack(InfFile &infFile, Stack &stack, BOOL enable, BOOL *pRebootRequired)
+d416 1
+a416 1
+        EnableDevices(infFile, pDevProperties, pRebootRequired);
+d424 4
+a427 2
+  ChangeDeviceParams(InfFile &_infFile, const char *_pPhPortName, const char *_pParameters)
+    : pInfFile(&_infFile), pPhPortName(_pPhPortName), pParameters(_pParameters), changed(FALSE) {}
+a428 1
+  InfFile *pInfFile;
+a443 1
+    InfFile &infFile = *((ChangeDeviceParams *)pParam)->pInfFile;
+d498 11
+a508 1
+              RestartDevices(infFile, &devProperties, pRebootRequired);
+d526 1
+a526 1
+int Change(InfFile &infFile, const char *pPhPortName, const char *pParameters)
+d529 1
+a529 1
+  ChangeDeviceParams params(infFile, pPhPortName, pParameters);
+d535 1
+a535 1
+  EnumDevices(infFile, &devProperties, &rebootRequired, ChangeDevice, &params);
+d538 1
+a538 1
+    ComDbSync(infFile);
+d575 1
+a575 1
+int Remove(InfFile &infFile, int num)
+d587 1
+a587 1
+    EnumDevices(infFile, &devProperties, &rebootRequired, RemoveDevice, &removeDeviceParams);
+d607 1
+a607 1
+      RemoveDevices(infFile, &devProperties, NULL);
+d611 1
+a611 1
+  ComDbSync(infFile);
+d622 1
+a622 1
+int Preinstall(InfFile &infFile)
+d624 9
+a632 2
+  if (!infFile.InstallOEMInf())
+    return 1;
+d634 2
+a635 1
+  int res;
+d637 6
+a642 2
+  do {
+    res = IDCONTINUE;
+d644 2
+a645 4
+    if (SetupDiInstallClass(NULL, infFile.Path(), 0, NULL)) {
+      Trace("Installed Class %s\n", infFile.ClassGUID());
+    } else {
+      res = ShowLastError(MB_CANCELTRYCONTINUE, "SetupDiInstallClass()");
+a646 1
+  } while (res == IDTRYAGAIN);
+d648 3
+a650 2
+  if (res != IDCONTINUE)
+    return 1;
+d653 6
+d661 1
+a661 1
+int Reload(InfFile &infFile, BOOL update)
+d670 2
+a671 2
+  if (!DisableDevices(infFile, &devProperties, &rebootRequired, &stack)) {
+    CleanDevPropertiesStack(infFile, stack, TRUE, &rebootRequired);
+d677 3
+a679 3
+  if (update && !no_update) {
+    if (!UpdateDriverForPlugAndPlayDevices(0, C0C_BUS_DEVICE_ID, infFile.Path(), INSTALLFLAG_FORCE, &rr)) {
+      CleanDevPropertiesStack(infFile, stack, TRUE, &rebootRequired);
+d684 1
+a684 1
+  CleanDevPropertiesStack(infFile, stack, TRUE, &rebootRequired);
+d686 1
+a686 1
+  ComDbSync(infFile);
+d694 1
+a694 1
+int Disable(InfFile &infFile)
+d702 1
+a702 1
+  if (!DisableDevices(infFile, &devProperties, &rebootRequired, NULL))
+d711 1
+a711 1
+int Enable(InfFile &infFile)
+d719 1
+a719 1
+  if (!EnableDevices(infFile, &devProperties, &rebootRequired)) {
+d761 1
+a761 1
+static BOOL InstallBusDevice(InfFile &infFile, int num)
+d763 1
+a763 1
+  return InstallDevice(infFile, C0C_BUS_DEVICE_ID, C0C_CLASS, InstallDeviceCallBack, &num, !no_update);
+d785 1
+a785 1
+static int AllocPortNum(InfFile &infFile, int num)
+d793 1
+a793 1
+  if (EnumDevices(infFile, &devProperties, NULL, AddDeviceToBusyMask, &busyMask) < 0)
+d799 1
+a799 1
+int Install(InfFile &infFile, const char *pParametersA, const char *pParametersB, int num)
+d807 1
+a807 1
+    i = AllocPortNum(infFile, num >= 0 ? num : 0);
+d869 2
+a870 1
+  if (!lstrcmpi(portName[0], portName[1]) &&
+d878 1
+a878 1
+  if (!InstallBusDevice(infFile, i))
+d881 1
+a881 1
+  ComDbSync(infFile);
+d906 3
+a908 1
+int Uninstall(InfFile &infFile)
+d920 2
+a921 2
+    if (!DisableDevices(infFile, &devProperties, &rebootRequired, &stack)) {
+      CleanDevPropertiesStack(infFile, stack, TRUE, &rebootRequired);
+d925 1
+a925 1
+    CleanDevPropertiesStack(infFile, stack, FALSE, &rebootRequired);
+d932 1
+a932 1
+  if (!RemoveDevices(infFile, &devProperties, &rebootRequired))
+d935 1
+a935 1
+  if (!RemoveDevices(infFile, NULL, NULL))
+d938 1
+a938 1
+  ComDbSync(infFile);
+d1049 1
+a1049 1
+        err = RegDeleteKey(hKey, infFile.ClassGUID());
+d1053 1
+a1053 1
+          err = RegOpenKeyEx(hKey, infFile.ClassGUID(), 0, KEY_READ, &hClassGuidKey);
+d1057 1
+a1057 1
+              char subKey[MAX_PATH+1];
+d1068 1
+a1068 1
+                Trace("Deleted Class subkey %s\\%s\n", infFile.ClassGUID(), subKey);
+d1071 1
+a1071 1
+                ShowError(MB_OK|MB_ICONWARNING, err, "RegDeleteKey(%s\\%s)", infFile.ClassGUID(), subKey);
+d1082 1
+a1082 1
+          err = RegDeleteKey(hKey, infFile.ClassGUID());
+d1086 1
+a1086 1
+          Trace("Deleted Class %s\n", infFile.ClassGUID());
+d1091 1
+a1091 1
+          Trace("Class %s not installed\n", infFile.ClassGUID());
+d1095 1
+a1095 1
+          res = ShowError(MB_CANCELTRYCONTINUE, err, "RegDeleteKey(%s)", infFile.ClassGUID());
+d1109 1
+a1109 1
+    Trace("WARNING: Class %s not deleted\n", infFile.ClassGUID());
+d1114 9
+a1122 2
+  if (!infFile.UninstallOEMInf())
+    goto err;
+d1124 5
+a1128 2
+  if (!infFile.UninstallFiles(C0C_COPY_DRIVERS_SECTION))
+    goto err;
+d1130 1
+a1130 1
+  if (!InfFile::UninstallAllInfFiles(C0C_CLASS_GUID, NULL, NULL))
+d1142 76
+d1415 1
+d1547 1
+a1547 6
+
+  InfFile infFile(C0C_INF_NAME, C0C_INF_NAME);
+
+  if (!infFile.Compare(C0C_CLASS_GUID, C0C_CLASS, C0C_PROVIDER))
+    return 1;
+
+d1550 1
+a1550 1
+    return Change(infFile, NULL, NULL);
+d1555 1
+a1555 15
+    return Change(infFile, argv[2], argv[3]);
+  }
+  else
+  if (argc == 4 && !lstrcmpi(argv[1], "install")) {
+    SetTitle(C0C_SETUP_TITLE " (INSTALL)");
+    return Install(infFile, argv[2], argv[3], -1);
+  }
+  else
+  if (argc == 5 && !lstrcmpi(argv[1], "install")) {
+    SetTitle(C0C_SETUP_TITLE " (INSTALL)");
+
+    int num;
+
+    if (StrToInt(argv[2], &num) && num >= 0)
+      return Install(infFile, argv[3], argv[4], num);
+d1564 1
+a1564 1
+      return Remove(infFile, num);
+d1571 1
+a1571 1
+      return Disable(infFile);
+d1578 1
+a1578 1
+      return Enable(infFile);
+d1581 15
+d1598 1
+a1598 1
+    return Preinstall(infFile);
+d1601 20
+a1620 3
+  if (argc == 2 && !lstrcmpi(argv[1], "update")) {
+    SetTitle(C0C_SETUP_TITLE " (UPDATE)");
+    return Reload(infFile, TRUE);
+d1623 7
+a1629 3
+  if (argc == 2 && !lstrcmpi(argv[1], "reload")) {
+    SetTitle(C0C_SETUP_TITLE " (RELOAD)");
+    return Reload(infFile, FALSE);
+d1632 3
+a1634 3
+  if (argc == 2 && !lstrcmpi(argv[1], "uninstall")) {
+    SetTitle(C0C_SETUP_TITLE " (UNINSTALL)");
+    return Uninstall(infFile);
+@
+
+
+1.34
+log
+@Fixed size typo, bug #2968585
+Thanks Xlnt (xlnt9568)
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.33 2009/11/16 08:43:44 vfrolov Exp $
+d22 4
+d1448 1
+a1448 1
+  char cmd[200];
+@
+
+
+1.33
+log
+@Fixed endless loop if no ports logged in ComDB
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.32 2009/09/18 11:21:31 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2009 Vyacheslav Frolov
+d22 3
+d1124 1
+a1124 1
+          if (ShowError(MB_OKCANCEL, ERROR_NOT_ENOUGH_MEMORY, "LocalAlloc(%lu)", (unsigned long)size) == IDCANCEL) {
+@
+
+
+1.32
+log
+@Added --wait option
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.31 2009/09/18 07:48:11 vfrolov Exp $
+d22 3
+d1065 1
+a1065 1
+          continue;
+@
+
+
+1.31
+log
+@Added missing argv[0] shift
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.30 2009/02/16 10:32:56 vfrolov Exp $
+d22 3
+d146 1
+d261 38
+d753 14
+d1167 2
+d1274 11
+@
+
+
+1.30
+log
+@Added Silent() and PromptReboot()
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.29 2009/02/11 07:35:22 vfrolov Exp $
+d22 3
+d1218 1
+d1225 1
+d1232 1
+@
+
+
+1.29
+log
+@Added --no-update option
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.28 2009/01/12 12:48:05 vfrolov Exp $
+d22 3
+a140 1
+static BOOL silent = FALSE;
+d247 2
+a248 2
+           "com0com - bus for serial port pair emulator (%s <-> %s)",
+           portName[0], portName[1]);
+d383 1
+a383 1
+    SetupPromptReboot(NULL, NULL, FALSE);
+d456 1
+a456 1
+    SetupPromptReboot(NULL, NULL, FALSE);
+d515 1
+a515 1
+    SetupPromptReboot(NULL, NULL, FALSE);
+d532 1
+a532 1
+    SetupPromptReboot(NULL, NULL, FALSE);
+d550 1
+a550 1
+    SetupPromptReboot(NULL, NULL, FALSE);
+d724 4
+a727 1
+    return 1;
+d729 4
+a732 1
+  Stack stack;
+d734 1
+a734 3
+  if (!DisableDevices(infFile, &devProperties, &rebootRequired, &stack)) {
+    CleanDevPropertiesStack(infFile, stack, TRUE, &rebootRequired);
+    return 1;
+a736 2
+  CleanDevPropertiesStack(infFile, stack, FALSE, &rebootRequired);
+
+d739 1
+a739 1
+    return 1;
+d742 1
+a742 1
+    return 1;
+d745 1
+a745 1
+    return 1;
+d750 2
+a751 2
+    SetupPromptReboot(NULL, NULL, FALSE);
+    return 0;
+d775 1
+a775 1
+              if (silent ||
+d820 1
+a820 1
+    return 1;
+d846 1
+a846 1
+    return 1;
+d921 1
+a921 1
+    return 1;
+d924 1
+a924 1
+    return 1;
+d927 1
+a927 1
+    return 1;
+d930 1
+a930 1
+    return 1;
+d933 6
+d1197 1
+a1198 1
+  silent = FALSE;
+d1220 1
+a1220 1
+      silent = TRUE;
+@
+
+
+1.28
+log
+@Fixed typo
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.27 2008/12/25 16:58:45 vfrolov Exp $
+d22 3
+d139 1
+d501 1
+a501 1
+  if (update) {
+d587 1
+a587 1
+  return InstallDevice(infFile, C0C_BUS_DEVICE_ID, C0C_CLASS, InstallDeviceCallBack, &num);
+d1100 2
+d1188 2
+d1214 6
+@
+
+
+1.27
+log
+@Implemented busynames command
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.26 2008/12/24 15:32:22 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2008 Vyacheslav Frolov
+d22 3
+d1168 1
+a1168 1
+    "  %s%busynames COM?*\n"
+@
+
+
+1.26
+log
+@Added logging COM port numbers in the COM port database
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.25 2008/09/12 12:21:49 vfrolov Exp $
+d22 3
+d924 152
+d1117 2
+d1165 3
+d1221 5
+@
+
+
+1.25
+log
+@Added --silent option
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.24 2008/09/12 09:55:59 vfrolov Exp $
+d22 3
+d113 1
+a113 1
+#include <msports.h>
+d152 1
+a152 2
+    const char *pPortName,
+    const char *pPhDevName)
+d172 2
+a173 17
+      if (GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
+        if ((pPortName[0] == 'C' || pPortName[0] == 'c') &&
+            (pPortName[1] == 'O' || pPortName[1] == 'o') &&
+            (pPortName[2] == 'M' || pPortName[2] == 'm'))
+        {
+          int num;
+
+          if (StrToInt(pPortName + 3, &num) && num > 0) {
+            HCOMDB  hComDB;
+            LONG err;
+
+            err = ComDBOpen(&hComDB);
+
+            if (err != ERROR_SUCCESS) {
+              res = ShowLastError(MB_CANCELTRYCONTINUE, "ComDBOpen()");
+              continue;
+            }
+d175 2
+a176 1
+            DWORD maxPortsReported;
+d178 3
+a180 1
+            err = ComDBGetCurrentPortUsage(hComDB, NULL, 0, CDB_REPORT_BYTES, &maxPortsReported);
+d182 1
+a182 5
+            if (err != ERROR_SUCCESS) {
+              ComDBClose(hComDB);
+              res = ShowError(MB_CANCELTRYCONTINUE, err, "ComDBGetCurrentPortUsage()");
+              continue;
+            }
+d184 2
+a185 4
+            if (maxPortsReported < (DWORD)num) {
+              ComDBClose(hComDB);
+              continue;
+            }
+d187 2
+a188 2
+            if (maxPortsReported > (DWORD)num)
+              maxPortsReported = num;
+d190 1
+a190 1
+            BYTE *pBuf = (BYTE *)LocalAlloc(LPTR, maxPortsReported);
+d192 4
+a195 28
+            if (!pBuf) {
+              ComDBClose(hComDB);
+
+              SetLastError(ERROR_NOT_ENOUGH_MEMORY);
+              res = ShowLastError(MB_CANCELTRYCONTINUE, "LocalAlloc(%lu)", (unsigned long)maxPortsReported);
+              continue;
+            }
+
+            err = ComDBGetCurrentPortUsage(hComDB, pBuf, num, CDB_REPORT_BYTES, &maxPortsReported);
+            ComDBClose(hComDB);
+
+            if (err != ERROR_SUCCESS) {
+              LocalFree(pBuf);
+              res = ShowError(MB_CANCELTRYCONTINUE, err, "ComDBGetCurrentPortUsage()");
+              continue;
+            }
+
+            if (pBuf[num - 1])
+              res = ShowMsg(MB_CANCELTRYCONTINUE,
+                            "The port name %s is already logged as \"in use\"\n"
+                            "in the COM port database.",
+                            pPortName);
+
+            LocalFree(pBuf);
+          }
+        }
+        continue;
+      }
+d197 5
+a201 1
+      phDevName[0] = 0;
+a202 8
+
+    if (pPhDevName && !lstrcmpi(pPhDevName, phDevName))
+      break;
+
+    res = ShowMsg(MB_CANCELTRYCONTINUE,
+                  "The port name %s is already used for other device %s.",
+                  pPortName, phDevName);
+
+d265 1
+a265 1
+    : pInfFile(&_infFile), pPhPortName(_pPhPortName), pParameters(_pParameters) {}
+d270 1
+d304 4
+d319 3
+a321 1
+          if (IsValidPortName(portName, phDevName) && portParameters.Changed()) {
+d325 2
+d367 3
+d441 2
+d500 2
+d662 1
+a662 1
+      if (!IsValidPortName(portName[j], NULL))
+d694 2
+d733 2
+@
+
+
+1.24
+log
+@Fixed help cutting
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.23 2008/04/02 10:28:24 vfrolov Exp $
+d22 3
+d126 1
+d785 2
+a786 1
+              if (ShowMsg(MB_YESNO,
+d961 1
+d1061 6
+@
+
+
+1.23
+log
+@Added reload command
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.22 2007/11/27 16:32:54 vfrolov Exp $
+d22 3
+d970 2
+@
+
+
+1.22
+log
+@Added disable and enable options
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.21 2007/10/19 16:09:55 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006-2007 Vyacheslav Frolov
+d22 3
+d498 1
+a498 1
+int Update(InfFile &infFile)
+d512 1
+a512 1
+  BOOL rr;
+d514 5
+a518 3
+  if (!UpdateDriverForPlugAndPlayDevices(0, C0C_BUS_DEVICE_ID, infFile.Path(), INSTALLFLAG_FORCE, &rr)) {
+    CleanDevPropertiesStack(infFile, stack, TRUE, &rebootRequired);
+    return 1;
+d973 1
+d1128 6
+a1133 1
+    return Update(infFile);
+@
+
+
+1.21
+log
+@Implemented --detail-prms option
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.20 2007/10/15 13:49:04 vfrolov Exp $
+d22 3
+d521 35
+d960 2
+d1101 14
+@
+
+
+1.20
+log
+@Added entry point MainA
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.19 2007/10/05 07:28:26 vfrolov Exp $
+d22 3
+d113 2
+d327 1
+a327 1
+      char buf[100];
+d329 1
+a329 1
+      portParameters.FillParametersStr(buf, sizeof(buf)/sizeof(buf[0]));
+d349 1
+a349 1
+              portParameters.FillParametersStr(buf, sizeof(buf)/sizeof(buf[0]));
+d654 1
+a654 1
+    char buf[100];
+d656 1
+a656 1
+    portParameters.FillParametersStr(buf, sizeof(buf)/sizeof(buf[0]));
+d909 1
+d985 2
+d997 8
+a1004 1
+    } else {
+@
+
+
+1.19
+log
+@Added listing pairs w/o PortNum
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.18 2007/10/01 15:44:19 vfrolov Exp $
+d22 3
+d889 1
+a889 1
+int Help(const char *pCmdPref)
+d898 2
+a899 2
+    "  %s [options] <command>\n"
+    , pCmdPref);
+d945 2
+a946 2
+    "  %sinstall - -\n"
+    , pCmdPref);
+d948 2
+a949 2
+    "  %sinstall 5 * *\n"
+    , pCmdPref);
+d951 2
+a952 2
+    "  %sremove 0\n"
+    , pCmdPref);
+d954 2
+a955 2
+    "  %sinstall PortName=COM2 PortName=COM4\n"
+    , pCmdPref);
+d957 2
+a958 2
+    "  %sinstall PortName=COM5,EmuBR=yes,EmuOverrun=yes -\n"
+    , pCmdPref);
+d960 2
+a961 2
+    "  %schange " C0C_PREF_PORT_NAME_A "0 EmuBR=yes,EmuOverrun=yes\n"
+    , pCmdPref);
+d963 2
+a964 2
+    "  %slist\n"
+    , pCmdPref);
+d966 2
+a967 2
+    "  %suninstall\n"
+    , pCmdPref);
+d1094 1
+a1094 1
+int CALLBACK RunDllA(HWND /*hWnd*/, HINSTANCE /*hInst*/, LPSTR pCmdLine, int /*nCmdShow*/)
+d1126 8
+a1133 1
+  argv[0] = "rundll32 setup,RunDll ";
+d1135 2
+a1136 1
+  int res = Main(argc, argv);
+d1138 2
+a1139 2
+  if (!GetOutputFile())
+    ConsoleWriteRead(cmd, sizeof(cmd)/sizeof(cmd[0]), "\nPress <RETURN> to continue\n");
+@
+
+
+1.18
+log
+@Added check for install two ports with the same name
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.17 2007/10/01 15:01:35 vfrolov Exp $
+d22 3
+d362 3
+@
+
+
+1.17
+log
+@Added pDevInstID parameter to InstallDevice()
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.16 2007/09/25 12:42:49 vfrolov Exp $
+d22 3
+d606 2
+d624 1
+a624 3
+      char portName[20];
+
+      portParameters.FillPortName(portName, sizeof(portName)/sizeof(portName[0]));
+d626 1
+a626 1
+      if (!IsValidPortName(portName, NULL))
+d637 1
+d647 8
+@
+
+
+1.16
+log
+@Fixed update command (bug if multiple pairs active)
+Fixed uninstall command (restore active ports on cancell)
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.15 2007/07/03 14:42:10 vfrolov Exp $
+d22 4
+d504 1
+a504 1
+static BOOL SetPortNum(
+d507 1
+a507 1
+    PCDevProperties /*pDevProperties*/,
+d511 6
+a516 2
+  int res;
+  int num = *(int *)pParam;
+d518 1
+a518 2
+  do {
+    res = IDCONTINUE;
+d520 2
+a521 1
+    LONG err = SetPortNum(hDevInfo, pDevInfoData, num);
+d523 1
+a523 2
+    if (err != ERROR_SUCCESS)
+      res = ShowError(MB_CANCELTRYCONTINUE, err, "SetPortNum(%d)", num);
+d525 2
+a526 1
+  } while (res == IDTRYAGAIN);
+d528 1
+a528 2
+  if (res != IDCONTINUE)
+    return FALSE;
+d530 2
+a531 1
+  SetFriendlyName(hDevInfo, pDevInfoData, num);
+d533 1
+a533 1
+  return TRUE;
+d538 1
+a538 1
+  return InstallDevice(infFile, C0C_BUS_DEVICE_ID, SetPortNum, &num);
+@
+
+
+1.15
+log
+@Added friendly name setting for bus device
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.14 2007/06/14 16:14:19 vfrolov Exp $
+d22 3
+a177 1
+              err = GetLastError();
+d179 3
+a181 1
+              res = ShowError(MB_CANCELTRYCONTINUE, err, "LocalAlloc(%lu)", (unsigned long)maxPortsReported);
+d255 21
+d337 4
+a340 2
+              devProperties.pDevId = C0C_PORT_DEVICE_ID;
+              devProperties.pPhObjName = phDevName;
+d363 2
+a364 1
+  devProperties.pDevId = C0C_BUS_DEVICE_ID;
+d392 1
+a392 1
+        DisableDevice(hDevInfo, pDevInfoData, pDevProperties, pRebootRequired);
+d412 2
+a413 1
+    devProperties.pDevId = C0C_BUS_DEVICE_ID;
+d430 4
+a433 2
+      devProperties.pDevId = C0C_PORT_DEVICE_ID;
+      devProperties.pLocation = phPortName;
+d473 5
+a477 1
+  if (!UpdateDriverForPlugAndPlayDevices(0, C0C_BUS_DEVICE_ID, infFile.Path(), INSTALLFLAG_FORCE, NULL))
+d480 17
+d557 2
+a558 1
+  devProperties.pDevId = C0C_BUS_DEVICE_ID;
+d653 4
+a656 1
+  devProperties.pDevId = C0C_PORT_DEVICE_ID;
+d658 2
+a659 1
+  if (!DisableDevices(infFile, &devProperties, &rebootRequired))
+d661 3
+d666 2
+a667 1
+  devProperties.pDevId = C0C_BUS_DEVICE_ID;
+d905 1
+a905 1
+    lstrcpyn(buf, pStr, sizeof(buf)/sizeof(buf[0]));
+d947 2
+a948 1
+  SetOutputFile(NULL);
+d955 2
+a956 1
+      SetOutputFile(argv[2]);
+d1071 1
+a1071 1
+  lstrcpyn(cmd, pCmdLine, sizeof(cmd)/sizeof(cmd[0]));
+@
+
+
+1.14
+log
+@Added test for "in use" in the COM port database
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.13 2007/05/29 15:30:41 vfrolov Exp $
+d22 3
+d220 31
+d309 2
+d456 1
+d461 1
+a461 1
+    LONG err = SetPortNum(hDevInfo, pDevInfoData, *(int *)pParam);
+d464 1
+a464 1
+      res = ShowError(MB_CANCELTRYCONTINUE, err, "SetPortNum(%d)", *(int *)pParam);
+d471 2
+@
+
+
+1.13
+log
+@Fixed big hepl text interrupt
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.12 2007/01/11 15:05:03 vfrolov Exp $
+d22 3
+d76 1
+d133 65
+a197 2
+      if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+        break;
+@
+
+
+1.12
+log
+@Replaced strtok() by STRTOK_R()
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.11 2006/11/21 11:36:06 vfrolov Exp $
+d22 3
+d731 13
+a743 3
+    "\n"
+    "%s",
+    PortParameters::GetHelp());
+@
+
+
+1.11
+log
+@Added --output option
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.10 2006/11/10 14:07:40 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2006 Vyacheslav Frolov
+d22 3
+d861 3
+a863 1
+  for (char *pArg = strtok(pCmd, " \t\r\n") ; pArg ; pArg = strtok(NULL, " \t\r\n")) {
+@
+
+
+1.10
+log
+@Implemented remove command
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.9 2006/11/03 16:13:29 vfrolov Exp $
+d22 3
+d691 1
+a691 1
+  Trace(
+d694 1
+a694 1
+  Trace(
+d696 1
+a696 1
+    "  %s<command>\n"
+d698 6
+a703 1
+  Trace(
+d724 1
+a724 1
+  Trace(
+d728 1
+a728 1
+  Trace(
+d732 1
+a732 1
+  Trace(
+d735 1
+a735 1
+  Trace(
+d738 1
+a738 1
+  Trace(
+d741 1
+a741 1
+  Trace(
+d744 1
+a744 1
+  Trace(
+d747 1
+a747 1
+  Trace(
+d750 1
+a750 1
+  Trace(
+d753 1
+a753 1
+  Trace(
+d756 1
+a756 1
+  Trace(
+d764 17
+d847 1
+a847 1
+  Trace("Invalid command\n");
+d892 1
+a892 1
+    Trace("Enter 'help' to get info about usage of " C0C_SETUP_TITLE ".\n\n");
+d914 2
+a915 1
+  ConsoleWriteRead(cmd, sizeof(cmd)/sizeof(cmd[0]), "\nPress <RETURN> to continue\n");
+@
+
+
+1.9
+log
+@Added port name length checkings
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.8 2006/11/03 13:22:07 vfrolov Exp $
+d22 3
+d153 1
+d199 5
+a203 1
+              RestartDevices(infFile, C0C_PORT_DEVICE_ID, phDevName, pRebootRequired);
+d223 72
+a294 1
+  EnumDevices(infFile, C0C_BUS_DEVICE_ID, &rebootRequired, ChangeDevice, &params);
+d299 3
+d339 2
+a340 1
+    BOOL * /* pRebootRequired */,
+d369 2
+a370 1
+    BOOL * /* pRebootRequired */,
+d389 4
+a392 1
+  if (EnumDevices(infFile, C0C_BUS_DEVICE_ID, NULL, AddDeviceToBusyMask, &busyMask) < 0)
+d482 4
+d487 1
+a487 1
+  if (!DisableDevices(infFile, C0C_PORT_DEVICE_ID, &rebootRequired))
+d490 4
+a493 1
+  if (!RemoveDevices(infFile, C0C_BUS_DEVICE_ID, &rebootRequired))
+d703 3
+d731 3
+d798 9
+@
+
+
+1.8
+log
+@Added checking of BusyMask::AddNum() return value
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.7 2006/11/02 16:20:44 vfrolov Exp $
+d22 3
+d75 20
+d101 10
+d127 1
+a127 1
+                  "Port name %s is already used for other device %s.",
+d337 3
+@
+
+
+1.7
+log
+@Added usage the fixed port numbers
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.6 2006/10/27 13:23:49 vfrolov Exp $
+d22 3
+d232 1
+a232 1
+    LONG err = SetPortNum(hDevInfo, pDevInfoData, (int)pParam);
+d235 1
+a235 1
+      res = ShowError(MB_CANCELTRYCONTINUE, err, "SetPortNum(%d)", (int)pParam);
+d245 5
+d258 6
+a263 2
+  if (i >= 0)
+    ((BusyMask *)pParam)->AddNum(i);
+d272 2
+a273 1
+  EnumDevices(infFile, C0C_BUS_DEVICE_ID, NULL, AddDeviceToBusyMask, &busyMask);
+d288 3
+d344 1
+a344 1
+  if (!InstallDevice(infFile, C0C_BUS_DEVICE_ID, SetPortNum, (void *)i))
+@
+
+
+1.6
+log
+@Added check if port name is already used for other device
+Fixed incorrect port restart
+Fixed prompts
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.5 2006/10/23 12:08:31 vfrolov Exp $
+d22 5
+a45 1
+ *
+d54 1
+a67 1
+
+d69 1
+a69 1
+BOOL IsValidPortName(
+d102 14
+a115 1
+int Change(InfFile &infFile, const char *pPhPortName, const char *pParameters)
+d117 1
+a117 2
+  BOOL rebootRequired = FALSE;
+  int numPairs = CountDevices(infFile, C0C_BUS_DEVICE_ID);
+d119 4
+a122 1
+  //Trace("Found %d pairs\n", numPairs);
+a123 1
+  for (int i = 0 ; i < numPairs ; i++) {
+d159 1
+a159 1
+              RestartDevices(infFile, C0C_PORT_DEVICE_ID, phDevName, &rebootRequired);
+d171 10
+d218 48
+a265 1
+int Install(InfFile &infFile, const char *pParametersA, const char *pParametersB)
+d267 20
+a286 1
+  int i = CountDevices(infFile, C0C_BUS_DEVICE_ID);
+a303 5
+      char phDevName[40];
+
+      SNPRINTF(phDevName, sizeof(phDevName)/sizeof(phDevName[0]), "%s%d",
+               j ? C0C_PREF_DEVICE_NAME_B : C0C_PREF_DEVICE_NAME_A, i);
+
+d308 2
+a309 2
+      if (!IsValidPortName(portName, phDevName))
+        return 1;
+d328 2
+a329 2
+  if (!InstallDevice(infFile, C0C_BUS_DEVICE_ID))
+    return 1;
+d332 6
+d552 9
+a560 3
+    "  list                         - for each port show parameters\n"
+    "  change <port> <params>       - set parameters for port\n"
+    "  install <paramsA> <paramsB>  - install a pair of ports\n"
+d563 1
+a563 1
+    "  uninstall                    - uninstall all pairs and driver\n"
+a565 1
+    "\n"
+d579 3
+d634 10
+a643 1
+    return Install(infFile, argv[2], argv[3]);
+d701 1
+a701 1
+  const char* argv[5];
+@
+
+
+1.5
+log
+@Added interactive mode
+Added more help
+Added SetTitle() calls
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.4 2006/10/19 13:28:50 vfrolov Exp $
+d22 5
+d63 34
+d122 1
+a122 1
+        if (pPhPortName && !lstrcmpi(pPhPortName, phPortName))
+d125 1
+a125 2
+        if (portParameters.Changed()) {
+          err = portParameters.Save();
+d127 6
+a132 3
+          if (err == ERROR_SUCCESS) {
+            portParameters.FillParametersStr(buf, sizeof(buf)/sizeof(buf[0]));
+            Trace("change %s %s\n", phPortName, buf);
+d134 2
+a135 1
+            char phDevDevName[40];
+d137 3
+a139 2
+            SNPRINTF(phDevDevName, sizeof(phDevDevName)/sizeof(phDevDevName[0]), "%s%d",
+                     j ? C0C_PREF_DEVICE_NAME_A : C0C_PREF_DEVICE_NAME_B, i);
+d141 4
+a144 3
+            RestartDevices(infFile, C0C_PORT_DEVICE_ID, phDevDevName, &rebootRequired);
+          } else {
+            ShowError(MB_OK|MB_ICONWARNING, err, "portParameters.Save(%s)", phPortName);
+d210 12
+d549 1
+a549 2
+  Trace("Unknown command. For more info enter: '%shelp'.\n",
+        argv[0]);
+d594 2
+d616 1
+a616 6
+  ConsoleWriteRead(cmd, sizeof(cmd)/sizeof(cmd[0]),
+                   "\n"
+                   "result = %d\n"
+                   "\n"
+                   "Press <RETURN> to continue\n",
+                   res);
+@
+
+
+1.4
+log
+@Added InfFile::UninstallAllInfFiles()
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.3 2006/10/13 10:26:35 vfrolov Exp $
+d22 3
+d56 2
+d387 1
+a387 1
+int Help(const char *pProgName)
+d389 5
+d396 2
+a397 2
+    "  %s <command>\n"
+    , pProgName);
+d407 2
+d420 8
+a427 2
+    "  %s install - -\n"
+    , pProgName);
+d429 2
+a430 2
+    "  %s install PortName=COM2 PortName=COM4\n"
+    , pProgName);
+d432 7
+a438 2
+    "  %s change " C0C_PREF_PORT_NAME_A "0 EmuBR=yes,EmuOverrun=yes\n"
+    , pProgName);
+d445 13
+d464 1
+d469 1
+d474 1
+d479 1
+d484 1
+d489 1
+d493 4
+a496 1
+  return Help(argv[0]);
+d499 1
+a499 1
+int CALLBACK RunDllA(HWND /*hWnd*/, HINSTANCE /*hInst*/, LPSTR pCmdLine, int /*nCmdShow*/)
+a501 1
+  const char* argv[5];
+d504 16
+a519 1
+  argv[argc++] = "rundll32 setup,RunDll";
+d522 7
+d533 17
+a549 3
+  for (const char *pArg = strtok(cmd, " \t") ; pArg ; pArg = strtok(NULL, " \t")) {
+    if ((argc + 2) > sizeof(argv)/sizeof(argv[0]))
+      break;
+d551 2
+a552 2
+    argv[argc++] = pArg;
+    argv[argc] = NULL;
+d555 2
+d559 6
+a564 3
+  char buf[2];
+
+  ConsoleWriteRead(buf, sizeof(buf)/sizeof(buf[0]), "\nresult = %d\n\nPress <RETURN> to continue\n", res);
+@
+
+
+1.3
+log
+@Some defines moved to ../include/com0com.h
+Changed name of device object (for WMI)
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.2 2006/08/25 10:36:48 vfrolov Exp $
+d22 4
+d376 3
+d393 2
+a394 2
+    "  install <params> <params>    - install a pair of ports\n"
+    "  preinstall                   - install driver\n"
+@
+
+
+1.2
+log
+@Added C0C_PREF_PORT_NAME_A and C0C_PREF_PORT_NAME_B defines
+Added deleting Class subkeys
+@
+text
+@d2 1
+a2 1
+ * $Id: setup.cpp,v 1.1 2006/07/28 12:16:42 vfrolov Exp $
+d22 4
+d39 2
+a40 4
+#define C0C_BUS_DEVICE_ID        "root\\com0com"
+#define C0C_PORT_DEVICE_ID       "com0com\\port"
+#define C0C_PREF_PORT_NAME_A     "CNCA"
+#define C0C_PREF_PORT_NAME_B     "CNCB"
+a45 1
+#define C0C_SERVICE              "com0com"
+d61 2
+a62 1
+      SNPRINTF(phPortName, sizeof(phPortName), "%s%d", j ? C0C_PREF_PORT_NAME_B : C0C_PREF_PORT_NAME_A, i);
+d70 1
+a70 1
+      portParameters.FillParametersStr(buf, sizeof(buf));
+d81 1
+a81 1
+            portParameters.FillParametersStr(buf, sizeof(buf));
+d84 6
+a89 1
+            RestartDevices(infFile, C0C_PORT_DEVICE_ID, phPortName, &rebootRequired);
+d147 2
+a148 1
+    SNPRINTF(phPortName, sizeof(phPortName), "%s%d", j ? C0C_PREF_PORT_NAME_B : C0C_PREF_PORT_NAME_A, i);
+d169 1
+a169 1
+    portParameters.FillParametersStr(buf, sizeof(buf));
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 4
+a24 1
+ * $Log: $
+a34 1
+#define C0C_INF_NAME             "com0com.inf"
+d37 4
+d60 1
+a60 1
+      SNPRINTF(phPortName, sizeof(phPortName), "CNC%c%d", j ? 'B' : 'A', i);
+d140 1
+a140 1
+    SNPRINTF(phPortName, sizeof(phPortName), "CNC%c%d", j ? 'B' : 'A', i);
+d295 34
+d399 1
+a399 1
+    "  %s change CNCA0 EmuBR=yes,EmuOverrun=yes\n"
+@
+

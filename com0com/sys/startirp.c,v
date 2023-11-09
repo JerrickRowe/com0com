@@ -1,0 +1,1243 @@
+head	1.21;
+access;
+symbols
+	v3_0_0_0:1.21
+	v2_2_2_0:1.19
+	v2_2_1_0:1.18
+	v2_2_0_0:1.18
+	v2_1_0_0:1.18
+	v2_0_0_0:1.18
+	v1_8_0_0:1.17
+	v1_7_0_0:1.13
+	v1_6_0_0:1.13
+	v1_5_0_0:1.7
+	v1_4_0_0:1.5
+	RELEASED:1.21
+	v1_3_0_0:1.3
+	v1_2_0_0:1.2
+	v1_1_1_0:1.1
+	v1_1_0_0:1.1
+	v1_0_0_0:1.1;
+locks; strict;
+comment	@ * @;
+
+
+1.21
+date	2012.02.03.17.14.24;	author vfrolov;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2010.08.04.10.38.56;	author vfrolov;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2009.09.21.08.49.56;	author vfrolov;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2007.06.20.10.37.47;	author vfrolov;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2007.06.04.15.24.33;	author vfrolov;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2007.02.20.12.05.11;	author vfrolov;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2007.01.22.17.05.16;	author vfrolov;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2007.01.15.16.09.16;	author vfrolov;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2006.06.28.13.52.09;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2006.06.23.11.44.52;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2006.06.21.16.23.57;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2006.06.08.11.33.35;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2006.05.17.15.31.14;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2006.01.10.10.17.23;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2005.12.05.10.54.55;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2005.11.29.16.16.46;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2005.09.13.14.56.16;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2005.09.06.07.23.44;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.08.24.12.50.40;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.07.14.13.51.09;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.01.26.12.18.54;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.21
+log
+@Optimized GetIrpState()
+@
+text
+@/*
+ * $Id: startirp.c,v 1.20 2010/08/04 10:38:56 vfrolov Exp $
+ *
+ * Copyright (c) 2004-2012 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: startirp.c,v $
+ * Revision 1.20  2010/08/04 10:38:56  vfrolov
+ * Minimized PREfast noise
+ *
+ * Revision 1.19  2009/09/21 08:49:56  vfrolov
+ * Added missing removing from queue
+ * (Thanks Kirill Bagrinovsky)
+ *
+ * Revision 1.18  2007/06/20 10:37:47  vfrolov
+ * Fixed double decrementing of amountInWriteQueue on CANCEL
+ *
+ * Revision 1.17  2007/06/04 15:24:33  vfrolov
+ * Fixed open reject just after close in exclusiveMode
+ *
+ * Revision 1.16  2007/02/20 12:05:11  vfrolov
+ * Implemented IOCTL_SERIAL_XOFF_COUNTER
+ * Fixed cancel and timeout routines
+ *
+ * Revision 1.15  2007/01/22 17:05:16  vfrolov
+ * Added missing IoMarkIrpPending()
+ *
+ * Revision 1.14  2007/01/15 16:09:16  vfrolov
+ * Fixed non zero Information for IOCTL_SERIAL_IMMEDIATE_CHAR
+ *
+ * Revision 1.13  2006/06/28 13:52:09  vfrolov
+ * Fixed double-release of spin lock
+ *
+ * Revision 1.12  2006/06/23 11:44:52  vfrolov
+ * Mass replacement pDevExt by pIoPort
+ *
+ * Revision 1.11  2006/06/21 16:23:57  vfrolov
+ * Fixed possible BSOD after one port of pair removal
+ *
+ * Revision 1.10  2006/06/08 11:33:35  vfrolov
+ * Fixed bugs with amountInWriteQueue
+ *
+ * Revision 1.9  2006/05/17 15:31:14  vfrolov
+ * Implemented SERIAL_TRANSMIT_TOGGLE
+ *
+ * Revision 1.8  2006/01/10 10:17:23  vfrolov
+ * Implemented flow control and handshaking
+ * Implemented IOCTL_SERIAL_SET_XON and IOCTL_SERIAL_SET_XOFF
+ * Added setting of HoldReasons, WaitForImmediate and AmountInOutQueue
+ *   fields of SERIAL_STATUS for IOCTL_SERIAL_GET_COMMSTATUS
+ *
+ * Revision 1.7  2005/12/05 10:54:55  vfrolov
+ * Implemented IOCTL_SERIAL_IMMEDIATE_CHAR
+ *
+ * Revision 1.6  2005/11/29 16:16:46  vfrolov
+ * Removed FdoPortCancelQueue()
+ *
+ * Revision 1.5  2005/09/13 14:56:16  vfrolov
+ * Implemented IRP_MJ_FLUSH_BUFFERS
+ *
+ * Revision 1.4  2005/09/06 07:23:44  vfrolov
+ * Implemented overrun emulation
+ *
+ * Revision 1.3  2005/08/24 12:50:40  vfrolov
+ * Fixed IRP processing order
+ *
+ * Revision 1.2  2005/07/14 13:51:09  vfrolov
+ * Replaced ASSERT by HALT_UNLESS
+ *
+ * Revision 1.1  2005/01/26 12:18:54  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "handflow.h"
+
+/*
+ * FILE_ID used by HALT_UNLESS to put it on BSOD
+ */
+#define FILE_ID 2
+
+VOID ShiftQueue(PC0C_IRP_QUEUE pQueue)
+{
+  if (pQueue->pCurrent) {
+    PC0C_IRP_STATE pState;
+
+    pState = GetIrpState(pQueue->pCurrent);
+
+    HALT_UNLESS(pState);
+
+    pQueue->pCurrent = NULL;
+    pState->flags &= ~C0C_IRP_FLAG_IS_CURRENT;
+  }
+
+  if (!IsListEmpty(&pQueue->queue)) {
+    PC0C_IRP_STATE pState;
+    PIRP pIrp;
+    PLIST_ENTRY pListEntry;
+
+    pListEntry = RemoveHeadList(&pQueue->queue);
+    pIrp = CONTAINING_RECORD(pListEntry, IRP, Tail.Overlay.ListEntry);
+
+    pState = GetIrpState(pIrp);
+
+    HALT_UNLESS(pState);
+
+    pQueue->pCurrent = pIrp;
+    pState->flags &= ~C0C_IRP_FLAG_IN_QUEUE;
+    pState->flags |= C0C_IRP_FLAG_IS_CURRENT;
+  }
+}
+
+DRIVER_CANCEL CancelRoutine;
+VOID CancelRoutine(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+{
+  LIST_ENTRY queueToComplete;
+  PC0C_IO_PORT pIoPort;
+  PC0C_IRP_STATE pState;
+  KIRQL oldIrql;
+  PC0C_IRP_QUEUE pQueue;
+
+  IoReleaseCancelSpinLock(pIrp->CancelIrql);
+
+  pIoPort = FDO_PORT_TO_IO_PORT(pDevObj);
+  pState = GetIrpState(pIrp);
+  HALT_UNLESS(pState);
+
+  pQueue = &pIoPort->irpQueues[pState->iQueue];
+
+  InitializeListHead(&queueToComplete);
+
+  KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+
+  if (pState->flags & C0C_IRP_FLAG_IN_QUEUE) {
+    RemoveEntryList(&pIrp->Tail.Overlay.ListEntry);
+    pState->flags &= ~C0C_IRP_FLAG_IN_QUEUE;
+  }
+
+  pIrp->IoStatus.Status = STATUS_CANCELLED;
+  InsertTailList(&queueToComplete, &pIrp->Tail.Overlay.ListEntry);
+
+  if (pState->flags & C0C_IRP_FLAG_IS_CURRENT) {
+    ShiftQueue(pQueue);
+
+    if (pState->iQueue == C0C_QUEUE_WRITE)
+      ReadWrite(pIoPort->pIoPortRemote, FALSE, pIoPort, FALSE, &queueToComplete);
+  }
+
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+  FdoPortCompleteQueue(&queueToComplete);
+}
+
+VOID CompleteIrp(PIRP pIrp, NTSTATUS status, PLIST_ENTRY pQueueToComplete)
+{
+  PDRIVER_CANCEL pCancelRoutine;
+
+  #pragma warning(push, 3)
+  pCancelRoutine = IoSetCancelRoutine(pIrp, NULL);
+  #pragma warning(pop)
+
+  if (pCancelRoutine) {
+    pIrp->IoStatus.Status = status;
+    InsertTailList(pQueueToComplete, &pIrp->Tail.Overlay.ListEntry);
+  }
+}
+
+VOID CancelQueue(PC0C_IRP_QUEUE pQueue, PLIST_ENTRY pQueueToComplete)
+{
+  while (pQueue->pCurrent) {
+    PIRP pIrp;
+
+    pIrp = pQueue->pCurrent;
+    ShiftQueue(pQueue);
+
+    CompleteIrp(pIrp, STATUS_CANCELLED, pQueueToComplete);
+  }
+}
+
+VOID FdoPortCancelQueues(IN PC0C_IO_PORT pIoPort)
+{
+  LIST_ENTRY queueToComplete;
+  KIRQL oldIrql;
+  int i;
+
+  InitializeListHead(&queueToComplete);
+  KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+
+  for (i = 0 ; i < C0C_QUEUE_SIZE ; i++)
+    CancelQueue(&pIoPort->irpQueues[i], &queueToComplete);
+
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+  FdoPortCompleteQueue(&queueToComplete);
+}
+
+VOID FdoPortCompleteQueue(IN PLIST_ENTRY pQueueToComplete)
+{
+  while (!IsListEmpty(pQueueToComplete)) {
+    PIRP pIrp;
+    PC0C_IRP_STATE pState;
+    PLIST_ENTRY pListEntry;
+    PIO_STACK_LOCATION pIrpStack;
+
+    pListEntry = RemoveHeadList(pQueueToComplete);
+    pIrp = CONTAINING_RECORD(pListEntry, IRP, Tail.Overlay.ListEntry);
+    pIrpStack = IoGetCurrentIrpStackLocation(pIrp);
+
+    if (pIrp->IoStatus.Status == STATUS_TIMEOUT && pIrp->IoStatus.Information &&
+        pIrpStack->MajorFunction == IRP_MJ_DEVICE_CONTROL &&
+            pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_XOFF_COUNTER)
+    {
+      pIrp->IoStatus.Status = STATUS_SERIAL_COUNTER_TIMEOUT;
+    }
+
+    TraceIrp("complete", pIrp, &pIrp->IoStatus.Status, TRACE_FLAG_RESULTS);
+
+    pState = GetIrpState(pIrp);
+    HALT_UNLESS(pState);
+
+    if (pState->iQueue == C0C_QUEUE_WRITE) {
+      KIRQL oldIrql;
+      PC0C_IO_PORT pIoPort;
+
+      pIoPort = FDO_PORT_TO_IO_PORT(IoGetCurrentIrpStackLocation(pIrp)->DeviceObject);
+
+      KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+      pIoPort->amountInWriteQueue -=
+          GetWriteLength(pIrp) - (ULONG)pIrp->IoStatus.Information;
+      KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+    }
+
+    if (pIrp->IoStatus.Status == STATUS_CANCELLED ||
+        (pIrpStack->MajorFunction == IRP_MJ_DEVICE_CONTROL &&
+            (pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_IMMEDIATE_CHAR ||
+                pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_XOFF_COUNTER)))
+    {
+      pIrp->IoStatus.Information = 0;
+    }
+
+    IoCompleteRequest(pIrp, IO_SERIAL_INCREMENT);
+  }
+}
+
+NTSTATUS NoPending(IN PIRP pIrp, NTSTATUS status)
+{
+  PDRIVER_CANCEL pCancelRoutine;
+
+  #pragma warning(push, 3)
+  pCancelRoutine = IoSetCancelRoutine(pIrp, NULL);
+  #pragma warning(pop)
+
+  if (!pCancelRoutine) {
+    IoMarkIrpPending(pIrp);
+    return STATUS_PENDING;
+  }
+
+  return status;
+}
+
+NTSTATUS StartIrp(
+    PC0C_IO_PORT pIoPort,
+    PIRP pIrp,
+    PC0C_IRP_STATE pState,
+    PC0C_IRP_QUEUE pQueue,
+    PLIST_ENTRY pQueueToComplete,
+    PC0C_FDOPORT_START_ROUTINE pStartRoutine)
+{
+  NTSTATUS status;
+
+  pQueue->pCurrent = pIrp;
+  pState->flags |= C0C_IRP_FLAG_IS_CURRENT;
+
+  if (pState->iQueue == C0C_QUEUE_WRITE) {
+    ULONG length = GetWriteLength(pIrp);
+
+    if (length) {
+      pIoPort->amountInWriteQueue += length;
+      UpdateTransmitToggle(pIoPort, pQueueToComplete);
+    }
+  }
+
+  status = pStartRoutine(pIoPort, pQueueToComplete);
+
+  if (status == STATUS_PENDING) {
+    pIrp->IoStatus.Status = STATUS_PENDING;
+    IoMarkIrpPending(pIrp);
+  } else {
+    status = NoPending(pIrp, status);
+
+    if (status != STATUS_PENDING) {
+      PIO_STACK_LOCATION pIrpStack;
+
+      if (pState->iQueue == C0C_QUEUE_WRITE) {
+        pIoPort->amountInWriteQueue -=
+            GetWriteLength(pIrp) - (ULONG)pIrp->IoStatus.Information;
+      }
+
+      pIrpStack = IoGetCurrentIrpStackLocation(pIrp);
+
+      if (status == STATUS_CANCELLED ||
+          (pIrpStack->MajorFunction == IRP_MJ_DEVICE_CONTROL &&
+              (pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_IMMEDIATE_CHAR ||
+                  pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_XOFF_COUNTER)))
+      {
+        pIrp->IoStatus.Information = 0;
+      }
+    }
+
+    if (pQueue->pCurrent == pIrp)
+      ShiftQueue(pQueue);
+  }
+
+  return status;
+}
+
+NTSTATUS FdoPortStartIrp(
+    IN PC0C_IO_PORT pIoPort,
+    IN PIRP pIrp,
+    IN UCHAR iQueue,
+    IN PC0C_FDOPORT_START_ROUTINE pStartRoutine)
+{
+  NTSTATUS status;
+  LIST_ENTRY queueToComplete;
+  KIRQL oldIrql;
+  PC0C_IRP_QUEUE pQueue;
+  PC0C_IRP_STATE pState;
+
+  InitializeListHead(&queueToComplete);
+  pState = GetIrpState(pIrp);
+
+  HALT_UNLESS(pState);
+
+  pState->flags = 0;
+  pState->iQueue = iQueue;
+
+  pQueue = &pIoPort->irpQueues[iQueue];
+
+  KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+
+  #pragma warning(push, 3)
+  IoSetCancelRoutine(pIrp, CancelRoutine);
+  #pragma warning(pop)
+
+  if (pIrp->Cancel) {
+    status = NoPending(pIrp, STATUS_CANCELLED);
+  } else {
+    if (!pQueue->pCurrent) {
+      status = StartIrp(pIoPort, pIrp, pState, pQueue, &queueToComplete, pStartRoutine);
+    } else {
+      PIO_STACK_LOCATION pIrpStack;
+      PIO_STACK_LOCATION pCurrentStack;
+
+      pIrpStack = IoGetCurrentIrpStackLocation(pIrp);
+      pCurrentStack = IoGetCurrentIrpStackLocation(pQueue->pCurrent);
+
+      if (pIrpStack->MajorFunction == IRP_MJ_DEVICE_CONTROL &&
+          pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_WAIT_ON_MASK)
+      {
+        status = NoPending(pIrp, STATUS_INVALID_PARAMETER);
+      }
+      else
+      if (pIrpStack->MajorFunction == IRP_MJ_DEVICE_CONTROL &&
+          pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_IMMEDIATE_CHAR)
+      {
+        if (pCurrentStack->MajorFunction == IRP_MJ_DEVICE_CONTROL &&
+            pCurrentStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_IMMEDIATE_CHAR)
+        {
+          status = NoPending(pIrp, STATUS_INVALID_PARAMETER);
+        } else {
+          PC0C_IRP_STATE pCurrentState;
+
+          pCurrentState = GetIrpState(pQueue->pCurrent);
+
+          HALT_UNLESS(pCurrentState);
+
+          pCurrentState->flags &= ~C0C_IRP_FLAG_IS_CURRENT;
+          InsertHeadList(&pQueue->queue, &pQueue->pCurrent->Tail.Overlay.ListEntry);
+          pCurrentState->flags |= C0C_IRP_FLAG_IN_QUEUE;
+
+          status = StartIrp(pIoPort, pIrp, pState, pQueue, &queueToComplete, pStartRoutine);
+        }
+      }
+      else {
+        InsertTailList(&pQueue->queue, &pIrp->Tail.Overlay.ListEntry);
+        pState->flags |= C0C_IRP_FLAG_IN_QUEUE;
+
+        if (pState->iQueue == C0C_QUEUE_WRITE) {
+          pIoPort->amountInWriteQueue += GetWriteLength(pIrp);
+        }
+
+        if (pCurrentStack->MajorFunction == IRP_MJ_DEVICE_CONTROL &&
+            pCurrentStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_XOFF_COUNTER &&
+            pQueue->pCurrent->IoStatus.Information)
+        {
+          if (pIrpStack->MajorFunction == IRP_MJ_FLUSH_BUFFERS) {
+            RemoveEntryList(&pIrp->Tail.Overlay.ListEntry);
+            pState->flags &= ~C0C_IRP_FLAG_IN_QUEUE;
+            status = NoPending(pIrp, STATUS_SUCCESS);
+          } else {
+            PIRP pIrpXoffCounter = pQueue->pCurrent;
+
+            ShiftQueue(pQueue);
+            CompleteIrp(pIrpXoffCounter, STATUS_SERIAL_MORE_WRITES, &queueToComplete);
+
+            status = StartIrp(pIoPort, pIrp, pState, pQueue, &queueToComplete, pStartRoutine);
+          }
+        } else {
+          pIrp->IoStatus.Status = STATUS_PENDING;
+          IoMarkIrpPending(pIrp);
+          status = STATUS_PENDING;
+        }
+      }
+    }
+  }
+
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+  FdoPortCompleteQueue(&queueToComplete);
+
+  return status;
+}
+@
+
+
+1.20
+log
+@Minimized PREfast noise
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.19 2009/09/21 08:49:56 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2010 Vyacheslav Frolov
+d22 3
+a96 25
+PC0C_IRP_STATE GetIrpState(IN PIRP pIrp)
+{
+  PIO_STACK_LOCATION pIrpStack = IoGetCurrentIrpStackLocation(pIrp);
+
+  switch (pIrpStack->MajorFunction) {
+  case IRP_MJ_WRITE:
+    return (PC0C_IRP_STATE)&pIrpStack->Parameters.Write.Key;
+  case IRP_MJ_READ:
+    return (PC0C_IRP_STATE)&pIrpStack->Parameters.Read.Key;
+  case IRP_MJ_DEVICE_CONTROL:
+    switch (pIrpStack->Parameters.DeviceIoControl.IoControlCode) {
+    case IOCTL_SERIAL_WAIT_ON_MASK:
+    case IOCTL_SERIAL_IMMEDIATE_CHAR:
+    case IOCTL_SERIAL_XOFF_COUNTER:
+      return (PC0C_IRP_STATE)&pIrpStack->Parameters.DeviceIoControl.Type3InputBuffer;
+    }
+    break;
+  case IRP_MJ_FLUSH_BUFFERS:
+  case IRP_MJ_CLOSE:
+    return (PC0C_IRP_STATE)&pIrpStack->Parameters.Others.Argument1;
+  }
+
+  return NULL;
+}
+
+@
+
+
+1.19
+log
+@Added missing removing from queue
+(Thanks Kirill Bagrinovsky)
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.18 2007/06/20 10:37:47 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2009 Vyacheslav Frolov
+d22 4
+d150 1
+@
+
+
+1.18
+log
+@Fixed double decrementing of amountInWriteQueue on CANCEL
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.17 2007/06/04 15:24:33 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2007 Vyacheslav Frolov
+d22 3
+d428 2
+@
+
+
+1.17
+log
+@Fixed open reject just after close in exclusiveMode
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.16 2007/02/20 12:05:11 vfrolov Exp $
+d22 3
+a162 5
+  if (pState->iQueue == C0C_QUEUE_WRITE) {
+    pIoPort->amountInWriteQueue -=
+        GetWriteLength(pIrp) - (ULONG)pIrp->IoStatus.Information;
+  }
+
+@
+
+
+1.16
+log
+@Implemented IOCTL_SERIAL_XOFF_COUNTER
+Fixed cancel and timeout routines
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.15 2007/01/22 17:05:16 vfrolov Exp $
+d22 4
+d102 1
+@
+
+
+1.15
+log
+@Added missing 1IoMarkIrpPending()
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.14 2007/01/15 16:09:16 vfrolov Exp $
+d22 3
+d93 1
+d137 1
+d151 2
+d165 4
+a168 1
+  if (pState->flags & C0C_IRP_FLAG_IS_CURRENT)
+d171 4
+d177 10
+a186 1
+  TraceIrp("cancel", pIrp, NULL, TRACE_FLAG_RESULTS);
+d188 4
+a191 3
+  pIrp->IoStatus.Status = STATUS_CANCELLED;
+  pIrp->IoStatus.Information = 0;
+  IoCompleteRequest(pIrp, IO_SERIAL_INCREMENT);
+a196 1
+    PDRIVER_CANCEL pCancelRoutine;
+a199 5
+
+    #pragma warning(push, 3)
+    pCancelRoutine = IoSetCancelRoutine(pIrp, NULL);
+    #pragma warning(pop)
+
+d202 1
+a202 4
+    if (pCancelRoutine) {
+      pIrp->IoStatus.Status = STATUS_CANCELLED;
+      InsertTailList(pQueueToComplete, &pIrp->Tail.Overlay.ListEntry);
+    }
+d232 8
+a257 2
+    pIrpStack = IoGetCurrentIrpStackLocation(pIrp);
+
+d260 2
+a261 1
+            pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_IMMEDIATE_CHAR))
+d287 6
+a292 6
+    IN PC0C_IO_PORT pIoPort,
+    IN PIRP pIrp,
+    IN PC0C_IRP_STATE pState,
+    IN PC0C_IRP_QUEUE pQueue,
+    IN KIRQL oldIrql,
+    IN PC0C_FDOPORT_START_ROUTINE pStartRoutine)
+a294 1
+  LIST_ENTRY queueToComplete;
+a298 2
+  InitializeListHead(&queueToComplete);
+
+d304 1
+a304 1
+      UpdateTransmitToggle(pIoPort, &queueToComplete);
+d308 1
+a308 1
+  status = pStartRoutine(pIoPort, &queueToComplete);
+d328 2
+a329 1
+              pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_IMMEDIATE_CHAR))
+a338 4
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+  FdoPortCompleteQueue(&queueToComplete);
+
+d349 1
+d354 1
+d374 1
+a374 1
+      return StartIrp(pIoPort, pIrp, pState, pQueue, oldIrql, pStartRoutine);
+d377 1
+d380 1
+a390 4
+        PIO_STACK_LOCATION pCurrentStack;
+
+        pCurrentStack = IoGetCurrentIrpStackLocation(pQueue->pCurrent);
+
+d406 1
+a406 1
+          return StartIrp(pIoPort, pIrp, pState, pQueue, oldIrql, pStartRoutine);
+a409 2
+        pIrp->IoStatus.Status = STATUS_PENDING;
+        IoMarkIrpPending(pIrp);
+d413 1
+a413 1
+        if (pState->iQueue == C0C_QUEUE_WRITE)
+d415 13
+d429 7
+a435 1
+        status = STATUS_PENDING;
+d442 2
+@
+
+
+1.14
+log
+@Fixed non zero Information for IOCTL_SERIAL_IMMEDIATE_CHAR
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.13 2006/06/28 13:52:09 vfrolov Exp $
+d22 3
+d256 2
+a257 1
+  if (!pCancelRoutine)
+d259 1
+@
+
+
+1.13
+log
+@Fixed double-release of spin lock
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.12 2006/06/23 11:44:52 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2006 Vyacheslav Frolov
+d22 3
+d210 1
+d232 6
+a237 1
+    if (pIrp->IoStatus.Status == STATUS_CANCELLED)
+d239 1
+d292 16
+a307 3
+    if (pState->iQueue == C0C_QUEUE_WRITE && status != STATUS_PENDING) {
+      pIoPort->amountInWriteQueue -=
+          GetWriteLength(pIrp) - (ULONG)pIrp->IoStatus.Information;
+@
+
+
+1.12
+log
+@Mass replacement pDevExt by pIoPort
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.11 2006/06/21 16:23:57 vfrolov Exp $
+d22 3
+a325 1
+    KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+d328 1
+a328 1
+      status = StartIrp(pIoPort, pIrp, pState, pQueue, oldIrql, pStartRoutine);
+d362 1
+a362 1
+          status = StartIrp(pIoPort, pIrp, pState, pQueue, oldIrql, pStartRoutine);
+a375 2
+
+      KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+d379 2
+@
+
+
+1.11
+log
+@Fixed possible BSOD after one port of pair removal
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.10 2006/06/08 11:33:35 vfrolov Exp $
+d22 3
+d124 1
+a124 1
+  PC0C_FDOPORT_EXTENSION pDevExt;
+d131 1
+a131 1
+  pDevExt = pDevObj->DeviceExtension;
+d135 1
+a135 1
+  pQueue = &pDevExt->pIoPortLocal->irpQueues[pState->iQueue];
+d137 1
+a137 1
+  KeAcquireSpinLock(pDevExt->pIoLock, &oldIrql);
+d140 1
+a140 1
+    pDevExt->pIoPortLocal->amountInWriteQueue -=
+d152 1
+a152 1
+  KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+d182 1
+a182 1
+VOID FdoPortCancelQueues(IN PC0C_FDOPORT_EXTENSION pDevExt)
+d189 1
+a189 1
+  KeAcquireSpinLock(pDevExt->pIoLock, &oldIrql);
+d192 1
+a192 1
+    CancelQueue(&pDevExt->pIoPortLocal->irpQueues[i], &queueToComplete);
+d194 1
+a194 1
+  KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+d215 1
+a215 1
+      PC0C_FDOPORT_EXTENSION pDevExt;
+d217 1
+a217 1
+      pDevExt = IoGetCurrentIrpStackLocation(pIrp)->DeviceObject->DeviceExtension;
+d219 2
+a220 2
+      KeAcquireSpinLock(pDevExt->pIoLock, &oldIrql);
+      pDevExt->pIoPortLocal->amountInWriteQueue -=
+d222 1
+a222 1
+      KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+d247 1
+a247 1
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+d266 2
+a267 2
+      pDevExt->pIoPortLocal->amountInWriteQueue += length;
+      UpdateTransmitToggle(pDevExt->pIoPortLocal, &queueToComplete);
+d271 1
+a271 1
+  status = pStartRoutine(pDevExt, &queueToComplete);
+d280 1
+a280 1
+      pDevExt->pIoPortLocal->amountInWriteQueue -=
+d288 1
+a288 1
+  KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+d296 1
+a296 1
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+d313 1
+a313 1
+  pQueue = &pDevExt->pIoPortLocal->irpQueues[iQueue];
+d315 1
+a315 1
+  KeAcquireSpinLock(pDevExt->pIoLock, &oldIrql);
+d323 1
+a323 1
+    KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+d326 1
+a326 1
+      status = StartIrp(pDevExt, pIrp, pState, pQueue, oldIrql, pStartRoutine);
+d360 1
+a360 1
+          status = StartIrp(pDevExt, pIrp, pState, pQueue, oldIrql, pStartRoutine);
+d370 1
+a370 1
+          pDevExt->pIoPortLocal->amountInWriteQueue += GetWriteLength(pIrp);
+d375 1
+a375 1
+      KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+@
+
+
+1.10
+log
+@Fixed bugs with amountInWriteQueue
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.9 2006/05/17 15:31:14 vfrolov Exp $
+d22 3
+d264 1
+a264 1
+      UpdateTransmitToggle(pDevExt, &queueToComplete);
+@
+
+
+1.9
+log
+@Implemented SERIAL_TRANSMIT_TOGGLE
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.8 2006/01/10 10:17:23 vfrolov Exp $
+d22 3
+d208 1
+d213 1
+d216 1
+@
+
+
+1.8
+log
+@Implemented flow control and handshaking
+Implemented IOCTL_SERIAL_SET_XON and IOCTL_SERIAL_SET_XOFF
+Added setting of HoldReasons, WaitForImmediate and AmountInOutQueue
+  fields of SERIAL_STATUS for IOCTL_SERIAL_GET_COMMSTATUS
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.7 2005/12/05 10:54:55 vfrolov Exp $
+d22 6
+d52 1
+d248 10
+a257 2
+  if (pState->iQueue == C0C_QUEUE_WRITE)
+    pDevExt->pIoPortLocal->amountInWriteQueue += GetWriteLength(pIrp);
+a258 1
+  InitializeListHead(&queueToComplete);
+@
+
+
+1.7
+log
+@Implemented IOCTL_SERIAL_IMMEDIATE_CHAR
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.6 2005/11/29 16:16:46 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2005 Vyacheslav Frolov
+d22 3
+d123 5
+a160 1
+      pIrp->IoStatus.Information = 0;
+d186 1
+d194 15
+d241 3
+d252 8
+a259 1
+    ShiftQueue(pQueue);
+d342 4
+@
+
+
+1.6
+log
+@Removed FdoPortCancelQueue()
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.5 2005/09/13 14:56:16 vfrolov Exp $
+d22 3
+d61 1
+d204 32
+d267 5
+a271 1
+      LIST_ENTRY queueToComplete;
+d273 10
+a282 2
+      pQueue->pCurrent = pIrp;
+      pState->flags |= C0C_IRP_FLAG_IS_CURRENT;
+d284 1
+a284 2
+      InitializeListHead(&queueToComplete);
+      status = pStartRoutine(pDevExt, &queueToComplete);
+d286 6
+a291 7
+      if (status == STATUS_PENDING) {
+        pIrp->IoStatus.Status = STATUS_PENDING;
+        IoMarkIrpPending(pIrp);
+      } else {
+        status = NoPending(pIrp, status);
+        ShiftQueue(pQueue);
+      }
+d293 1
+a293 1
+      KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+d295 1
+a295 3
+      FdoPortCompleteQueue(&queueToComplete);
+    } else {
+      PIO_STACK_LOCATION pIrpStack;
+d297 3
+a299 1
+      pIrpStack = IoGetCurrentIrpStackLocation(pIrp);
+d301 4
+a304 4
+      if (pIrpStack->MajorFunction == IRP_MJ_DEVICE_CONTROL &&
+          pIrpStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_SERIAL_WAIT_ON_MASK) {
+        status = NoPending(pIrp, STATUS_INVALID_PARAMETER);
+      } else {
+@
+
+
+1.5
+log
+@Implemented IRP_MJ_FLUSH_BUFFERS
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.4 2005/09/06 07:23:44 vfrolov Exp $
+d22 3
+d155 1
+a155 1
+VOID FdoPortCancelQueue(IN PC0C_FDOPORT_EXTENSION pDevExt, IN PC0C_IRP_QUEUE pQueue)
+d159 1
+a161 1
+
+d164 2
+a165 1
+  CancelQueue(pQueue, &queueToComplete);
+a167 1
+
+a170 8
+VOID FdoPortCancelQueues(IN PC0C_FDOPORT_EXTENSION pDevExt)
+{
+  int i;
+
+  for (i = 0 ; i < C0C_QUEUE_SIZE ; i++)
+    FdoPortCancelQueue(pDevExt, &pDevExt->pIoPortLocal->irpQueues[i]);
+}
+
+@
+
+
+1.4
+log
+@Implemented overrun emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.3 2005/08/24 12:50:40 vfrolov Exp $
+d22 3
+d58 2
+@
+
+
+1.3
+log
+@Fixed IRP processing order
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.2 2005/07/14 13:51:09 vfrolov Exp $
+d22 3
+a30 1
+ *
+d91 1
+a91 1
+VOID FdoPortCancelRoutine(IN PC0C_FDOPORT_EXTENSION pDevExt, IN PIRP pIrp)
+d93 1
+d98 3
+d125 1
+a125 1
+VOID CancelRoutine(IN PDEVICE_OBJECT pDevObj, IN PIRP pIrp)
+d127 3
+a129 1
+  IoReleaseCancelSpinLock(pIrp->CancelIrql);
+d131 1
+a131 2
+  FdoPortCancelRoutine(pDevObj->DeviceExtension, pIrp);
+}
+d133 3
+a135 6
+VOID DoCancelRoutine(
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+    IN PIRP pIrp,
+    IN PKIRQL pOldIrql)
+{
+  PDRIVER_CANCEL pCancelRoutine;
+d137 1
+a137 3
+  #pragma warning(push, 3)
+  pCancelRoutine = IoSetCancelRoutine(pIrp, NULL);
+  #pragma warning(pop)
+d139 5
+a143 6
+  if (pCancelRoutine) {
+    HALT_UNLESS(pCancelRoutine == CancelRoutine);
+    pIrp->Cancel = TRUE;
+    KeReleaseSpinLock(pDevExt->pIoLock, *pOldIrql);
+    FdoPortCancelRoutine(pDevExt, pIrp);
+    KeAcquireSpinLock(pDevExt->pIoLock, pOldIrql);
+d149 1
+d152 2
+d156 1
+a156 4
+  while (!IsListEmpty(&pQueue->queue)) {
+    PC0C_IRP_STATE pState;
+    PIRP pIrp;
+    PLIST_ENTRY pListEntry;
+d158 1
+a158 4
+    pListEntry = RemoveHeadList(&pQueue->queue);
+    pIrp = CONTAINING_RECORD(pListEntry, IRP, Tail.Overlay.ListEntry);
+
+    pState = GetIrpState(pIrp);
+d160 1
+a160 11
+    HALT_UNLESS(pState);
+
+    pState->flags &= ~C0C_IRP_FLAG_IN_QUEUE;
+
+    DoCancelRoutine(pDevExt, pIrp, &oldIrql);
+  }
+
+  if (pQueue->pCurrent)
+    DoCancelRoutine(pDevExt, pQueue->pCurrent, &oldIrql);
+
+  KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+@
+
+
+1.2
+log
+@Replaced ASSERT by HALT_UNLESS
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.1 2005/01/26 12:18:54 vfrolov Exp $
+d22 3
+d76 1
+a76 1
+    pListEntry = RemoveTailList(&pQueue->queue);
+d157 1
+a157 1
+    pListEntry = RemoveTailList(&pQueue->queue);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: startirp.c,v 1.1 2005/01/24 15:26:45 frolov Exp $
+d22 3
+d30 5
+d62 1
+a62 1
+    ASSERT(pState);
+d78 1
+a78 1
+    ASSERT(pState);
+d93 1
+a93 1
+  ASSERT(pState);
+d135 1
+a135 1
+    ASSERT(pCancelRoutine == CancelRoutine);
+d159 1
+a159 1
+    ASSERT(pState);
+d222 1
+a222 1
+  ASSERT(pState);
+@
+

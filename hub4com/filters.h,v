@@ -1,0 +1,297 @@
+head	1.8;
+access;
+symbols
+	v2_1_0_0:1.8
+	v2_0_1_0:1.8
+	RELEASED:1.8
+	v2_0_0_0:1.8;
+locks; strict;
+comment	@ * @;
+
+
+1.8
+date	2009.02.02.15.21.42;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.11.24.12.36.59;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2008.11.13.08.07.40;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2008.10.16.06.19.12;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.09.26.15.34.50;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.08.20.08.32.35;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.04.16.14.13.59;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.03.26.08.35.32;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.8
+log
+@Optimized filter's API
+@
+text
+@/*
+ * $Id: filters.h,v 1.7 2008/11/24 12:36:59 vfrolov Exp $
+ *
+ * Copyright (c) 2008-2009 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: filters.h,v $
+ * Revision 1.7  2008/11/24 12:36:59  vfrolov
+ * Changed plugin API
+ *
+ * Revision 1.6  2008/11/13 08:07:40  vfrolov
+ * Changed for staticaly linking
+ *
+ * Revision 1.5  2008/10/16 06:19:12  vfrolov
+ * Divided filter ID to filter group ID and filter name
+ *
+ * Revision 1.4  2008/09/26 15:34:50  vfrolov
+ * Fixed adding order for filters with the same FID
+ *
+ * Revision 1.3  2008/08/20 08:32:35  vfrolov
+ * Implemented Filters::FilterName()
+ *
+ * Revision 1.2  2008/04/16 14:13:59  vfrolov
+ * Added ability to specify source posts for OUT method
+ *
+ * Revision 1.1  2008/03/26 08:35:32  vfrolov
+ * Initial revision
+ *
+ */
+
+#ifndef _FILTERS_H
+#define _FILTERS_H
+
+///////////////////////////////////////////////////////////////
+class ComHub;
+class Filter;
+class FilterInstance;
+class HubMsg;
+///////////////////////////////////////////////////////////////
+typedef vector<Filter*> FilterArray;
+typedef vector<FilterInstance*> FilterInstanceArray;
+typedef map<Port *, FilterInstanceArray*> PortFiltersMap;
+///////////////////////////////////////////////////////////////
+class Filters
+{
+  public:
+    Filters(const ComHub &_hub) : hub(_hub) {}
+    ~Filters();
+    BOOL CreateFilter(
+        const FILTER_ROUTINES_A *pFltRoutines,
+        const char *pFilterGroup,
+        const char *pFilterName,
+        HCONFIG hConfig,
+        const char *pArgs);
+    BOOL AddFilter(
+        Port *pPort,
+        const char *pGroup,
+        BOOL addInMethod,
+        BOOL addOutMethod,
+        const set<Port *> *pOutMethodSrcPorts);
+    void Report() const;
+    BOOL InMethod(
+        Port *pFromPort,
+        HubMsg *pInMsg,
+        HubMsg **ppEchoMsg) const;
+    BOOL OutMethod(
+        Port *pFromPort,
+        Port *pToPort,
+        HubMsg *pOutMsg) const;
+
+  private:
+    static BOOL Filters::InMethod(
+        Port *pFromPort,
+        const FilterInstanceArray::const_iterator &i,
+        const FilterInstanceArray::const_iterator &iEnd,
+        HubMsg *pInMsg,
+        HubMsg **ppEchoMsg);
+
+    const ComHub &hub;
+    FilterArray allFilters;
+    PortFiltersMap portFilters;
+};
+///////////////////////////////////////////////////////////////
+
+#endif  // _FILTERS_H
+@
+
+
+1.7
+log
+@Changed plugin API
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.h,v 1.6 2008/11/13 08:07:40 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008 Vyacheslav Frolov
+d22 3
+d51 1
+a51 1
+class FilterMethod;
+d55 2
+a56 3
+typedef vector<FilterMethod*> FilterMethodArray;
+typedef map<Port *, FilterMethodArray*> PortFiltersMap;
+typedef set<Port *> SetOfPorts;
+d74 1
+a74 1
+        const SetOfPorts *pOutMethodSrcPorts);
+d86 7
+@
+
+
+1.6
+log
+@Changed for staticaly linking
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.h,v 1.5 2008/10/16 06:19:12 vfrolov Exp $
+d22 3
+d53 2
+a54 1
+typedef map<int, FilterMethodArray*> PortFiltersMap;
+d68 1
+a68 1
+        int iPort,
+d72 1
+a72 1
+        const set<int> *pOutMethodSrcPorts);
+a73 2
+    BOOL Init() const;
+    const char *FilterName(HFILTER hFilter) const;
+d75 1
+a75 1
+        int nFromPort,
+d79 2
+a80 2
+        int nFromPort,
+        int nToPort,
+@
+
+
+1.5
+log
+@Divided filter ID to filter group ID and filter name
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.h,v 1.4 2008/09/26 15:34:50 vfrolov Exp $
+d22 3
+a41 2
+#include "plugins/plugins_api.h"
+
+@
+
+
+1.4
+log
+@Fixed adding order for filters with the same FID
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.h,v 1.3 2008/08/20 08:32:35 vfrolov Exp $
+d22 3
+d58 1
+d64 1
+a64 1
+        const char *pName,
+@
+
+
+1.3
+log
+@Implemented Filters::FilterName()
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.h,v 1.2 2008/04/16 14:13:59 vfrolov Exp $
+d22 3
+d61 3
+a63 2
+        BOOL isInMethod,
+        const set<int> *pSrcPorts);
+@
+
+
+1.2
+log
+@Added ability to specify source posts for OUT method
+@
+text
+@d2 1
+a2 1
+ * $Id: filters.h,v 1.1 2008/03/26 08:35:32 vfrolov Exp $
+d22 3
+d62 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 3
+a23 1
+ * $Log: $
+d55 2
+a56 1
+        BOOL isInMethod);
+@
+

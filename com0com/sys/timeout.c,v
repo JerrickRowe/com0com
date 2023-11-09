@@ -1,0 +1,946 @@
+head	1.12;
+access;
+symbols
+	v3_0_0_0:1.12
+	v2_2_2_0:1.11
+	v2_2_1_0:1.11
+	v2_2_0_0:1.11
+	v2_1_0_0:1.10
+	v2_0_0_0:1.9
+	v1_8_0_0:1.9
+	v1_7_0_0:1.7
+	v1_6_0_0:1.7
+	v1_5_0_0:1.5
+	v1_4_0_0:1.4
+	RELEASED:1.12
+	v1_3_0_0:1.4
+	v1_2_0_0:1.2
+	v1_1_1_0:1.1
+	v1_1_0_0:1.1
+	v1_0_0_0:1.1;
+locks; strict;
+comment	@ * @;
+
+
+1.12
+date	2010.08.04.10.38.56;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.09.17.07.58.32;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.03.14.15.28.39;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2007.06.04.15.24.33;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2007.02.20.12.05.11;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2006.06.21.16.23.57;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2006.06.08.11.33.35;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2005.12.05.10.54.55;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2005.08.23.15.49.21;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.08.16.16.36.33;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.07.14.13.51.09;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.01.26.12.18.54;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.12
+log
+@Minimized PREfast noise
+@
+text
+@/*
+ * $Id: timeout.c,v 1.11 2008/09/17 07:58:32 vfrolov Exp $
+ *
+ * Copyright (c) 2004-2010 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: timeout.c,v $
+ * Revision 1.11  2008/09/17 07:58:32  vfrolov
+ * Added AddRTTO and AddRITO parameters
+ *
+ * Revision 1.10  2008/03/14 15:28:39  vfrolov
+ * Implemented ability to get paired port settings with
+ * extended IOCTL_SERIAL_LSRMST_INSERT
+ *
+ * Revision 1.9  2007/06/04 15:24:33  vfrolov
+ * Fixed open reject just after close in exclusiveMode
+ *
+ * Revision 1.8  2007/02/20 12:05:11  vfrolov
+ * Implemented IOCTL_SERIAL_XOFF_COUNTER
+ * Fixed cancel and timeout routines
+ *
+ * Revision 1.7  2006/06/21 16:23:57  vfrolov
+ * Fixed possible BSOD after one port of pair removal
+ *
+ * Revision 1.6  2006/06/08 11:33:35  vfrolov
+ * Fixed bugs with amountInWriteQueue
+ *
+ * Revision 1.5  2005/12/05 10:54:55  vfrolov
+ * Implemented IOCTL_SERIAL_IMMEDIATE_CHAR
+ *
+ * Revision 1.4  2005/08/23 15:49:21  vfrolov
+ * Implemented baudrate emulation
+ *
+ * Revision 1.3  2005/08/16 16:36:33  vfrolov
+ * Hidden timeout functions
+ *
+ * Revision 1.2  2005/07/14 13:51:09  vfrolov
+ * Replaced ASSERT by HALT_UNLESS
+ *
+ * Revision 1.1  2005/01/26 12:18:54  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "timeout.h"
+
+/*
+ * FILE_ID used by HALT_UNLESS to put it on BSOD
+ */
+#define FILE_ID 3
+
+VOID TimeoutRoutine(
+    PC0C_IO_PORT pIoPort,
+    IN PC0C_IRP_QUEUE pQueue)
+{
+  LIST_ENTRY queueToComplete;
+  KIRQL oldIrql;
+
+  InitializeListHead(&queueToComplete);
+
+  KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+
+  if (pQueue->pCurrent) {
+    PC0C_IRP_STATE pState;
+
+    pState = GetIrpState(pQueue->pCurrent);
+    HALT_UNLESS(pState);
+
+    pState->flags |= C0C_IRP_FLAG_EXPIRED;
+
+    switch (pState->iQueue) {
+      case C0C_QUEUE_WRITE:
+        ReadWrite(pIoPort->pIoPortRemote, FALSE, pIoPort, FALSE, &queueToComplete);
+        break;
+      case C0C_QUEUE_READ:
+        ReadWrite(pIoPort, FALSE, pIoPort->pIoPortRemote, FALSE, &queueToComplete);
+        break;
+      case C0C_QUEUE_CLOSE:
+        FdoPortIo(C0C_IO_TYPE_CLOSE_COMPLETE,
+                  NULL,
+                  pIoPort,
+                  &pIoPort->irpQueues[C0C_QUEUE_CLOSE],
+                  &queueToComplete);
+        break;
+    }
+  }
+
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+  FdoPortCompleteQueue(&queueToComplete);
+}
+
+NTSTATUS SetReadTimeout(PC0C_IO_PORT pIoPort, PIRP pIrp)
+{
+  SERIAL_TIMEOUTS timeouts;
+  BOOLEAN setTotal;
+  ULONG multiplier;
+  ULONG constant;
+  PC0C_IRP_STATE pState;
+
+  KeCancelTimer(&pIoPort->timerReadTotal);
+  KeCancelTimer(&pIoPort->timerReadInterval);
+
+  pState = GetIrpState(pIrp);
+  HALT_UNLESS(pState);
+
+  timeouts = pIoPort->timeouts;
+
+  if (timeouts.ReadIntervalTimeout == MAXULONG &&
+      !timeouts.ReadTotalTimeoutMultiplier &&
+      !timeouts.ReadTotalTimeoutConstant) {
+    return STATUS_SUCCESS;
+  }
+
+  setTotal = FALSE;
+  multiplier = 0;
+  constant = 0;
+
+  if (timeouts.ReadIntervalTimeout == MAXULONG &&
+      timeouts.ReadTotalTimeoutMultiplier == MAXULONG &&
+      timeouts.ReadTotalTimeoutConstant < MAXULONG &&
+      timeouts.ReadTotalTimeoutConstant > 0) {
+
+    if (pIrp->IoStatus.Information) {
+      return STATUS_SUCCESS;
+    }
+
+    pState->flags |= C0C_IRP_FLAG_WAIT_ONE;
+
+    setTotal = TRUE;
+    multiplier = 0;
+    constant = timeouts.ReadTotalTimeoutConstant;
+  } else {
+    if (timeouts.ReadTotalTimeoutMultiplier || timeouts.ReadTotalTimeoutConstant) {
+      setTotal = TRUE;
+      multiplier = timeouts.ReadTotalTimeoutMultiplier;
+      constant = timeouts.ReadTotalTimeoutConstant;
+    }
+
+    if (timeouts.ReadIntervalTimeout) {
+      pState->flags |= C0C_IRP_FLAG_INTERVAL_TIMEOUT;
+
+      pIoPort->timeoutInterval.QuadPart =
+          ((LONGLONG)timeouts.ReadIntervalTimeout + pIoPort->addRITO) * -10000;
+
+      if (pIrp->IoStatus.Information)
+        SetIntervalTimeout(pIoPort);
+    }
+  }
+
+  if (setTotal) {
+    LARGE_INTEGER total;
+    ULONG length;
+
+    length = IoGetCurrentIrpStackLocation(pIrp)->Parameters.Read.Length;
+
+    total.QuadPart = ((LONGLONG)(
+        UInt32x32To64(length, multiplier) + constant + pIoPort->addRTTO)) * -10000;
+
+    KeSetTimer(
+        &pIoPort->timerReadTotal,
+        total,
+        &pIoPort->timerReadTotalDpc);
+  }
+
+  return STATUS_PENDING;
+}
+
+NTSTATUS SetWriteTimeout(PC0C_IO_PORT pIoPort, PIRP pIrp)
+{
+  SERIAL_TIMEOUTS timeouts;
+  BOOLEAN setTotal;
+  ULONG multiplier;
+  ULONG constant;
+
+  KeCancelTimer(&pIoPort->timerWriteTotal);
+
+  timeouts = pIoPort->timeouts;
+
+  setTotal = FALSE;
+  multiplier = 0;
+  constant = 0;
+
+  if (timeouts.WriteTotalTimeoutMultiplier || timeouts.WriteTotalTimeoutConstant) {
+    setTotal = TRUE;
+    multiplier = timeouts.WriteTotalTimeoutMultiplier;
+    constant = timeouts.WriteTotalTimeoutConstant;
+  }
+
+  if (setTotal) {
+    LARGE_INTEGER total;
+    ULONG length;
+
+    length = GetWriteLength(pIrp);
+
+    total.QuadPart = ((LONGLONG)(UInt32x32To64(length, multiplier) + constant)) * -10000;
+
+    KeSetTimer(
+        &pIoPort->timerWriteTotal,
+        total,
+        &pIoPort->timerWriteTotalDpc);
+  }
+
+  return STATUS_PENDING;
+}
+
+VOID SetXoffCounterTimeout(
+    PC0C_IO_PORT pIoPort,
+    PIRP pIrp)
+{
+  PSERIAL_XOFF_COUNTER pXoffCounter;
+  LARGE_INTEGER total;
+
+  KeCancelTimer(&pIoPort->timerWriteTotal);
+
+  pXoffCounter = (PSERIAL_XOFF_COUNTER)pIrp->AssociatedIrp.SystemBuffer;
+
+  if (pXoffCounter->Timeout) {
+    total.QuadPart = ((LONGLONG)pXoffCounter->Timeout) * -10000;
+
+    KeSetTimer(
+        &pIoPort->timerWriteTotal,
+        total,
+        &pIoPort->timerWriteTotalDpc);
+  }
+}
+
+KDEFERRED_ROUTINE TimeoutReadTotal;
+VOID TimeoutReadTotal(
+    IN PKDPC pDpc,
+    IN PVOID deferredContext,
+    IN PVOID systemArgument1,
+    IN PVOID systemArgument2)
+{
+  PC0C_IO_PORT pIoPort;
+
+  UNREFERENCED_PARAMETER(pDpc);
+  UNREFERENCED_PARAMETER(systemArgument1);
+  UNREFERENCED_PARAMETER(systemArgument2);
+
+  HALT_UNLESS(deferredContext != NULL);
+
+  pIoPort = (PC0C_IO_PORT)deferredContext;
+
+  TimeoutRoutine(pIoPort, &pIoPort->irpQueues[C0C_QUEUE_READ]);
+}
+
+KDEFERRED_ROUTINE TimeoutReadInterval;
+VOID TimeoutReadInterval(
+    IN PKDPC pDpc,
+    IN PVOID deferredContext,
+    IN PVOID systemArgument1,
+    IN PVOID systemArgument2)
+{
+  PC0C_IO_PORT pIoPort;
+
+  UNREFERENCED_PARAMETER(pDpc);
+  UNREFERENCED_PARAMETER(systemArgument1);
+  UNREFERENCED_PARAMETER(systemArgument2);
+
+  HALT_UNLESS(deferredContext != NULL);
+
+  pIoPort = (PC0C_IO_PORT)deferredContext;
+
+  TimeoutRoutine(pIoPort, &pIoPort->irpQueues[C0C_QUEUE_READ]);
+}
+
+KDEFERRED_ROUTINE TimeoutWriteTotal;
+VOID TimeoutWriteTotal(
+    IN PKDPC pDpc,
+    IN PVOID deferredContext,
+    IN PVOID systemArgument1,
+    IN PVOID systemArgument2)
+{
+  PC0C_IO_PORT pIoPort;
+
+  UNREFERENCED_PARAMETER(pDpc);
+  UNREFERENCED_PARAMETER(systemArgument1);
+  UNREFERENCED_PARAMETER(systemArgument2);
+
+  HALT_UNLESS(deferredContext != NULL);
+
+  pIoPort = (PC0C_IO_PORT)deferredContext;
+
+  TimeoutRoutine(pIoPort, &pIoPort->irpQueues[C0C_QUEUE_WRITE]);
+}
+
+KDEFERRED_ROUTINE TimeoutClose;
+VOID TimeoutClose(
+    IN PKDPC pDpc,
+    IN PVOID deferredContext,
+    IN PVOID systemArgument1,
+    IN PVOID systemArgument2)
+{
+  PC0C_IO_PORT pIoPort;
+
+  UNREFERENCED_PARAMETER(pDpc);
+  UNREFERENCED_PARAMETER(systemArgument1);
+  UNREFERENCED_PARAMETER(systemArgument2);
+
+  HALT_UNLESS(deferredContext != NULL);
+
+  pIoPort = (PC0C_IO_PORT)deferredContext;
+
+  TimeoutRoutine(pIoPort, &pIoPort->irpQueues[C0C_QUEUE_CLOSE]);
+}
+
+VOID AllocTimeouts(PC0C_IO_PORT pIoPort)
+{
+  KeInitializeTimer(&pIoPort->timerReadTotal);
+  KeInitializeTimer(&pIoPort->timerReadInterval);
+  KeInitializeTimer(&pIoPort->timerWriteTotal);
+  KeInitializeTimer(&pIoPort->timerClose);
+
+  KeInitializeDpc(&pIoPort->timerReadTotalDpc, TimeoutReadTotal, pIoPort);
+  KeInitializeDpc(&pIoPort->timerReadIntervalDpc, TimeoutReadInterval, pIoPort);
+  KeInitializeDpc(&pIoPort->timerWriteTotalDpc, TimeoutWriteTotal, pIoPort);
+  KeInitializeDpc(&pIoPort->timerCloseDpc, TimeoutClose, pIoPort);
+}
+
+VOID FreeTimeouts(PC0C_IO_PORT pIoPort)
+{
+    KeCancelTimer(&pIoPort->timerReadTotal);
+    KeCancelTimer(&pIoPort->timerReadInterval);
+    KeCancelTimer(&pIoPort->timerWriteTotal);
+    KeCancelTimer(&pIoPort->timerClose);
+
+    KeRemoveQueueDpc(&pIoPort->timerReadTotalDpc);
+    KeRemoveQueueDpc(&pIoPort->timerReadIntervalDpc);
+    KeRemoveQueueDpc(&pIoPort->timerWriteTotalDpc);
+    KeRemoveQueueDpc(&pIoPort->timerCloseDpc);
+}
+
+VOID SetIntervalTimeout(PC0C_IO_PORT pIoPort)
+{
+  KeSetTimer(&pIoPort->timerReadInterval, pIoPort->timeoutInterval, &pIoPort->timerReadIntervalDpc);
+}
+
+VOID SetCloseTimeout(PC0C_IO_PORT pIoPort)
+{
+  LARGE_INTEGER total;
+
+  total.QuadPart = ((LONGLONG)1000) * -10000;
+
+  KeSetTimer(&pIoPort->timerClose, total, &pIoPort->timerCloseDpc);
+}
+
+NTSTATUS SetIrpTimeout(
+    PC0C_IO_PORT pIoPort,
+    PIRP pIrp)
+{
+  PIO_STACK_LOCATION pIrpStack = IoGetCurrentIrpStackLocation(pIrp);
+
+  switch (pIrpStack->MajorFunction) {
+  case IRP_MJ_WRITE:
+    return SetWriteTimeout(pIoPort, pIrp);
+  case IRP_MJ_DEVICE_CONTROL:
+    switch (pIrpStack->Parameters.DeviceIoControl.IoControlCode) {
+    case IOCTL_SERIAL_XOFF_COUNTER:
+    case IOCTL_SERIAL_IMMEDIATE_CHAR:
+      return SetWriteTimeout(pIoPort, pIrp);
+    }
+    break;
+  case IRP_MJ_READ:
+    return SetReadTimeout(pIoPort, pIrp);
+  }
+
+  return STATUS_PENDING;
+}
+
+NTSTATUS FdoPortSetTimeouts(
+    PC0C_IO_PORT pIoPort,
+    PIRP pIrp,
+    PIO_STACK_LOCATION pIrpStack)
+{
+  KIRQL oldIrql;
+  PSERIAL_TIMEOUTS pSysBuf;
+
+  if (pIrpStack->Parameters.DeviceIoControl.InputBufferLength < sizeof(SERIAL_TIMEOUTS))
+    return STATUS_BUFFER_TOO_SMALL;
+
+  pSysBuf = (PSERIAL_TIMEOUTS)pIrp->AssociatedIrp.SystemBuffer;
+
+  if (pSysBuf->ReadIntervalTimeout == MAXULONG &&
+      pSysBuf->ReadTotalTimeoutMultiplier == MAXULONG &&
+      pSysBuf->ReadTotalTimeoutConstant == MAXULONG)
+    return STATUS_INVALID_PARAMETER;
+
+  KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+  pIoPort->timeouts = *pSysBuf;
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+  return STATUS_SUCCESS;
+}
+
+NTSTATUS FdoPortGetTimeouts(
+    PC0C_IO_PORT pIoPort,
+    PIRP pIrp,
+    PIO_STACK_LOCATION pIrpStack)
+{
+  KIRQL oldIrql;
+  PSERIAL_TIMEOUTS pSysBuf;
+
+  if (pIrpStack->Parameters.DeviceIoControl.OutputBufferLength < sizeof(SERIAL_TIMEOUTS))
+    return STATUS_BUFFER_TOO_SMALL;
+
+  pSysBuf = (PSERIAL_TIMEOUTS)pIrp->AssociatedIrp.SystemBuffer;
+
+  KeAcquireSpinLock(pIoPort->pIoLock, &oldIrql);
+  *pSysBuf = pIoPort->timeouts;
+  KeReleaseSpinLock(pIoPort->pIoLock, oldIrql);
+
+  pIrp->IoStatus.Information = sizeof(SERIAL_TIMEOUTS);
+
+  return STATUS_SUCCESS;
+}
+@
+
+
+1.11
+log
+@Added AddRTTO and AddRITO parameters
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.10 2008/03/14 15:28:39 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2008 Vyacheslav Frolov
+d22 3
+d243 1
+d250 1
+a250 1
+  PC0C_IO_PORT pIoPort = (PC0C_IO_PORT)deferredContext;
+d256 4
+d263 1
+d270 1
+a270 1
+  PC0C_IO_PORT pIoPort = (PC0C_IO_PORT)deferredContext;
+d276 4
+d283 1
+d290 1
+a290 1
+  PC0C_IO_PORT pIoPort = (PC0C_IO_PORT)deferredContext;
+d296 4
+d303 1
+d310 1
+a310 1
+  PC0C_IO_PORT pIoPort = (PC0C_IO_PORT)deferredContext;
+d316 4
+@
+
+
+1.10
+log
+@Implemented ability to get paired port settings with
+extended IOCTL_SERIAL_LSRMST_INSERT
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.9 2007/06/04 15:24:33 vfrolov Exp $
+d22 4
+a53 1
+ *
+d156 1
+a156 1
+          ((LONGLONG)timeouts.ReadIntervalTimeout) * -10000;
+d169 2
+a170 1
+    total.QuadPart = ((LONGLONG)(UInt32x32To64(length, multiplier) + constant)) * -10000;
+@
+
+
+1.9
+log
+@Fixed open reject just after close in exclusiveMode
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.8 2007/02/20 12:05:11 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2007 Vyacheslav Frolov
+d22 3
+a108 1
+  PC0C_FDOPORT_EXTENSION pDevExt;
+d116 1
+a116 6
+  pDevExt = pIoPort->pDevExt;
+  HALT_UNLESS(pDevExt);
+
+  KeAcquireSpinLockAtDpcLevel(&pDevExt->controlLock);
+  timeouts = pDevExt->timeouts;
+  KeReleaseSpinLockFromDpcLevel(&pDevExt->controlLock);
+a182 1
+  PC0C_FDOPORT_EXTENSION pDevExt;
+d186 1
+a186 6
+  pDevExt = pIoPort->pDevExt;
+  HALT_UNLESS(pDevExt);
+
+  KeAcquireSpinLockAtDpcLevel(&pDevExt->controlLock);
+  timeouts = pDevExt->timeouts;
+  KeReleaseSpinLockFromDpcLevel(&pDevExt->controlLock);
+d360 3
+a362 3
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+    IN PIRP pIrp,
+    IN PIO_STACK_LOCATION pIrpStack)
+d377 3
+a379 3
+  KeAcquireSpinLock(&pDevExt->controlLock, &oldIrql);
+  pDevExt->timeouts = *pSysBuf;
+  KeReleaseSpinLock(&pDevExt->controlLock, oldIrql);
+d385 3
+a387 3
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+    IN PIRP pIrp,
+    IN PIO_STACK_LOCATION pIrpStack)
+d397 3
+a399 3
+  KeAcquireSpinLock(&pDevExt->controlLock, &oldIrql);
+  *pSysBuf = pDevExt->timeouts;
+  KeReleaseSpinLock(&pDevExt->controlLock, oldIrql);
+@
+
+
+1.8
+log
+@Implemented IOCTL_SERIAL_XOFF_COUNTER
+Fixed cancel and timeout routines
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.7 2006/06/21 16:23:57 vfrolov Exp $
+d22 4
+d77 15
+a91 4
+    if (pState->iQueue == C0C_QUEUE_WRITE)
+      ReadWrite(pIoPort->pIoPortRemote, FALSE, pIoPort, FALSE, &queueToComplete);
+    else
+      ReadWrite(pIoPort, FALSE, pIoPort->pIoPortRemote, FALSE, &queueToComplete);
+d290 15
+d310 1
+d315 1
+d323 1
+d328 1
+d336 9
+@
+
+
+1.7
+log
+@Fixed possible BSOD after one port of pair removal
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.6 2006/06/08 11:33:35 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2006 Vyacheslav Frolov
+d22 3
+d58 1
+d60 2
+a61 1
+  PIRP pIrp;
+d65 5
+a69 1
+  pIrp = pQueue->pCurrent;
+d71 1
+a71 2
+  if (pIrp) {
+    PDRIVER_CANCEL pCancelRoutine;
+d73 4
+a76 21
+    #pragma warning(push, 3)
+    pCancelRoutine = IoSetCancelRoutine(pIrp, NULL);
+    #pragma warning(pop)
+
+    if (pCancelRoutine) {
+      PC0C_IRP_STATE pState;
+
+      pState = GetIrpState(pIrp);
+      HALT_UNLESS(pState);
+
+      if (pState->iQueue == C0C_QUEUE_WRITE) {
+        pIoPort->amountInWriteQueue -=
+            GetWriteLength(pIrp) - (ULONG)pIrp->IoStatus.Information;
+      }
+
+      ShiftQueue(pQueue);
+      if (pQueue->pCurrent)
+        SetIrpTimeout(pIoPort, pQueue->pCurrent);
+    } else {
+      pIrp = NULL;
+    }
+d81 1
+a81 6
+  if (pIrp) {
+    TraceIrp("timeout", pIrp, NULL, TRACE_FLAG_RESULTS);
+
+    pIrp->IoStatus.Status = STATUS_TIMEOUT;
+    IoCompleteRequest(pIrp, IO_SERIAL_INCREMENT);
+  }
+d209 21
+d306 3
+a308 1
+  switch (IoGetCurrentIrpStackLocation(pIrp)->MajorFunction) {
+d311 7
+@
+
+
+1.6
+log
+@Fixed bugs with amountInWriteQueue
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.5 2005/12/05 10:54:55 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2004-2005 Vyacheslav Frolov
+d22 3
+d52 1
+a52 1
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+d58 1
+a58 1
+  KeAcquireSpinLock(pDevExt->pIoLock, &oldIrql);
+d76 1
+a76 5
+        PC0C_FDOPORT_EXTENSION pDevExt;
+
+        pDevExt = IoGetCurrentIrpStackLocation(pIrp)->DeviceObject->DeviceExtension;
+
+        pDevExt->pIoPortLocal->amountInWriteQueue -=
+d82 1
+a82 1
+        FdoPortSetIrpTimeout(pDevExt, pQueue->pCurrent);
+d88 1
+a88 1
+  KeReleaseSpinLock(pDevExt->pIoLock, oldIrql);
+d98 1
+a98 1
+NTSTATUS SetReadTimeout(IN PC0C_FDOPORT_EXTENSION pDevExt, PIRP pIrp)
+d105 1
+d107 2
+a108 2
+  KeCancelTimer(&pDevExt->pIoPortLocal->timerReadTotal);
+  KeCancelTimer(&pDevExt->pIoPortLocal->timerReadInterval);
+d113 3
+d154 1
+a154 1
+      pDevExt->pIoPortLocal->timeoutInterval.QuadPart =
+d158 1
+a158 1
+        SetIntervalTimeout(pDevExt->pIoPortLocal);
+d171 1
+a171 1
+        &pDevExt->pIoPortLocal->timerReadTotal,
+d173 1
+a173 1
+        &pDevExt->pIoPortLocal->timerReadTotalDpc);
+d179 1
+a179 1
+NTSTATUS SetWriteTimeout(IN PC0C_FDOPORT_EXTENSION pDevExt, PIRP pIrp)
+d185 3
+d189 2
+a190 1
+  KeCancelTimer(&pDevExt->pIoPortLocal->timerWriteTotal);
+d215 1
+a215 1
+        &pDevExt->pIoPortLocal->timerWriteTotal,
+d217 1
+a217 1
+        &pDevExt->pIoPortLocal->timerWriteTotalDpc);
+d229 1
+a229 1
+  PC0C_FDOPORT_EXTENSION pDevExt = (PC0C_FDOPORT_EXTENSION)deferredContext;
+d235 1
+a235 1
+  TimeoutRoutine(pDevExt, &pDevExt->pIoPortLocal->irpQueues[C0C_QUEUE_READ]);
+d244 1
+a244 1
+  PC0C_FDOPORT_EXTENSION pDevExt = (PC0C_FDOPORT_EXTENSION)deferredContext;
+d250 1
+a250 1
+  TimeoutRoutine(pDevExt, &pDevExt->pIoPortLocal->irpQueues[C0C_QUEUE_READ]);
+d259 1
+a259 1
+  PC0C_FDOPORT_EXTENSION pDevExt = (PC0C_FDOPORT_EXTENSION)deferredContext;
+d265 1
+a265 1
+  TimeoutRoutine(pDevExt, &pDevExt->pIoPortLocal->irpQueues[C0C_QUEUE_WRITE]);
+d268 1
+a268 1
+VOID AllocTimeouts(IN PC0C_FDOPORT_EXTENSION pDevExt)
+d270 3
+a272 3
+  KeInitializeTimer(&pDevExt->pIoPortLocal->timerReadTotal);
+  KeInitializeTimer(&pDevExt->pIoPortLocal->timerReadInterval);
+  KeInitializeTimer(&pDevExt->pIoPortLocal->timerWriteTotal);
+d274 3
+a276 3
+  KeInitializeDpc(&pDevExt->pIoPortLocal->timerReadTotalDpc, TimeoutReadTotal, pDevExt);
+  KeInitializeDpc(&pDevExt->pIoPortLocal->timerReadIntervalDpc, TimeoutReadInterval, pDevExt);
+  KeInitializeDpc(&pDevExt->pIoPortLocal->timerWriteTotalDpc, TimeoutWriteTotal, pDevExt);
+d279 1
+a279 1
+VOID FreeTimeouts(IN PC0C_FDOPORT_EXTENSION pDevExt)
+d281 3
+a283 3
+    KeCancelTimer(&pDevExt->pIoPortLocal->timerReadTotal);
+    KeCancelTimer(&pDevExt->pIoPortLocal->timerReadInterval);
+    KeCancelTimer(&pDevExt->pIoPortLocal->timerWriteTotal);
+d285 3
+a287 3
+    KeRemoveQueueDpc(&pDevExt->pIoPortLocal->timerReadTotalDpc);
+    KeRemoveQueueDpc(&pDevExt->pIoPortLocal->timerReadIntervalDpc);
+    KeRemoveQueueDpc(&pDevExt->pIoPortLocal->timerWriteTotalDpc);
+d295 2
+a296 2
+NTSTATUS FdoPortSetIrpTimeout(
+    IN PC0C_FDOPORT_EXTENSION pDevExt,
+d301 1
+a301 1
+    return SetWriteTimeout(pDevExt, pIrp);
+d303 1
+a303 1
+    return SetReadTimeout(pDevExt, pIrp);
+@
+
+
+1.5
+log
+@Implemented IOCTL_SERIAL_IMMEDIATE_CHAR
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.4 2005/08/23 15:49:21 vfrolov Exp $
+d22 3
+d67 14
+@
+
+
+1.4
+log
+@Implemented baudrate emulation
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.3 2005/08/16 16:36:33 vfrolov Exp $
+d22 3
+d186 1
+a186 1
+    length = IoGetCurrentIrpStackLocation(pIrp)->Parameters.Write.Length;
+@
+
+
+1.3
+log
+@Hidden timeout functions
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.2 2005/07/14 13:51:09 vfrolov Exp $
+d22 3
+a81 1
+  KIRQL oldIrql;
+d93 1
+a93 1
+  KeAcquireSpinLock(&pDevExt->controlLock, &oldIrql);
+d95 1
+a95 1
+  KeReleaseSpinLock(&pDevExt->controlLock, oldIrql);
+d131 1
+a131 1
+      pDevExt->pIoPortLocal->timeoutInterval.QuadPart = 
+d135 1
+a135 4
+        KeSetTimer(
+            &pDevExt->pIoPortLocal->timerReadInterval,
+            pDevExt->pIoPortLocal->timeoutInterval,
+            &pDevExt->pIoPortLocal->timerReadIntervalDpc);
+a158 1
+  KIRQL oldIrql;
+d165 1
+a165 1
+  KeAcquireSpinLock(&pDevExt->controlLock, &oldIrql);
+d167 1
+a167 1
+  KeReleaseSpinLock(&pDevExt->controlLock, oldIrql);
+d241 1
+a241 1
+VOID InitializeTimeoutDpc(IN PC0C_FDOPORT_EXTENSION pDevExt)
+d243 4
+d252 16
+@
+
+
+1.2
+log
+@Replaced ASSERT by HALT_UNLESS
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.1 2005/01/26 12:18:54 vfrolov Exp $
+d22 3
+d243 7
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: timeout.c,v 1.1 2005/01/24 15:26:45 frolov Exp $
+d22 3
+d31 5
+d86 1
+a86 1
+  ASSERT(pState);
+@
+

@@ -1,0 +1,212 @@
+head	1.10;
+access;
+symbols
+	v3_0_0_0:1.10
+	v2_2_2_0:1.10
+	v2_2_1_0:1.10
+	v2_2_0_0:1.10
+	v2_1_0_0:1.9
+	v2_0_0_0:1.9
+	v1_8_0_0:1.8
+	v1_7_0_0:1.7
+	v1_6_0_0:1.5
+	v1_5_0_0:1.4
+	v1_4_0_0:1.4
+	RELEASED:1.10
+	v1_3_0_0:1.3
+	v1_2_0_0:1.1
+	v1_1_1_0:1.1
+	v1_1_0_0:1.1
+	v1_0_0_0:1.1;
+locks; strict;
+comment	@# @;
+
+
+1.10
+date	2008.06.26.13.37.10;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2007.07.03.14.35.17;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2007.06.01.16.22.40;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2006.10.23.11.59.55;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2006.08.23.13.12.16;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2006.01.10.10.17.23;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2005.09.28.10.06.42;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2005.08.25.15.38.17;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2005.08.23.15.49.21;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2005.01.26.12.18.54;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.10
+log
+@Implemented noise emulation
+@
+text
+@TARGETNAME=com0com
+TARGETPATH=..
+TARGETTYPE=DRIVER
+
+
+MSC_WARNING_LEVEL=/W4
+
+SOURCES= \
+        initunlo.c \
+        adddev.c \
+        showport.c \
+        openclos.c \
+        pnp.c \
+        power.c \
+        ioctl.c \
+        wmi.c \
+        commprop.c \
+        read.c \
+        write.c \
+        wait.c \
+        fileinfo.c \
+        io.c \
+        pinouts.c \
+        handflow.c \
+        startirp.c \
+        timeout.c \
+        delay.c \
+        bufutils.c \
+        strutils.c \
+        noise.c \
+        rand.c \
+        syslog.c \
+        trace.c \
+        tracetbl.c \
+        c0clog.mc \
+        com0com.rc \
+
+PRECOMPILED_INCLUDE=precomp.h
+PRECOMPILED_PCH=precomp.pch
+PRECOMPILED_OBJ=precomp.obj
+@
+
+
+1.9
+log
+@Implemented pinout customization
+@
+text
+@d30 2
+@
+
+
+1.8
+log
+@Implemented plug-in and exclusive modes
+@
+text
+@d23 1
+@
+
+
+1.7
+log
+@Changed TARGETPATH to ..
+@
+text
+@d11 1
+@
+
+
+1.6
+log
+@Added wmi.c and commprop.c
+@
+text
+@d2 1
+a2 1
+TARGETPATH=obj
+@
+
+
+1.5
+log
+@Implemented flow control and handshaking
+Implemented IOCTL_SERIAL_SET_XON and IOCTL_SERIAL_SET_XOFF
+Added setting of HoldReasons, WaitForImmediate and AmountInOutQueue
+  fields of SERIAL_STATUS for IOCTL_SERIAL_GET_COMMSTATUS
+@
+text
+@d15 2
+@
+
+
+1.4
+log
+@Implemented IRP_MJ_QUERY_INFORMATION and IRP_MJ_SET_INFORMATION
+@
+text
+@d20 1
+@
+
+
+1.3
+log
+@Some code moved from io.c to bufutils.c
+@
+text
+@d18 1
+@
+
+
+1.2
+log
+@Implemented baudrate emulation
+@
+text
+@d22 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d21 1
+@
+

@@ -1,0 +1,940 @@
+head	1.13;
+access;
+symbols
+	v2_1_0_0:1.13
+	v2_0_1_0:1.13
+	RELEASED:1.13
+	v2_0_0_0:1.13;
+locks; strict;
+comment	@// @;
+
+
+1.13
+date	2009.02.04.15.41.16;	author vfrolov;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2009.02.02.15.21.42;	author vfrolov;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2008.12.22.09.40.45;	author vfrolov;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2008.11.25.16.40.40;	author vfrolov;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2008.11.24.12.36.59;	author vfrolov;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2008.11.13.07.45.07;	author vfrolov;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2008.10.16.09.24.23;	author vfrolov;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2008.08.27.11.38.29;	author vfrolov;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2008.08.20.09.26.40;	author vfrolov;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2008.04.14.07.32.03;	author vfrolov;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2008.04.07.12.29.11;	author vfrolov;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.04.02.10.39.54;	author vfrolov;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.04.01.14.52.46;	author vfrolov;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.13
+log
+@Added pGetFilter()
+@
+text
+@/*
+ * $Id: filter.cpp,v 1.12 2009/02/02 15:21:42 vfrolov Exp $
+ *
+ * Copyright (c) 2008-2009 Vyacheslav Frolov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *
+ * $Log: filter.cpp,v $
+ * Revision 1.12  2009/02/02 15:21:42  vfrolov
+ * Optimized filter's API
+ *
+ * Revision 1.11  2008/12/22 09:40:45  vfrolov
+ * Optimized message switching
+ *
+ * Revision 1.10  2008/11/25 16:40:40  vfrolov
+ * Added assert for port handle
+ *
+ * Revision 1.9  2008/11/24 12:36:59  vfrolov
+ * Changed plugin API
+ *
+ * Revision 1.8  2008/11/13 07:45:07  vfrolov
+ * Changed for staticaly linking
+ *
+ * Revision 1.7  2008/10/16 09:24:23  vfrolov
+ * Changed return type of ROUTINE_MSG_REPLACE_*() to BOOL
+ *
+ * Revision 1.6  2008/08/27 11:38:29  vfrolov
+ * Fixed CONNECT(FALSE) losing
+ *
+ * Revision 1.5  2008/08/20 09:26:40  vfrolov
+ * Fixed typo
+ *
+ * Revision 1.4  2008/04/14 07:32:03  vfrolov
+ * Renamed option --use-port-module to --use-driver
+ *
+ * Revision 1.3  2008/04/07 12:29:11  vfrolov
+ * Replaced --rt-events option by SET_RT_EVENTS message
+ *
+ * Revision 1.2  2008/04/02 10:39:54  vfrolov
+ * Added discarding CONNECT(FALSE) from the input stream
+ *
+ * Revision 1.1  2008/04/01 14:52:46  vfrolov
+ * Initial revision
+ *
+ */
+
+#include "precomp.h"
+#include "../plugins_api.h"
+///////////////////////////////////////////////////////////////
+namespace FilterAwakSeq {
+///////////////////////////////////////////////////////////////
+#ifndef _DEBUG
+  #define DEBUG_PARAM(par)
+#else   /* _DEBUG */
+  #define DEBUG_PARAM(par) par
+#endif  /* _DEBUG */
+///////////////////////////////////////////////////////////////
+static ROUTINE_MSG_REPLACE_VAL *pMsgReplaceVal;
+static ROUTINE_MSG_REPLACE_NONE *pMsgReplaceNone;
+static ROUTINE_MSG_INSERT_NONE *pMsgInsertNone;
+static ROUTINE_GET_FILTER *pGetFilter;
+///////////////////////////////////////////////////////////////
+const char *GetParam(const char *pArg, const char *pPattern)
+{
+  size_t lenPattern = strlen(pPattern);
+
+  if (_strnicmp(pArg, pPattern, lenPattern) != 0)
+    return NULL;
+
+  return pArg + lenPattern;
+}
+///////////////////////////////////////////////////////////////
+class Valid {
+  public:
+    Valid() : isValid(TRUE) {}
+    void Invalidate() { isValid = FALSE; }
+    BOOL IsValid() const { return isValid; }
+  private:
+    BOOL isValid;
+};
+///////////////////////////////////////////////////////////////
+class State {
+  public:
+    State(const BYTE *pAwakSeq)
+      : connectSent(FALSE),
+        connectionCounter(0)
+    {
+      StartAwakSeq(pAwakSeq);
+    }
+
+    void StartAwakSeq(const BYTE *pAwakSeq) {
+      waitAwakSeq = TRUE;
+      pAwakSeqNext = pAwakSeq;
+    }
+
+    BOOL waitAwakSeq;
+    const BYTE *pAwakSeqNext;
+    BOOL connectSent;
+    int connectionCounter;
+};
+///////////////////////////////////////////////////////////////
+class Filter : public Valid {
+  public:
+    Filter(int argc, const char *const argv[]);
+    ~Filter() {
+      if (pAwakSeq)
+        free((void *)pAwakSeq);
+    }
+
+    const BYTE *pAwakSeq;
+};
+
+Filter::Filter(int argc, const char *const argv[])
+  : pAwakSeq(NULL)
+{
+  for (const char *const *pArgs = &argv[1] ; argc > 1 ; pArgs++, argc--) {
+    const char *pArg = GetParam(*pArgs, "--");
+
+    if (!pArg) {
+      cerr << "ERROR: Unknown option " << *pArgs << endl;
+      Invalidate();
+      continue;
+    }
+
+    const char *pParam;
+
+    if ((pParam = GetParam(pArg, "awak-seq=")) != NULL) {
+      if (pAwakSeq) {
+        cerr << "ERROR: The awakening sequence was set twice" << endl;
+        Invalidate();
+        continue;
+      }
+
+      pAwakSeq = (BYTE *)_strdup(pParam);
+
+      if (!pAwakSeq) {
+        cerr << "No enough memory." << endl;
+        exit(2);
+      }
+    } else {
+      cerr << "ERROR: Unknown option " << *pArgs << endl;
+      Invalidate();
+    }
+  }
+
+  if (IsValid() && !pAwakSeq) {
+    pAwakSeq = (BYTE *)_strdup("");
+
+    if (!pAwakSeq) {
+      cerr << "No enough memory." << endl;
+      exit(2);
+    }
+  }
+}
+///////////////////////////////////////////////////////////////
+static PLUGIN_TYPE CALLBACK GetPluginType()
+{
+  return PLUGIN_TYPE_FILTER;
+}
+///////////////////////////////////////////////////////////////
+static const PLUGIN_ABOUT_A about = {
+  sizeof(PLUGIN_ABOUT_A),
+  "awakseq",
+  "Copyright (c) 2008 Vyacheslav Frolov",
+  "GNU General Public License",
+  "Connect on awakening sequence filter",
+};
+
+static const PLUGIN_ABOUT_A * CALLBACK GetPluginAbout()
+{
+  return &about;
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK Help(const char *pProgPath)
+{
+  cerr
+  << "Usage:" << endl
+  << "  " << pProgPath << " ... --create-filter=" << GetPluginAbout()->pName << "[,<FID>][:<options>] ... --add-filters=<ports>:[...,]<FID>[,...] ..." << endl
+  << endl
+  << "Options:" << endl
+  << "  --awak-seq=<s>    - set awakening sequence to <s>." << endl
+  << endl
+  << "IN method input data stream description:" << endl
+  << "  LINE_DATA(<data>) - <data> is the raw bytes." << endl
+  << "  CONNECT(TRUE)     - it will be discarded from stream." << endl
+  << "  CONNECT(FALSE)    - it will be discarded from stream if CONNECT(TRUE) was not" << endl
+  << "                      added yet. Start awakening sequence waiting." << endl
+  << endl
+  << "IN method output data stream description:" << endl
+  << "  LINE_DATA(<data>) - <data> is the raw bytes w/o awakening sequence and all" << endl
+  << "                      data before it." << endl
+  << "  CONNECT(TRUE)     - will be added when awakening sequence found." << endl
+  << endl
+  << "OUT method input data stream description:" << endl
+  << "  CONNECT(TRUE)     - increment connection counter." << endl
+  << "  CONNECT(FALSE)    - decrement connection counter. The decrementing of the" << endl
+  << "                      connection counter to 0 will start awakening sequence" << endl
+  << "                      waiting." << endl
+  << endl
+  << "Examples:" << endl
+  << "  " << pProgPath << " --create-filter=" << GetPluginAbout()->pName << " --add-filters=0:" << GetPluginAbout()->pName << " COM1 --use-driver=tcp 111.11.11.11:1111" << endl
+  << "    - wait first byte from COM1 and then establish connection to" << endl
+  << "      111.11.11.11:1111." << endl
+  << "  " << pProgPath << " --create-filter=pin2con --create-filter=" << GetPluginAbout()->pName << ":\"--awak-seq=aaa\" --add-filters=0:pin2con," << GetPluginAbout()->pName << " COM1 --use-driver=tcp 111.11.11.11:1111" << endl
+  << "    - wait \"aaa\" from COM1 and then establish connection to 111.11.11.11:1111." << endl
+  << "      and disconnect on DSR OFF." << endl
+  ;
+}
+///////////////////////////////////////////////////////////////
+static HFILTER CALLBACK Create(
+    HMASTERFILTER DEBUG_PARAM(hMasterFilter),
+    HCONFIG /*hConfig*/,
+    int argc,
+    const char *const argv[])
+{
+  _ASSERTE(hMasterFilter != NULL);
+
+  Filter *pFilter = new Filter(argc, argv);
+
+  if (!pFilter) {
+    cerr << "No enough memory." << endl;
+    exit(2);
+  }
+
+  if (!pFilter->IsValid()) {
+    delete pFilter;
+    return NULL;
+  }
+
+  return (HFILTER)pFilter;
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK Delete(
+    HFILTER hFilter)
+{
+  _ASSERTE(hFilter != NULL);
+
+  delete (Filter *)hFilter;
+}
+///////////////////////////////////////////////////////////////
+static HFILTERINSTANCE CALLBACK CreateInstance(
+    HMASTERFILTERINSTANCE hMasterFilterInstance)
+{
+  _ASSERTE(hMasterFilterInstance != NULL);
+
+  Filter *pFilter = (Filter *)pGetFilter(hMasterFilterInstance);
+
+  _ASSERTE(pFilter != NULL);
+
+  return (HFILTERINSTANCE)new State(pFilter->pAwakSeq);
+}
+///////////////////////////////////////////////////////////////
+static void CALLBACK DeleteInstance(
+    HFILTERINSTANCE hFilterInstance)
+{
+  _ASSERTE(hFilterInstance != NULL);
+
+  delete (State *)hFilterInstance;
+}
+///////////////////////////////////////////////////////////////
+static BOOL CALLBACK InMethod(
+    HFILTER hFilter,
+    HFILTERINSTANCE hFilterInstance,
+    HUB_MSG *pInMsg,
+    HUB_MSG **DEBUG_PARAM(ppEchoMsg))
+{
+  _ASSERTE(hFilter != NULL);
+  _ASSERTE(hFilterInstance != NULL);
+  _ASSERTE(pInMsg != NULL);
+  _ASSERTE(ppEchoMsg != NULL);
+  _ASSERTE(*ppEchoMsg == NULL);
+
+  switch (HUB_MSG_T2N(pInMsg->type)) {
+  case HUB_MSG_T2N(HUB_MSG_TYPE_LINE_DATA): {
+    _ASSERTE(pInMsg->u.buf.pBuf != NULL || pInMsg->u.buf.size == 0);
+
+    DWORD size = pInMsg->u.buf.size;
+
+    if (size == 0)
+      return TRUE;
+
+    if (!((State *)hFilterInstance)->waitAwakSeq)
+      return TRUE;
+
+    BYTE *pBuf = pInMsg->u.buf.pBuf;
+    const BYTE *pAwakSeqNext = ((State *)hFilterInstance)->pAwakSeqNext;
+
+    for ( ; *pAwakSeqNext && size ; size--) {
+      if (*pAwakSeqNext == *pBuf++)
+        pAwakSeqNext++;
+      else
+        pAwakSeqNext = ((Filter *)hFilter)->pAwakSeq;
+    }
+
+    if (!*pAwakSeqNext) {
+      ((State *)hFilterInstance)->waitAwakSeq = FALSE;
+
+      if (size) {
+        // insert CONNECT(TRUE) before rest of data
+
+        if (pBuf != pInMsg->u.buf.pBuf) {
+          memmove(pInMsg->u.buf.pBuf, pBuf, size);
+          pBuf = pInMsg->u.buf.pBuf;
+        }
+
+        pInMsg->type = HUB_MSG_TYPE_CONNECT;
+        pInMsg->u.val = TRUE;
+
+        pInMsg = pMsgInsertNone(pInMsg, HUB_MSG_TYPE_EMPTY);
+
+        if (pInMsg) {
+          pInMsg->type = HUB_MSG_TYPE_LINE_DATA;
+          pInMsg->u.buf.pBuf = pBuf;
+          pInMsg->u.buf.size = size;
+        }
+      } else {
+        // insert CONNECT(TRUE) instead data
+
+        if(!pMsgReplaceVal(pInMsg, HUB_MSG_TYPE_CONNECT, TRUE))
+          return FALSE;
+      }
+
+      ((State *)hFilterInstance)->connectSent = TRUE;
+    } else {
+      pInMsg->u.buf.size = 0;
+      ((State *)hFilterInstance)->pAwakSeqNext = pAwakSeqNext;
+    }
+    break;
+  }
+  case HUB_MSG_T2N(HUB_MSG_TYPE_CONNECT):
+    if (pInMsg->u.val) {
+      // discard CONNECT(TRUE) from the input stream
+      if (!pMsgReplaceNone(pInMsg, HUB_MSG_TYPE_EMPTY))
+        return FALSE;
+    } else {
+      // discard CONNECT(FALSE) from the input stream
+      // if CONNECT(TRUE) was not added yet
+      if (((State *)hFilterInstance)->connectSent) {
+        ((State *)hFilterInstance)->connectSent = FALSE;
+      } else {
+        if (!pMsgReplaceNone(pInMsg, HUB_MSG_TYPE_EMPTY))
+          return FALSE;
+      }
+
+      // start awakening sequence waiting
+      ((State *)hFilterInstance)->StartAwakSeq(((Filter *)hFilter)->pAwakSeq);
+    }
+    break;
+  }
+
+  return pInMsg != NULL;
+}
+///////////////////////////////////////////////////////////////
+static BOOL CALLBACK OutMethod(
+    HFILTER hFilter,
+    HFILTERINSTANCE hFilterInstance,
+    HMASTERPORT DEBUG_PARAM(hFromPort),
+    HUB_MSG *pOutMsg)
+{
+  _ASSERTE(hFilter != NULL);
+  _ASSERTE(hFilterInstance != NULL);
+  _ASSERTE(hFromPort != NULL);
+  _ASSERTE(pOutMsg != NULL);
+
+  switch (HUB_MSG_T2N(pOutMsg->type)) {
+    case HUB_MSG_T2N(HUB_MSG_TYPE_CONNECT): {
+      if (pOutMsg->u.val) {
+        ((State *)hFilterInstance)->connectionCounter++;
+
+        _ASSERTE(((State *)hFilterInstance)->connectionCounter > 0);
+      } else {
+        _ASSERTE(((State *)hFilterInstance)->connectionCounter > 0);
+
+        if (--((State *)hFilterInstance)->connectionCounter <= 0)
+          ((State *)hFilterInstance)->StartAwakSeq(((Filter *)hFilter)->pAwakSeq);
+      }
+      break;
+    }
+  }
+
+  return TRUE;
+}
+///////////////////////////////////////////////////////////////
+static const FILTER_ROUTINES_A routines = {
+  sizeof(FILTER_ROUTINES_A),
+  GetPluginType,
+  GetPluginAbout,
+  Help,
+  NULL,           // ConfigStart
+  NULL,           // Config
+  NULL,           // ConfigStop
+  Create,
+  Delete,
+  CreateInstance,
+  DeleteInstance,
+  InMethod,
+  OutMethod,
+};
+
+static const PLUGIN_ROUTINES_A *const plugins[] = {
+  (const PLUGIN_ROUTINES_A *)&routines,
+  NULL
+};
+///////////////////////////////////////////////////////////////
+PLUGIN_INIT_A InitA;
+const PLUGIN_ROUTINES_A *const * CALLBACK InitA(
+    const HUB_ROUTINES_A * pHubRoutines)
+{
+  if (!ROUTINE_IS_VALID(pHubRoutines, pMsgReplaceVal) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pMsgReplaceNone) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pMsgInsertNone) ||
+      !ROUTINE_IS_VALID(pHubRoutines, pGetFilter))
+  {
+    return NULL;
+  }
+
+  pMsgReplaceVal = pHubRoutines->pMsgReplaceVal;
+  pMsgReplaceNone = pHubRoutines->pMsgReplaceNone;
+  pMsgInsertNone = pHubRoutines->pMsgInsertNone;
+  pGetFilter = pHubRoutines->pGetFilter;
+
+  return plugins;
+}
+///////////////////////////////////////////////////////////////
+} // end namespace
+///////////////////////////////////////////////////////////////
+@
+
+
+1.12
+log
+@Optimized filter's API
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.11 2008/12/22 09:40:45 vfrolov Exp $
+d22 3
+d71 4
+a74 3
+static ROUTINE_MSG_REPLACE_VAL *pMsgReplaceVal = NULL;
+static ROUTINE_MSG_REPLACE_NONE *pMsgReplaceNone = NULL;
+static ROUTINE_MSG_INSERT_NONE *pMsgInsertNone = NULL;
+d97 6
+a102 5
+    State()
+      : waitAwakSeq(FALSE),
+        pAwakSeqNext(NULL),
+        connectSent(FALSE),
+        connectionCounter(0) {}
+d255 1
+a255 1
+    HMASTERFILTERINSTANCE DEBUG_PARAM(hMasterFilterInstance))
+d259 5
+a263 1
+  return (HFILTERINSTANCE)new State();
+a294 3
+    if (((State *)hFilterInstance)->pAwakSeqNext == NULL)
+      ((State *)hFilterInstance)->StartAwakSeq(((Filter *)hFilter)->pAwakSeq);
+
+d424 2
+a425 1
+      !ROUTINE_IS_VALID(pHubRoutines, pMsgInsertNone))
+d433 1
+@
+
+
+1.11
+log
+@Optimized message switching
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.10 2008/11/25 16:40:40 vfrolov Exp $
+d4 1
+a4 1
+ * Copyright (c) 2008 Vyacheslav Frolov
+d22 3
+d82 9
+d93 5
+a97 2
+    State(const BYTE *pAwakSeq)
+      : connectSent(FALSE), connectionCounter(0) { StartAwakSeq(pAwakSeq); }
+d110 1
+a110 1
+class Filter {
+d113 4
+a116 1
+    State *GetState(HMASTERPORT hPort);
+a118 7
+
+  private:
+
+    typedef map<HMASTERPORT, State*> PortsMap;
+    typedef pair<HMASTERPORT, State*> PortPair;
+
+    PortsMap portsMap;
+d122 1
+a122 1
+  : pAwakSeq((const BYTE *)"")
+d128 2
+a129 1
+      cerr << "Unknown option " << *pArgs << endl;
+d136 12
+a147 1
+      pAwakSeq = (const BYTE *)_strdup(pParam);
+d149 2
+a150 1
+      cerr << "Unknown option " << pArg << endl;
+a152 5
+}
+
+State *Filter::GetState(HMASTERPORT hPort)
+{
+  PortsMap::iterator iPair = portsMap.find(hPort);
+d154 2
+a155 2
+  if (iPair == portsMap.end()) {
+      portsMap.insert(PortPair(hPort, NULL));
+d157 4
+a160 4
+      iPair = portsMap.find(hPort);
+
+      if (iPair == portsMap.end())
+        return NULL;
+a161 5
+
+  if (!iPair->second)
+    iPair->second = new State(pAwakSeq);
+
+  return iPair->second;
+d219 1
+d224 39
+a262 1
+  return (HFILTER)new Filter(argc, argv);
+d267 1
+a267 1
+    HMASTERPORT hFromPort,
+d272 1
+a272 1
+  _ASSERTE(hFromPort != NULL);
+d286 2
+a287 1
+    State *pState = ((Filter *)hFilter)->GetState(hFromPort);
+d289 1
+a289 4
+    if (!pState)
+      return FALSE;
+
+    if (!pState->waitAwakSeq)
+d293 1
+a293 1
+    const BYTE *pAwakSeqNext = pState->pAwakSeqNext;
+d303 1
+a303 1
+      pState->waitAwakSeq = FALSE;
+d330 1
+a330 1
+      pState->connectSent = TRUE;
+d333 1
+a333 1
+      pState->pAwakSeqNext = pAwakSeqNext;
+a342 5
+      State *pState = ((Filter *)hFilter)->GetState(hFromPort);
+
+      if (!pState)
+        return FALSE;
+
+d345 2
+a346 2
+      if (pState->connectSent) {
+        pState->connectSent = FALSE;
+d353 1
+a353 1
+      pState->StartAwakSeq(((Filter *)hFilter)->pAwakSeq);
+d363 1
+a364 1
+    HMASTERPORT hToPort,
+d368 1
+a369 1
+  _ASSERTE(hToPort != NULL);
+d373 3
+a375 2
+  case HUB_MSG_T2N(HUB_MSG_TYPE_CONNECT): {
+    State *pState = ((Filter *)hFilter)->GetState(hToPort);
+d377 3
+a379 2
+    if (!pState)
+      return FALSE;
+d381 4
+a384 9
+    if (pOutMsg->u.val) {
+      pState->connectionCounter++;
+
+      _ASSERTE(pState->connectionCounter > 0);
+    } else {
+      _ASSERTE(pState->connectionCounter > 0);
+
+      if (--pState->connectionCounter <= 0)
+        pState->StartAwakSeq(((Filter *)hFilter)->pAwakSeq);
+a385 2
+    break;
+  }
+d400 3
+a402 1
+  NULL,           // Init
+@
+
+
+1.10
+log
+@Added assert for port handle
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.9 2008/11/24 12:36:59 vfrolov Exp $
+d22 3
+d224 2
+a225 1
+  if (pInMsg->type == HUB_MSG_TYPE_LINE_DATA) {
+d284 1
+d286 1
+a286 2
+  else
+  if (pInMsg->type == HUB_MSG_TYPE_CONNECT) {
+d309 1
+d326 2
+a327 2
+
+  if (pOutMsg->type == HUB_MSG_TYPE_CONNECT) {
+d343 2
+@
+
+
+1.9
+log
+@Changed plugin API
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.8 2008/11/13 07:45:07 vfrolov Exp $
+d22 3
+d216 1
+d312 1
+a312 1
+    HMASTERPORT /*nFromPort*/,
+d317 2
+@
+
+
+1.8
+log
+@Changed for staticaly linking
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.7 2008/10/16 09:24:23 vfrolov Exp $
+d22 3
+d92 1
+a92 1
+    State *GetState(int nPort);
+d98 2
+a99 2
+    typedef map<int, State*> PortsMap;
+    typedef pair<int, State*> PortPair;
+d125 1
+a125 1
+State *Filter::GetState(int nPort)
+d127 1
+a127 1
+  PortsMap::iterator iPair = portsMap.find(nPort);
+d130 1
+a130 1
+      portsMap.insert(PortPair(nPort, NULL));
+d132 1
+a132 1
+      iPair = portsMap.find(nPort);
+d208 1
+a208 1
+    int nFromPort,
+d225 1
+a225 1
+    State *pState = ((Filter *)hFilter)->GetState(nFromPort);
+d284 1
+a284 1
+      State *pState = ((Filter *)hFilter)->GetState(nFromPort);
+d308 2
+a309 2
+    int /*nFromPort*/,
+    int nToPort,
+d317 1
+a317 1
+    State *pState = ((Filter *)hFilter)->GetState(nToPort);
+@
+
+
+1.7
+log
+@Changed return type of ROUTINE_MSG_REPLACE_*() to BOOL
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.6 2008/08/27 11:38:29 vfrolov Exp $
+d22 3
+d47 2
+a48 1
+
+d371 2
+@
+
+
+1.6
+log
+@Fixed CONNECT(FALSE) losing
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.5 2008/08/20 09:26:40 vfrolov Exp $
+d22 3
+d52 1
+a52 1
+static ROUTINE_MSG_INSERT_VAL *pMsgReplaceVal = NULL;
+d260 2
+a261 1
+        pInMsg = pMsgReplaceVal(pInMsg, HUB_MSG_TYPE_CONNECT, TRUE);
+d274 2
+a275 1
+      pMsgReplaceNone(pInMsg, HUB_MSG_TYPE_EMPTY);
+d284 1
+a284 1
+      if (pState->connectSent)
+d286 4
+a289 2
+      else
+        pMsgReplaceNone(pInMsg, HUB_MSG_TYPE_EMPTY);
+@
+
+
+1.5
+log
+@Fixed typo
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.4 2008/04/14 07:32:03 vfrolov Exp $
+d22 3
+d65 2
+a66 1
+    State(const BYTE *pAwakSeq) : connectionCounter(0) { StartAwakSeq(pAwakSeq); }
+d75 1
+a78 3
+typedef map<int, State*> PortsMap;
+typedef pair<int, State*> PortPair;
+
+d87 4
+d259 2
+d279 3
+a281 1
+      if (pState->waitAwakSeq)
+@
+
+
+1.4
+log
+@Renamed option --use-port-module to --use-driver
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.3 2008/04/07 12:29:11 vfrolov Exp $
+d22 3
+d48 1
+a48 1
+static ROUTINE_MSG_REPLACE_NONE *pMsgInsertNone = NULL;
+@
+
+
+1.3
+log
+@Replaced --rt-events option by SET_RT_EVENTS message
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.2 2008/04/02 10:39:54 vfrolov Exp $
+d22 3
+d170 1
+a170 1
+  << "  " << pProgPath << " --create-filter=" << GetPluginAbout()->pName << " --add-filters=0:" << GetPluginAbout()->pName << " COM1 --use-port-module=tcp 111.11.11.11:1111" << endl
+d173 1
+a173 1
+  << "  " << pProgPath << " --create-filter=pin2con --create-filter=" << GetPluginAbout()->pName << ":\"--awak-seq=aaa\" --add-filters=0:pin2con," << GetPluginAbout()->pName << " COM1 --use-port-module=tcp 111.11.11.11:1111" << endl
+@
+
+
+1.2
+log
+@Added discarding CONNECT(FALSE) from the input stream
+@
+text
+@d2 1
+a2 1
+ * $Id: filter.cpp,v 1.1 2008/04/01 14:52:46 vfrolov Exp $
+d22 3
+d170 1
+a170 1
+  << "  " << pProgPath << " --create-filter=pin2con --create-filter=" << GetPluginAbout()->pName << ":\"--awak-seq=aaa\" --add-filters=0:pin2con," << GetPluginAbout()->pName << " --rt-events=dsr COM1 --use-port-module=tcp 111.11.11.11:1111" << endl
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+ * $Id: $
+d21 3
+a23 1
+ * $Log: $
+d149 2
+a150 1
+  << "  CONNECT(FALSE)    - start awakening sequence waiting." << endl
+d167 1
+a167 1
+  << "  " << pProgPath << " --create-filter=" << GetPluginAbout()->pName << ":\"--awak-seq=aaa\" --add-filters=0:" << GetPluginAbout()->pName << " COM1 --use-port-module=tcp 111.11.11.11:1111" << endl
+d169 1
+d240 2
+a254 1
+      // start awakening sequence waiting
+d260 6
+@
+
